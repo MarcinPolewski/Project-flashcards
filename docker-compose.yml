@@ -1,4 +1,3 @@
-version: "2"
 services:
 
   frontend-service:
@@ -6,10 +5,10 @@ services:
     depends_on:
       backend-service:
         condition: service_healthy
-      port:
-        - "80:80" # @Kacper, sprawdź czy port odpowiada
-      networks:
-        - front-network
+    ports:
+      - "80:80" # @Kacper, sprawdź czy port odpowiada
+    networks:
+      - front-network
 
   backend-service:
     build: ./backend
