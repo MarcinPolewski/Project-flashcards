@@ -1,18 +1,35 @@
-# Step 1: Build the React app
-FROM node:18 
+# =========== BUILD ==============
+FROM node:18 as build-stage
 
 WORKDIR /react-front-end
 COPY package*.json ./
 RUN npm install
 COPY . .
-EXPOSE 80
 RUN npm run build
 
-# # Step 2: Serve the React app with Nginx
-# FROM nginx:alpine
+# # # =========== CREATE A SERVER =============
+FROM nginx:1.27.2 as server-stage
 
-# # Copy the build output from the build stage
-# COPY --from=build /app/build /usr/share/nginx/html
+#copy server configuration file
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# # Expose the default port for HTTP
-# EXPOSE 80
+#copy built files to server files
+COPY --from=build-stage /react-front-end/build/ /usr/share/nginx/html
+
+# for security reasons, changing ownership of files, to run as normal user
+WORKDIR /react-server
+RUN chown -R nginx:nginx /react-server && chmod -R 755 /react-server && \
+    chown -R nginx:nginx /var/cache/nginx && \
+    chown -R nginx:nginx /var/log/nginx && \
+    chown -R nginx:nginx /etc/nginx/conf.d
+
+# this file will store Nginx's PID 
+RUN touch /var/run/nginx.pid && \
+    chown -R nginx:nginx /var/run/nginx.pid
+
+USER nginx
+
+EXPOSE 80
+
+# Command to start NGINX when the container is run
+CMD ["nginx", "-g", "daemon off;"]
