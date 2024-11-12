@@ -1,19 +1,25 @@
+package com.PAP_team_21.flashcards.config;
+
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.SecurityFilterChain;
+
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig {
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
-            .authorizeRequests()
-                .antMatchers("/actuator/health").permitAll()  // Allow unauthenticated access to health endpoint
-                .anyRequest().authenticated()  // Require authentication for other endpoints
-            .and()
-            .csrf().disable();  // Optionally disable CSRF if needed (depending on your use case)
+    @Bean
+    protected SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http.authorizeRequests()
+                .requestMatchers("/actuator/health").permitAll()  // Allow unauthenticated access to /actuator/health
+                .anyRequest().authenticated()                       // Require authentication for other endpoints
+                .and()
+                .httpBasic(Customizer.withDefaults());
+
+        return http.build();
     }
 }

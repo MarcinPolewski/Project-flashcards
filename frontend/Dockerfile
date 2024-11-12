@@ -1,17 +1,18 @@
 # Step 1: Build the React app
-FROM node:18 AS build
+FROM node:18 
 
-WORKDIR /app
+WORKDIR /react-front-end
 COPY package*.json ./
 RUN npm install
 COPY . .
+EXPOSE 80
 RUN npm run build
 
-# Step 2: Serve the React app with Nginx
-FROM nginx:alpine
+# # Step 2: Serve the React app with Nginx
+# FROM nginx:alpine
 
-# Copy the build output from the build stage
-COPY --from=build /app/build /usr/share/nginx/html
+# # Copy the build output from the build stage
+# COPY --from=build /app/build /usr/share/nginx/html
 
-# Expose the default port for HTTP
-EXPOSE 80
+# # Expose the default port for HTTP
+# EXPOSE 80
