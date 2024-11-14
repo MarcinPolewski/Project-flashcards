@@ -1,0 +1,1 @@
+- dockerization was created according to tutorial on [link](https://behdadk.medium.com/how-to-dockerize-a-react-application-in-5-minutes-c6093636628f)
