@@ -1,0 +1,50 @@
+services:
+
+  frontend-service:
+    build: ./frontend
+    depends_on:
+      backend-service:
+        condition: service_healthy
+    ports:
+      - "80:80" # @Kacper, sprawdź czy port odpowiada
+    networks:
+      - front-network
+
+  backend-service:
+    build: ./backend
+    depends_on:
+      database:
+        condition: service_healthy
+    networks:
+      - back-network
+      - front-network
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/actuator/health" ]
+      interval: 5s
+      timeout: 10s
+      retries: 5
+    ports:
+      - "8080:8080" # @Kacper, sprawdź czy port odpowiada
+  database:
+    build: ./database
+    networks:
+      - back-network
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    command:
+      - --mysql-native-password=ON
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot" ]
+      interval: 5s
+      timeout: 10s
+      retries: 5
+    volumes:
+      - db-data:/var/lib/mysql
+
+volumes:
+  db-data:
+
+
+networks:
+  back-network:
+  front-network:
