@@ -12,6 +12,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
+    "dev": "npm start",
     "start": "react-scripts start",
     "build": "react-scripts build && mkdir -p ../frontend/resources/static && cp -r build/* ../frontend/resources/static/",
     "test": "react-scripts test",
