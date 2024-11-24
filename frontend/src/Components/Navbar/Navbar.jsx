@@ -21,10 +21,10 @@ const Navbar = () => {
             <div className="navbar-item">Statistics</div>
         </div>
 
-        <PlusButton/>
-
-        <Avatar />
-
+        <div className="nav-user-options">
+            <PlusButton/>
+            <Avatar />
+        </div>
         </div>
     </div>
 }
