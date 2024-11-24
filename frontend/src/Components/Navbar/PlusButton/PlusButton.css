@@ -1,0 +1,11 @@
+.plus-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: orange;
+    border-radius: 25%;
+    min-width: 3vh;
+    min-height: 3vh;
+    padding-bottom: 2px;
+    cursor: pointer;
+}
