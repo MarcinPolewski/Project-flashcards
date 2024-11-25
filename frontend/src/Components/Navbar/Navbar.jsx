@@ -24,7 +24,7 @@ const Navbar = (props) => {
 
         <div className="nav-user-options">
             <PlusButton/>
-            <Avatar avatar={props.avatar}/>
+            <Avatar avatar={props.avatar} email="kacper@polska.pl"/>
         </div>
         </div>
     </div>

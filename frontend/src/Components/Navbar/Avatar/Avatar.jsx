@@ -25,7 +25,7 @@ const Avatar = (props) => {
 
     return <div className="avatar" onClick={handleTogglePopup}>
         <img src={props.avatar} alt="User Avatar" />
-        { isPopupOpen && <AvatarPopup/> }
+        { isPopupOpen && <AvatarPopup avatar={props.avatar} email={props.email}/> }
     </div>
 }
 
