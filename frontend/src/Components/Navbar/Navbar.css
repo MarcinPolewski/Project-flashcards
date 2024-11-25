@@ -1,11 +1,13 @@
 .navbar {
-    margin: 10px 30px;
+    background-color: salmon; /*debug*/
 }
 
 .navbar-container {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    margin: 0 30px;
+    padding: 10px 0;
     gap: 80px;
 }
 

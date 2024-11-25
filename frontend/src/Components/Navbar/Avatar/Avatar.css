@@ -1,6 +1,6 @@
 .avatar img{
     border-radius: 100%;
-    max-width: 10vh;
-    min-height: 10vh;
+    max-width: 6vh;
+    min-height: 6vh;
     cursor: pointer;
 }
