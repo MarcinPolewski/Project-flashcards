@@ -5,6 +5,7 @@ import Logo from "./Logo/Logo";
 import PlusButton from "./PlusButton/PlusButton";
 import Avatar from "./Avatar/Avatar";
 
+
 const Navbar = (props) => {
     return <div className="navbar">
         <div className="navbar-container">
