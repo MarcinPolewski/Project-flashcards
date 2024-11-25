@@ -1,3 +1,29 @@
 .avatar-popup {
     position: absolute;
+    top: 50px;
+    right: 50px;
+    left: 0;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    z-index: 1000;
+    width: 150px;
+}
+
+.avatar-popup ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.avatar-popup li {
+    padding: 10px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.avatar-popup li:hover {
+    background-color: #f0f0f0;
 }

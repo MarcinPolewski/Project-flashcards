@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import './PlusButton.css';
 
 import PlusButtonPopup from './PlusButtonPopup/PlusButtonPopup';
@@ -10,6 +10,19 @@ const PlusButton = () => {
     const handleTogglePopup = () => {
         setPopupOpen(!isPopupOpen);
     }
+
+    const handleClickOutside = (event) => {
+        if (!event.target.closest('.plus-button-container')) {
+            setPopupOpen(false);
+        }
+    }
+
+    useEffect(() => {
+        document.addEventListener('click', handleClickOutside)
+        return () => {
+            document.removeEventListener('click', handleClickOutside)
+        };
+    }, []);
 
     return <div className="plus-button-container">
 
