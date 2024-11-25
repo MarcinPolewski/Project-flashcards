@@ -6,7 +6,10 @@ const AvatarPopup = (props) => {
     return <div className="avatar-popup">
         <div className="avatar-popup-info">
             <img src={props.avatar} alt="User Avatar" />
-            <div>{props.email}</div>
+            <div className="avatar-popup-details">
+                <div>{props.username}</div>
+                <div>{props.email}</div>
+            </div>
         </div>
         <ul>
             <li>Settings</li>

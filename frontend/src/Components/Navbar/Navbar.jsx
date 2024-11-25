@@ -7,6 +7,9 @@ import Avatar from "./Avatar/Avatar";
 
 
 const Navbar = (props) => {
+
+    const {avatar, username, email} = props.details;
+
     return <div className="navbar">
         <div className="navbar-container">
 
@@ -24,7 +27,7 @@ const Navbar = (props) => {
 
         <div className="nav-user-options">
             <PlusButton/>
-            <Avatar avatar={props.avatar} email="kacper@polska.pl"/>
+            <Avatar avatar={avatar} username={username} email={email}/>
         </div>
         </div>
     </div>

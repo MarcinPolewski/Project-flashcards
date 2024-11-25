@@ -7,7 +7,19 @@ import testAvatar from './assets/test/test-avatar.png';
 
 function App() {
   return (
-    <Navbar avatar={testAvatar}/>
+    <Navbar details={
+
+      /* debug */
+
+      {
+        avatar: testAvatar,
+        username: "Kacper",
+        email: "kacper@polska.pl"
+      }
+
+      /* this will be fetched from API*/
+
+    }/>
   );
 }
 
