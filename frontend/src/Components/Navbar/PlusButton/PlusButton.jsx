@@ -30,7 +30,7 @@ const PlusButton = () => {
             <div className="plus-button-img">+</div>
         </div>
 
-        { isPopupOpen && <PlusButtonPopup/>}
+        { isPopupOpen && <PlusButtonPopup className="popup"/>}
 
     </div>
 }

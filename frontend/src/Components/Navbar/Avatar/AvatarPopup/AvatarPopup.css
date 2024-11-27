@@ -1,21 +1,21 @@
 .avatar-popup {
     position: absolute;
-    top: 50px;
-    right: 50px;
-    left: 0;
+    top: 55px;
+    left: -23vh;
     background: white;
     border: 1px solid #ccc;
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     padding: 10px;
     z-index: 1000;
-    width: 150px;
+    width: 30vh;
 }
 
 .avatar-popup ul {
     list-style: none;
     margin: 0;
     padding: 0;
+    padding-top: 15px;
 }
 
 .avatar-popup li {
@@ -27,3 +27,20 @@
 .avatar-popup li:hover {
     background-color: #f0f0f0;
 }
+
+.avatar-popup-info {
+    display: flex;
+    gap: 12px;
+    border-bottom: 1px solid #ccc;
+}
+
+.avatar-popup-info img {
+    min-width: 10vh;
+    height: 10vh;
+}
+
+.avatar-popup-info div {
+    margin-top: 4px;
+}
+
+@media

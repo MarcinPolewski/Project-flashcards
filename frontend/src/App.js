@@ -1,25 +1,33 @@
-import logo from './logo.svg';
 import './App.css';
-import Navbar from './Components/Navbar/Navbar';
+
+import Home from './Components/pages/Home/Home';
 
 /* Avatar for testing */
 import testAvatar from './assets/test/test-avatar.png';
 
+const APIdummy =
+
+  /* debug */
+
+  {
+    avatar: testAvatar,
+    username: "Kacper",
+    email: "kacper@polska.pl"
+  }
+
+  /* this will be fetched from API*/
+
+
 function App() {
   return (
-    <Navbar details={
 
-      /* debug */
+    /* ATM no sections and no routing */
 
-      {
-        avatar: testAvatar,
-        username: "Kacper",
-        email: "kacper@polska.pl"
-      }
+    <div>
 
-      /* this will be fetched from API*/
+      <Home details={APIdummy}/>
 
-    }/>
+    </div>
   );
 }
 

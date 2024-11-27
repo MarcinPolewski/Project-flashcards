@@ -1,0 +1,8 @@
+.home {
+    background-color: aqua;
+}
+
+.home-latest-reviews {
+    display: flex;
+    flex-direction: column;
+}
