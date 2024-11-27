@@ -19,7 +19,7 @@ const Home = (props) => {
 
             <div className="latest-reviews-title">My Latest Reviews</div>
             <div className="latest-reviews-decks">
-                {testDecks.map((deck) => {
+                {testDecks.slice(0, 3).map((deck) => {
                     return <Deck deckState={deck}/>
                 })}
             </div>
