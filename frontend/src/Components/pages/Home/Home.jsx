@@ -9,7 +9,7 @@ import testDecks from "../../../assets/test/testDecks";
 
 const Home = (props) => {
 
-    const [myDecksClicked, setMyDecksClicked] = useState(true);
+    const [myDecksClicked, setMyDecksClicked] = useState(false);
 
     return <div className="home">
 
@@ -36,11 +36,11 @@ const Home = (props) => {
             {/* będzie w bazie danych flaga od decków personalnych i importowanych */}
 
             <div className="my-decks-container">
-            {myDecksClicked &&
-                testDecks
-                    .filter(deck => myDecksClicked ? deck.imported === false : deck.imported === true)
-                    .map(deck => (
-                        <Deck deckState={deck}/>
+            {
+            testDecks
+                .filter(deck => myDecksClicked ? deck.imported === false : deck.imported === true)
+                .map(deck => (
+                    <Deck deckState={deck}/>
             ))}
             </div>
 
