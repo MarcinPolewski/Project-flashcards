@@ -1,5 +1,12 @@
 .deck {
-    background: blue;
-    max-width: 200px;
-    border-radius: 10%;
+    background: white;
+    min-width: 50vh;
+    border-radius: 5%;
+}
+
+.deck-state {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    gap: 20px;
 }

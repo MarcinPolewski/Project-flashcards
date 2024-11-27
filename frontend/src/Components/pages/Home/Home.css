@@ -2,7 +2,12 @@
     background-color: aqua;
 }
 
-.home-latest-reviews {
+.home-my-decks {
+    background-color: palegreen;
+}
+
+.latest-reviews-decks {
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
 }
