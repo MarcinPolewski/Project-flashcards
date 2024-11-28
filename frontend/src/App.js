@@ -1,4 +1,5 @@
 import './App.css';
+import { ThemeProvider } from './Components/ThemeContext/ThemeContext';
 
 import Home from './Components/pages/Home/Home';
 import Settings from './Components/pages/Settings/Settings';
@@ -24,11 +25,10 @@ function App() {
 
     /* ATM no sections and no routing */
 
-    <div>
-
+    <ThemeProvider>
       <Settings details={APIdummy}/>
+    </ThemeProvider>
 
-    </div>
   );
 }
 

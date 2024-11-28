@@ -1,3 +1,12 @@
+:root {
+  /* here should be global variables for light mode */
+}
+
+
+body.dark {
+  /* and here should be global variables for dark mode */
+ }
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
