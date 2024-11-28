@@ -1,6 +1,7 @@
 import './App.css';
 
 import Home from './Components/pages/Home/Home';
+import Settings from './Components/pages/Settings/Settings';
 
 /* Avatar for testing */
 import testAvatar from './assets/test/test-avatar.png';
@@ -25,7 +26,7 @@ function App() {
 
     <div>
 
-      <Home details={APIdummy}/>
+      <Settings details={APIdummy}/>
 
     </div>
   );
