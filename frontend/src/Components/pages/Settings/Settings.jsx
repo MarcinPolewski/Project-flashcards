@@ -15,9 +15,11 @@ const Settings = (props) => {
     const { avatar, username, email } = props.details;
 
     return (
-        <div className="settings">
-            <Navbar details={props.details} />
+        <div>
 
+        <Navbar details={props.details} />
+
+        <div className="settings">
             <h1 className="settings-title">Settings</h1>
 
             <SettingsSection title="Personal information">
@@ -91,6 +93,7 @@ const Settings = (props) => {
                     <button className="delete-button">Delete account</button>
                 </div>
             </SettingsSection>
+        </div>
         </div>
     );
 };
