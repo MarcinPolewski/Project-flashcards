@@ -1,8 +1,12 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 import './AvatarPopup.css';
 
 const AvatarPopup = (props) => {
+
+    const navigate = useNavigate();
+
     return <div className="avatar-popup">
         <div className="avatar-popup-info">
             <img className="avatar-img" src={props.avatar} alt="User Avatar" />
@@ -12,7 +16,7 @@ const AvatarPopup = (props) => {
             </div>
         </div>
         <ul>
-            <li>Settings</li>
+            <li onClick={() => navigate("/settings")}>Settings</li>
             <li>Light Mode</li>
             <li>Logout</li>
         </ul>

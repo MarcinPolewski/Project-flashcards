@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import './Navbar.css';
 
 import Logo from "./Logo/Logo";
@@ -8,6 +9,8 @@ import Avatar from "./Avatar/Avatar";
 
 const Navbar = (props) => {
 
+    const navigate = useNavigate();
+
     const {avatar, username, email} = props.details;
 
     return <div className="navbar">
@@ -16,7 +19,7 @@ const Navbar = (props) => {
         <Logo/>
 
         <div className="nav-buttons">
-            <div className="navbar-item">Browse</div>
+            <div className="navbar-item" onClick={() => navigate("/")}>Browse</div>
 
             <div className="navbar-item">Decks</div>
 

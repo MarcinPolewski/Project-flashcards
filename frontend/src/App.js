@@ -1,5 +1,6 @@
 import './App.css';
 import { ThemeProvider } from './Components/ThemeContext/ThemeContext';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Home from './Components/pages/Home/Home';
 import Settings from './Components/pages/Settings/Settings';
@@ -26,7 +27,12 @@ function App() {
     /* ATM no sections and no routing */
 
     <ThemeProvider>
-      <Settings details={APIdummy}/>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home details={APIdummy}/>} />
+          <Route path="/settings" element={<Settings details={APIdummy} />} />
+        </Routes>
+      </BrowserRouter>
     </ThemeProvider>
 
   );
