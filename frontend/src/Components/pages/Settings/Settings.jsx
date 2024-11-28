@@ -27,7 +27,7 @@ const Settings = (props) => {
             <SettingsSection title="Personal information">
                 <div className="personal-info">
                     <div className="personal-info-avatar">
-                        <img className="avatar" src={avatar || "default-avatar.png"} alt="Avatar" />
+                        <img className="avatar-personal" src={avatar || "default-avatar.png"} alt="Avatar" />
                         <button className="plus-button">+</button>
                     </div>
                     <hr />

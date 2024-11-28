@@ -29,9 +29,10 @@
     gap: 10px;
   }
 
-  .avatar {
+  .avatar-personal {
     border-radius: 50%;
     width: 30vh;
+    height: 30vh;
   }
 
   .personal-info-item,
