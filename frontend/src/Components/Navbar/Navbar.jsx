@@ -21,11 +21,11 @@ const Navbar = (props) => {
         <div className="nav-buttons">
             <div className="navbar-item" onClick={() => navigate("/")}>Browse</div>
 
-            <div className="navbar-item">Decks</div>
+            <div className="navbar-item" onClick={() => navigate("/decks")}>Decks</div>
 
-            <div className="navbar-item">Import</div>
+            <div className="navbar-item" onClick={() => navigate("/import")}>Import</div>
 
-            <div className="navbar-item">Statistics</div>
+            <div className="navbar-item" onClick={() => navigate("/statistics")}>Statistics</div>
         </div>
 
         <div className="nav-user-options">

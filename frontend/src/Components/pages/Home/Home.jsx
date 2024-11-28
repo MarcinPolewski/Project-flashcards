@@ -19,9 +19,14 @@ const Home = (props) => {
 
             <div className="latest-reviews-title">My Latest Reviews</div>
             <div className="latest-reviews-decks">
-                {testDecks.slice(0, 3).map((deck) => {
-                    return <Deck deckState={deck}/>
-                })}
+                {
+                /* TODO sortujemy je po dacie i bierzemy pierwsze trzy */
+
+                testDecks.slice(0, 3).map((deck, idx) => {
+                    return <Deck key={idx} deckState={deck}/>
+                })
+
+                }
             </div>
 
         </div>
@@ -39,8 +44,8 @@ const Home = (props) => {
             {
             testDecks
                 .filter(deck => myDecksClicked ? deck.imported === false : deck.imported === true)
-                .map(deck => (
-                    <Deck deckState={deck}/>
+                .map((deck, idx) => (
+                    <Deck key={idx} deckState={deck}/>
             ))}
             </div>
 
