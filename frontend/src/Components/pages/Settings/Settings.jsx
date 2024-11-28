@@ -5,9 +5,11 @@ import Navbar from "../../Navbar/Navbar";
 import './Settings.css';
 
 const SettingsSection = ({ title, children }) => (
-    <div className="settings-section">
-      <h2 className="settings-section-title">{title}</h2>
-      <div className="settings-section-content">{children}</div>
+    <div>
+        <h2 className="settings-section-title">{title}</h2>
+        <div className="settings-section">
+            <div className="settings-section-content">{children}</div>
+        </div>
     </div>
   );
 
@@ -28,14 +30,20 @@ const Settings = (props) => {
                         <img className="avatar" src={avatar || "default-avatar.png"} alt="Avatar" />
                         <button className="plus-button">+</button>
                     </div>
+                    <hr />
                     <div className="personal-info-item">
-                        <div className="label">Email</div>
-                        <div className="value">{email}</div>
+                        <div className="personal-info-item-container">
+                            <div className="label">Email</div>
+                            <div className="value">{email}</div>
+                        </div>
                         <button className="edit-button">Edit</button>
                     </div>
+                    <hr />
                     <div className="personal-info-item">
-                        <div className="label">Username</div>
-                        <div className="value">{username}</div>
+                        <div className="personal-info-item-container">
+                            <div className="label">Username</div>
+                            <div className="value">{username}</div>
+                        </div>
                         <button className="edit-button">Edit</button>
                     </div>
                 </div>
@@ -49,6 +57,7 @@ const Settings = (props) => {
                         <option>Dark</option>
                     </select>
                 </div>
+                <hr />
                 <div className="appearance-item">
                     <div className="label">Language</div>
                     <select className="dropdown">
@@ -63,6 +72,7 @@ const Settings = (props) => {
                     <div className="label">Study reminders</div>
                     <input type="checkbox" className="switch" />
                 </div>
+                <hr />
                 <div className="notifications-item">
                     <div className="label">Choose when to receive reminders</div>
                     <select className="dropdown">
@@ -71,6 +81,7 @@ const Settings = (props) => {
                         <option>6 PM</option>
                     </select>
                 </div>
+                <hr />
                 <div className="notifications-item">
                     <div className="label">Time Zone</div>
                     <select className="dropdown">
@@ -85,11 +96,14 @@ const Settings = (props) => {
                     <div className="label">Change your password</div>
                     <button className="edit-button">Edit</button>
                 </div>
+                <hr />
                 <div className="account-item">
-                    <div className="label">Delete your account</div>
-                    <p className="warning-text">
-                        This will delete all your data and cannot be undone.
-                    </p>
+                    <div className="account-item-container">
+                        <div className="label">Delete your account</div>
+                        <p className="warning-text">
+                            This will delete all your data and cannot be undone.
+                        </p>
+                    </div>
                     <button className="delete-button">Delete account</button>
                 </div>
             </SettingsSection>

@@ -6,11 +6,12 @@
   .settings-title {
     font-size: 24px;
     font-weight: bold;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
+    margin-left: 24vh;
   }
 
   .settings-section {
-    margin-bottom: 30px;
+    margin: 30px 170px;
     border: 1px solid #ccc;
     padding: 20px;
     border-radius: 8px;
@@ -18,13 +19,19 @@
 
   .settings-section-title {
     font-size: 18px;
-    margin-bottom: 10px;
+    margin: 30px 170px;
   }
 
   .personal-info-avatar {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 10px;
+  }
+
+  .avatar {
+    border-radius: 50%;
+    width: 30vh;
   }
 
   .personal-info-item,
@@ -34,7 +41,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 10px;
+    margin: 20px 0;
   }
 
   .dropdown {
@@ -63,4 +70,18 @@
     background-color: red;
     color: white;
     border: none;
+  }
+
+  .personal-info-item-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .value {
+    color: #6d6d6d;
+  }
+
+  .warning-text {
+    color: #6d6d6d;
   }
