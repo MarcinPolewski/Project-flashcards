@@ -35,7 +35,7 @@ const Statistics = (props) => {
             <div className="statistics-title">Statistics</div>
 
             <StatisticsSection className="streak-section" title="Streak">
-                <StreakChart/>
+                <StreakChart className="streak-section-streak-chart"/>
 
                 <div className="streak-container">
                     <div className="streak-days-learning">

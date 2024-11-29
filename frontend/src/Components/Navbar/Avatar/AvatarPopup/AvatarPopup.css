@@ -5,7 +5,7 @@
     background: white;
     border: 1px solid #ccc;
     border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 10px var(--box-shadow);
     padding: 10px;
     z-index: 1000;
     width: 30vh;
@@ -25,13 +25,13 @@
 }
 
 .avatar-popup li:hover {
-    background-color: #f0f0f0;
+    background-color: var(--popup-hover);
 }
 
 .avatar-popup-info {
     display: flex;
     gap: 12px;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid var(--section-border);
 }
 
 .avatar-popup-info img {
@@ -42,5 +42,3 @@
 .avatar-popup-info div {
     margin-top: 4px;
 }
-
-@media

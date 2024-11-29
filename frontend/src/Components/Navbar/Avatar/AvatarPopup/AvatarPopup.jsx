@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
 import './AvatarPopup.css';
+import { ThemeContext } from "../../../../contexts/ThemeContext/ThemeContext";
 
 const AvatarPopup = (props) => {
+
+    const { theme, toggleTheme } = useContext(ThemeContext);
 
     const navigate = useNavigate();
 
@@ -17,7 +20,7 @@ const AvatarPopup = (props) => {
         </div>
         <ul>
             <li onClick={() => navigate("/settings")}>Settings</li>
-            <li>Light Mode</li>
+            <li onClick={toggleTheme}>{theme === 'dark' ? "Light" : "Dark"} Mode</li>
             <li>Logout</li>
         </ul>
     </div>

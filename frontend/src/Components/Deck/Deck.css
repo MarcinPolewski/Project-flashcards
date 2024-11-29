@@ -2,7 +2,7 @@
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 10px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 4px 6px var(--box-shadow);
     position: relative;
 }
 
@@ -18,7 +18,7 @@
 }
 
 .deck-info {
-    color: #666;
+    color: var(--deck-info);
     margin-top: 5px;
 }
 
@@ -29,7 +29,7 @@
 }
 
 .deck-state-item {
-    background: #f7f7f7;
+    background: var(--deck-state-item);
     padding: 5px 10px;
     border-radius: 5px;
 }
@@ -43,7 +43,7 @@
     width: 30px;
     height: 30px;
     border-radius: 50%;
-    background: rgb(255, 149, 0);
+    background: var(--deck-action-button);
     border: none;
     cursor: pointer;
 }
@@ -54,8 +54,8 @@
     top: 40px;
     left: 0;
     background: white;
-    border: 1px solid #ccc;
+    border: 1px solid var(--section-border);
     border-radius: 5px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 4px 6px var(--box-shadow);
 }
 

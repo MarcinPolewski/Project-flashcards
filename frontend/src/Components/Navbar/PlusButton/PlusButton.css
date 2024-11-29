@@ -5,22 +5,22 @@
 .plus-button {
     width: 5vh;
     height: 5vh;
-    background: orange;
+    background: var(--plus-button);
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px var(--box-shadow);
     transition: background 0.3s ease;
 }
 
 .plus-button:hover {
-    background: rgb(255, 175, 25);
+    background: var(--plus-button-hover);
 }
 
 .plus-button-img {
-    color: white;
+    color: var(--plus-button-img);
     font-size: 24px;
     font-weight: bold;
     padding-bottom: 5px;
