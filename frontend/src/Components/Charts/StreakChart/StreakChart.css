@@ -1,0 +1,18 @@
+.streak-chart {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+    width: 100%;
+    max-width: 400px;
+}
+
+.streak-cell {
+    width: 14px;
+    height: 14px;
+    background-color: #ddd;
+    border-radius: 2px;
+}
+
+.streak-cell.active {
+    background-color: #3b7a57;
+}
