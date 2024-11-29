@@ -14,6 +14,9 @@
 
 .latest-reviews-decks {
     display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin: 10px 100px;
     gap: 20px;
 }
 
@@ -23,7 +26,13 @@
     border-radius: 10px;
     padding: 20px;
     text-align: center;
+    max-width: 50vh;
+    height: auto;
+    min-height: 200px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .continue-button {
@@ -34,6 +43,9 @@
     background-color: #007bff;
     color: white;
     cursor: pointer;
+    width: 80%;
+    max-width: 150px;
+    align-self: center;
 }
 
 .home-my-decks {
@@ -54,9 +66,8 @@
 }
 
 .active-tab {
-    background: #007bff;
-    color: white;
-    border-color: #007bff;
+    color: rgb(0, 0, 0);
+    text-decoration: underline;
 }
 
 .my-decks-container {
@@ -73,4 +84,10 @@
     width: 100%;
     height: 50px;
     background: linear-gradient(to bottom, transparent, white);
+}
+
+.react-circular-progressbar {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto;
 }

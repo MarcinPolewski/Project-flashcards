@@ -5,6 +5,7 @@ import Navbar from "../../Navbar/Navbar";
 import Deck from "../../Deck/Deck";
 
 import './Home.css';
+import 'react-circular-progressbar/dist/styles.css';
 
 import testDecks from "../../../assets/test/testDecks";
 
@@ -12,26 +13,23 @@ const Home = (props) => {
 
     const [myDecksClicked, setMyDecksClicked] = useState(true);
 
-    return <div className="home">
+    return <div>
 
-        <Navbar details={props.details}/>
+    <Navbar details={props.details}/>
+
+    <div className="home">
 
         <div className="home-latest-reviews">
 
             <div className="latest-reviews-title">My Latest Reviews</div>
             <div className="latest-reviews-decks">
-                {
-                /* TODO sortujemy je po dacie i bierzemy pierwsze trzy */
-
-                testDecks.slice(0, 3).map((deck, idx) => {
+                {testDecks.slice(0, 3).map((deck, idx) => (
                     <div key={idx} className="latest-review-deck">
                         <div className="deck-title">{deck.title}</div>
-                        <CircularProgressbar value={deck.progress} text={`${deck.progress}%`} />
+                        <CircularProgressbar className="react-circular-progressbar" value={deck.progress} text={`${deck.progress}%`} />
                         <button className="continue-button">Continue</button>
                     </div>
-                })
-
-                }
+                ))}
             </div>
 
         </div>
@@ -63,6 +61,8 @@ const Home = (props) => {
             </div>
 
         </div>
+    </div>
+
     </div>
 }
 
