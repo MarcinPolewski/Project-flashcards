@@ -24,9 +24,9 @@ const Statistics = (props) => {
     const {daysLearning, longestStreak, currentStreak} = props.details;
 
 
-    const pieChardData = {newCards:57, learningCards: 120, rememberedCards: 217}
+    const pieChartData = {newCards:57, learningCards: 120, rememberedCards: 217}
 
-    const totalCards = pieChardData.newCards + pieChardData.learningCards + pieChardData.rememberedCards;
+    const totalCards = pieChartData.newCards + pieChartData.learningCards + pieChartData.rememberedCards;
 
     return <div className="statistics">
         <Navbar details={props.details}/>
@@ -53,28 +53,30 @@ const Statistics = (props) => {
                 </div>
             </StatisticsSection>
 
-            <StatisticsSection title="Card number">
-                <PieChart data={pieChardData}/>
-                <div className="card-details">
-                    <div className="card-detail">
-                        <span>⬦ New</span>
-                        <span>
-                            {pieChardData.newCards} - {calcPercentage(pieChardData.newCards, totalCards)}%
-                        </span>
+            <StatisticsSection className="card-number-section" title="Card number">
+                <div className="card-number-section-content">
+                    <PieChart className="card-number-pie-chart" data={pieChartData} />
+                    <div className="card-details">
+                        <div className="card-detail">
+                            <span>⬦ New </span>
+                            <span>
+                                {pieChartData.newCards} - {calcPercentage(pieChartData.newCards, totalCards)} %
+                            </span>
+                        </div>
+                        <div className="card-detail">
+                            <span>⬦ Learning </span>
+                            <span>
+                                {pieChartData.learningCards} - {calcPercentage(pieChartData.learningCards, totalCards)} %
+                            </span>
+                        </div>
+                        <div className="card-detail">
+                            <span>⬦ Remember </span>
+                            <span>
+                                {pieChartData.rememberedCards} - {calcPercentage(pieChartData.rememberedCards, totalCards)} %
+                            </span>
+                        </div>
                     </div>
-                    <div className="card-detail">
-                        <span>⬦ Learning</span>
-                        <span>
-                            {pieChardData.learningCards} - {calcPercentage(pieChardData.learningCards, totalCards)}%
-                        </span>
-                    </div>
-                    <div className="card-detail">
-                        <span>⬦ Remember</span>
-                        <span>
-                            {pieChardData.rememberedCards} - {calcPercentage(pieChardData.rememberedCards, totalCards)}%
-                        </span>
-                    </div>
-                </div>
+                 </div>
             </StatisticsSection>
 
         </div>

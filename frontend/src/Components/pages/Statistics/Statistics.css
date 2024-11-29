@@ -34,3 +34,16 @@
     align-items: center;
     justify-content: space-between;
 }
+
+.card-number-section-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.card-detail {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10vh;
+}
