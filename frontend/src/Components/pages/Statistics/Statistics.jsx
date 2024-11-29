@@ -6,6 +6,10 @@ import StreakChart from "../../Charts/StreakChart/StreakChart";
 
 import './Statistics.css';
 
+const calcPercentage = (part, total) => {
+    return ((part / total) * 100).toFixed(2);
+};
+
 const StatisticsSection = ({title, children}) => {
     return <div>
         <h2 className="statistics-section-title">{title}</h2>
@@ -18,6 +22,11 @@ const StatisticsSection = ({title, children}) => {
 const Statistics = (props) => {
 
     const {daysLearning, longestStreak, currentStreak} = props.details;
+
+
+    const pieChardData = {newCards:57, learningCards: 120, rememberedCards: 217}
+
+    const totalCards = pieChardData.newCards + pieChardData.learningCards + pieChardData.rememberedCards;
 
     return <div className="statistics">
         <Navbar details={props.details}/>
@@ -45,7 +54,27 @@ const Statistics = (props) => {
             </StatisticsSection>
 
             <StatisticsSection title="Card number">
-                <PieChart/>
+                <PieChart data={pieChardData}/>
+                <div className="card-details">
+                    <div className="card-detail">
+                        <span>⬦ New</span>
+                        <span>
+                            {pieChardData.newCards} - {calcPercentage(pieChardData.newCards, totalCards)}%
+                        </span>
+                    </div>
+                    <div className="card-detail">
+                        <span>⬦ Learning</span>
+                        <span>
+                            {pieChardData.learningCards} - {calcPercentage(pieChardData.learningCards, totalCards)}%
+                        </span>
+                    </div>
+                    <div className="card-detail">
+                        <span>⬦ Remember</span>
+                        <span>
+                            {pieChardData.rememberedCards} - {calcPercentage(pieChardData.rememberedCards, totalCards)}%
+                        </span>
+                    </div>
+                </div>
             </StatisticsSection>
 
         </div>

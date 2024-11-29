@@ -7,7 +7,7 @@ import Settings from './Components/pages/Settings/Settings';
 import CreateFlashcard from './Components/pages/CreateFlashcard/CreateFlashcard';
 import Decks from './Components/pages/Decks/Decks';
 import Import from './Components/pages/Import/Import';
-import Statistics from './Components/pages/Statistics/Sttatistics';
+import Statistics from './Components/pages/Statistics/Statistics';
 
 /* Avatar for testing */
 import testAvatar from './assets/test/test-avatar.png';
