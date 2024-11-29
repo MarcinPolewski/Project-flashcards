@@ -5,15 +5,25 @@ const generateSampleData = () => {
     const MONTHS = 12;
     const DAYS = 7;
 
-    const data = Array(MONTHS * DAYS).fill(false).map(() => {
+    /* initialize with "user-was-active" booleans */
+    const data = Array(MONTHS * DAYS).fill(false).map(() => 
         Math.random() > 0.7
-    });
+    );
 
     return data;
 }
 
 const StreakChart = () => {
-    return <div className="streak-chart"></div>
+
+    const streakData = generateSampleData();
+
+    return <div className="streak-chart">
+        {streakData.map((active, idx) => {
+            <div key={idx}
+            className={`streak-cell ${active ? "active" : ""}`}
+            />
+        })}
+    </div>
 }
 
 export default StreakChart;
