@@ -1,12 +1,64 @@
 .deck {
-    background: white;
-    min-width: 50vh;
-    border-radius: 5%;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.deck-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.deck-title {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.deck-info {
+    color: #666;
+    margin-top: 5px;
 }
 
 .deck-state {
     display: flex;
-    align-items: center;
-    justify-content: left;
-    gap: 20px;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.deck-state-item {
+    background: #f7f7f7;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.deck-actions {
+    position: relative;
+    margin-top: 20px;
+}
+
+.deck-action-button {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: yellow;
+    border: none;
+    cursor: pointer;
+}
+
+.deck-dropdown {
+    display: none;
+    position: absolute;
+    top: 40px;
+    left: 0;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.deck-action-button:hover + .deck-dropdown {
+    display: block;
 }

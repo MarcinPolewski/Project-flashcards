@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { CircularProgressbar } from "react-circular-progressbar";
 
 import Navbar from "../../Navbar/Navbar";
 import Deck from "../../Deck/Deck";
@@ -9,7 +10,7 @@ import testDecks from "../../../assets/test/testDecks";
 
 const Home = (props) => {
 
-    const [myDecksClicked, setMyDecksClicked] = useState(false);
+    const [myDecksClicked, setMyDecksClicked] = useState(true);
 
     return <div className="home">
 
@@ -23,7 +24,11 @@ const Home = (props) => {
                 /* TODO sortujemy je po dacie i bierzemy pierwsze trzy */
 
                 testDecks.slice(0, 3).map((deck, idx) => {
-                    return <Deck key={idx} deckState={deck}/>
+                    <div key={idx} className="latest-review-deck">
+                        <div className="deck-title">{deck.title}</div>
+                        <CircularProgressbar value={deck.progress} text={`${deck.progress}%`} />
+                        <button className="continue-button">Continue</button>
+                    </div>
                 })
 
                 }
@@ -34,8 +39,16 @@ const Home = (props) => {
         <div className="home-my-decks">
 
             <div className="my-decks-buttons">
-                <div className="my-decks-button">My Decks</div>
-                <div className="my-decks-button">Imported Decks</div>
+                <div className={myDecksClicked ? "active-tab" : ""} onClick={() => {
+                    setMyDecksClicked(true);
+                }}>
+                    My Decks
+                </div>
+                <div className={!myDecksClicked ? "active-tab" : ""} onClick={() => {
+                    setMyDecksClicked(false);
+                }}>
+                    Imported Decks
+                </div>
             </div>
 
             {/* będzie w bazie danych flaga od decków personalnych i importowanych */}

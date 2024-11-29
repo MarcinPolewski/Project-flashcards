@@ -4,6 +4,7 @@ const testDecks = [
     newCards: 50,
     learningCards: 25,
     reviewingCards: 200,
+    progress: 70,
     lastReview: "10 days ago",
     image: null,
     imported: false
@@ -14,6 +15,7 @@ const testDecks = [
     newCards: 50,
     learningCards: 25,
     reviewingCards: 200,
+    progress: 70,
     lastReview: "15 days ago",
     image: null,
     imported: false
@@ -24,6 +26,7 @@ const testDecks = [
     newCards: 50,
     learningCards: 25,
     reviewingCards: 200,
+    progress: 70,
     lastReview: "20 days ago",
     image: null,
     imported: false
@@ -33,6 +36,7 @@ const testDecks = [
     newCards: 50,
     learningCards: 25,
     reviewingCards: 200,
+    progress: 70,
     lastReview: "10 days ago",
     image: null,
     imported: true
@@ -43,6 +47,7 @@ const testDecks = [
     newCards: 50,
     learningCards: 25,
     reviewingCards: 200,
+    progress: 70,
     lastReview: "15 days ago",
     image: null,
     imported: true
@@ -53,6 +58,7 @@ const testDecks = [
     newCards: 50,
     learningCards: 25,
     reviewingCards: 200,
+    progress: 70,
     lastReview: "20 days ago",
     image: null,
     imported: true
