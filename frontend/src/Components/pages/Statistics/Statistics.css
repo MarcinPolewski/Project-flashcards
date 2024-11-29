@@ -1,0 +1,36 @@
+.statistics-container {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+}
+
+.statistics-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    margin-left: 18vh;
+}
+
+.statistics-section {
+    margin: 30px 170px;
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+.statistics-section-title {
+    font-size: 18px;
+    margin: 30px 170px;
+}
+
+.streak-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.streak-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}

@@ -19,7 +19,8 @@ const APIdummy =
   {
     avatar: testAvatar,
     username: "Kacper",
-    email: "kacper@polska.pl"
+    email: "kacper@polska.pl",
+    daysLearning: 212, longestStreak: 20, currentStreak: 2
   }
 
   /* this will be fetched from API*/

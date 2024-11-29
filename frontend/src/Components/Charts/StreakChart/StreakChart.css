@@ -1,6 +1,6 @@
 .streak-chart {
     display: grid;
-    grid-template-columns: repeat(7, 1fr);
+    grid-template-columns: repeat(calc(365 / 7), 1fr);
     gap: 2px;
     width: 100%;
     max-width: 400px;
