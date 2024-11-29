@@ -55,6 +55,7 @@ const Home = (props) => {
             {
             testDecks
                 .filter(deck => myDecksClicked ? deck.imported === false : deck.imported === true)
+                .slice(0, 5)
                 .map((deck, idx) => (
                     <Deck key={idx} deckState={deck}/>
             ))}
