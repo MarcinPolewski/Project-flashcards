@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 import './PlusButton.css';
 
-import PlusButtonPopup from './PlusButtonPopup/PlusButtonPopup';
+import { useOverlay } from "../../../contexts/OverlayContext/OverlayContext";
+import { useNavigate } from "react-router-dom";
 
 const PlusButton = () => {
 
+    const navigate = useNavigate();
     const [isPopupOpen, setPopupOpen] = useState(false);
+    const { toggleOverlay } = useOverlay();
 
     const handleTogglePopup = () => {
         setPopupOpen(!isPopupOpen);
@@ -30,7 +33,14 @@ const PlusButton = () => {
             <div className="plus-button-img">+</div>
         </div>
 
-        { isPopupOpen && <PlusButtonPopup className="popup"/>}
+        {isPopupOpen && (
+                <div className="plus-button-popup popup">
+                    <ul>
+                        <li onClick={() => navigate("/create-flashcard")}>Create Flashcard</li>
+                        <li onClick={toggleOverlay}>Create Deck</li>
+                    </ul>
+                </div>
+            )}
 
     </div>
 }

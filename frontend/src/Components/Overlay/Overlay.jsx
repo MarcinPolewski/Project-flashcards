@@ -6,7 +6,9 @@ const Overlay = ({ isOpen, closeOverlay, children }) => {
 
     return (
         <div className="overlay" onClick={closeOverlay}>
-            {children}
+            <div className="overlay-content" onClick={(e) => e.stopPropagation()}>
+                {children}
+            </div>
         </div>
     );
 };

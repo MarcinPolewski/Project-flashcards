@@ -1,5 +1,6 @@
 import './App.css';
 import { ThemeProvider } from './contexts/ThemeContext/ThemeContext';
+import { OverlayProvider } from './contexts/OverlayContext/OverlayContext';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Home from './Components/pages/Home/Home';
@@ -31,6 +32,7 @@ function App() {
 
     /* ATM no sections and no routing */
 
+    <OverlayProvider>
     <ThemeProvider>
       <BrowserRouter>
         <Routes>
@@ -43,6 +45,7 @@ function App() {
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
+    </OverlayProvider>
 
   );
 }
