@@ -12,6 +12,8 @@ const Decks = (props) => {
 
     const [isFilterOpen, setFilterOpen] = useState(false);
 
+    const [isAlphabetSorted, setAlphapetSorted] = useState(false);
+
     const toggleFilter = () => {
         setFilterOpen(!isFilterOpen);
     }
@@ -37,17 +39,32 @@ const Decks = (props) => {
                     onClick={(e) => e.stopPropagation()}
                 >
                     <h3>Sort by:</h3>
-                    <ul>
-                        <li>Alphabet</li>
-                        <li>Recent usage</li>
-                        <li>Creation date</li>
-                        <li>Progress of learning</li>
-                        <li>Last modified</li>
-                    </ul>
-                    <div>
-                        <input type="checkbox" id="reverse" />
-                        <label htmlFor="reverse">Reversed checkbox</label>
+                <form>
+                    <div className="filter-item">
+                        <input type="checkbox" id="alphabet" name="alphabet" />
+                        <label htmlFor="alphabet">Alphabet</label>
                     </div>
+                    <div className="filter-item">
+                        <input type="checkbox" id="recent-usage" name="recent-usage" />
+                        <label htmlFor="recent-usage">Recent usage</label>
+                    </div>
+                    <div className="filter-item">
+                        <input type="checkbox" id="creation-date" name="creation-date" />
+                        <label htmlFor="creation-date">Creation date</label>
+                    </div>
+                    <div className="filter-item">
+                        <input type="checkbox" id="progress-learning" name="progress-learning" />
+                        <label htmlFor="progress-learning">Progress of learning</label>
+                    </div>
+                    <div className="filter-item">
+                        <input type="checkbox" id="last-modified" name="last-modified" />
+                        <label htmlFor="last-modified">Last modified</label>
+                    </div>
+                </form>
+                <div className="filter-reverse">
+                    <input type="checkbox" id="reverse" />
+                    <label htmlFor="reverse">Reversed checkbox</label>
+                </div>
                 </div>
             </Overlay>
 
