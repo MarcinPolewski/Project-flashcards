@@ -3,8 +3,8 @@
     top: 50px;
     left: -20vh;
     right: 100px;
-    background: white;
-    border: 1px solid #ccc;
+    background: var(--popup-background);
+    border: 1px solid var(--section-border);
     border-radius: 8px;
     box-shadow: 0 4px 10px var(--box-shadow);
     padding: 10px;

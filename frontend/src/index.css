@@ -11,6 +11,7 @@
   --deck-info: #666;
   --deck-state-item: #f7f7f7;
   --deck-action-button: rgb(255, 149, 0);
+  --deck-dropdown: white;
 
   --navbar-background: salmon;
 
@@ -36,7 +37,7 @@
 
 body.dark {
   /* and here should be global variables for dark mode */
-  --body-background: #000;
+  --body-background: #2e2e2e;
   --text-color: #e0e0e0;
 
   --section-background: #121212;
@@ -51,6 +52,7 @@ body.dark {
   --navbar-background: #333;
 
   --popup-hover: #444;
+  --popup-background: #2e2e2e;
 
   --plus-button: orange;
   --plus-button-hover: rgb(255, 175, 25);
