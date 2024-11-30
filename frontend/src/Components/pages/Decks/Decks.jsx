@@ -8,10 +8,11 @@ import testDecks from "../../../assets/test/testDecks";
 
 import './Decks.css';
 import sortDecks from "../../../utils/sortDecks";
+import { useOverlay } from "../../../contexts/OverlayContext/OverlayContext";
 
 const Decks = (props) => {
 
-    const [isFilterOpen, setFilterOpen] = useState(false);
+    const { isOverlayOpen, toggleOverlay, closeOverlay } = useOverlay();
 
     const [sortOptions, setSortOptions] = useState({
         alphabet: false,
@@ -23,14 +24,6 @@ const Decks = (props) => {
     });
 
     const [searchTerm, setSearchTerm] = useState("");
-
-    const toggleFilter = () => {
-        setFilterOpen(!isFilterOpen);
-    }
-
-    const closeFilter = () => {
-        setFilterOpen(false);
-    }
 
     const handleSortChange = (e) => {
         const { name, checked } = e.target;
@@ -75,11 +68,11 @@ const Decks = (props) => {
             <div className="decks-manipulate">
 
                 <input className="decks-input" type="text" placeholder="Search decks.." value={searchTerm} onChange={handleSearchChange}/>
-                <div className="decks-filter-button" onClick={toggleFilter}>Filter</div>
+                <div className="decks-filter-button" onClick={toggleOverlay}>Filter</div>
 
             </div>
 
-            <Overlay isOpen={isFilterOpen} closeOverlay={closeFilter}>
+            <Overlay isOpen={isOverlayOpen} closeOverlay={closeOverlay}>
                 <div
                     className="filter-options"
                     onClick={(e) => e.stopPropagation()}
