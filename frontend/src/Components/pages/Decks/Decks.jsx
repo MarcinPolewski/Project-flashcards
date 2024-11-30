@@ -12,7 +12,15 @@ const Decks = (props) => {
 
     const [isFilterOpen, setFilterOpen] = useState(false);
 
-    const [isAlphabetSorted, setAlphapetSorted] = useState(false);
+    const [sortOptions, setSortOptions] = useState({
+        alphabet: false,
+        recentUsage: false,
+        creationDate: false,
+        learningProgress: false,
+        lastModified: false,
+        reversed: false,
+    });
+
 
     const toggleFilter = () => {
         setFilterOpen(!isFilterOpen);
@@ -20,6 +28,15 @@ const Decks = (props) => {
 
     const closeFilter = () => {
         setFilterOpen(false);
+    }
+
+    const handleSortChange = (e) => {
+        const { name, checked } = e.target;
+
+        setSortOptions((prev) => ({
+            ...prev,
+            [name]: checked
+        }))
     }
 
     return <div className="decks">
@@ -41,29 +58,29 @@ const Decks = (props) => {
                     <h3>Sort by:</h3>
                 <form>
                     <div className="filter-item">
-                        <input type="checkbox" id="alphabet" name="alphabet" />
+                        <input type="checkbox" id="alphabet" name="alphabet" checked={sortOptions.alphabet} onChange={handleSortChange}/>
                         <label htmlFor="alphabet">Alphabet</label>
                     </div>
                     <div className="filter-item">
-                        <input type="checkbox" id="recent-usage" name="recent-usage" />
+                        <input type="checkbox" id="recent-usage" name="recentUsage" checked={sortOptions.recentUsage} onChange={handleSortChange}/>
                         <label htmlFor="recent-usage">Recent usage</label>
                     </div>
                     <div className="filter-item">
-                        <input type="checkbox" id="creation-date" name="creation-date" />
+                        <input type="checkbox" id="creation-date" name="creationDate" checked={sortOptions.creationDate} onChange={handleSortChange}/>
                         <label htmlFor="creation-date">Creation date</label>
                     </div>
                     <div className="filter-item">
-                        <input type="checkbox" id="progress-learning" name="progress-learning" />
+                        <input type="checkbox" id="progress-learning" name="learningProgress" checked={sortOptions.learningProgress} onChange={handleSortChange}/>
                         <label htmlFor="progress-learning">Progress of learning</label>
                     </div>
                     <div className="filter-item">
-                        <input type="checkbox" id="last-modified" name="last-modified" />
+                        <input type="checkbox" id="last-modified" name="lastModified" checked={sortOptions.lastModified} onChange={handleSortChange}/>
                         <label htmlFor="last-modified">Last modified</label>
                     </div>
                 </form>
                 <div className="filter-reverse">
-                    <input type="checkbox" id="reverse" />
-                    <label htmlFor="reverse">Reversed checkbox</label>
+                    <input type="checkbox" id="reverse" name="reversed" checked={sortOptions.reversed} onChange={handleSortChange}/>
+                    <label htmlFor="reverse">Reversed</label>
                 </div>
                 </div>
             </Overlay>
