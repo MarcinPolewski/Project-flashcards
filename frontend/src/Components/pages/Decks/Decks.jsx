@@ -7,6 +7,7 @@ import Overlay from "../../Overlay/Overlay";
 import testDecks from "../../../assets/test/testDecks";
 
 import './Decks.css';
+import sortDecks from "../../../utils/sortDecks";
 
 const Decks = (props) => {
 
@@ -21,6 +22,7 @@ const Decks = (props) => {
         reversed: false,
     });
 
+    const [searchTerm, setSearchTerm] = useState("");
 
     const toggleFilter = () => {
         setFilterOpen(!isFilterOpen);
@@ -33,11 +35,38 @@ const Decks = (props) => {
     const handleSortChange = (e) => {
         const { name, checked } = e.target;
 
-        setSortOptions((prev) => ({
-            ...prev,
-            [name]: checked
-        }))
+        if (name === "reversed") {
+            setSortOptions((prev) => ({
+                ...prev,
+                reversed: checked,
+            }));
+        } else {
+            if (checked) {
+                setSortOptions((prev) => ({
+                    alphabet: false,
+                    recentUsage: false,
+                    creationDate: false,
+                    learningProgress: false,
+                    lastModified: false,
+                    reversed: prev.reversed,
+                    [name]: true,
+                }));
+            } else {
+                setSortOptions((prev) => ({
+                    ...prev,
+                    [name]: false,
+                }));
+            }
+        }
     }
+
+    const handleSearchChange = (e) => {
+        setSearchTerm(e.target.value);
+    }
+
+    const filteredDecks = testDecks.filter((deck) =>
+        deck.title && deck.title.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
     return <div className="decks">
         <Navbar details={props.details}/>
@@ -45,7 +74,7 @@ const Decks = (props) => {
 
             <div className="decks-manipulate">
 
-                <input className="decks-input" type="text" />
+                <input className="decks-input" type="text" placeholder="Search decks.." value={searchTerm} onChange={handleSearchChange}/>
                 <div className="decks-filter-button" onClick={toggleFilter}>Filter</div>
 
             </div>
@@ -86,7 +115,7 @@ const Decks = (props) => {
             </Overlay>
 
             <div className="decks-list">
-                {testDecks
+                {sortDecks(filteredDecks, sortOptions)
                     .map((deck, idx) => (
                         <Deck key={idx} deckState={deck}/>
                 ))}

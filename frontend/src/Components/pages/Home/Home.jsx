@@ -4,10 +4,13 @@ import { CircularProgressbar } from "react-circular-progressbar";
 import Navbar from "../../Navbar/Navbar";
 import Deck from "../../Deck/Deck";
 
+import sortDecksByDate from "../../../utils/sortDecksByDate";
+
 import './Home.css';
 import 'react-circular-progressbar/dist/styles.css';
 
 import testDecks from "../../../assets/test/testDecks";
+
 
 const Home = (props) => {
 
@@ -23,7 +26,9 @@ const Home = (props) => {
 
             <div className="latest-reviews-title">My Latest Reviews</div>
             <div className="latest-reviews-decks">
-                {testDecks.slice(0, 3).map((deck, idx) => (
+                {sortDecksByDate(testDecks)
+                    .slice(0, 3)
+                    .map((deck, idx) => (
                     <div key={idx} className="latest-review-deck">
                         <div className="deck-title">{deck.title}</div>
                         <CircularProgressbar className="react-circular-progressbar" value={deck.progress} text={`${deck.progress}%`} />
