@@ -46,14 +46,13 @@ const PlusButton = () => {
         )}
 
         <Overlay isOpen={isOverlayOpen} closeOverlay={closeOverlay}>
-            <h2>Create a New Deck</h2>
-            <form>
-                <label>
-                    Deck Name:
-                    <input type="text" placeholder="Enter deck name" />
-                </label>
-                <button type="submit">Create</button>
-            </form>
+        <div className="plus-button-create-deck">
+            <input
+                type="text"
+                placeholder="Deck name..."
+            />
+            <button type="submit" onClick={closeOverlay}>Add</button>
+        </div>
         </Overlay>
 
     </div>

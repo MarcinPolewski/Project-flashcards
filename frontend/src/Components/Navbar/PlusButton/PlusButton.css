@@ -55,3 +55,54 @@
 .plus-button-popup li:hover {
     background-color: var(--popup-hover);
 }
+
+.plus-button-create-deck {
+    background-color: var(--popup-background);
+    border-radius: 20px;
+    padding: 25px 30px;
+    box-shadow: 0 4px 6px var(--box-shadow);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 400px;
+    margin: 0 auto;
+    border: 1px solid var(--section-border);
+}
+
+.plus-button-create-deck input[type="text"] {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid var(--section-border);
+    border-radius: 15px;
+    font-size: 1rem;
+    margin-right: 10px;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.plus-button-create-deck input[type="text"]:focus {
+    border-color: var(--continue-button);
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.plus-button-create-deck button[type="submit"] {
+    background-color:  var(--continue-button);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 15px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.plus-button-create-deck button[type="submit"]:hover {
+    background-color: var(--create-deck-button);
+}
+
+.plus-button-create-deck h2 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    color: #333;
+    text-align: center;
+}
