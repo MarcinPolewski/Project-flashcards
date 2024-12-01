@@ -41,6 +41,16 @@
 
   --auth-section-left: #3498db;
   --auth-section-left-text: white;
+  --auth-input-text: black;
+  --auth-input-color: #4c6ef5;
+  --auth-remember-label-text: #777;
+  --auth-signin-button: #4285F4;
+  --auth-signin-button-text: white;
+  --auth-social-button-color-1: #4285F4;
+  --auth-social-button-color-2: #3b5998;
+  --auth-social-button-color-3: #333; 
+  --auth-signin-button-submit: #4c6ef5;
+  --auth-signin-button-submit-hover: #3751d2
 }
 
 
@@ -86,6 +96,16 @@ body.dark {
 
   --auth-section-left: #3498db;
   --auth-section-left-text: white;
+  --auth-input-text: black;
+  --auth-input-color: #4c6ef5;
+  --auth-remember-label-text: #777;
+  --auth-signin-button: #4285F4;
+  --auth-signin-button-text: white;
+  --auth-social-button-color-1: #4285F4;
+  --auth-social-button-color-2: #3b5998;
+  --auth-social-button-color-3: #333; 
+  --auth-signin-button-submit: #4c6ef5;
+  --auth-signin-button-submit-hover: #3751d2
  }
 
 body {
