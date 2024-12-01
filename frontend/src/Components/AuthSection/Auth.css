@@ -1,23 +1,24 @@
-.login-auth-container {
+.auth-container {
     max-width: 400px;
     margin: 50px auto;
     padding: 30px;
 }
 
-h2 {
+.auth-container h2 {
     text-align: left;
     font-weight: bold;
     color: var(--create-deck-text);
     margin-bottom: 30px;
 }
 
-.login-email-signin {
+.auth-email-signin {
     padding-bottom: 50px;
     border-bottom: 1px solid var(--section-border);
 }
 
-input[type="email"],
-input[type="password"] {
+.auth-email-signin input[type="text"],
+.auth-email-signin input[type="email"],
+.auth-email-signin input[type="password"] {
     width: 100%;
     padding: 12px 0;
     margin-bottom: 20px;
@@ -27,33 +28,34 @@ input[type="password"] {
     color: var(--create-deck-text);
 }
 
-input[type="email"]:focus,
-input[type="password"]:focus {
+.auth-email-signin input[type="text"]:focus,
+.auth-email-signin input[type="email"]:focus,
+.auth-email-signin input[type="password"]:focus {
     color: black;
     border-color: #4c6ef5;
     outline: none;
 }
 
-input[type="checkbox"] {
+.auth-remember input[type="checkbox"] {
     margin-right: 10px;
 }
 
-.login-sign-in-button {
+.auth-sign-in-button {
     margin-top: 30px;
 }
 
-.login-remember {
+.auth-remember {
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
 
-.login-remember label {
+.auth-remember label {
     font-size: 14px;
     color: #777;
 }
 
-.login-social-signin button {
+.auth-social-signin button {
     width: 100%;
     padding: 10px;
     margin-bottom: 10px;
@@ -64,19 +66,19 @@ input[type="checkbox"] {
     font-size: 16px;
 }
 
-.login-social-signin button:nth-child(1) {
+.auth-social-signin button:nth-child(1) {
     background-color: #4285F4;
 }
 
-.login-social-signin button:nth-child(2) {
+.auth-social-signin button:nth-child(2) {
     background-color: #3b5998;
 }
 
-.login-social-signin button:nth-child(3) {
+.auth-social-signin button:nth-child(3) {
     background-color: #333; 
 }
 
-button[type="submit"] {
+.auth-email-signin button[type="submit"] {
     width: 100%;
     padding: 12px;
     background-color: #4c6ef5;
@@ -88,29 +90,29 @@ button[type="submit"] {
     font-weight: bold;
 }
 
-button[type="submit"]:hover {
+.auth-email-signin button[type="submit"]:hover {
     background-color: #3751d2;
 }
 
-a {
+.auth-signup a {
     color: #4c6ef5;
     text-decoration: none;
 }
 
-a:hover {
+.auth-signup a:hover {
     text-decoration: underline;
 }
 
-.login-signup {
+.auth-signup {
     text-align: center;
     margin-top: 20px;
     font-size: 14px;
 }
 
-.login-signup span {
+.auth-signup span {
     margin-right: 5px;
 }
 
-.login-signup a {
+.auth-signup a {
     margin-left: 5px;
 }

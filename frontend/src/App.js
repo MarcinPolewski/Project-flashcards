@@ -39,7 +39,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           {/*<Route path="/" element={<Home details={APIdummy}/>} />*/}
-          <Route path="/" element={<Login/>} />
+          <Route path="/" element={<Register/>} />
           <Route path="/settings" element={<Settings details={APIdummy} />} />
           <Route path="/statistics" element={<Statistics details={APIdummy} />} />
           <Route path="/decks" element={<Decks details={APIdummy} />} />
