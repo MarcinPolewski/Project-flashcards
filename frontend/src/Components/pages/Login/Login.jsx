@@ -5,17 +5,17 @@ import AuthSection from "../../AuthSection/AuthSection";
 
 const Login = () => {
     return <AuthSection>
-        <div className="auth-container">
+        <div className="login-auth-container">
         <h2>Sign in</h2>
 
-        <div className="social-signin">
+        <div className="login-social-signin">
           <button>Sign in with Google</button>
           <button>Sign in with Facebook</button>
           <button>Sign in with Github</button>
         </div>
 
-        <div className="email-signin">
-          <p>Or sign in using email</p>
+        <div className="login-email-signin">
+          <h2>Or sign in using email</h2>
           <form>
             <div>
               <label htmlFor="email">Email address</label>
@@ -27,7 +27,7 @@ const Login = () => {
               <input type="password" id="password" name="password" required />
             </div>
 
-            <div className="remember">
+            <div className="login-remember">
               <label>
                 <input type="checkbox" id="remember" name="remember" />
                 Remember me
@@ -37,12 +37,12 @@ const Login = () => {
               </div>
             </div>
 
-            <button type="submit">Sign in</button>
+            <button className="login-sign-in-button" type="submit">Sign in</button>
           </form>
         </div>
 
-        <div className="signup">
-          <p>Not yet a user?</p>
+        <div className="login-signup">
+          <span>Not yet a user?</span>
           <a href="#">Sign up here!</a>
         </div>
       </div>
