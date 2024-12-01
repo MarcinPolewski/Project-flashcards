@@ -38,6 +38,9 @@
 
   --streak-cell-background-inactive: #ddd;
   --streak-cell-background-active: #3b7a57;
+
+  --auth-section-left: #3498db;
+  --auth-section-left-text: white;
 }
 
 
@@ -80,6 +83,9 @@ body.dark {
 
   --streak-cell-background-inactive: #333;
   --streak-cell-background-active: #3b7a57;
+
+  --auth-section-left: #3498db;
+  --auth-section-left-text: white;
  }
 
 body {

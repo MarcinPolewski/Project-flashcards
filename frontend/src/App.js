@@ -12,6 +12,8 @@ import Statistics from './Components/pages/Statistics/Statistics';
 
 /* Avatar for testing */
 import testAvatar from './assets/test/test-avatar.png';
+import Login from './Components/pages/Login/Login';
+import Register from './Components/pages/Register/Register';
 
 const APIdummy =
 
@@ -36,7 +38,8 @@ function App() {
     <ThemeProvider>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Home details={APIdummy}/>} />
+          {/*<Route path="/" element={<Home details={APIdummy}/>} />*/}
+          <Route path="/" element={<Login/>} />
           <Route path="/settings" element={<Settings details={APIdummy} />} />
           <Route path="/statistics" element={<Statistics details={APIdummy} />} />
           <Route path="/decks" element={<Decks details={APIdummy} />} />
