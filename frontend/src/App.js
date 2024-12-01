@@ -42,6 +42,7 @@ function App() {
           <Route path="/decks" element={<Decks details={APIdummy} />} />
           <Route path="/import" element={<Import details={APIdummy} />} />
           <Route path="/create-flashcard" element={<CreateFlashcard details={APIdummy} />} />
+          <Route path="/login" element={<CreateFlashcard details={APIdummy} />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
