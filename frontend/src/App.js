@@ -14,6 +14,7 @@ import Statistics from './Components/pages/Statistics/Statistics';
 import testAvatar from './assets/test/test-avatar.png';
 import Login from './Components/pages/Login/Login';
 import Register from './Components/pages/Register/Register';
+import ForgotPassword from './Components/pages/ForgotPassword/ForgotPassword';
 
 const APIdummy =
 
@@ -39,7 +40,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           {/*<Route path="/" element={<Home details={APIdummy}/>} />*/}
-          <Route path="/" element={<Register/>} />
+          <Route path="/" element={<ForgotPassword/>} />
           <Route path="/settings" element={<Settings details={APIdummy} />} />
           <Route path="/statistics" element={<Statistics details={APIdummy} />} />
           <Route path="/decks" element={<Decks details={APIdummy} />} />
