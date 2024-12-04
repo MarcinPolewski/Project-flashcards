@@ -43,7 +43,7 @@ const Login = () => {
 
           <div className="auth-signup">
             <span>Not yet a user?</span>
-            <a href="#">Sign up here!</a>
+            <a href="/register">Sign up here!</a>
           </div>
       </div>
     </AuthSection>
