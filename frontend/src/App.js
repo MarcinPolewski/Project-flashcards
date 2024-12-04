@@ -15,6 +15,7 @@ import testAvatar from './assets/test/test-avatar.png';
 import Login from './Components/pages/Login/Login';
 import Register from './Components/pages/Register/Register';
 import ForgotPassword from './Components/pages/ForgotPassword/ForgotPassword';
+import PasswordReset from './Components/pages/ForgotPassword/PasswordReset';
 
 const APIdummy =
 
@@ -40,13 +41,16 @@ function App() {
       <BrowserRouter>
         <Routes>
           {/*<Route path="/" element={<Home details={APIdummy}/>} />*/}
-          <Route path="/" element={<ForgotPassword/>} />
+          <Route path="/" element={<Home details={APIdummy}/>} />
           <Route path="/settings" element={<Settings details={APIdummy} />} />
           <Route path="/statistics" element={<Statistics details={APIdummy} />} />
           <Route path="/decks" element={<Decks details={APIdummy} />} />
           <Route path="/import" element={<Import details={APIdummy} />} />
           <Route path="/create-flashcard" element={<CreateFlashcard details={APIdummy} />} />
-          <Route path="/login" element={<CreateFlashcard details={APIdummy} />} />
+          <Route path="/login" element={<Login/>} />
+          <Route path="/register" element={<Register/>} />
+          <Route path="/forgot-password" element={<ForgotPassword/>} />
+          <Route path="/password-reset" element={<PasswordReset/>} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>

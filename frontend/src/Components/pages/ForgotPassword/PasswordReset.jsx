@@ -1,7 +1,7 @@
 import React from "react";
 import AuthSection from "../../AuthSection/AuthSection";
 
-const RemindPasswordThroughEmail = () => {
+const PasswordReset = () => {
     return <AuthSection>
         <div className="auth-container">
             <h2></h2>
@@ -10,4 +10,4 @@ const RemindPasswordThroughEmail = () => {
     </AuthSection>
 }
 
-export default RemindPasswordThroughEmail;
+export default PasswordReset;
