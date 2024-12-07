@@ -16,9 +16,6 @@ public class Deck {
     @Column(name = "id")
     private int id;
 
-    @Column(name = "folder_id")
-    private int folderId;
-
     @Column(name = "name")
     private String name;
 
@@ -35,8 +32,7 @@ public class Deck {
 
     public Deck() {}
 
-    public Deck(int folderId, String name) {
-        this.folderId = folderId;
+    public Deck(String name) {
         this.name = name;
     }
 }
