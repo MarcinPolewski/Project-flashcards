@@ -5,19 +5,19 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name="Friendships_Notifications")
+@Table(name = "Friendships_Notifications")
 @Getter
 @Setter
 public class FriendshipsNotification {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id")
+    @Column(name = "id")
     private int id;
 
-    @Column(name="friendship_id")
+    @Column(name = "friendship_id")
     private int friendshipId;
 
-    @Column(name="notification_id")
+    @Column(name = "notification_id")
     private int notificationId;
 
     public FriendshipsNotification() {}

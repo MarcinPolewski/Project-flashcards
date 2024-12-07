@@ -5,19 +5,19 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name="Folder_Decks")
+@Table(name = "Folder_Decks")
 @Getter
 @Setter
 public class FolderDeck {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id")
+    @Column(name = "id")
     private int id;
 
-    @Column(name="folder_id")
+    @Column(name = "folder_id")
     private int folderId;
 
-    @Column(name="deck_id")
+    @Column(name = "deck_id")
     private int deckId;
 
     public FolderDeck() {}

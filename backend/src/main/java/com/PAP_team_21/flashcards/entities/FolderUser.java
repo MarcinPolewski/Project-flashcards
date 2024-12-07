@@ -6,26 +6,30 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name="Folder_Users")
+@Table(name = "Folder_Users")
 @Getter
 @Setter
 public class FolderUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id")
+    @Column(name = "id")
     private int id;
 
-    @Column(name="user_id")
+    @Column(name = "user_id")
     private int userId;
 
-    @Column(name="flashcard_folder_id")
+    @Column(name = "flashcard_folder_id")
     private int flashcardFolderId;
 
-    @Column(name="access_level")
+    @Column(name = "access_level")
     private int accessLevel;
 
-    @Column(name="parent_folder_id")
+    @Column(name = "parent_folder_id")
     private int parentFolderId;
+
+    @ManyToOne
+    @JoinColumn(name = "parent_folder_id")
+    private Folder folder;
 
     public FolderUser() {}
 

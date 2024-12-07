@@ -4,31 +4,41 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
-@Table(name="Notifications")
+@Table(name = "Notifications")
 @Getter
 @Setter
 public class Notification {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id")
+    @Column(name = "id")
     private int id;
 
-    @Column(name="user_id")
+    @Column(name = "user_id")
     private int userId;
 
-    @Column(name="received")
+    @Column(name = "received")
     private boolean received;
 
-    @Column(name="text")
+    @Column(name = "text")
     private String text;
 
-    @Column(name="creation_date")
+    @Column(name = "creation_date")
     private LocalDateTime creationDate;
 
-    @Column(name="received_date")
+    @Column(name = "received_date")
     private LocalDateTime receivedDate;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @ManyToMany(mappedBy = "notifications", fetch = FetchType.LAZY,
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+                        CascadeType.DETACH, CascadeType.REFRESH})
+    private List<Friendship> friendships;
 
     public Notification() {}
 

@@ -6,26 +6,34 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name="Flashcards_Progresses")
+@Table(name = "Flashcards_Progresses")
 @Getter
 @Setter
 public class FlashcardProgress {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id")
+    @Column(name = "id")
     private int id;
 
-    @Column(name="flashcard_id")
+    @Column(name = "flashcard_id")
     private int flashcard_id;
 
-    @Column(name="user_id")
+    @Column(name = "user_id")
     private int user_id;
 
-    @Column(name="next_review")
+    @Column(name = "next_review")
     private LocalDateTime next_review;
 
-    @Column(name="valid")
+    @Column(name = "valid")
     private boolean valid;
+
+    @ManyToOne
+    @JoinColumn(name = "flashcard_id")
+    private Flashcard flashcard;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public FlashcardProgress() {}
 

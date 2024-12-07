@@ -4,24 +4,36 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
-@Table(name="Flashcards")
+@Table(name = "Flashcards")
 @Getter
 @Setter
 public class Flashcard {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id")
+    @Column(name = "id")
     private int id;
 
-    @Column(name="deck_id")
+    @Column(name = "deck_id")
     private int deckId;
 
-    @Column(name="front")
+    @Column(name = "front")
     private String front;
 
-    @Column(name="back")
+    @Column(name = "back")
     private String back;
+
+    @OneToMany(mappedBy = "flashcard", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<ReviewLog> reviewLogs;
+
+    @OneToMany(mappedBy = "flashcard", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<FlashcardProgress> flashcardProgress;
+
+    @ManyToOne
+    @JoinColumn(name = "deck_id")
+    private Deck deck;
 
     public Flashcard() {}
 

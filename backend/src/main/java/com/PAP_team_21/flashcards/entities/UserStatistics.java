@@ -12,20 +12,24 @@ import java.time.LocalDateTime;
 public class UserStatistics {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id")
+    @Column(name = "id")
     private int id;
 
-    @Column(name="user_id")
+    @Column(name = "user_id")
     private int userId;
 
-    @Column(name="total_time_spent")
+    @Column(name = "total_time_spent")
     private long totalTimeSpent;
 
-    @Column(name="login_count")
+    @Column(name = "login_count")
     private int loginCount;
 
-    @Column(name="last_login")
+    @Column(name = "last_login")
     private LocalDateTime lastLogin;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public UserStatistics() {}
 

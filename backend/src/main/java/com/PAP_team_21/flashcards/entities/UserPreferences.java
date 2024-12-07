@@ -5,23 +5,27 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name="User_Preferences")
+@Table(name = "User_Preferences")
 @Getter
 @Setter
 public class UserPreferences {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id")
+    @Column(name = "id")
     private int id;
 
-    @Column(name="user_id")
+    @Column(name = "user_id")
     private int userId;
 
-    @Column(name="dark_mode")
+    @Column(name = "dark_mode")
     private boolean darkMode;
 
-    @Column(name="language")
+    @Column(name = "language")
     private String language;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public UserPreferences() {}
 
