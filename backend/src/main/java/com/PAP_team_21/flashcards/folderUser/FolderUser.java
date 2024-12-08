@@ -1,6 +1,7 @@
-package com.PAP_team_21.flashcards.entities;
+package com.PAP_team_21.flashcards.folderUser;
 
 
+import com.PAP_team_21.flashcards.folder.Folder;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

@@ -1,4 +1,4 @@
-package com.PAP_team_21.flashcards.entities;
+package com.PAP_team_21.flashcards.folderDeck;
 
 import jakarta.persistence.*;
 import lombok.Getter;

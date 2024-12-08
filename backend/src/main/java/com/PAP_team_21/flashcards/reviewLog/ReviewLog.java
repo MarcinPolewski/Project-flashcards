@@ -1,5 +1,7 @@
-package com.PAP_team_21.flashcards.entities;
+package com.PAP_team_21.flashcards.reviewLog;
 
+import com.PAP_team_21.flashcards.flashcard.Flashcard;
+import com.PAP_team_21.flashcards.user.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

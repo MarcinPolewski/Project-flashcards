@@ -1,5 +1,12 @@
-package com.PAP_team_21.flashcards.entities;
+package com.PAP_team_21.flashcards.user;
 
+import com.PAP_team_21.flashcards.flashcardProgress.FlashcardProgress;
+import com.PAP_team_21.flashcards.folder.Folder;
+import com.PAP_team_21.flashcards.friendship.Friendship;
+import com.PAP_team_21.flashcards.notification.Notification;
+import com.PAP_team_21.flashcards.reviewLog.ReviewLog;
+import com.PAP_team_21.flashcards.userPreferences.UserPreferences;
+import com.PAP_team_21.flashcards.userStatistics.UserStatistics;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
