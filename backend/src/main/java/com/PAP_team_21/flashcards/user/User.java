@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Table(name = "Users")
+@Table(name = "Customers")
 @Getter
 @Setter
 public class User {
@@ -76,6 +76,11 @@ public class User {
             cascade = {CascadeType.PERSIST, CascadeType.MERGE,
                         CascadeType.DETACH, CascadeType.REFRESH})
     private List<Folder> folders;
+
+    @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY,
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+                        CascadeType.DETACH, CascadeType.REFRESH})
+    private List<Authority> authorities;
 
     public User() {}
 
