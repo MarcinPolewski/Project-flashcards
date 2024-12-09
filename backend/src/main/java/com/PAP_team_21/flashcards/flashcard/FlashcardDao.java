@@ -6,7 +6,7 @@ public interface FlashcardDao {
 
     void save(Flashcard flashcard);
 
-    Flashcard findById(int id);
+    Flashcard findFlashcardById(int id);
 
     List<Flashcard> findAllInDeck(int deckId);
 

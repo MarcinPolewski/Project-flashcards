@@ -23,7 +23,7 @@ public class AuthorityDaoImpl implements AuthorityDao {
     }
 
     @Override
-    public Authority findById(int id) {
+    public Authority findAuthorityById(int id) {
         return entityManager.find(Authority.class, id);
     }
 
@@ -31,7 +31,7 @@ public class AuthorityDaoImpl implements AuthorityDao {
     public List<Authority> findAllAuthorities() {
         String jpql = "SELECT a FROM Authority a";
         return entityManager.createQuery(jpql, Authority.class)
-                .getResultList();
+                            .getResultList();
     }
 
     @Override
@@ -43,7 +43,7 @@ public class AuthorityDaoImpl implements AuthorityDao {
     @Override
     @Transactional
     public void deleteAuthorityById(int id) {
-        Authority authority = entityManager.find(Authority.class, id);
+        Authority authority = findAuthorityById(id);
         List<User> users = authority.getUsers();
         for (User user : users) {
             user.getAuthorities().remove(authority);

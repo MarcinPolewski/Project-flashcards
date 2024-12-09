@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public class FlashcardDaoImpl implements FlashcardDao {
 
-    private EntityManager entityManager;
+    private final EntityManager entityManager;
 
     @Autowired
     public FlashcardDaoImpl(EntityManager entityManager, FlashcardsApplication flashcardsApplication) {
@@ -26,16 +26,14 @@ public class FlashcardDaoImpl implements FlashcardDao {
     }
 
     @Override
-    public Flashcard findById(int id) {
+    public Flashcard findFlashcardById(int id) {
         return entityManager.find(Flashcard.class, id);
     }
 
     @Override
     public List<Flashcard> findAllInDeck(int deckId) {
-        String jpql = "SELECT f FROM Flashcard f WHERE f.deck.id = :deckId";
-        return entityManager.createQuery(jpql, Flashcard.class)
-                            .setParameter("deckId",deckId)
-                            .getResultList();
+        Deck deck = entityManager.find(Deck.class, deckId);
+        return deck.getFlashcards();
     }
 
     @Override

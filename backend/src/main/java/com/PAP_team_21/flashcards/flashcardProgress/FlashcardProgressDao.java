@@ -6,9 +6,9 @@ public interface FlashcardProgressDao {
 
     void save(FlashcardProgress flashcardProgress);
 
-    FlashcardProgress findById(int id);
+    FlashcardProgress findFlashcardProgressById(int id);
 
-    FlashcardProgress findByFlashcardId(int flashcardId);
+    List<FlashcardProgress> findByFlashcardId(int flashcardId);
 
     List<FlashcardProgress> findAllOfUser(int userId);
 

@@ -4,7 +4,7 @@ public interface UserStatisticsDao {
 
     void save(UserStatistics userStatistics);
 
-    UserStatistics findById(int id);
+    UserStatistics findUserStatisticsById(int id);
 
     UserStatistics findByUserId(int userId);
 

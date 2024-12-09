@@ -6,7 +6,7 @@ public interface AuthorityDao {
 
     void save(Authority authority);
 
-    Authority findById(int id);
+    Authority findAuthorityById(int id);
 
     List<Authority> findAllAuthorities();
 

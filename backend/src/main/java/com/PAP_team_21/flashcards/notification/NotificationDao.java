@@ -6,7 +6,7 @@ public interface NotificationDao {
 
     void save(Notification notification);
 
-    Notification findById(int id);
+    Notification findNotificationById(int id);
 
     List<Notification> findAllOfUser(int user_id);
 

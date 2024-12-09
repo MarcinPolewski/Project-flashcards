@@ -1,5 +1,6 @@
 package com.PAP_team_21.flashcards.user;
 
+import com.PAP_team_21.flashcards.authority.Authority;
 import com.PAP_team_21.flashcards.flashcardProgress.FlashcardProgress;
 import com.PAP_team_21.flashcards.folder.Folder;
 import com.PAP_team_21.flashcards.friendship.Friendship;

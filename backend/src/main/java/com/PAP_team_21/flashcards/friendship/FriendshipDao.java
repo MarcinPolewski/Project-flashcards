@@ -6,7 +6,7 @@ public interface FriendshipDao {
 
     void save(Friendship friendship);
 
-    Friendship findById(int id);
+    Friendship findFriendshipById(int id);
 
     List<Friendship> findAllFriendships();
 

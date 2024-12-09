@@ -8,7 +8,7 @@ public interface ReviewLogDao {
 
     ReviewLog findById(int id);
 
-    List<ReviewLog> findForFlashcard(int flashcard_id);
+    List<ReviewLog> findForFlashcard(int flashcardId);
 
     List<ReviewLog> findAllReviewLogs();
 

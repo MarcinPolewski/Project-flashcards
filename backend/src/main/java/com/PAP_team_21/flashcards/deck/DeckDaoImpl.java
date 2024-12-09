@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public class DeckDaoImpl implements DeckDao {
 
-    private EntityManager entityManager;
+    private final EntityManager entityManager;
 
     @Autowired
     public DeckDaoImpl(EntityManager entityManager) {
@@ -45,7 +45,7 @@ public class DeckDaoImpl implements DeckDao {
     @Override
     @Transactional
     public void deleteDeckById(int id) {
-        Deck deck = entityManager.find(Deck.class, id);
+        Deck deck = findDeckById(id);
         List<Folder> folders = deck.getFolders();
         for (Folder folder : folders) {
             folder.getDecks().remove(deck);

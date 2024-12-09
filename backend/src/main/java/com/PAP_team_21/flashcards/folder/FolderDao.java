@@ -6,7 +6,7 @@ public interface FolderDao {
 
     void save(Folder folder);
 
-    Folder findById(int id);
+    Folder findFolderById(int id);
 
     List<Folder> findAllFolders();
 

@@ -4,7 +4,7 @@ public interface UserPreferencesDao {
 
     void save(UserPreferences userPreferences);
 
-    UserPreferences findById(int id);
+    UserPreferences findUserPreferencesById(int id);
 
     UserPreferences findByUserId(int userId);
 

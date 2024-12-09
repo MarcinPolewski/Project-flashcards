@@ -28,4 +28,10 @@ public class Authority {
     )
     private List<User> users;
 
+    public Authority() {}
+
+    public Authority(String name) {
+        this.name = name;
+    }
+
 }

@@ -32,7 +32,7 @@ public class Flashcard {
     private List<ReviewLog> reviewLogs;
 
     @OneToMany(mappedBy = "flashcard", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<FlashcardProgress> flashcardProgress;
+    private List<FlashcardProgress> flashcardProgresses;
 
     @ManyToOne
     @JoinColumn(name = "deck_id")

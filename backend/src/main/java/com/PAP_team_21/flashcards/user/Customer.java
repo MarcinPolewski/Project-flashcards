@@ -1,5 +1,6 @@
 package com.PAP_team_21.flashcards.user;
 
+import com.PAP_team_21.flashcards.authority.Authority;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
