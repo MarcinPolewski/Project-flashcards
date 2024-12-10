@@ -1,7 +1,7 @@
 package com.PAP_team_21.flashcards.flashcardProgress;
 
 import com.PAP_team_21.flashcards.flashcard.Flashcard;
-import com.PAP_team_21.flashcards.user.User;
+import com.PAP_team_21.flashcards.user.Customer;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +38,7 @@ public class FlashcardProgressDaoImpl implements FlashcardProgressDao {
 
     @Override
     public List<FlashcardProgress> findAllOfUser(int userId) {
-        return entityManager.find(User.class, userId)
+        return entityManager.find(Customer.class, userId)
                             .getFlashcardProgresses();
     }
 

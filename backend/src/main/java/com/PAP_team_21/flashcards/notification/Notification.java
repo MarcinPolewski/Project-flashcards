@@ -1,7 +1,7 @@
 package com.PAP_team_21.flashcards.notification;
 
 import com.PAP_team_21.flashcards.friendship.Friendship;
-import com.PAP_team_21.flashcards.user.User;
+import com.PAP_team_21.flashcards.user.Customer;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -35,7 +35,7 @@ public class Notification {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    private Customer customer;
 
     @ManyToMany(mappedBy = "notifications", fetch = FetchType.LAZY,
             cascade = {CascadeType.PERSIST, CascadeType.MERGE,

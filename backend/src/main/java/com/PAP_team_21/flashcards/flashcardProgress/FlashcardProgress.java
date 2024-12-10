@@ -1,7 +1,7 @@
 package com.PAP_team_21.flashcards.flashcardProgress;
 
 import com.PAP_team_21.flashcards.flashcard.Flashcard;
-import com.PAP_team_21.flashcards.user.User;
+import com.PAP_team_21.flashcards.user.Customer;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -35,7 +35,7 @@ public class FlashcardProgress {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    private Customer customer;
 
     public FlashcardProgress() {}
 

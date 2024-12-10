@@ -5,6 +5,7 @@ import com.PAP_team_21.flashcards.authentication.AuthenticationResponse;
 import com.PAP_team_21.flashcards.authentication.RegisterRequest;
 import com.PAP_team_21.flashcards.user.Customer;
 import com.PAP_team_21.flashcards.user.CustomerRepository;
+import com.PAP_team_21.flashcards.user.UserDao;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Map;
 
@@ -51,7 +52,7 @@ public class AuthenticationController {
             String email = oAuth2User.getAttribute("email");
             String name = oAuth2User.getName();
 
-            Customer user = customerRepository.findOrCreate(email, name);
+            Customer user = customerRepository.findOrCreate(email);
             // String token = jwtService.generateToken(user);
 
             Date issued = new Date(System.currentTimeMillis());
@@ -89,7 +90,7 @@ public class AuthenticationController {
             String email = request.getEmail();
 
             Customer customer = new Customer(name, email, passwordHash);
-            customer.setCreationDate(new Date(System.currentTimeMillis()));
+            customer.setProfileCreationDate(LocalDateTime.now());
 
             Customer saved = customerRepository.save(customer);
 

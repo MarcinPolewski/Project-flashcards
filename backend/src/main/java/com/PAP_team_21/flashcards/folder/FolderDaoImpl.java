@@ -1,7 +1,7 @@
 package com.PAP_team_21.flashcards.folder;
 
 import com.PAP_team_21.flashcards.deck.Deck;
-import com.PAP_team_21.flashcards.user.User;
+import com.PAP_team_21.flashcards.user.Customer;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,10 +48,10 @@ public class FolderDaoImpl implements FolderDao {
     public void deleteFolderById(int id) {
         Folder folder = entityManager.find(Folder.class, id);
         List<Deck> decks = folder.getDecks();
-        List<User> users = folder.getUsers();
-        for (User user : users) {
-            user.getFolders().remove(folder);
-            entityManager.merge(user);
+        List<Customer> customers = folder.getCustomers();
+        for (Customer customer : customers) {
+            customer.getFolders().remove(folder);
+            entityManager.merge(customer);
         }
         for (Deck deck : decks) {
             deck.getFolders().remove(folder);

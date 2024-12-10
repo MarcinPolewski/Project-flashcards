@@ -1,6 +1,6 @@
 package com.PAP_team_21.flashcards.userPreferences;
 
-import com.PAP_team_21.flashcards.user.User;
+import com.PAP_team_21.flashcards.user.Customer;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,7 +26,7 @@ public class UserPreferences {
 
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
-    private User user;
+    private Customer customer;
 
     public UserPreferences() {}
 

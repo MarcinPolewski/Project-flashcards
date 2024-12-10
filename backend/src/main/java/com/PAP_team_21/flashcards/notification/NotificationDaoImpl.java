@@ -1,7 +1,7 @@
 package com.PAP_team_21.flashcards.notification;
 
 import com.PAP_team_21.flashcards.friendship.Friendship;
-import com.PAP_team_21.flashcards.user.User;
+import com.PAP_team_21.flashcards.user.Customer;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,8 +32,8 @@ public class NotificationDaoImpl implements NotificationDao {
 
     @Override
     public List<Notification> findAllOfUser(int user_id) {
-        User user = entityManager.find(User.class, user_id);
-        return user.getNotifications();
+        Customer customer = entityManager.find(Customer.class, user_id);
+        return customer.getNotifications();
     }
 
     @Override

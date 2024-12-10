@@ -21,58 +21,58 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     @Transactional
-    public void save(User user) {
-        entityManager.persist(user);
+    public void save(Customer customer) {
+        entityManager.persist(customer);
     }
 
     @Override
-    public User findUserById(int id) {
-        return entityManager.find(User.class, id);
+    public Customer findUserById(int id) {
+        return entityManager.find(Customer.class, id);
     }
 
     @Override
-    public User findUserByEmail(String email) {
-        String jpql = "SELECT u FROM User u WHERE u.email = :email";;
-        return entityManager.createQuery(jpql, User.class)
+    public Customer findUserByEmail(String email) {
+        String jpql = "SELECT u FROM Customer u WHERE u.email = :email";;
+        return entityManager.createQuery(jpql, Customer.class)
                 .setParameter("email", email)
                 .getSingleResult();
     }
 
     @Override
-    public User findUserByUsername(String username) {
-        String jpql = "SELECT u FROM User u WHERE u.username = :username";;
-        return entityManager.createQuery(jpql, User.class)
+    public Customer findUserByUsername(String username) {
+        String jpql = "SELECT u FROM Customer u WHERE u.username = :username";;
+        return entityManager.createQuery(jpql, Customer.class)
                 .setParameter("username", username)
                 .getSingleResult();
     }
 
     @Override
-    public List<User> findAllUsers() {
-        String jpql = "SELECT u FROM User u";
-        return entityManager.createQuery(jpql, User.class)
+    public List<Customer> findAllUsers() {
+        String jpql = "SELECT u FROM Customer u";
+        return entityManager.createQuery(jpql, Customer.class)
                 .getResultList();
     }
 
     @Override
     @Transactional
-    public void update(User user) {
-        entityManager.merge(user);
+    public void update(Customer customer) {
+        entityManager.merge(customer);
     }
 
     @Override
     @Transactional
     public void deleteUserById(int id) {
-        User user = findUserById(id);
-        List<Folder> folders = user.getFolders();
-        List<Authority> authorities = user.getAuthorities();
+        Customer customer = findUserById(id);
+        List<Folder> folders = customer.getFolders();
+        List<Authority> authorities = customer.getAuthorities();
         for (Folder folder : folders) {
-            folder.getUsers().remove(user);
+            folder.getCustomers().remove(customer);
             entityManager.merge(folder);
         }
         for (Authority authority: authorities) {
-            authority.getUsers().remove(user);
+            authority.getCustomers().remove(customer);
             entityManager.merge(authority);
         }
-        entityManager.remove(user);
+        entityManager.remove(customer);
     }
 }

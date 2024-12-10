@@ -1,6 +1,6 @@
 package com.PAP_team_21.flashcards.authority;
 
-import com.PAP_team_21.flashcards.user.User;
+import com.PAP_team_21.flashcards.user.Customer;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,9 +44,9 @@ public class AuthorityDaoImpl implements AuthorityDao {
     @Transactional
     public void deleteAuthorityById(int id) {
         Authority authority = findAuthorityById(id);
-        List<User> users = authority.getUsers();
-        for (User user : users) {
-            user.getAuthorities().remove(authority);
+        List<Customer> customers = authority.getCustomers();
+        for (Customer customer : customers) {
+            customer.getAuthorities().remove(authority);
         }
         entityManager.remove(authority);
     }

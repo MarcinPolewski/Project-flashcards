@@ -22,7 +22,7 @@ public class CustomUserDetailsService  implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Customer customer = customerRepository
                 .findByEmail(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User details not found for the user: " + username));
+                .orElseThrow(() -> new UsernameNotFoundException("Customer details not found for the user: " + username));
 
         List<GrantedAuthority> authorities = customer.getAuthorities().stream()
                 .map(authority -> new SimpleGrantedAuthority(authority.getName()))

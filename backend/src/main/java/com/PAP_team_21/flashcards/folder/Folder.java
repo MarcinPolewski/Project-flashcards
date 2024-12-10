@@ -2,7 +2,7 @@ package com.PAP_team_21.flashcards.folder;
 
 import com.PAP_team_21.flashcards.deck.Deck;
 import com.PAP_team_21.flashcards.folderUser.FolderUser;
-import com.PAP_team_21.flashcards.user.User;
+import com.PAP_team_21.flashcards.user.Customer;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -38,7 +38,7 @@ public class Folder {
             joinColumns = @JoinColumn(name = "flashcard_folder_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
-    private List<User> users;
+    private List<Customer> customers;
 
     public Folder() {}
 

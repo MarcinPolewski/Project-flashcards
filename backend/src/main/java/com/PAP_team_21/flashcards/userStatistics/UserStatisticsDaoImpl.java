@@ -1,6 +1,6 @@
 package com.PAP_team_21.flashcards.userStatistics;
 
-import com.PAP_team_21.flashcards.user.User;
+import com.PAP_team_21.flashcards.user.Customer;
 import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
 
@@ -25,8 +25,8 @@ public class UserStatisticsDaoImpl implements UserStatisticsDao {
 
     @Override
     public UserStatistics findByUserId(int userId) {
-        User user = entityManager.find(User.class, userId);
-        return user.getUserStatistics();
+        Customer customer = entityManager.find(Customer.class, userId);
+        return customer.getUserStatistics();
     }
 
     @Override
@@ -37,9 +37,9 @@ public class UserStatisticsDaoImpl implements UserStatisticsDao {
     @Override
     public void deleteUserStatisticsById(int id) {
         UserStatistics userStatistics = findUserStatisticsById(id);
-        User user = entityManager.find(User.class, userStatistics.getUserId());
-        user.setUserPreferences(null);
-        entityManager.merge(user);
+        Customer customer = entityManager.find(Customer.class, userStatistics.getUserId());
+        customer.setUserPreferences(null);
+        entityManager.merge(customer);
         entityManager.remove(userStatistics);
     }
 }

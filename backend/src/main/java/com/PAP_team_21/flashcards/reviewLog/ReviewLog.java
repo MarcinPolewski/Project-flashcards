@@ -1,7 +1,7 @@
 package com.PAP_team_21.flashcards.reviewLog;
 
 import com.PAP_team_21.flashcards.flashcard.Flashcard;
-import com.PAP_team_21.flashcards.user.User;
+import com.PAP_team_21.flashcards.user.Customer;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -31,7 +31,7 @@ public class ReviewLog {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    private Customer customer;
 
     @ManyToOne
     @JoinColumn(name = "flashcard_id")
