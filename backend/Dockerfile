@@ -18,4 +18,4 @@ COPY src ./src
 EXPOSE 8080
 
 # Run the Spring Boot application
-CMD ["mvn","spring-boot:run"]
+CMD ["mvn","spring-boot:run", "-X"]
