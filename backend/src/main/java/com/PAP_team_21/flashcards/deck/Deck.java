@@ -26,7 +26,7 @@ public class Deck {
 
     @ManyToMany
     @JoinTable(
-            name = "Folder_Decks",
+            name = "Folders_Decks",
             joinColumns = @JoinColumn(name = "deck_id"),
             inverseJoinColumns = @JoinColumn(name = "folder_id")
     )
