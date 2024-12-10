@@ -1,105 +1,97 @@
-CREATE DATABASE IF NOT EXISTS my_database;
-use my_database;
-
--- manage creating new user
-DROP USER if exists 'springstudent'@'%' ;
-CREATE USER 'springstudent'@'%' IDENTIFIED BY 'springstudent';
-GRANT ALL PRIVILEGES ON * . * TO 'springstudent'@'%';
-
 CREATE TABLE `Customers`(
-    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `email` VARCHAR(255) NOT NULL,
-    `password_hash` VARCHAR(255) NOT NULL,
-    `username` VARCHAR(255) NOT NULL,
-    `account_expired` BOOLEAN NOT NULL,
-    `account_locked` BOOLEAN NOT NULL,
-    `credentials_expired` BOOLEAN NOT NULL,
-    `enabled` BOOLEAN NOT NULL,
-    `profile_creation_date` DATETIME NOT NULL,
-    `profile_picture` BLOB NOT NULL
+                            `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                            `email` VARCHAR(255) NOT NULL,
+                            `password_hash` VARCHAR(255) NOT NULL,
+                            `username` VARCHAR(255) NOT NULL,
+                            `account_expired` BOOLEAN NOT NULL,
+                            `account_locked` BOOLEAN NOT NULL,
+                            `credentials_expired` BOOLEAN NOT NULL,
+                            `enabled` BOOLEAN NOT NULL,
+                            `profile_creation_date` DATETIME NOT NULL,
+                            `profile_picture_path` VARCHAR(255) NOT NULL
 );
 ALTER TABLE
     `Customers` ADD UNIQUE `customers_email_unique`(`email`);
 CREATE TABLE `Flashcards`(
-    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `deck_id` BIGINT UNSIGNED NOT NULL,
-    `front` VARCHAR(255) NOT NULL,
-    `back` VARCHAR(255) NOT NULL
+                             `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                             `deck_id` BIGINT UNSIGNED NOT NULL,
+                             `front` VARCHAR(255) NOT NULL,
+                             `back` VARCHAR(255) NOT NULL
 );
 CREATE TABLE `Folders`(
-    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `name` VARCHAR(255) NOT NULL
+                          `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                          `name` VARCHAR(255) NOT NULL
 );
 CREATE TABLE `Decks`(
-    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `name` VARCHAR(255) NOT NULL
+                        `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                        `name` VARCHAR(255) NOT NULL
 );
 CREATE TABLE `Folders_Users`(
-    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `user_id` BIGINT UNSIGNED NOT NULL,
-    `flashcard_folder_id` BIGINT UNSIGNED NOT NULL,
-    `access_level` BIGINT NOT NULL,
-    `parent_folder_id` BIGINT UNSIGNED NOT NULL
+                                `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                                `user_id` BIGINT UNSIGNED NOT NULL,
+                                `flashcard_folder_id` BIGINT UNSIGNED NOT NULL,
+                                `access_level` BIGINT NOT NULL,
+                                `parent_folder_id` BIGINT UNSIGNED NOT NULL
 );
 CREATE TABLE `Flashcards_Progresses`(
-    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `flashcard_id` BIGINT UNSIGNED NOT NULL,
-    `user_id` BIGINT UNSIGNED NOT NULL,
-    `next_review` DATETIME NOT NULL,
-    `valid` BOOLEAN NOT NULL
+                                        `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                                        `flashcard_id` BIGINT UNSIGNED NOT NULL,
+                                        `user_id` BIGINT UNSIGNED NOT NULL,
+                                        `next_review` DATETIME NOT NULL,
+                                        `valid` BOOLEAN NOT NULL
 );
 CREATE TABLE `User_Preferences`(
-    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `user_id` BIGINT UNSIGNED NOT NULL,
-    `dark_mode` BOOLEAN NOT NULL,
-    `language` BIGINT NOT NULL
+                                   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                                   `user_id` BIGINT UNSIGNED NOT NULL,
+                                   `dark_mode` BOOLEAN NOT NULL,
+                                   `language` BIGINT NOT NULL
 );
 CREATE TABLE `User_Statistics`(
-    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `user_id` BIGINT UNSIGNED NOT NULL,
-    `total_time_spent` BIGINT NOT NULL,
-    `login_count` BIGINT NOT NULL,
-    `last_login` DATETIME NOT NULL
+                                  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                                  `user_id` BIGINT UNSIGNED NOT NULL,
+                                  `total_time_spent` BIGINT NOT NULL,
+                                  `login_count` BIGINT NOT NULL,
+                                  `last_login` DATETIME NOT NULL
 );
 CREATE TABLE `Review_Logs`(
-    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `flashcard_id` BIGINT UNSIGNED NOT NULL,
-    `user_id` BIGINT UNSIGNED NOT NULL,
-    `when` DATETIME NOT NULL,
-    `user_answer` BIGINT NOT NULL
+                              `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                              `flashcard_id` BIGINT UNSIGNED NOT NULL,
+                              `user_id` BIGINT UNSIGNED NOT NULL,
+                              `when` DATETIME NOT NULL,
+                              `user_answer` BIGINT NOT NULL
 );
 CREATE TABLE `Folders_Decks`(
-    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `Folder_id` BIGINT UNSIGNED NOT NULL,
-    `Deck_id` BIGINT UNSIGNED NOT NULL
+                                `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                                `Folder_id` BIGINT UNSIGNED NOT NULL,
+                                `Deck_id` BIGINT UNSIGNED NOT NULL
 );
 CREATE TABLE `Friendships`(
-    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `sender_id` BIGINT UNSIGNED NOT NULL,
-    `receiver_id` BIGINT UNSIGNED NOT NULL,
-    `accepted` BOOLEAN NOT NULL
+                              `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                              `sender_id` BIGINT UNSIGNED NOT NULL,
+                              `receiver_id` BIGINT UNSIGNED NOT NULL,
+                              `accepted` BOOLEAN NOT NULL
 );
 CREATE TABLE `Notifications`(
-    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `user_id` BIGINT UNSIGNED NOT NULL,
-    `received` BOOLEAN NOT NULL,
-    `text` VARCHAR(255) NOT NULL,
-    `creation_date` DATETIME NOT NULL,
-    `received_date` DATETIME NOT NULL
+                                `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                                `user_id` BIGINT UNSIGNED NOT NULL,
+                                `received` BOOLEAN NOT NULL,
+                                `text` VARCHAR(255) NOT NULL,
+                                `creation_date` DATETIME NOT NULL,
+                                `received_date` DATETIME NOT NULL
 );
 CREATE TABLE `Friendships_Notifications`(
-    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `friendship_id` BIGINT UNSIGNED NOT NULL,
-    `notification_id` BIGINT UNSIGNED NOT NULL
+                                            `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                                            `friendship_id` BIGINT UNSIGNED NOT NULL,
+                                            `notification_id` BIGINT UNSIGNED NOT NULL
 );
 CREATE TABLE `Authorities`(
-    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `name` VARCHAR(255) NOT NULL
+                              `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                              `name` VARCHAR(255) NOT NULL
 );
 CREATE TABLE `Authorities_Customers`(
-    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `authority_id` BIGINT UNSIGNED NOT NULL,
-    `customer_id` BIGINT UNSIGNED NOT NULL
+                                        `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                                        `authority_id` BIGINT UNSIGNED NOT NULL,
+                                        `customer_id` BIGINT UNSIGNED NOT NULL
 );
 ALTER TABLE
     `Authorities_Customers` ADD CONSTRAINT `authorities_customers_customer_id_foreign` FOREIGN KEY(`customer_id`) REFERENCES `Customers`(`id`);
