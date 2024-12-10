@@ -1,11 +1,3 @@
-CREATE DATABASE IF NOT EXISTS my_database;
-use my_database;
-
--- manage creating new user
-DROP USER if exists 'springstudent'@'%' ;
-CREATE USER 'springstudent'@'%' IDENTIFIED BY 'springstudent';
-GRANT ALL PRIVILEGES ON * . * TO 'springstudent'@'%';
-
 CREATE TABLE `Customers`(
                             `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
                             `email` VARCHAR(255) NOT NULL,
@@ -16,7 +8,7 @@ CREATE TABLE `Customers`(
                             `credentials_expired` BOOLEAN NOT NULL,
                             `enabled` BOOLEAN NOT NULL,
                             `profile_creation_date` DATETIME NOT NULL,
-                            `profile_picture` BLOB NOT NULL
+                            `profile_picture_path` VARCHAR(255) NOT NULL
 );
 ALTER TABLE
     `Customers` ADD UNIQUE `customers_email_unique`(`email`);
