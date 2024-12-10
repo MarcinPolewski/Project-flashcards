@@ -23,10 +23,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 @Component
-@RequiredArgsConstructor
 public class JtwFilter extends OncePerRequestFilter {
-    private final UserDetailsService userDetailsService;
-
     @Value("${jwt.secret-key}")
     private String jwtSecret;
 

@@ -11,6 +11,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,12 +24,12 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 @RequiredArgsConstructor
 public class SecurityConfig{
 
-    private final JtwFilter jwtFilter;
     private final UserDetailsService userDetailsService;
 
     @Bean
     protected SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                .sessionManagement(sessionConfig -> sessionConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests( auth->
                         auth.requestMatchers("/actuator/health")// Allow unauthenticated access to /actuator/health
@@ -42,7 +43,7 @@ public class SecurityConfig{
                         .defaultSuccessUrl("/api/auth/oauth2/success", true)
                 )
                 .httpBasic(Customizer.withDefaults())
-                        .addFilterAfter(jwtFilter, BasicAuthenticationFilter.class);
+                        .addFilterAfter(new JtwFilter(), BasicAuthenticationFilter.class);
 
 
         return http.build();
