@@ -16,7 +16,7 @@ CREATE TABLE `Customers`(
                             `credentials_expired` BOOLEAN NOT NULL,
                             `enabled` BOOLEAN NOT NULL,
                             `profile_creation_date` DATETIME NOT NULL,
-                            `profile_picture` BLOB NOT NULL
+                            `profile_picture_path` VARCHAR(255) NOT NULL
 );
 ALTER TABLE
     `Customers` ADD UNIQUE `customers_email_unique`(`email`);
