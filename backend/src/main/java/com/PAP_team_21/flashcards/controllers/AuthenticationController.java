@@ -24,6 +24,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -51,7 +52,17 @@ public class AuthenticationController {
             String email = oAuth2User.getAttribute("email");
             String name = oAuth2User.getName();
 
-            Customer user = customerRepository.findOrCreate(email);
+            Optional<Customer> userOptional = customerRepository.findByEmail(email);
+            Customer user;
+            if(userOptional.isPresent())
+            {
+                user = userOptional.get();
+            } else {
+                user = new Customer(name, email, null);
+                user.setProfileCreationDate(LocalDateTime.now());
+                user = customerRepository.save(user);
+            }
+//            Customer user = customerRepository.findOrCreate(email);
             // String token = jwtService.generateToken(customer);
 
             Date issued = new Date(System.currentTimeMillis());
