@@ -17,10 +17,10 @@ public class FlashcardProgress {
     @Column(name = "id")
     private int id;
 
-    @Column(name = "flashcard_id")
+    @Column(name = "flashcard_id", insertable = false, updatable = false)
     private int flashcard_id;
 
-    @Column(name = "user_id")
+    @Column(name = "user_id", insertable = false, updatable = false)
     private int user_id;
 
     @Column(name = "next_review")

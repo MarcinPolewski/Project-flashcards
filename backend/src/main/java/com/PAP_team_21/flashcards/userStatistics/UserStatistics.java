@@ -16,7 +16,7 @@ public class UserStatistics {
     @Column(name = "id")
     private int id;
 
-    @Column(name = "user_id")
+    @Column(name = "user_id", insertable = false, updatable = false)
     private int userId;
 
     @Column(name = "total_time_spent")

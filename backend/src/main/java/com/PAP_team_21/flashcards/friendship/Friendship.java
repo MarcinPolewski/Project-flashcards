@@ -18,10 +18,10 @@ public class Friendship {
     @Column(name = "id")
     private int id;
 
-    @Column(name = "sender_id")
+    @Column(name = "sender_id", insertable = false, updatable = false)
     private int senderId;
 
-    @Column(name = "receiver_id")
+    @Column(name = "receiver_id", insertable = false, updatable = false)
     private int receiverId;
 
     @Column(name = "accepted")

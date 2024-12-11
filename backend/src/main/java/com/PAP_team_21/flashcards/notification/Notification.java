@@ -18,7 +18,7 @@ public class Notification {
     @Column(name = "id")
     private int id;
 
-    @Column(name = "user_id")
+    @Column(name = "user_id", insertable = false, updatable = false)
     private int userId;
 
     @Column(name = "received")

@@ -19,7 +19,7 @@ public class Flashcard {
     @Column(name = "id")
     private int id;
 
-    @Column(name = "deck_id")
+    @Column(name = "deck_id", insertable = false, updatable = false)
     private int deckId;
 
     @Column(name = "front")

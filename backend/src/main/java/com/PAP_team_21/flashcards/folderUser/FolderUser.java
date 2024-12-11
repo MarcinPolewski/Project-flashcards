@@ -25,7 +25,7 @@ public class FolderUser {
     @Column(name = "access_level")
     private int accessLevel;
 
-    @Column(name = "parent_folder_id")
+    @Column(name = "parent_folder_id", insertable = false, updatable = false)
     private int parentFolderId;
 
     @ManyToOne

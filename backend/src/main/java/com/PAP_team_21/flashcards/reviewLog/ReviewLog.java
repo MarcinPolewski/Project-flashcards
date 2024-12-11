@@ -17,10 +17,10 @@ public class ReviewLog {
     @Column(name = "id")
     private int id;
 
-    @Column(name = "flashcard_id")
+    @Column(name = "flashcard_id", insertable = false, updatable = false)
     private int flashcardId;
 
-    @Column(name = "user_id")
+    @Column(name = "user_id", insertable = false, updatable = false)
     private int userId;
 
     @Column(name = "when")
