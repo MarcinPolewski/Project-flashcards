@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "Folder_Users")
+@Table(name = "Folders_Users")
 @Getter
 @Setter
 public class FolderUser {

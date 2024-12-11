@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "Folder_Decks")
+@Table(name = "Folders_Decks")
 @Getter
 @Setter
 public class FolderDeck {
