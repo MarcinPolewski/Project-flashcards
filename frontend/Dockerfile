@@ -16,7 +16,7 @@ COPY nginx.conf /etc/nginx/conf.d/default.conf
 #copy built files to server files
 COPY --from=build-stage /react-front-end/build/ /usr/share/nginx/html
 
-# for security reasons, changing ownership of files, to run as normal user
+# for security reasons, changing ownership of files, to run as normal customer
 WORKDIR /react-server
 RUN chown -R nginx:nginx /react-server && chmod -R 755 /react-server && \
     chown -R nginx:nginx /var/cache/nginx && \

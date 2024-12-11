@@ -3,9 +3,8 @@ package com.PAP_team_21.flashcards.controllers;
 import com.PAP_team_21.flashcards.authentication.AuthenticationRequest;
 import com.PAP_team_21.flashcards.authentication.AuthenticationResponse;
 import com.PAP_team_21.flashcards.authentication.RegisterRequest;
-import com.PAP_team_21.flashcards.user.Customer;
-import com.PAP_team_21.flashcards.user.CustomerRepository;
-import com.PAP_team_21.flashcards.user.UserDao;
+import com.PAP_team_21.flashcards.customer.Customer;
+import com.PAP_team_21.flashcards.customer.CustomerRepository;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
@@ -53,7 +52,7 @@ public class AuthenticationController {
             String name = oAuth2User.getName();
 
             Customer user = customerRepository.findOrCreate(email);
-            // String token = jwtService.generateToken(user);
+            // String token = jwtService.generateToken(customer);
 
             Date issued = new Date(System.currentTimeMillis());
             SecretKey secretKey = Keys.hmacShaKeyFor(jwtSecret.getBytes());
@@ -68,7 +67,7 @@ public class AuthenticationController {
                     .compact();
 
 
-            return ResponseEntity.ok(Map.of("token", token, "user", user));
+            return ResponseEntity.ok(Map.of("token", token, "customer", user));
         }
 
         return ResponseEntity.badRequest().build();
@@ -96,7 +95,7 @@ public class AuthenticationController {
 
             if(saved.getId() > 0)
             {
-                return ResponseEntity.status(HttpStatus.CREATED).body("user registered");
+                return ResponseEntity.status(HttpStatus.CREATED).body("customer registered");
             } else {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("registration failed");
             }

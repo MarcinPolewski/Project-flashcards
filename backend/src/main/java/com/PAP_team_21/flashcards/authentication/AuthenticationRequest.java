@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class AuthenticationRequest {
     /*
-    this class represents a request send to sever to authenticate a user
+    this class represents a request send to sever to authenticate a customer
      */
     private String email;
     private String password;

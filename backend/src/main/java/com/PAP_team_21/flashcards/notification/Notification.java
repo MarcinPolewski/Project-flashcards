@@ -1,7 +1,7 @@
 package com.PAP_team_21.flashcards.notification;
 
 import com.PAP_team_21.flashcards.friendship.Friendship;
-import com.PAP_team_21.flashcards.user.Customer;
+import com.PAP_team_21.flashcards.customer.Customer;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

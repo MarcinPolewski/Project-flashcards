@@ -2,7 +2,7 @@ package com.PAP_team_21.flashcards.folder;
 
 import com.PAP_team_21.flashcards.deck.Deck;
 import com.PAP_team_21.flashcards.folderUser.FolderUser;
-import com.PAP_team_21.flashcards.user.Customer;
+import com.PAP_team_21.flashcards.customer.Customer;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

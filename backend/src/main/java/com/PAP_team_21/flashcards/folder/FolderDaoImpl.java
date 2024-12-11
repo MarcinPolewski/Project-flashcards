@@ -1,7 +1,7 @@
 package com.PAP_team_21.flashcards.folder;
 
 import com.PAP_team_21.flashcards.deck.Deck;
-import com.PAP_team_21.flashcards.user.Customer;
+import com.PAP_team_21.flashcards.customer.Customer;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;

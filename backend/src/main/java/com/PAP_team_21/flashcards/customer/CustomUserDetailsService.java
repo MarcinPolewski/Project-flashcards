@@ -1,4 +1,4 @@
-package com.PAP_team_21.flashcards.user;
+package com.PAP_team_21.flashcards.customer;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -22,7 +22,7 @@ public class CustomUserDetailsService  implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Customer customer = customerRepository
                 .findByEmail(username)
-                .orElseThrow(() -> new UsernameNotFoundException("Customer details not found for the user: " + username));
+                .orElseThrow(() -> new UsernameNotFoundException("Customer details not found for the customer: " + username));
 
         List<GrantedAuthority> authorities = customer.getAuthorities().stream()
                 .map(authority -> new SimpleGrantedAuthority(authority.getName()))

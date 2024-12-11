@@ -1,4 +1,4 @@
-package com.PAP_team_21.flashcards.user;
+package com.PAP_team_21.flashcards.customer;
 
 import com.PAP_team_21.flashcards.authority.Authority;
 import com.PAP_team_21.flashcards.flashcardProgress.FlashcardProgress;

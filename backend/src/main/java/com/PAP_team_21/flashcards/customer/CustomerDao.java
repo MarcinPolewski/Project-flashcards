@@ -1,8 +1,8 @@
-package com.PAP_team_21.flashcards.user;
+package com.PAP_team_21.flashcards.customer;
 
 import java.util.List;
 
-public interface UserDao {
+public interface CustomerDao {
 
     void save(Customer customer);
 

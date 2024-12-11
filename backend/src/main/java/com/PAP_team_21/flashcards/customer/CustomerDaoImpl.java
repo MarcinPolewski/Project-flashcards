@@ -1,4 +1,4 @@
-package com.PAP_team_21.flashcards.user;
+package com.PAP_team_21.flashcards.customer;
 
 import com.PAP_team_21.flashcards.folder.Folder;
 import com.PAP_team_21.flashcards.authority.Authority;
@@ -10,12 +10,12 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class UserDaoImpl implements UserDao {
+public class CustomerDaoImpl implements CustomerDao {
 
     private final EntityManager entityManager;
 
     @Autowired
-    public UserDaoImpl(EntityManager entityManager) {
+    public CustomerDaoImpl(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
 

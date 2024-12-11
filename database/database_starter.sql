@@ -1,7 +1,7 @@
 CREATE DATABASE IF NOT EXISTS my_database;
 use my_database;
 
--- manage creating new user
+-- manage creating new customer
 DROP USER if exists 'springstudent'@'%' ;
 CREATE USER 'springstudent'@'%' IDENTIFIED BY 'springstudent';
 GRANT ALL PRIVILEGES ON * . * TO 'springstudent'@'%';
