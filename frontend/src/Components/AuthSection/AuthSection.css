@@ -1,0 +1,30 @@
+.auth-section {
+    display: flex;
+    height: 100vh;
+}
+
+.auth-section-left {
+    background-color: var(--auth-section-left);
+    color: var(--auth-section-left-text);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+}
+
+.auth-section-left h1 {
+    font-size: 5rem;
+    margin: 0;
+}
+
+.auth-section-right {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+}
+
+.auth-section-right-form {
+    width: 80%;
+    max-width: 400px;
+}
