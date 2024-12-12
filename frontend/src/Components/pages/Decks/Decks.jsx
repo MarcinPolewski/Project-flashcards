@@ -68,7 +68,7 @@ const Decks = (props) => {
             <div className="decks-manipulate">
 
                 <input className="decks-input" type="text" placeholder="Search decks.." value={searchTerm} onChange={handleSearchChange}/>
-                <div className="decks-filter-button" onClick={toggleOverlay}>Filter</div>
+                <div className="decks-filter-button" onClick={toggleOverlay}>Sort</div>
 
             </div>
 

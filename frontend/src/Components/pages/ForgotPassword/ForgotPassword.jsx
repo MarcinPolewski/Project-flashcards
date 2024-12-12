@@ -22,7 +22,7 @@ const ForgotPassword = () => {
 
             <div className="auth-signup">
                 <span>Remember your password?</span>
-                <a href="#">Sign in here!</a>
+                <a href="/login">Sign in here!</a>
             </div>
 
         </div>

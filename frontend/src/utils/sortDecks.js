@@ -19,23 +19,23 @@ const sortDecks = (decks, sortOptions) => {
     //     reversed: false,
     // }
 
-    if (sortOptions.alphabet && result == 0)
+    if (sortOptions.alphabet && result === 0)
     {
         result = a.title.localeCompare(b.title);
     }
-    if (sortOptions.recentUsage && result == 0)
+    if (sortOptions.recentUsage && result === 0)
     {
         result = dateEval(a.lastUsed, b.lastUsed);
     }
-    if (sortOptions.creationDate && result == 0)
+    if (sortOptions.creationDate && result === 0)
     {
         result = dateEval(a.createdAt, b.createdAt);
     }
-    if (sortOptions.learningProgress && result == 0)
+    if (sortOptions.learningProgress && result === 0)
     {
         result = b.progress - a.progress;
     }
-    if (sortOptions.lastModified && result == 0)
+    if (sortOptions.lastModified && result === 0)
     {
         result = dateEval(a.lastModified, b.lastModified);
     }

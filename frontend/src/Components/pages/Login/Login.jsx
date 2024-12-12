@@ -33,7 +33,7 @@ const Login = () => {
                   Remember me
                 </label>
                 <div>
-                  <a href="#">Forgot your password?</a>
+                  <a href="/forgot-password">Forgot your password?</a>
                 </div>
               </div>
 

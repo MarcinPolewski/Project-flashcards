@@ -45,7 +45,7 @@ const Register = () => {
 
             <div className="auth-signup">
                 <span>Already have an account?</span>
-                <a href="/login">Sign up here!</a>
+                <a href="/login">Sign in here!</a>
             </div>
         </div>
       </AuthSection>
