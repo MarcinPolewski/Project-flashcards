@@ -19,7 +19,7 @@
   --popup-background: white;
 
   --plus-button: orange;
-  --plus-button-hover: rgb(255, 175, 25);
+  --plus-button-hover: rgb(230, 186, 105);
   --plus-button-img: white;
 
   --continue-button: #007bff;
@@ -39,6 +39,8 @@
   --streak-cell-background-inactive: #ddd;
   --streak-cell-background-active: #3b7a57;
 
+  --input-color-flashcard: #292929;
+  --input-flashcard-background: #e4e4e4;
   --auth-section-left: #3498db;
   --auth-section-left-text: white;
   --auth-input-text: black;
@@ -61,7 +63,7 @@ body.dark {
 
   --section-background: #121212;
   --section-border: #444;
-  --faded-text: #bbb;
+  --faded-text: #161515;
 
   --box-shadow: rgba(0, 0, 0, 0.5);
   --deck-info: #aaa;
@@ -94,6 +96,8 @@ body.dark {
   --streak-cell-background-inactive: #333;
   --streak-cell-background-active: #3b7a57;
 
+  --input-color-flashcard: #e4e4e4;
+  --input-flashcard-background: #292929;
   --auth-section-left: #3498db;
   --auth-section-left-text: white;
   --auth-input-text: black;
