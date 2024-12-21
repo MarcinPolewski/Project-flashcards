@@ -11,12 +11,12 @@ CREATE TABLE `Customers`(
                             `email` VARCHAR(255) NOT NULL,
                             `password_hash` VARCHAR(255) NOT NULL,
                             `username` VARCHAR(255) NOT NULL,
-                            `account_expired` BOOLEAN NOT NULL,
-                            `account_locked` BOOLEAN NOT NULL,
-                            `credentials_expired` BOOLEAN NOT NULL,
-                            `enabled` BOOLEAN NOT NULL,
+                            `account_expired` BOOLEAN NOT NULL DEFAULT '0',
+                            `account_locked` BOOLEAN NOT NULL DEFAULT '0',
+                            `credentials_expired` BOOLEAN NOT NULL DEFAULT '0',
+                            `enabled` BOOLEAN NOT NULL DEFAULT '1',
                             `profile_creation_date` DATETIME NOT NULL,
-                            `profile_picture_path` VARCHAR(255) NOT NULL
+                            `profile_picture_path` VARCHAR(255) NOT NULL DEFAULT '/static/profile_pictures/default.jpg'
 );
 ALTER TABLE
     `Customers` ADD UNIQUE `customers_email_unique`(`email`);
@@ -51,14 +51,14 @@ CREATE TABLE `Flashcards_Progresses`(
 CREATE TABLE `User_Preferences`(
                                    `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
                                    `user_id` INT UNSIGNED NOT NULL,
-                                   `dark_mode` BOOLEAN NOT NULL,
+                                   `dark_mode` BOOLEAN NOT NULL DEFAULT '1',
                                    `language` INT NOT NULL
 );
 CREATE TABLE `User_Statistics`(
                                   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
                                   `user_id` INT UNSIGNED NOT NULL,
-                                  `total_time_spent` INT NOT NULL,
-                                  `login_count` INT NOT NULL,
+                                  `total_time_spent` INT NOT NULL DEFAULT '0',
+                                  `login_count` INT NOT NULL DEFAULT '0',
                                   `last_login` DATETIME NOT NULL
 );
 CREATE TABLE `Review_Logs`(
@@ -77,12 +77,12 @@ CREATE TABLE `Friendships`(
                               `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
                               `sender_id` INT UNSIGNED NOT NULL,
                               `receiver_id` INT UNSIGNED NOT NULL,
-                              `accepted` BOOLEAN NOT NULL
+                              `accepted` BOOLEAN NOT NULL DEFAULT '0'
 );
 CREATE TABLE `Notifications`(
                                 `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
                                 `user_id` INT UNSIGNED NOT NULL,
-                                `received` BOOLEAN NOT NULL,
+                                `received` BOOLEAN NOT NULL DEFAULT '0',
                                 `text` VARCHAR(255) NOT NULL,
                                 `creation_date` DATETIME NOT NULL,
                                 `received_date` DATETIME NOT NULL
