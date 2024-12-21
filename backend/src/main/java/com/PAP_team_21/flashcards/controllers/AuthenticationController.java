@@ -99,7 +99,7 @@ public class AuthenticationController {
             String name = request.getUsername();
             String email = request.getEmail();
 
-            Customer customer = new Customer(name, email, passwordHash);
+            Customer customer = new Customer(email, name, passwordHash);
             customer.setProfileCreationDate(LocalDateTime.now());
 
             Customer saved = customerRepository.save(customer);
