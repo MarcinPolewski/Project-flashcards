@@ -25,13 +25,20 @@ services:
       retries: 5
     ports:
       - "8080:8080" # @Kacper, sprawdź czy port odpowiada
+    secrets:
+      - db_user_login
+      - db_user_password
+
   database:
     build: ./database
     hostname: mysql_database
     networks:
       - back-network
     environment:
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/db_root_password
+      MYSQL_USER_FILE: /run/secrets/db_user_login
+      MYSQL_PASSWORD_FILE: /run/secrets/db_user_password
+
     command:
       - --mysql-native-password=ON
     healthcheck:
@@ -41,9 +48,21 @@ services:
       retries: 5
     volumes:
       - db-data:/var/lib/mysql
+    secrets:
+      - db_user_password
+      - db_user_login
+      - db_root_password
 
 volumes:
   db-data:
+
+secrets:
+  db_user_password:
+    file: ./secrets/db_user_password.txt
+  db_user_login:
+    file: ./secrets/db_user_login.txt
+  db_root_password:
+    file: ./secrets/db_root_password.txt
 
 
 networks:
