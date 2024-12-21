@@ -110,7 +110,7 @@ ALTER TABLE
 ALTER TABLE
     `Friendships_Notifications` ADD CONSTRAINT `friendships_notifications_notification_id_foreign` FOREIGN KEY(`notification_id`) REFERENCES `Notifications`(`id`);
 ALTER TABLE
-    `Folders_Decks` ADD CONSTRAINT `folders_decks_feck_id_foreign` FOREIGN KEY(`feck_id`) REFERENCES `Decks`(`id`);
+    `Folders_Decks` ADD CONSTRAINT `folders_decks_deck_id_foreign` FOREIGN KEY(`deck_id`) REFERENCES `Decks`(`id`);
 ALTER TABLE
     `Flashcards` ADD CONSTRAINT `flashcards_deck_id_foreign` FOREIGN KEY(`deck_id`) REFERENCES `Decks`(`id`);
 ALTER TABLE

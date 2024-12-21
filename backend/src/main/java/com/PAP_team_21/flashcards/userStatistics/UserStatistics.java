@@ -20,7 +20,7 @@ public class UserStatistics {
     private int userId;
 
     @Column(name = "total_time_spent")
-    private long totalTimeSpent;
+    private int totalTimeSpent;
 
     @Column(name = "login_count")
     private int loginCount;
@@ -34,7 +34,7 @@ public class UserStatistics {
 
     public UserStatistics() {}
 
-    public UserStatistics(int userId, long totalTimeSpent, int loginCount, LocalDateTime lastLogin) {
+    public UserStatistics(int userId, int totalTimeSpent, int loginCount, LocalDateTime lastLogin) {
         this.userId = userId;
         this.totalTimeSpent = totalTimeSpent;
         this.loginCount = loginCount;

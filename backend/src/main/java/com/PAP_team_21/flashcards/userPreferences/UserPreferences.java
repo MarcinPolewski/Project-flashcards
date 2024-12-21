@@ -22,7 +22,7 @@ public class UserPreferences {
     private boolean darkMode;
 
     @Column(name = "language")
-    private String language;
+    private int language;
 
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
@@ -30,7 +30,7 @@ public class UserPreferences {
 
     public UserPreferences() {}
 
-    public UserPreferences(int userId, boolean darkMode, String language) {
+    public UserPreferences(int userId, boolean darkMode, int language) {
         this.userId = userId;
         this.darkMode = darkMode;
         this.language = language;
