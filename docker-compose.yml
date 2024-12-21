@@ -25,13 +25,27 @@ services:
       retries: 5
     ports:
       - "8080:8080" # @Kacper, sprawdź czy port odpowiada
+    secrets:
+      - db_user_login
+      - db_user_password
+      - github_client_id
+      - github_client_secret
+      - google_client_id
+      - google_client_secret
+      - spring_security_user_password
+      - spring_security_user_username
+      - jwt_secret_key
+
   database:
     build: ./database
     hostname: mysql_database
     networks:
       - back-network
     environment:
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/db_root_password
+      MYSQL_USER_FILE: /run/secrets/db_user_login
+      MYSQL_PASSWORD_FILE: /run/secrets/db_user_password
+
     command:
       - --mysql-native-password=ON
     healthcheck:
@@ -41,9 +55,36 @@ services:
       retries: 5
     volumes:
       - db-data:/var/lib/mysql
+    secrets:
+      - db_user_password
+      - db_user_login
+      - db_root_password
 
 volumes:
   db-data:
+
+secrets:
+  db_user_password:
+    file: ./secrets/db_user_password.txt
+  db_user_login:
+    file: ./secrets/db_user_login.txt
+  db_root_password:
+    file: ./secrets/db_root_password.txt
+  github_client_id:
+    file: ./secrets/github_client_id.txt
+  github_client_secret:
+    file: ./secrets/github_client_secret.txt
+  google_client_id:
+    file: ./secrets/google_client_id.txt
+  google_client_secret:
+    file: ./secrets/google_client_secret.txt
+  jwt_secret_key:
+    file: ./secrets/jwt_secret_key.txt
+  spring_security_user_password:
+    file: ./secrets/spring_security_password.txt
+  spring_security_user_username:
+    file: ./secrets/spring_security_username.txt
+
 
 
 networks:
