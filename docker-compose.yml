@@ -27,6 +27,7 @@ services:
       - "8080:8080" # @Kacper, sprawdź czy port odpowiada
   database:
     build: ./database
+    hostname: mysql_database
     networks:
       - back-network
     environment:

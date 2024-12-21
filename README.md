@@ -56,3 +56,7 @@ Zgodnie z wymaganiami projektu wykorzystamy architekturę 3-warstwową, w które
 
 ### Dalsze Pomysły
 - Rankingi użytkowników
+
+### Przydatne komendy
+- "docker compose down -v --rmi all" wyłącza kontenery, usuwa pamięć i obrazy
+- "docker compose up" uruchamia aplikacje 
