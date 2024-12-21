@@ -71,7 +71,7 @@ CREATE TABLE `Review_Logs`(
 CREATE TABLE `Folders_Decks`(
                                 `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
                                 `folder_id` INT UNSIGNED NOT NULL,
-                                `feck_id` INT UNSIGNED NOT NULL
+                                `deck_id` INT UNSIGNED NOT NULL
 );
 CREATE TABLE `Friendships`(
                               `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
