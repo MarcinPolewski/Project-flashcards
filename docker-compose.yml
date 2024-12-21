@@ -28,6 +28,13 @@ services:
     secrets:
       - db_user_login
       - db_user_password
+      - github_client_id
+      - github_client_secret
+      - google_client_id
+      - google_client_secret
+      - spring_security_user_password
+      - spring_security_user_username
+      - jwt_secret_key
 
   database:
     build: ./database
@@ -63,6 +70,21 @@ secrets:
     file: ./secrets/db_user_login.txt
   db_root_password:
     file: ./secrets/db_root_password.txt
+  github_client_id:
+    file: ./secrets/github_client_id.txt
+  github_client_secret:
+    file: ./secrets/github_client_secret.txt
+  google_client_id:
+    file: ./secrets/google_client_id.txt
+  google_client_secret:
+    file: ./secrets/google_client_secret.txt
+  jwt_secret_key:
+    file: ./secrets/jwt_secret_key.txt
+  spring_security_user_password:
+    file: ./secrets/spring_security_password.txt
+  spring_security_user_username:
+    file: ./secrets/spring_security_username.txt
+
 
 
 networks:
