@@ -2,6 +2,7 @@ package com.PAP_team_21.flashcards.config.security;
 
 import com.PAP_team_21.flashcards.filters.JtwFilter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -26,6 +27,8 @@ public class SecurityConfig{
 
     private final UserDetailsService userDetailsService;
 
+    @Value("${jwt.secret-key}")
+    private String jwtSecret;
     @Bean
     protected SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -43,7 +46,7 @@ public class SecurityConfig{
                         .defaultSuccessUrl("/api/auth/oauth2/success", true)
                 )
                 .httpBasic(Customizer.withDefaults())
-                        .addFilterAfter(new JtwFilter(), BasicAuthenticationFilter.class);
+                .addFilterAfter(new JtwFilter(jwtSecret), BasicAuthenticationFilter.class);
 
 
         return http.build();

@@ -8,6 +8,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -22,10 +23,10 @@ import javax.crypto.SecretKey;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
-@Component
+@RequiredArgsConstructor
 public class JtwFilter extends OncePerRequestFilter {
-    @Value("${jwt.secret-key}")
-    private String jwtSecret;
+
+    private final String jwtSecret;
 
     @Override
     protected void doFilterInternal(
@@ -37,10 +38,11 @@ public class JtwFilter extends OncePerRequestFilter {
         try{
             if(token != null)
             {
+                token = token.substring(7);
                 SecretKey secretKey = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
 
                 Claims claims = Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload();
-                String username = String.valueOf(claims.get("username"));
+                String username = String.valueOf(claims.get("email"));
                 Authentication authentication = new UsernamePasswordAuthenticationToken(username, null, null);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }

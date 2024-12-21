@@ -128,7 +128,6 @@ public class AuthenticationController {
         if(authentication != null && authentication.isAuthenticated())
         {
             SecretKey secretKey = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
-
             Date issued = new Date(System.currentTimeMillis());
 
             token = Jwts.builder()
