@@ -12,6 +12,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.DynamicInsert;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -21,6 +23,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+@DynamicInsert
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
