@@ -1,11 +1,13 @@
 package com.PAP_team_21.flashcards.controllers;
 
+import com.PAP_team_21.flashcards.AccessLevel;
 import com.PAP_team_21.flashcards.entities.customer.Customer;
 import com.PAP_team_21.flashcards.entities.customer.CustomerRepository;
 import com.PAP_team_21.flashcards.entities.folder.Folder;
 import com.PAP_team_21.flashcards.entities.folder.FolderDao;
 import com.PAP_team_21.flashcards.entities.folder.FolderJpaRepository;
 import com.PAP_team_21.flashcards.entities.folder.FolderService;
+import com.PAP_team_21.flashcards.entities.folderUser.FolderUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -70,7 +72,8 @@ public class FolderController {
 
     @PostMapping("/create")
     public ResponseEntity<?> createFolder(Authentication authentication,
-                                          @RequestBody Folder folder
+                                          @RequestBody Folder folder,
+                                          @RequestBody AccessLevel accessLevel
     ) {
 
         Optional<Folder> found = folderService.findById(folder.getId());
@@ -86,7 +89,7 @@ public class FolderController {
 //            return ResponseEntity.badRequest().body("No user with this id found");
 //
 //        Customer customer = customerOptional.get();
-//        folder.getFolderUsers().add(new FolderUser())
+//        folder.getFolderUsers().add(new FolderUser(customer, folder, accessLevel, ))
 
         return ResponseEntity.ok(folderService.save(folder));
 

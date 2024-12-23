@@ -1,5 +1,6 @@
 package com.PAP_team_21.flashcards.entities.folder;
 
+import com.PAP_team_21.flashcards.AccessLevel;
 import com.PAP_team_21.flashcards.entities.deck.Deck;
 import com.PAP_team_21.flashcards.entities.folderUser.FolderUser;
 import com.PAP_team_21.flashcards.entities.customer.Customer;
@@ -34,7 +35,7 @@ public class Folder {
 
     public Folder() {}
 
-    public Folder(String name, Customer customer, int accessLevel, Folder parentFolder) {
+    public Folder(String name, Customer customer, AccessLevel accessLevel, Folder parentFolder) {
         this.name = name;
         this.folderUsers.add(new FolderUser(customer, this, accessLevel, parentFolder));
     }
