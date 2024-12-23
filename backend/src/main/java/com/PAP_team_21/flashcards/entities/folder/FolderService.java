@@ -42,9 +42,12 @@ public class FolderService {
         folderRepository.deleteById(folderId);
     }
 
-    public Object save(Folder folder) {
+    public Folder save(Folder folder) {
         return folderRepository.save(folder);
     }
 
+    public Page<Folder>  findByCustomersAndName(Pageable pageable, Customer customer, String matchingThis) {
+        return folderDao.findByCustomersAndName(pageable, customer, matchingThis);
+    }
 }
 

@@ -32,18 +32,43 @@ public class FolderDaoImpl implements FolderDao {
 
         int customerId = customer.getId();
 
-    Query query = entityManager.createQuery("FROM Folder ");
-//        Query query = entityManager.createQuery("FROM Folder " +
-//                "inner join FolderUser on Folder.id = FolderUser.flashcardFolder.id " +
-//                "inner join Customer on FolderUser.customer.id = Customer.id" +
-//                " where Customer.id = :customerId");
-//        query.setParameter("customerId", customer.getId());
+        Query query = entityManager.createQuery(
+                "SELECT f FROM Folder f " +
+                        "JOIN f.folderUsers fu " +
+                        "JOIN fu.customer c " +
+                        "WHERE c.id = :customerId", Folder.class);
+        query.setParameter("customerId", customerId);
+
         query.setFirstResult(pageRequest.getPageNumber() * pageRequest.getPageSize());
         query.setMaxResults(pageRequest.getPageSize());
 
         List<Folder> queryResult = query.getResultList();
 
         return new PageImpl<>(queryResult, pageRequest, queryResult.size());
+    }
+
+    @Override
+    public Page<Folder>  findByCustomersAndName(Pageable pageable, Customer customer, String matchingThis) {
+        pageable.getPageNumber();
+        pageable.getSort();
+        pageable.getPageSize();
+
+        int customerId = customer.getId();
+
+        Query query = entityManager.createQuery(
+                "SELECT f FROM Folder f " +
+                        "JOIN f.folderUsers fu " +
+                        "JOIN fu.customer c " +
+                        "WHERE c.id = :customerId and f.name like :matchingThis", Folder.class);
+        query.setParameter("customerId", customerId);
+        query.setParameter("matchingThis", "%" + matchingThis + "%");
+
+        query.setFirstResult(pageable.getPageNumber() * pageable.getPageSize());
+        query.setMaxResults(pageable.getPageSize());
+
+        List<Folder> queryResult = query.getResultList();
+
+        return new PageImpl<>(queryResult, pageable, queryResult.size());
     }
 
 }

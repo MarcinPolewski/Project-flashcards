@@ -65,12 +65,13 @@ public class FolderController {
         Optional<Customer> customer = customerRepository.findByEmail(email);
 
         if(customer.isPresent())
-            return ResponseEntity.ok(null); // @TODO fix
-            //return ResponseEntity.ok(folderRepository.findByCustomersAndName(pageable, customer.get(), matchingThis));
+            return ResponseEntity.ok(folderService.findByCustomersAndName(pageable, customer.get(), matchingThis));
         return ResponseEntity.badRequest().body("No user with this id found");    }
 
     @PostMapping("/create")
-    public ResponseEntity<?> createFolder(Authentication authentication,@RequestBody Folder folder) {
+    public ResponseEntity<?> createFolder(Authentication authentication,
+                                          @RequestBody Folder folder
+    ) {
 
         Optional<Folder> found = folderService.findById(folder.getId());
         if(found.isPresent()) {
@@ -80,6 +81,12 @@ public class FolderController {
                 return ResponseEntity.badRequest().body("name cannot be null");
 
         // @TODO set ownership to this user
+//        Optional<Customer> customerOptional = customerRepository.findByEmail(authentication.getName());
+//        if(customerOptional.isEmpty())
+//            return ResponseEntity.badRequest().body("No user with this id found");
+//
+//        Customer customer = customerOptional.get();
+//        folder.getFolderUsers().add(new FolderUser())
 
         return ResponseEntity.ok(folderService.save(folder));
 
