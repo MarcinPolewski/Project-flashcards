@@ -62,17 +62,17 @@ public class CustomerDaoImpl implements CustomerDao {
     @Override
     @Transactional
     public void deleteUserById(int id) {
-        Customer customer = findUserById(id);
-        List<Folder> folders = customer.getFolders();
-        List<Authority> authorities = customer.getAuthorities();
-        for (Folder folder : folders) {
-            folder.getCustomers().remove(customer);
-            entityManager.merge(folder);
-        }
-        for (Authority authority: authorities) {
-            authority.getCustomers().remove(customer);
-            entityManager.merge(authority);
-        }
-        entityManager.remove(customer);
+//        Customer customer = findUserById(id);
+//        List<Folder> folders = customer.getFolders();
+//        List<Authority> authorities = customer.getAuthorities();
+//        for (Folder folder : folders) {
+//            folder.getCustomers().remove(customer);
+//            entityManager.merge(folder);
+//        }
+//        for (Authority authority: authorities) {
+//            authority.getCustomers().remove(customer);
+//            entityManager.merge(authority);
+//        }
+//        entityManager.remove(customer);
     }
 }
