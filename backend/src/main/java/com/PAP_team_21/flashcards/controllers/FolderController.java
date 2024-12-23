@@ -5,6 +5,7 @@ import com.PAP_team_21.flashcards.entities.customer.CustomerRepository;
 import com.PAP_team_21.flashcards.entities.folder.Folder;
 import com.PAP_team_21.flashcards.entities.folder.FolderDao;
 import com.PAP_team_21.flashcards.entities.folder.FolderJpaRepository;
+import com.PAP_team_21.flashcards.entities.folder.FolderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,7 +24,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class FolderController {
 
-    private final FolderJpaRepository folderRepository;
+    private final FolderService folderService;
     private final CustomerRepository customerRepository;
 
     @GetMapping("/get")
@@ -42,7 +43,7 @@ public class FolderController {
         Optional<Customer> customer = customerRepository.findByEmail(email);
 
         if(customer.isPresent())
-            return ResponseEntity.ok(folderRepository.findAllByCustomers(pageable, customer.get()));
+            return ResponseEntity.ok(folderService.findAllByCustomer(pageable, customer.get()));
         return ResponseEntity.badRequest().body("No user with this id found");
 
     }
@@ -64,13 +65,14 @@ public class FolderController {
         Optional<Customer> customer = customerRepository.findByEmail(email);
 
         if(customer.isPresent())
-            return ResponseEntity.ok(folderRepository.findByCustomersAndName(pageable, customer.get(), matchingThis));
+            return ResponseEntity.ok(null); // @TODO fix
+            //return ResponseEntity.ok(folderRepository.findByCustomersAndName(pageable, customer.get(), matchingThis));
         return ResponseEntity.badRequest().body("No user with this id found");    }
 
     @PostMapping("/create")
     public ResponseEntity<?> createFolder(Authentication authentication,@RequestBody Folder folder) {
 
-        Optional<Folder> found = folderRepository.findById(folder.getId());
+        Optional<Folder> found = folderService.findById(folder.getId());
         if(found.isPresent()) {
             return ResponseEntity.badRequest().body("folder already exists");
         }
@@ -79,27 +81,25 @@ public class FolderController {
 
         // @TODO set ownership to this user
 
-        return ResponseEntity.ok(folderRepository.save(folder));
+        return ResponseEntity.ok(folderService.save(folder));
 
     }
 
     @PostMapping("/update")
     public ResponseEntity<?> updateFolder(Authentication authentication,@RequestBody Folder folder) {
 
-        Optional<Folder> found = folderRepository.findById(folder.getId());
-        if(found.isEmpty())
+        if(folderService.hasFolder(folder))
             return ResponseEntity.badRequest().body("folder already exists");
         else
-            return ResponseEntity.ok(folderRepository.save(folder));    }
+            return ResponseEntity.ok(folderService.save(folder));    }
 
     @DeleteMapping("/delete")
     public ResponseEntity<?> deleteFolder(Authentication authentication, @RequestParam int folderId) {
-        Optional<Folder> found = folderRepository.findById(folderId);
-        if(found.isEmpty())
+        if(folderService.hasFolder(folderId))
             return ResponseEntity.badRequest().body("folder does not exist");
         else
         {
-            folderRepository.delete(found.get());
+            folderService.delete(folderId);
             return ResponseEntity.ok("folder deleted");
         }
     }
