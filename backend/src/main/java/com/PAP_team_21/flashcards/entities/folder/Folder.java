@@ -22,7 +22,7 @@ public class Folder {
     @Column(name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "folder", fetch = FetchType.LAZY,
+    @OneToMany(mappedBy = "parentFolder", fetch = FetchType.LAZY,
             cascade = {CascadeType.PERSIST, CascadeType.MERGE,
                         CascadeType.DETACH, CascadeType.REFRESH})
     private List<FolderUser> folderUsers;
@@ -32,16 +32,12 @@ public class Folder {
                         CascadeType.DETACH, CascadeType.REFRESH})
     private List<Deck> decks;
 
-    @ManyToMany
-    @JoinTable(
-            name = "Folders_Users",
-            joinColumns = @JoinColumn(name = "flashcard_folder_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id")
-    )
-    private List<Customer> customers;
-
     public Folder() {}
 
+    public Folder(String name, Customer customer, int accessLevel, Folder parentFolder) {
+        this.name = name;
+        this.folderUsers.add(new FolderUser(customer, this, accessLevel, parentFolder));
+    }
     public Folder(String name) {
         this.name = name;
     }

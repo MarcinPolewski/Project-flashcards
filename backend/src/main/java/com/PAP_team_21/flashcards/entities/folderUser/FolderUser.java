@@ -1,6 +1,7 @@
 package com.PAP_team_21.flashcards.entities.folderUser;
 
 
+import com.PAP_team_21.flashcards.entities.customer.Customer;
 import com.PAP_team_21.flashcards.entities.folder.Folder;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -16,28 +17,29 @@ public class FolderUser {
     @Column(name = "id")
     private int id;
 
-    @Column(name = "user_id")
-    private int userId;
+    //@Column(name = "user_id")
+    @ManyToOne
+    @JoinColumn(name="user_id")
+    private Customer customer;
 
-    @Column(name = "flashcard_folder_id")
-    private int flashcardFolderId;
+    //@Column(name = "flashcard_folder_id")
+    @ManyToOne
+    @JoinColumn(name="flashcard_folder_id")
+    private Folder flashcardFolder;
 
     @Column(name = "access_level")
     private int accessLevel;
 
-    @Column(name = "parent_folder_id", insertable = false, updatable = false)
-    private int parentFolderId;
-
+    // @Column(name = "parent_folder_id", insertable = false, updatable = false)
     @ManyToOne
-    @JoinColumn(name = "parent_folder_id")
-    private Folder folder;
-
+    @JoinColumn(name="parent_folder_id")
+    private Folder parentFolder;
     public FolderUser() {}
 
-    public FolderUser(int userId, int flashcardFolderId, int accessLevel, int parentFolderId) {
-        this.userId = userId;
-        this.flashcardFolderId = flashcardFolderId;
+    public FolderUser(Customer customer, Folder flashcardFolder, int accessLevel, Folder parentFolder) {
+        this.customer = customer;
+        this.flashcardFolder = flashcardFolder;
         this.accessLevel = accessLevel;
-        this.parentFolderId = parentFolderId;
+        this.parentFolder = parentFolder;
     }
 }

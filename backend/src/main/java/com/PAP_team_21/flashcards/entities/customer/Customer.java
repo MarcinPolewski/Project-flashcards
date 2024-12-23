@@ -80,11 +80,6 @@ public class Customer {
     @ManyToMany(mappedBy = "customers", fetch = FetchType.LAZY,
             cascade = {CascadeType.PERSIST, CascadeType.MERGE,
                         CascadeType.DETACH, CascadeType.REFRESH})
-    private List<Folder> folders;
-
-    @ManyToMany(mappedBy = "customers", fetch = FetchType.LAZY,
-            cascade = {CascadeType.PERSIST, CascadeType.MERGE,
-                        CascadeType.DETACH, CascadeType.REFRESH})
     private List<Authority> authorities;
 
 
