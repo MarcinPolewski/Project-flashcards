@@ -47,7 +47,7 @@ public class FolderController {
 
     }
 
-    @GetMapping("/get")
+    @GetMapping("/get-by-folder-name")
     public ResponseEntity<?> searchByFolderName(
             Authentication authentication,
             @RequestParam(defaultValue = "") String matchingThis,
