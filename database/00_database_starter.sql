@@ -38,7 +38,7 @@ CREATE TABLE `Folders_Users`(
                                 `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
                                 `user_id` INT UNSIGNED NOT NULL,
                                 `flashcard_folder_id` INT UNSIGNED NOT NULL,
-                                `access_level` INT NOT NULL,
+                                `access_level` TINYINT NOT NULL,
                                 `parent_folder_id` INT UNSIGNED NOT NULL
 );
 CREATE TABLE `Flashcards_Progresses`(

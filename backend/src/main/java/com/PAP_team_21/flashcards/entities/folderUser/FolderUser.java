@@ -1,6 +1,7 @@
 package com.PAP_team_21.flashcards.entities.folderUser;
 
 
+import com.PAP_team_21.flashcards.AccessLevel;
 import com.PAP_team_21.flashcards.entities.customer.Customer;
 import com.PAP_team_21.flashcards.entities.folder.Folder;
 import jakarta.persistence.*;
@@ -28,7 +29,8 @@ public class FolderUser {
     private Folder flashcardFolder;
 
     @Column(name = "access_level")
-    private int accessLevel;
+    @Enumerated(EnumType.ORDINAL)
+    private AccessLevel accessLevel;
 
     // @Column(name = "parent_folder_id", insertable = false, updatable = false)
     @ManyToOne
@@ -36,7 +38,7 @@ public class FolderUser {
     private Folder parentFolder;
     public FolderUser() {}
 
-    public FolderUser(Customer customer, Folder flashcardFolder, int accessLevel, Folder parentFolder) {
+    public FolderUser(Customer customer, Folder flashcardFolder,AccessLevel accessLevel, Folder parentFolder) {
         this.customer = customer;
         this.flashcardFolder = flashcardFolder;
         this.accessLevel = accessLevel;
