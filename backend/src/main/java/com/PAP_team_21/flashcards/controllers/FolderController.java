@@ -68,18 +68,23 @@ public class FolderController {
         return ResponseEntity.badRequest().body("No user with this id found");    }
 
     @PostMapping("/create")
-    public ResponseEntity<?> createFolder(Authentication authentication, Folder folder) {
+    public ResponseEntity<?> createFolder(Authentication authentication,@RequestBody Folder folder) {
 
         Optional<Folder> found = folderRepository.findById(folder.getId());
-        if(found.isPresent())
+        if(found.isPresent()) {
             return ResponseEntity.badRequest().body("folder already exists");
-        else
-            return ResponseEntity.ok(folderRepository.save(folder));
+        }
+         if(folder.getName() == null)
+                return ResponseEntity.badRequest().body("name cannot be null");
+
+        // @TODO set ownership to this user
+
+        return ResponseEntity.ok(folderRepository.save(folder));
 
     }
 
     @PostMapping("/update")
-    public ResponseEntity<?> updateFolder(Authentication authentication, Folder folder) {
+    public ResponseEntity<?> updateFolder(Authentication authentication,@RequestBody Folder folder) {
 
         Optional<Folder> found = folderRepository.findById(folder.getId());
         if(found.isEmpty())
@@ -88,7 +93,7 @@ public class FolderController {
             return ResponseEntity.ok(folderRepository.save(folder));    }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<?> deleteFolder(Authentication authentication, int folderId) {
+    public ResponseEntity<?> deleteFolder(Authentication authentication, @RequestParam int folderId) {
         Optional<Folder> found = folderRepository.findById(folderId);
         if(found.isEmpty())
             return ResponseEntity.badRequest().body("folder does not exist");
