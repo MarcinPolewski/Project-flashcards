@@ -94,12 +94,12 @@ CREATE TABLE `Folder_Parent`(
                                 `parent_folder_id` INT UNSIGNED NOT NULL,
                                 `child_folder_id` INT UNSIGNED NOT NULL
 );
-CREATE TABLE `Access_Level`(
-                               `id` INT UNSIGNED NOT NULL,
-                               `customer_id` INT UNSIGNED NOT NULL,
-                               `folder_id` INT UNSIGNED NOT NULL,
-                               `access_level` TINYINT NOT NULL,
-                               PRIMARY KEY(`id`)
+CREATE TABLE `Folder_Access_Level`(
+                                      `id` INT UNSIGNED NOT NULL,
+                                      `customer_id` INT UNSIGNED NOT NULL,
+                                      `folder_id` INT UNSIGNED NOT NULL,
+                                      `access_level` TINYINT NOT NULL,
+                                      PRIMARY KEY(`id`)
 );
 ALTER TABLE
     `Flashcards_Progresses` ADD CONSTRAINT `flashcards_progresses_user_id_foreign` FOREIGN KEY(`user_id`) REFERENCES `Customers`(`id`);
@@ -108,9 +108,9 @@ ALTER TABLE
 ALTER TABLE
     `User_Statistics` ADD CONSTRAINT `user_statistics_user_id_foreign` FOREIGN KEY(`user_id`) REFERENCES `Customers`(`id`);
 ALTER TABLE
-    `Access_Level` ADD CONSTRAINT `access_level_customer_id_foreign` FOREIGN KEY(`customer_id`) REFERENCES `Customers`(`id`);
+    `Folder_Access_Level` ADD CONSTRAINT `folder_access_level_customer_id_foreign` FOREIGN KEY(`customer_id`) REFERENCES `Customers`(`id`);
 ALTER TABLE
-    `Access_Level` ADD CONSTRAINT `access_level_folder_id_foreign` FOREIGN KEY(`folder_id`) REFERENCES `Folders`(`id`);
+    `Folder_Access_Level` ADD CONSTRAINT `folder_access_level_folder_id_foreign` FOREIGN KEY(`folder_id`) REFERENCES `Folders`(`id`);
 ALTER TABLE
     `Customers` ADD CONSTRAINT `customers_root_folder_id_foreign` FOREIGN KEY(`root_folder_id`) REFERENCES `Folders`(`id`);
 ALTER TABLE
@@ -141,6 +141,7 @@ ALTER TABLE
     `Friendships_Notifications` ADD CONSTRAINT `friendships_notifications_friendship_id_foreign` FOREIGN KEY(`friendship_id`) REFERENCES `Friendships`(`id`);
 ALTER TABLE
     `Folders_Decks` ADD CONSTRAINT `folders_decks_folder_id_foreign` FOREIGN KEY(`folder_id`) REFERENCES `Folders`(`id`);
+
 
 -- things from old chart
 CREATE TABLE `Authorities`(
