@@ -37,8 +37,14 @@ CREATE TABLE `Decks`(
 CREATE TABLE `Folders_Users`(
                                 `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
                                 `user_id` INT UNSIGNED NOT NULL,
-                                `flashcard_folder_id` INT UNSIGNED NOT NULL,
-                                `access_level` TINYINT NOT NULL,
+                                `flashcard_parent_relation_id` INT UNSIGNED NOT NULL,
+                                `access_level` TINYINT NOT NULL
+);
+
+
+CREATE TABLE `Folder_Parent`(
+                                `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                                `folder_id` INT UNSIGNED NOT NULL,
                                 `parent_folder_id` INT UNSIGNED NOT NULL
 );
 CREATE TABLE `Flashcards_Progresses`(
@@ -130,7 +136,7 @@ ALTER TABLE
 ALTER TABLE
     `Review_Logs` ADD CONSTRAINT `review_logs_flashcard_id_foreign` FOREIGN KEY(`flashcard_id`) REFERENCES `Flashcards`(`id`);
 ALTER TABLE
-    `Folders_Users` ADD CONSTRAINT `folders_users_flashcard_folder_id_foreign` FOREIGN KEY(`flashcard_folder_id`) REFERENCES `Folders`(`id`);
+    `Folders_Users` ADD CONSTRAINT `folders_users_flashcard_parent_relation_id_foreign` FOREIGN KEY(`flashcard_parent_relation_id`) REFERENCES `Folder_Parent`(`id`);
 ALTER TABLE
     `User_Preferences` ADD CONSTRAINT `user_preferences_user_id_foreign` FOREIGN KEY(`user_id`) REFERENCES `Customers`(`id`);
 ALTER TABLE
@@ -138,4 +144,6 @@ ALTER TABLE
 ALTER TABLE
     `Flashcards_Progresses` ADD CONSTRAINT `flashcards_progresses_flashcard_id_foreign` FOREIGN KEY(`flashcard_id`) REFERENCES `Flashcards`(`id`);
 ALTER TABLE
-    `Folders_Users` ADD CONSTRAINT `folders_users_parent_folder_id_foreign` FOREIGN KEY(`parent_folder_id`) REFERENCES `Folders`(`id`);
+    `Folder_Parent` ADD CONSTRAINT `folder_parent_folder_id_foreign` FOREIGN KEY(`folder_id`) REFERENCES `Folders`(`id`);
+ALTER TABLE
+    `Folder_Parent` ADD CONSTRAINT `folder_parent_parent_folder_id_foreign` FOREIGN KEY(`parent_folder_id`) REFERENCES `Folders`(`id`);
