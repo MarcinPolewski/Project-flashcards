@@ -6,6 +6,8 @@ DROP USER if exists 'springstudent'@'%' ;
 CREATE USER 'springstudent'@'%' IDENTIFIED BY 'springstudent';
 GRANT ALL PRIVILEGES ON * . * TO 'springstudent'@'%';
 
+-- things from new chart
+
 CREATE TABLE `Customers`(
                             `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
                             `email` VARCHAR(255) NOT NULL,
@@ -16,7 +18,8 @@ CREATE TABLE `Customers`(
                             `credentials_expired` BOOLEAN NOT NULL DEFAULT '0',
                             `enabled` BOOLEAN NOT NULL DEFAULT '1',
                             `profile_creation_date` DATETIME NOT NULL,
-                            `profile_picture_path` VARCHAR(255) NOT NULL DEFAULT '/static/profile_pictures/default.jpg'
+                            `profile_picture_path` VARCHAR(255) NULL DEFAULT '/static/profile_pictures/default.jpg',
+                            `root_folder_id` INT UNSIGNED NOT NULL
 );
 ALTER TABLE
     `Customers` ADD UNIQUE `customers_email_unique`(`email`);
@@ -28,24 +31,12 @@ CREATE TABLE `Flashcards`(
 );
 CREATE TABLE `Folders`(
                           `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-                          `name` VARCHAR(255) NOT NULL
+                          `name` VARCHAR(255) NOT NULL,
+                          `access_specyfing_folder_id` INT UNSIGNED NOT NULL
 );
 CREATE TABLE `Decks`(
                         `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
                         `name` VARCHAR(255) NOT NULL
-);
-CREATE TABLE `Folders_Users`(
-                                `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-                                `user_id` INT UNSIGNED NOT NULL,
-                                `flashcard_parent_relation_id` INT UNSIGNED NOT NULL,
-                                `access_level` TINYINT NOT NULL
-);
-
-
-CREATE TABLE `Folder_Parent`(
-                                `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-                                `folder_id` INT UNSIGNED NOT NULL,
-                                `parent_folder_id` INT UNSIGNED NOT NULL
 );
 CREATE TABLE `Flashcards_Progresses`(
                                         `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -98,6 +89,60 @@ CREATE TABLE `Friendships_Notifications`(
                                             `friendship_id` INT UNSIGNED NOT NULL,
                                             `notification_id` INT UNSIGNED NOT NULL
 );
+CREATE TABLE `Folder_Parent`(
+                                `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                                `parent_folder_id` INT UNSIGNED NOT NULL,
+                                `child_folder_id` INT UNSIGNED NOT NULL
+);
+CREATE TABLE `Access_Level`(
+                               `id` INT UNSIGNED NOT NULL,
+                               `customer_id` INT UNSIGNED NOT NULL,
+                               `folder_id` INT UNSIGNED NOT NULL,
+                               `access_level` TINYINT NOT NULL,
+                               PRIMARY KEY(`id`)
+);
+ALTER TABLE
+    `Flashcards_Progresses` ADD CONSTRAINT `flashcards_progresses_user_id_foreign` FOREIGN KEY(`user_id`) REFERENCES `Customers`(`id`);
+ALTER TABLE
+    `Review_Logs` ADD CONSTRAINT `review_logs_user_id_foreign` FOREIGN KEY(`user_id`) REFERENCES `Customers`(`id`);
+ALTER TABLE
+    `User_Statistics` ADD CONSTRAINT `user_statistics_user_id_foreign` FOREIGN KEY(`user_id`) REFERENCES `Customers`(`id`);
+ALTER TABLE
+    `Access_Level` ADD CONSTRAINT `access_level_customer_id_foreign` FOREIGN KEY(`customer_id`) REFERENCES `Customers`(`id`);
+ALTER TABLE
+    `Access_Level` ADD CONSTRAINT `access_level_folder_id_foreign` FOREIGN KEY(`folder_id`) REFERENCES `Folders`(`id`);
+ALTER TABLE
+    `Customers` ADD CONSTRAINT `customers_root_folder_id_foreign` FOREIGN KEY(`root_folder_id`) REFERENCES `Folders`(`id`);
+ALTER TABLE
+    `Flashcards_Progresses` ADD CONSTRAINT `flashcards_progresses_flashcard_id_foreign` FOREIGN KEY(`flashcard_id`) REFERENCES `Flashcards`(`id`);
+ALTER TABLE
+    `Folder_Parent` ADD CONSTRAINT `folder_parent_child_folder_id_foreign` FOREIGN KEY(`child_folder_id`) REFERENCES `Folders`(`id`);
+ALTER TABLE
+    `Friendships` ADD CONSTRAINT `friendships_sender_id_foreign` FOREIGN KEY(`sender_id`) REFERENCES `Customers`(`id`);
+ALTER TABLE
+    `Flashcards` ADD CONSTRAINT `flashcards_deck_id_foreign` FOREIGN KEY(`deck_id`) REFERENCES `Decks`(`id`);
+ALTER TABLE
+    `Friendships_Notifications` ADD CONSTRAINT `friendships_notifications_notification_id_foreign` FOREIGN KEY(`notification_id`) REFERENCES `Notifications`(`id`);
+ALTER TABLE
+    `Folders_Decks` ADD CONSTRAINT `folders_decks_deck_id_foreign` FOREIGN KEY(`deck_id`) REFERENCES `Decks`(`id`);
+ALTER TABLE
+    `Friendships` ADD CONSTRAINT `friendships_receiver_id_foreign` FOREIGN KEY(`receiver_id`) REFERENCES `Customers`(`id`);
+ALTER TABLE
+    `Review_Logs` ADD CONSTRAINT `review_logs_flashcard_id_foreign` FOREIGN KEY(`flashcard_id`) REFERENCES `Flashcards`(`id`);
+ALTER TABLE
+    `Folder_Parent` ADD CONSTRAINT `folder_parent_parent_folder_id_foreign` FOREIGN KEY(`parent_folder_id`) REFERENCES `Folders`(`id`);
+ALTER TABLE
+    `User_Preferences` ADD CONSTRAINT `user_preferences_user_id_foreign` FOREIGN KEY(`user_id`) REFERENCES `Customers`(`id`);
+ALTER TABLE
+    `Folders` ADD CONSTRAINT `folders_access_specyfing_folder_id_foreign` FOREIGN KEY(`access_specyfing_folder_id`) REFERENCES `Folders`(`id`);
+ALTER TABLE
+    `Notifications` ADD CONSTRAINT `notifications_user_id_foreign` FOREIGN KEY(`user_id`) REFERENCES `Customers`(`id`);
+ALTER TABLE
+    `Friendships_Notifications` ADD CONSTRAINT `friendships_notifications_friendship_id_foreign` FOREIGN KEY(`friendship_id`) REFERENCES `Friendships`(`id`);
+ALTER TABLE
+    `Folders_Decks` ADD CONSTRAINT `folders_decks_folder_id_foreign` FOREIGN KEY(`folder_id`) REFERENCES `Folders`(`id`);
+
+-- things from old chart
 CREATE TABLE `Authorities`(
                               `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
                               `name` VARCHAR(255) NOT NULL
@@ -109,41 +154,6 @@ CREATE TABLE `Authorities_Customers`(
 );
 ALTER TABLE
     `Authorities_Customers` ADD CONSTRAINT `authorities_customers_customer_id_foreign` FOREIGN KEY(`customer_id`) REFERENCES `Customers`(`id`);
-ALTER TABLE
-    `Flashcards_Progresses` ADD CONSTRAINT `flashcards_progresses_user_id_foreign` FOREIGN KEY(`user_id`) REFERENCES `Customers`(`id`);
-ALTER TABLE
-    `Notifications` ADD CONSTRAINT `notifications_user_id_foreign` FOREIGN KEY(`user_id`) REFERENCES `Customers`(`id`);
-ALTER TABLE
-    `Friendships_Notifications` ADD CONSTRAINT `friendships_notifications_notification_id_foreign` FOREIGN KEY(`notification_id`) REFERENCES `Notifications`(`id`);
-ALTER TABLE
-    `Folders_Decks` ADD CONSTRAINT `folders_decks_deck_id_foreign` FOREIGN KEY(`deck_id`) REFERENCES `Decks`(`id`);
-ALTER TABLE
-    `Flashcards` ADD CONSTRAINT `flashcards_deck_id_foreign` FOREIGN KEY(`deck_id`) REFERENCES `Decks`(`id`);
-ALTER TABLE
-    `Review_Logs` ADD CONSTRAINT `review_logs_user_id_foreign` FOREIGN KEY(`user_id`) REFERENCES `Customers`(`id`);
-ALTER TABLE
-    `Folders_Decks` ADD CONSTRAINT `folders_decks_folder_id_foreign` FOREIGN KEY(`folder_id`) REFERENCES `Folders`(`id`);
-ALTER TABLE
-    `Friendships` ADD CONSTRAINT `friendships_sender_id_foreign` FOREIGN KEY(`sender_id`) REFERENCES `Customers`(`id`);
-ALTER TABLE
-    `Folders_Users` ADD CONSTRAINT `folders_users_user_id_foreign` FOREIGN KEY(`user_id`) REFERENCES `Customers`(`id`);
-ALTER TABLE
-    `Friendships_Notifications` ADD CONSTRAINT `friendships_notifications_friendship_id_foreign` FOREIGN KEY(`friendship_id`) REFERENCES `Friendships`(`id`);
+
 ALTER TABLE
     `Authorities_Customers` ADD CONSTRAINT `authorities_customers_authority_id_foreign` FOREIGN KEY(`authority_id`) REFERENCES `Authorities`(`id`);
-ALTER TABLE
-    `User_Statistics` ADD CONSTRAINT `user_statistics_user_id_foreign` FOREIGN KEY(`user_id`) REFERENCES `Customers`(`id`);
-ALTER TABLE
-    `Review_Logs` ADD CONSTRAINT `review_logs_flashcard_id_foreign` FOREIGN KEY(`flashcard_id`) REFERENCES `Flashcards`(`id`);
-ALTER TABLE
-    `Folders_Users` ADD CONSTRAINT `folders_users_flashcard_parent_relation_id_foreign` FOREIGN KEY(`flashcard_parent_relation_id`) REFERENCES `Folder_Parent`(`id`);
-ALTER TABLE
-    `User_Preferences` ADD CONSTRAINT `user_preferences_user_id_foreign` FOREIGN KEY(`user_id`) REFERENCES `Customers`(`id`);
-ALTER TABLE
-    `Friendships` ADD CONSTRAINT `friendships_receiver_id_foreign` FOREIGN KEY(`receiver_id`) REFERENCES `Customers`(`id`);
-ALTER TABLE
-    `Flashcards_Progresses` ADD CONSTRAINT `flashcards_progresses_flashcard_id_foreign` FOREIGN KEY(`flashcard_id`) REFERENCES `Flashcards`(`id`);
-ALTER TABLE
-    `Folder_Parent` ADD CONSTRAINT `folder_parent_folder_id_foreign` FOREIGN KEY(`folder_id`) REFERENCES `Folders`(`id`);
-ALTER TABLE
-    `Folder_Parent` ADD CONSTRAINT `folder_parent_parent_folder_id_foreign` FOREIGN KEY(`parent_folder_id`) REFERENCES `Folders`(`id`);
