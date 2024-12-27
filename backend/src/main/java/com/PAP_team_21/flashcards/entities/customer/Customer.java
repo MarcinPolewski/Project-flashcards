@@ -91,7 +91,7 @@ public class Customer {
         this.username = username;
         this.passwordHash = passwordHash;
         this.profileCreationDate = LocalDateTime.now();
-        this.rootFolder = new Folder("ROOT");
+        this.rootFolder = new Folder("ROOT", this);
     }
 
 
@@ -107,6 +107,6 @@ public class Customer {
         this.enabled = enabled;
         this.profileCreationDate = profileCreationDate;
         this.profilePicturePath = profilePicturePath;
-        this.rootFolder = new Folder("ROOT");
+        this.rootFolder = new Folder("ROOT", this);
     }
 }

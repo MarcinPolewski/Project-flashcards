@@ -3,9 +3,11 @@ package com.PAP_team_21.flashcards.entities.folder;
 import com.PAP_team_21.flashcards.AccessLevel;
 import com.PAP_team_21.flashcards.entities.deck.Deck;
 import com.PAP_team_21.flashcards.entities.customer.Customer;
+import com.PAP_team_21.flashcards.entities.folderAccessLevel.FolderAccessLevel;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.DynamicInsert;
 
 import java.util.HashSet;
 import java.util.List;
@@ -15,6 +17,7 @@ import java.util.Set;
 @Table(name = "Folders")
 @Getter
 @Setter
+@DynamicInsert
 public class Folder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,7 +37,7 @@ public class Folder {
                         CascadeType.DETACH, CascadeType.REFRESH})
     private List<Deck> decks;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "Folder_Parent",
             joinColumns = @JoinColumn(name = "child_folder_id"),
@@ -42,31 +45,23 @@ public class Folder {
     )
     private Set<Folder> parents;
 
-    @ManyToMany(mappedBy = "parents")
+    @ManyToMany(mappedBy = "parents", cascade = CascadeType.ALL)
     private Set<Folder> children;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "access_specyfing_folder_id")
-    private Folder accessSpecyfingFolder;
+    private FolderAccessLevel accessLevel;
 
     public Folder() {
     }
-
-    public Folder(String name) {
+    public Folder(String name, Customer customer) {
         this.name = name;
+        this.accessLevel = new FolderAccessLevel(customer, this, AccessLevel.OWNER);
     }
 
-    public Folder(String name, Folder accessSpecyfingFolder) {
+    public Folder(String name, FolderAccessLevel accessSpecyfingFolder) {
         this.name = name;
-        this.accessSpecyfingFolder = accessSpecyfingFolder;
-    }
-
-    @PrePersist
-    public void prePersist(){
-        if(this.accessSpecyfingFolder == null)
-        {
-            this.accessSpecyfingFolder = this;
-        }
+        this.accessLevel = accessSpecyfingFolder;
     }
 
 }

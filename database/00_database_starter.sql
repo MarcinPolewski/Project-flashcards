@@ -95,7 +95,7 @@ CREATE TABLE `Folder_Parent`(
                                 `child_folder_id` INT UNSIGNED NOT NULL
 );
 CREATE TABLE `Folder_Access_Level`(
-                                      `id` INT UNSIGNED NOT NULL,
+                                      `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
                                       `customer_id` INT UNSIGNED NOT NULL,
                                       `folder_id` INT UNSIGNED NOT NULL,
                                       `access_level` TINYINT NOT NULL,
