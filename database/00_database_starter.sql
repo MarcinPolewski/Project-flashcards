@@ -158,3 +158,36 @@ ALTER TABLE
 
 ALTER TABLE
     `Authorities_Customers` ADD CONSTRAINT `authorities_customers_authority_id_foreign` FOREIGN KEY(`authority_id`) REFERENCES `Authorities`(`id`);
+
+-- triggers
+# DELIMITER //
+#
+# CREATE TRIGGER before_insert_disable_fk
+#     BEFORE INSERT ON Folders
+#     FOR EACH ROW
+# BEGIN
+#     SET @OLD_FOREIGN_KEY_CHECKS = @@FOREIGN_KEY_CHECKS;
+#     SET FOREIGN_KEY_CHECKS = 0;
+# END //
+#
+# CREATE TRIGGER after_insert_enable_fk
+#     AFTER INSERT ON Folders
+#     FOR EACH ROW
+# BEGIN
+#
+#     SET FOREIGN_KEY_CHECKS = @OLD_FOREIGN_KEY_CHECKS;
+#     IF NEW.access_specyfing_folder_id IS NULL THEN
+#         SET NEW.access_specyfing_folder_id = NEW.id;
+#     END IF;
+# END //
+
+# CREATE TRIGGER before_insert_folder
+#     AFTER INSERT ON Folders
+#     FOR EACH ROW
+# BEGIN
+#     IF NEW.access_specyfing_folder_id IS NULL THEN
+#         SET NEW.access_specyfing_folder_id = NEW.id;
+#     END IF;
+# END //
+
+# DELIMITER ;

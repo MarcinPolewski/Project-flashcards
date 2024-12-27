@@ -82,11 +82,16 @@ public class Customer {
                         CascadeType.DETACH, CascadeType.REFRESH})
     private List<Authority> authorities;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="root_folder_id")
+    private Folder rootFolder;
 
     public Customer(String email, String username, String passwordHash) {
         this.email = email;
         this.username = username;
         this.passwordHash = passwordHash;
+        this.profileCreationDate = LocalDateTime.now();
+        this.rootFolder = new Folder("ROOT");
     }
 
 
@@ -102,5 +107,6 @@ public class Customer {
         this.enabled = enabled;
         this.profileCreationDate = profileCreationDate;
         this.profilePicturePath = profilePicturePath;
+        this.rootFolder = new Folder("ROOT");
     }
 }
