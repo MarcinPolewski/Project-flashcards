@@ -120,6 +120,8 @@ ALTER TABLE
 ALTER TABLE
     `Friendships` ADD CONSTRAINT `friendships_sender_id_foreign` FOREIGN KEY(`sender_id`) REFERENCES `Customers`(`id`);
 ALTER TABLE
+    `Folders` ADD CONSTRAINT `folders_access_specyfing_folder_id_foreign` FOREIGN KEY(`access_specyfing_folder_id`) REFERENCES `Folder_Access_Level`(`id`);
+ALTER TABLE
     `Flashcards` ADD CONSTRAINT `flashcards_deck_id_foreign` FOREIGN KEY(`deck_id`) REFERENCES `Decks`(`id`);
 ALTER TABLE
     `Friendships_Notifications` ADD CONSTRAINT `friendships_notifications_notification_id_foreign` FOREIGN KEY(`notification_id`) REFERENCES `Notifications`(`id`);
@@ -134,15 +136,11 @@ ALTER TABLE
 ALTER TABLE
     `User_Preferences` ADD CONSTRAINT `user_preferences_user_id_foreign` FOREIGN KEY(`user_id`) REFERENCES `Customers`(`id`);
 ALTER TABLE
-    `Folders` ADD CONSTRAINT `folders_access_specyfing_folder_id_foreign` FOREIGN KEY(`access_specyfing_folder_id`) REFERENCES `Folders`(`id`);
-ALTER TABLE
     `Notifications` ADD CONSTRAINT `notifications_user_id_foreign` FOREIGN KEY(`user_id`) REFERENCES `Customers`(`id`);
 ALTER TABLE
     `Friendships_Notifications` ADD CONSTRAINT `friendships_notifications_friendship_id_foreign` FOREIGN KEY(`friendship_id`) REFERENCES `Friendships`(`id`);
 ALTER TABLE
     `Folders_Decks` ADD CONSTRAINT `folders_decks_folder_id_foreign` FOREIGN KEY(`folder_id`) REFERENCES `Folders`(`id`);
-
-
 -- things from old chart
 CREATE TABLE `Authorities`(
                               `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
