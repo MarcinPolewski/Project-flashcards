@@ -7,7 +7,6 @@ import com.PAP_team_21.flashcards.entities.folder.Folder;
 import com.PAP_team_21.flashcards.entities.folder.FolderDao;
 import com.PAP_team_21.flashcards.entities.folder.FolderJpaRepository;
 import com.PAP_team_21.flashcards.entities.folder.FolderService;
-import com.PAP_team_21.flashcards.entities.folderUser.FolderUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
