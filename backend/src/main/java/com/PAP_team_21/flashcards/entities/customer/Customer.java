@@ -3,6 +3,7 @@ package com.PAP_team_21.flashcards.entities.customer;
 import com.PAP_team_21.flashcards.entities.authority.Authority;
 import com.PAP_team_21.flashcards.entities.flashcardProgress.FlashcardProgress;
 import com.PAP_team_21.flashcards.entities.folder.Folder;
+import com.PAP_team_21.flashcards.entities.folderAccessLevel.FolderAccessLevel;
 import com.PAP_team_21.flashcards.entities.friendship.Friendship;
 import com.PAP_team_21.flashcards.entities.notification.Notification;
 import com.PAP_team_21.flashcards.entities.reviewLog.ReviewLog;
@@ -15,6 +16,7 @@ import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -27,7 +29,7 @@ public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Integer id;
 
     @Column(name = "email")
     private String email;
@@ -86,12 +88,21 @@ public class Customer {
     @JoinColumn(name="root_folder_id")
     private Folder rootFolder;
 
+    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<FolderAccessLevel> folderAccessLevels;
+
     public Customer(String email, String username, String passwordHash) {
         this.email = email;
         this.username = username;
         this.passwordHash = passwordHash;
         this.profileCreationDate = LocalDateTime.now();
         this.rootFolder = new Folder("ROOT", this);
+
+        if(folderAccessLevels == null) {
+            folderAccessLevels = new ArrayList<>();
+        }
+
+        this.folderAccessLevels.add(this.rootFolder.getAccessLevels().get(0));
     }
 
 
@@ -108,5 +119,10 @@ public class Customer {
         this.profileCreationDate = profileCreationDate;
         this.profilePicturePath = profilePicturePath;
         this.rootFolder = new Folder("ROOT", this);
+
+        if(folderAccessLevels == null) {
+            folderAccessLevels = new ArrayList<>();
+        }
+        this.folderAccessLevels.add(this.rootFolder.getAccessLevels().get(0));
     }
 }
