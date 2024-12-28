@@ -50,7 +50,7 @@ public class ReviewLogDaoImpl implements ReviewLogDao {
 
     @Override
     @Transactional
-    public void deleteReviewLogByID(int id) {
+    public void deleteReviewLogById(int id) {
         ReviewLog reviewLog = findById(id);
         Flashcard flashcard = reviewLog.getFlashcard();
         flashcard.getReviewLogs().remove(reviewLog);

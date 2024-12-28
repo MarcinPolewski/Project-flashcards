@@ -14,5 +14,5 @@ public interface ReviewLogDao {
 
     void update(ReviewLog reviewLog);
 
-    void deleteReviewLogByID(int id);
+    void deleteReviewLogById(int id);
 }
