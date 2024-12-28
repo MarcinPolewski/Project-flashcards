@@ -19,7 +19,7 @@ public class UserStatisticsController {
         return userStatisticsDao.findUserStatisticsById(id);
     }
 
-    @GetMapping("/user/{userId}")
+    @GetMapping("/user_id/{userId}")
     public UserStatistics getUserStatisticsByUserId(@PathVariable int userId) {
         return userStatisticsDao.findByUserId(userId);
     }
