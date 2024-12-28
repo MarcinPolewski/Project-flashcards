@@ -44,7 +44,10 @@ public class FolderController {
         Optional<Customer> customer = customerRepository.findByEmail(email);
 
         if(customer.isPresent())
-            return ResponseEntity.ok(folderService.findAllByCustomer(pageable, customer.get()));
+        {
+            return ResponseEntity.ok(customer.get().getRootFolder());
+        }
+            // return ResponseEntity.ok(folderService.findAllByCustomer(pageable, customer.get()));
         return ResponseEntity.badRequest().body("No user with this id found");
 
     }
@@ -59,14 +62,14 @@ public class FolderController {
             @RequestParam(defaultValue = "true") boolean ascending
     )
     {
-        Sort sort = ascending ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
-        Pageable pageable = PageRequest.of(page, size, sort);
-
-        String email = authentication.getName();
-        Optional<Customer> customer = customerRepository.findByEmail(email);
-
-        if(customer.isPresent())
-            return ResponseEntity.ok(folderService.findByCustomersAndName(pageable, customer.get(), matchingThis));
+////        Sort sort = ascending ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+////        Pageable pageable = PageRequest.of(page, size, sort);
+//
+//        String email = authentication.getName();
+//        Optional<Customer> customer = customerRepository.findByEmail(email);
+//
+//        if(customer.isPresent())
+//            return ResponseEntity.ok(customer.get().getRootFolder());
         return ResponseEntity.badRequest().body("No user with this id found");    }
 
     @PostMapping("/create")
