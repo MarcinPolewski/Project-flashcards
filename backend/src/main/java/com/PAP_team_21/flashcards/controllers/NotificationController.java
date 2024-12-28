@@ -1,6 +1,8 @@
-package com.PAP_team_21.flashcards.entities.notification;
+package com.PAP_team_21.flashcards.controllers;
 
 
+import com.PAP_team_21.flashcards.entities.notification.Notification;
+import com.PAP_team_21.flashcards.entities.notification.NotificationDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

@@ -1,5 +1,7 @@
-package com.PAP_team_21.flashcards.entities.friendship;
+package com.PAP_team_21.flashcards.controllers;
 
+import com.PAP_team_21.flashcards.entities.friendship.Friendship;
+import com.PAP_team_21.flashcards.entities.friendship.FriendshipDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

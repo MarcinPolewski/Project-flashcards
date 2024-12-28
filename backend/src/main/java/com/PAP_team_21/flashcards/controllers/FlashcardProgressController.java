@@ -1,5 +1,7 @@
-package com.PAP_team_21.flashcards.entities.flashcardProgress;
+package com.PAP_team_21.flashcards.controllers;
 
+import com.PAP_team_21.flashcards.entities.flashcardProgress.FlashcardProgress;
+import com.PAP_team_21.flashcards.entities.flashcardProgress.FlashcardProgressDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

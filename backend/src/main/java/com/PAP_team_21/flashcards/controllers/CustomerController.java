@@ -1,5 +1,7 @@
-package com.PAP_team_21.flashcards.entities.customer;
+package com.PAP_team_21.flashcards.controllers;
 
+import com.PAP_team_21.flashcards.entities.customer.Customer;
+import com.PAP_team_21.flashcards.entities.customer.CustomerDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
