@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/review_logs")
+@RequestMapping("/api/review_logs")
 public class ReviewLogController {
 
     private final ReviewLogDao reviewLogDao;

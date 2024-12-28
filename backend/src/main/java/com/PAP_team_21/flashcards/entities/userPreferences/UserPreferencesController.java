@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("api/user_preferences")
+@RequestMapping("/api/user_preferences")
 public class UserPreferencesController {
 
     private final UserPreferencesDao userPreferencesDao;
