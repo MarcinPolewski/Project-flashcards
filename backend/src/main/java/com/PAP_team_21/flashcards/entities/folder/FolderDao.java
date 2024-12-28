@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface FolderDao {
 
-    public Page<Folder> getAllFoldersByCustomer(Pageable pageRequest, Customer customer);
-
-    Page<Folder>  findByCustomersAndName(Pageable pageable, Customer customer, String matchingThis);
+//    public Page<Folder> getAllFoldersByCustomer(Pageable pageRequest, Customer customer);
+//
+//    Page<Folder>  findByCustomersAndName(Pageable pageable, Customer customer, String matchingThis);
 }

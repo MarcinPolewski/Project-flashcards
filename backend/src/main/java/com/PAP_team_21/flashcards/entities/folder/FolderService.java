@@ -16,11 +16,6 @@ public class FolderService {
     private final FolderJpaRepository folderRepository;
     private final FolderDao  folderDao;
 
-    public Page<Folder> findAllByCustomer(Pageable pageRequest, Customer customer)
-    {
-        return folderDao.getAllFoldersByCustomer( pageRequest,  customer);
-    }
-    
     public boolean hasFolder(Folder folder)
     {
         return hasFolder(folder.getId());
@@ -44,10 +39,6 @@ public class FolderService {
 
     public Folder save(Folder folder) {
         return folderRepository.save(folder);
-    }
-
-    public Page<Folder>  findByCustomersAndName(Pageable pageable, Customer customer, String matchingThis) {
-        return folderDao.findByCustomersAndName(pageable, customer, matchingThis);
     }
 }
 
