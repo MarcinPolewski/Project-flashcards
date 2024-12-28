@@ -9,6 +9,6 @@ public class JsonViewConfig {
 
     public static class BasicStructures extends Internal {}
 
-    public static class FolderExtended extends Internal {}
+    public static class ExtendedStructures extends Internal {}
 
 }

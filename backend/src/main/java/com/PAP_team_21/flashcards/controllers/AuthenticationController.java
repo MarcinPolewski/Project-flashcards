@@ -5,6 +5,9 @@ import com.PAP_team_21.flashcards.authentication.AuthenticationResponse;
 import com.PAP_team_21.flashcards.authentication.RegisterRequest;
 import com.PAP_team_21.flashcards.entities.customer.Customer;
 import com.PAP_team_21.flashcards.entities.customer.CustomerRepository;
+import com.PAP_team_21.flashcards.entities.folder.Folder;
+import com.PAP_team_21.flashcards.entities.folderAccessLevel.FolderAccessLevel;
+import com.PAP_team_21.flashcards.entities.folderAccessLevel.FolderAccessLevelRepository;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +36,7 @@ public class AuthenticationController {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final CustomerRepository customerRepository;
+    private final FolderAccessLevelRepository folderAccessLevelRepository;
 
     @Value("${jwt.token-valid-time}")
     private long tokenValidTime;
@@ -102,15 +106,20 @@ public class AuthenticationController {
             Customer customer = new Customer(email, name, passwordHash);
             customer.setProfileCreationDate(LocalDateTime.now());
 
-            Customer saved = customerRepository.save(customer);
+            FolderAccessLevel al = customer.getFolderAccessLevels().get(0);
 
-            if(saved.getId() > 0)
+            // @TODO why customerReposiotory.save() doednt work - solution below works just fine
+
+            Optional<Customer> opt = customerRepository.findByEmail(email);
+            if(opt.isPresent())
             {
-                return ResponseEntity.status(HttpStatus.CREATED).body("customer registered");
-            } else {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("registration failed");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("registration failed - user already exists");
             }
-        } catch(Exception e) {
+            folderAccessLevelRepository.save(al);
+            return ResponseEntity.status(HttpStatus.CREATED).body("customer registered");
+
+        }
+        catch(Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("exception occurred: " + e.getMessage());
         }
     }

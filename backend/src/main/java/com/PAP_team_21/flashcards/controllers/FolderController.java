@@ -1,12 +1,15 @@
 package com.PAP_team_21.flashcards.controllers;
 
 import com.PAP_team_21.flashcards.AccessLevel;
+import com.PAP_team_21.flashcards.controllers.requests.FolderCreationRequest;
+import com.PAP_team_21.flashcards.entities.JsonViewConfig;
 import com.PAP_team_21.flashcards.entities.customer.Customer;
 import com.PAP_team_21.flashcards.entities.customer.CustomerRepository;
 import com.PAP_team_21.flashcards.entities.folder.Folder;
 import com.PAP_team_21.flashcards.entities.folder.FolderDao;
 import com.PAP_team_21.flashcards.entities.folder.FolderJpaRepository;
 import com.PAP_team_21.flashcards.entities.folder.FolderService;
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -28,7 +31,8 @@ public class FolderController {
     private final FolderService folderService;
     private final CustomerRepository customerRepository;
 
-    @GetMapping("/get")
+    @GetMapping("/getFolderStructure")
+    @JsonView(JsonViewConfig.Public.class)
     public ResponseEntity<?> getAllFolders(
             Authentication authentication,
             @RequestParam(defaultValue = "0") int page,
@@ -49,10 +53,10 @@ public class FolderController {
         }
             // return ResponseEntity.ok(folderService.findAllByCustomer(pageable, customer.get()));
         return ResponseEntity.badRequest().body("No user with this id found");
-
     }
 
     @GetMapping("/get-by-folder-name")
+    @JsonView(JsonViewConfig.Public.class)
     public ResponseEntity<?> searchByFolderName(
             Authentication authentication,
             @RequestParam(defaultValue = "") String matchingThis,
@@ -74,27 +78,27 @@ public class FolderController {
 
     @PostMapping("/create")
     public ResponseEntity<?> createFolder(Authentication authentication,
-                                          @RequestBody Folder folder,
-                                          @RequestBody AccessLevel accessLevel
+                                          @RequestBody FolderCreationRequest request
     ) {
 
-        Optional<Folder> found = folderService.findById(folder.getId());
-        if(found.isPresent()) {
-            return ResponseEntity.badRequest().body("folder already exists");
+        String email = authentication.getName();
+        Optional<Customer> customer = customerRepository.findByEmail(email);
+
+        if(customer.isEmpty())
+            return ResponseEntity.badRequest().body("No user with this id found");
+
+        Optional<Folder> parentFolder = folderService.findById(request.getParentId());
+        if(parentFolder.isEmpty())
+            return ResponseEntity.badRequest().body("No folder with this id found");
+
+        AccessLevel userAccessLevel = (parentFolder.get()).getAccessLevel(customer.get());
+        if(userAccessLevel.equals(AccessLevel.EDITOR) || userAccessLevel.equals(AccessLevel.OWNER))
+        {
+            Folder folder = new Folder(request.getName(), customer.get(), parentFolder.get());
+            folderService.save(folder);
+            return ResponseEntity.ok("folder created!");
         }
-         if(folder.getName() == null)
-                return ResponseEntity.badRequest().body("name cannot be null");
-
-        // @TODO set ownership to this user
-//        Optional<Customer> customerOptional = customerRepository.findByEmail(authentication.getName());
-//        if(customerOptional.isEmpty())
-//            return ResponseEntity.badRequest().body("No user with this id found");
-//
-//        Customer customer = customerOptional.get();
-//        folder.getFolderUsers().add(new FolderUser(customer, folder, accessLevel, ))
-
-        return ResponseEntity.ok(folderService.save(folder));
-
+        return ResponseEntity.badRequest().body("You do not have permission to create a folder here");
     }
 
     @PostMapping("/update")
