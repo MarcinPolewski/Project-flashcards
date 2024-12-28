@@ -13,7 +13,7 @@ public class NotificationController {
     private final NotificationDao notificationDao;
 
     @Autowired
-    public NotificationController(final NotificationDao notificationDao) {
+    public NotificationController(NotificationDao notificationDao) {
         this.notificationDao = notificationDao;
     }
 
