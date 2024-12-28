@@ -18,11 +18,11 @@ public class PdfGenerator {
         PdfDocument pdfDocument = new PdfDocument(writer);
         Document document = new Document(pdfDocument);
 
-        document.add(new Paragraph("Deck: " + deck.getName()).setBold().setFontSize(18));
+        document.add(new Paragraph("Deck: " + deck.getName()).setFontSize(18));
 
         Table table = new Table(2); // 2 columns
-        table.addHeaderCell(new Cell().add(new Paragraph("Word").setBold()));
-        table.addHeaderCell(new Cell().add(new Paragraph("Definition").setBold()));
+        table.addHeaderCell(new Cell().add(new Paragraph("Word")));
+        table.addHeaderCell(new Cell().add(new Paragraph("Definition")));
 
         for (Flashcard flashcard : deck.getFlashcards()) {
             String word = flashcard.getFront();
