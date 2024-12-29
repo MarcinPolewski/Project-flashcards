@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/folder")
@@ -113,6 +114,7 @@ public class FolderController {
     }
 
     @GetMapping("/getDecks")
+    @JsonView(JsonViewConfig.Public.class)
     public ResponseEntity<?> getAllFolders(
             Authentication authentication,
             @RequestParam(defaultValue = "0") int page,
@@ -146,5 +148,51 @@ public class FolderController {
             }
         }
         return ResponseEntity.badRequest().body("You do not have permission to view this folder");
+    }
+
+    @GetMapping("/children")
+    @JsonView(JsonViewConfig.Public.class)
+    public ResponseEntity<?> getFoldersChildren(Authentication authentication, @RequestParam int folderId) {
+        Optional<Folder> folderOpt = folderService.findById(folderId);
+        if(folderOpt.isEmpty())
+            return ResponseEntity.badRequest().body("No folder with this id found");
+
+        String email = authentication.getName();
+        Optional<Customer> customerOpt = customerRepository.findByEmail(email);
+        if(customerOpt.isEmpty())
+            return ResponseEntity.badRequest().body("No user with this id found");
+
+
+        Folder folder = folderOpt.get();
+        AccessLevel al = folder.getAccessLevel(customerOpt.get());
+        if(al != null)
+        {
+            Set<Folder> children = folder.getChildren();
+            return ResponseEntity.ok(children);
+        }
+
+        return ResponseEntity.badRequest().body("You do not have permission to view this folder");
+    }
+
+    @GetMapping("/accessLevels")
+    @JsonView(JsonViewConfig.Public.class)
+    public ResponseEntity<?> getFoldersAccessLevel(Authentication authentication, @RequestParam int folderId) {
+        Optional<Folder> folderOpt = folderService.findById(folderId);
+        if(folderOpt.isEmpty())
+            return ResponseEntity.badRequest().body("No folder with this id found");
+
+        String email = authentication.getName();
+        Optional<Customer> customerOpt = customerRepository.findByEmail(email);
+        if(customerOpt.isEmpty())
+            return ResponseEntity.badRequest().body("No user with this id found");
+
+        Folder folder = folderOpt.get();
+        AccessLevel al = folder.getAccessLevel(customerOpt.get());
+        if(al != null)
+        {
+            return ResponseEntity.ok(folder.getAccessLevels());
+        }
+
+        return ResponseEntity.badRequest().body("You do not have permission to view to view access levels of this folder");
     }
 }

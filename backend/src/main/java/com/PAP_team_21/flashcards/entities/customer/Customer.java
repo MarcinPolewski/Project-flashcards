@@ -1,5 +1,6 @@
 package com.PAP_team_21.flashcards.entities.customer;
 
+import com.PAP_team_21.flashcards.entities.JsonViewConfig;
 import com.PAP_team_21.flashcards.entities.authority.Authority;
 import com.PAP_team_21.flashcards.entities.flashcardProgress.FlashcardProgress;
 import com.PAP_team_21.flashcards.entities.folder.Folder;
@@ -9,6 +10,7 @@ import com.PAP_team_21.flashcards.entities.notification.Notification;
 import com.PAP_team_21.flashcards.entities.reviewLog.ReviewLog;
 import com.PAP_team_21.flashcards.entities.userPreferences.UserPreferences;
 import com.PAP_team_21.flashcards.entities.userStatistics.UserStatistics;
+import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,15 +31,18 @@ public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
+    @JsonView(JsonViewConfig.Public.class)
     private Integer id;
 
     @Column(name = "email")
+    @JsonView(JsonViewConfig.Public.class)
     private String email;
 
     @Column(name = "password_hash")
     private String passwordHash;
 
     @Column(name = "username")
+    @JsonView(JsonViewConfig.Public.class)
     private String username;
 
     @Column(name = "account_expired")

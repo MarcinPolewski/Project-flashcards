@@ -1,8 +1,10 @@
 package com.PAP_team_21.flashcards.entities.folderAccessLevel;
 
 import com.PAP_team_21.flashcards.AccessLevel;
+import com.PAP_team_21.flashcards.entities.JsonViewConfig;
 import com.PAP_team_21.flashcards.entities.customer.Customer;
 import com.PAP_team_21.flashcards.entities.folder.Folder;
+import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,13 +25,16 @@ public class FolderAccessLevel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
+    @JsonView(JsonViewConfig.Public.class)
     private Integer id;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "customer_id")
+    @JsonView(JsonViewConfig.Public.class)
     private Customer customer;
 
     @Column(name = "access_level")
+    @JsonView(JsonViewConfig.Public.class)
     private AccessLevel accessLevel;
 
     @ManyToMany(cascade = CascadeType.ALL, mappedBy = "accessLevels")
