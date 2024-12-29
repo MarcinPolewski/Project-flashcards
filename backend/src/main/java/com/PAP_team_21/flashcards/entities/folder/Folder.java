@@ -119,8 +119,8 @@ public class Folder {
     public List<Deck> getDecks(int page, int size, String sortBy, boolean ascending) throws IllegalArgumentException {
         return decks.stream()
                 .skip((long) page * size)
-                .limit(size)
                 .sorted(Deck.comparatorBy(sortBy, ascending))
+                .limit(size)
                 .collect(Collectors.toList());
         //return decks.stream().;
 

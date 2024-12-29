@@ -88,7 +88,8 @@ public class FolderController {
         if(folderService.hasFolder(folder))
             return ResponseEntity.badRequest().body("folder already exists");
         else
-            return ResponseEntity.ok(folderService.save(folder));    }
+            return ResponseEntity.ok(folderService.save(folder));
+    }
 
     @DeleteMapping("/delete")
     public ResponseEntity<?> deleteFolder(Authentication authentication, @RequestParam int folderId) {
