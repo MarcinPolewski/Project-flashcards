@@ -55,27 +55,6 @@ public class FolderController {
         return ResponseEntity.badRequest().body("No user with this id found");
     }
 
-    @GetMapping("/get-by-folder-name")
-    @JsonView(JsonViewConfig.Public.class)
-    public ResponseEntity<?> searchByFolderName(
-            Authentication authentication,
-            @RequestParam(defaultValue = "") String matchingThis,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "5") int size,
-            @RequestParam(defaultValue = "id") String sortBy,
-            @RequestParam(defaultValue = "true") boolean ascending
-    )
-    {
-////        Sort sort = ascending ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
-////        Pageable pageable = PageRequest.of(page, size, sort);
-//
-//        String email = authentication.getName();
-//        Optional<Customer> customer = customerRepository.findByEmail(email);
-//
-//        if(customer.isPresent())
-//            return ResponseEntity.ok(customer.get().getRootFolder());
-        return ResponseEntity.badRequest().body("No user with this id found");    }
-
     @PostMapping("/create")
     public ResponseEntity<?> createFolder(Authentication authentication,
                                           @RequestBody FolderCreationRequest request
@@ -111,12 +90,24 @@ public class FolderController {
 
     @DeleteMapping("/delete")
     public ResponseEntity<?> deleteFolder(Authentication authentication, @RequestParam int folderId) {
-        if(folderService.hasFolder(folderId))
+        Optional<Folder> folderOpt = folderService.findById(folderId);
+
+        if(folderOpt.isEmpty())
             return ResponseEntity.badRequest().body("folder does not exist");
-        else
+
+        Folder folder = folderOpt.get();
+        Optional<Customer> customer = customerRepository.findByEmail(authentication.getName());
+
+        if(customer.isEmpty())
+            return ResponseEntity.badRequest().body("No user with this id found");
+
+        AccessLevel al = folder.getAccessLevel(customer.get());
+
+        if(al.equals(AccessLevel.OWNER) || al.equals(AccessLevel.EDITOR))
         {
             folderService.delete(folderId);
             return ResponseEntity.ok("folder deleted");
         }
+        return ResponseEntity.badRequest().body("You do not have permission to delete this folder");
     }
 }
