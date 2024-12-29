@@ -44,7 +44,8 @@ public class Folder {
                         CascadeType.DETACH, CascadeType.REFRESH})
     private List<Deck> decks;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+            CascadeType.DETACH, CascadeType.REFRESH})
     @JoinTable(
             name = "Folder_Parent",
             joinColumns = @JoinColumn(name = "child_folder_id"),
@@ -53,7 +54,9 @@ public class Folder {
     @JsonView(JsonViewConfig.ExtendedStructures.class)
     private Set<Folder> parents;
 
-    @ManyToMany(mappedBy = "parents", cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "parents", cascade =
+            {CascadeType.PERSIST, CascadeType.MERGE,
+            CascadeType.DETACH, CascadeType.REFRESH})
     @JsonView(JsonViewConfig.Public.class)
     private Set<Folder> children;
 
@@ -62,7 +65,9 @@ public class Folder {
 //    @JoinColumn(name = "access_specyfin_folder_id")
 //    private FolderAccessLevel accessLevel;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade =
+            {CascadeType.PERSIST, CascadeType.MERGE,
+                    CascadeType.DETACH, CascadeType.REFRESH})
     @JoinTable(
             name = "Access_Levels_Folders",
             joinColumns = @JoinColumn(name = "folder_id"),
@@ -106,9 +111,9 @@ public class Folder {
         }
         this.accessLevels.add(al);
 
-        if(this.parents == null)
+        if(parents == null)
         {
-            this.parents = new HashSet<>();
+            parents = new HashSet<>();
         }
 
         this.getParents().add(parent);
