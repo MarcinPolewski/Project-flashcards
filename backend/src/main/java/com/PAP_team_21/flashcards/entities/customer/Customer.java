@@ -1,13 +1,16 @@
 package com.PAP_team_21.flashcards.entities.customer;
 
+import com.PAP_team_21.flashcards.entities.JsonViewConfig;
 import com.PAP_team_21.flashcards.entities.authority.Authority;
 import com.PAP_team_21.flashcards.entities.flashcardProgress.FlashcardProgress;
 import com.PAP_team_21.flashcards.entities.folder.Folder;
+import com.PAP_team_21.flashcards.entities.folderAccessLevel.FolderAccessLevel;
 import com.PAP_team_21.flashcards.entities.friendship.Friendship;
 import com.PAP_team_21.flashcards.entities.notification.Notification;
 import com.PAP_team_21.flashcards.entities.reviewLog.ReviewLog;
 import com.PAP_team_21.flashcards.entities.userPreferences.UserPreferences;
 import com.PAP_team_21.flashcards.entities.userStatistics.UserStatistics;
+import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,6 +18,7 @@ import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -27,15 +31,18 @@ public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    @JsonView(JsonViewConfig.Public.class)
+    private Integer id;
 
     @Column(name = "email")
+    @JsonView(JsonViewConfig.Public.class)
     private String email;
 
     @Column(name = "password_hash")
     private String passwordHash;
 
     @Column(name = "username")
+    @JsonView(JsonViewConfig.Public.class)
     private String username;
 
     @Column(name = "account_expired")
@@ -80,18 +87,27 @@ public class Customer {
     @ManyToMany(mappedBy = "customers", fetch = FetchType.LAZY,
             cascade = {CascadeType.PERSIST, CascadeType.MERGE,
                         CascadeType.DETACH, CascadeType.REFRESH})
-    private List<Folder> folders;
-
-    @ManyToMany(mappedBy = "customers", fetch = FetchType.LAZY,
-            cascade = {CascadeType.PERSIST, CascadeType.MERGE,
-                        CascadeType.DETACH, CascadeType.REFRESH})
     private List<Authority> authorities;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="root_folder_id")
+    private Folder rootFolder;
+
+    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<FolderAccessLevel> folderAccessLevels;
 
     public Customer(String email, String username, String passwordHash) {
         this.email = email;
         this.username = username;
         this.passwordHash = passwordHash;
+        this.profileCreationDate = LocalDateTime.now();
+        this.rootFolder = new Folder("ROOT", this);
+
+        if(folderAccessLevels == null) {
+            folderAccessLevels = new ArrayList<>();
+        }
+
+        this.folderAccessLevels.add(this.rootFolder.getAccessLevels().get(0));
     }
 
 
@@ -107,5 +123,11 @@ public class Customer {
         this.enabled = enabled;
         this.profileCreationDate = profileCreationDate;
         this.profilePicturePath = profilePicturePath;
+        this.rootFolder = new Folder("ROOT", this);
+
+        if(folderAccessLevels == null) {
+            folderAccessLevels = new ArrayList<>();
+        }
+        this.folderAccessLevels.add(this.rootFolder.getAccessLevels().get(0));
     }
 }
