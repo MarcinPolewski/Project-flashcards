@@ -12,10 +12,8 @@ import lombok.Setter;
 import net.minidev.json.annotate.JsonIgnore;
 import org.hibernate.annotations.DynamicInsert;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "Folders")
@@ -118,6 +116,13 @@ public class Folder {
 
         this.getParents().add(parent);
     }
+    public List<Deck> getDecks(int page, int size, String sortBy, boolean ascending) throws IllegalArgumentException {
+        return decks.stream()
+                .skip((long) page * size)
+                .limit(size)
+                .sorted(Deck.comparatorBy(sortBy, ascending))
+                .collect(Collectors.toList());
+        //return decks.stream().;
 
-
+    }
 }

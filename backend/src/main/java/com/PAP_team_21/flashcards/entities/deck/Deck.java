@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Comparator;
 import java.util.List;
 
 @Entity
@@ -31,6 +32,18 @@ public class Deck {
             inverseJoinColumns = @JoinColumn(name = "folder_id")
     )
     private List<Folder> folders;
+
+    public static Comparator<Deck> comparatorBy(String fieldName, boolean ascending) throws IllegalArgumentException
+    {
+        Comparator<Deck> comparator =  switch (fieldName) {
+            case "name" -> Comparator.comparing(Deck::getName);
+            case "id" -> Comparator.comparing(Deck::getId);
+            default -> throw new IllegalArgumentException("Unknown field name: " + fieldName);
+        };
+
+        return ascending ? comparator : comparator.reversed();
+    }
+
 
     public Deck() {}
 

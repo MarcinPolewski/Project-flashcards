@@ -5,6 +5,7 @@ import com.PAP_team_21.flashcards.controllers.requests.FolderCreationRequest;
 import com.PAP_team_21.flashcards.entities.JsonViewConfig;
 import com.PAP_team_21.flashcards.entities.customer.Customer;
 import com.PAP_team_21.flashcards.entities.customer.CustomerRepository;
+import com.PAP_team_21.flashcards.entities.deck.Deck;
 import com.PAP_team_21.flashcards.entities.folder.Folder;
 import com.PAP_team_21.flashcards.entities.folder.FolderDao;
 import com.PAP_team_21.flashcards.entities.folder.FolderJpaRepository;
@@ -109,5 +110,41 @@ public class FolderController {
             return ResponseEntity.ok("folder deleted");
         }
         return ResponseEntity.badRequest().body("You do not have permission to delete this folder");
+    }
+
+    @GetMapping("/getDecks")
+    public ResponseEntity<?> getAllFolders(
+            Authentication authentication,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "true") boolean ascending,
+            @RequestParam int folderId
+    )
+    {
+        String email = authentication.getName();
+        Optional<Customer> customerOpt = customerRepository.findByEmail(email);
+        if(customerOpt.isEmpty())
+            return ResponseEntity.badRequest().body("No user with this id found");
+
+        Optional<Folder> folderOpt = folderService.findById(folderId);
+        if(folderOpt.isEmpty())
+            return ResponseEntity.badRequest().body("No folder with this id found");
+
+        Folder folder = folderOpt.get();
+        Customer customer = customerOpt.get();
+        AccessLevel al = folder.getAccessLevel(customer);
+
+        if(al.equals(AccessLevel.EDITOR) || al.equals(AccessLevel.OWNER))
+        {
+            try{
+                List<Deck> decks = folder.getDecks(page, size, sortBy, ascending);
+                return ResponseEntity.ok(decks);
+            } catch(IllegalArgumentException e)
+            {
+                return ResponseEntity.badRequest().body("Invalid sort field, cannot sort by: "  + sortBy);
+            }
+        }
+        return ResponseEntity.badRequest().body("You do not have permission to view this folder");
     }
 }
