@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import AuthSection from "../../AuthSection/AuthSection";
 import { useNavigate } from "react-router-dom";
+import { handlePasswordReset } from "../../../api/handlePasswordReset";
 
 const PasswordReset = () => {
 
@@ -21,7 +22,7 @@ const PasswordReset = () => {
         setError("");
     }
 
-    const handleConfirmPassword = (e) => {
+    const handleConfirmPassword = async (e) => {
         e.preventDefault();
 
         const password = state.password;
@@ -52,8 +53,13 @@ const PasswordReset = () => {
             return;
         }
 
-        alert("Password reset successfully!");
-        navigate("/login");
+        try {
+            await handlePasswordReset(state.password);
+            alert("Password reset successfully!");
+            navigate("/login");
+        } catch (error) {
+            setError("Failed to reset password. Please try again.");
+        }
     }
 
     return <AuthSection>
