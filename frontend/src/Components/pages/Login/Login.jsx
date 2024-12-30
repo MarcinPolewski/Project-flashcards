@@ -5,6 +5,8 @@ import AuthSection from "../../AuthSection/AuthSection";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "../../../api/loginUser";
 
+import { handleOAuth2 } from "../../../utils/handleOAuth2";
+
 const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -21,10 +23,6 @@ const Login = () => {
         setError("Invalid email or password.");
       }
     }
-
-    const handleOAuth2 = (provider) => {
-      window.location.href = `http://localhost:8080/oauth2/authorization/${provider}`;
-    };
 
     return <AuthSection>
         <div className="auth-container">

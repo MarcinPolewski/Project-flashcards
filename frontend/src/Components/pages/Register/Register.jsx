@@ -1,35 +1,75 @@
-import React from "react";
+import React, { useState } from "react";
 
 import '../../AuthSection/Auth.css';
 import AuthSection from "../../AuthSection/AuthSection";
 
+import { handleOAuth2 } from "../../../utils/handleOAuth2";
+import { registerUser } from "../../../api/registerUser";
+import { useNavigate } from "react-router-dom";
+
 const Register = () => {
+
+    const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
+    const navigate = useNavigate();
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await registerUser({username, email, password});
+            navigate("/")
+        } catch (error) {
+            setError(error.response ? error.response.data : "An error occurred");
+        }
+    }
+
     return <AuthSection>
         <div className="auth-auth-container">
             <h2>Sign up</h2>
 
             <div className="auth-social-signin">
-            <button>Sign up with Google</button>
-            <button>Sign up with Facebook</button>
-            <button>Sign up with Github</button>
+            <button onClick={() => handleOAuth2("google")}>Sign up with Google</button>
+            <button onClick={() => handleOAuth2("facebook")}>Sign up with Facebook</button>
+            <button onClick={() => handleOAuth2("github")}>Sign up with Github</button>
             </div>
 
             <div className="auth-email-signin">
             <h2>Or sign up using email</h2>
-            <form>
+            {error && <p style={{ color: "red" }}>{error}</p>}
+            <form onSubmit={handleSubmit}>
                 <div>
                 <label htmlFor="username">Username</label>
-                <input type="text" id="username" name="username" required />
+                <input
+                    type="text"
+                    id="username"
+                    name="username"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    required />
                 </div>
 
                 <div>
                 <label htmlFor="email">Email address</label>
-                <input type="email" id="email" name="email" required />
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required />
                 </div>
 
                 <div>
                 <label htmlFor="password">Password</label>
-                <input type="password" id="password" name="password" required />
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required />
                 </div>
 
                 <div className="auth-remember">
