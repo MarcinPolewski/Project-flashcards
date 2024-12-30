@@ -96,12 +96,13 @@ public class Customer {
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<FolderAccessLevel> folderAccessLevels;
 
-    public Customer(String email, String username, String passwordHash) {
+    public Customer(String email, String username, String passwordHash, String profilePicturePath) {
         this.email = email;
         this.username = username;
         this.passwordHash = passwordHash;
         this.profileCreationDate = LocalDateTime.now();
         this.rootFolder = new Folder("ROOT", this);
+        this.profilePicturePath = profilePicturePath;
 
         if(folderAccessLevels == null) {
             folderAccessLevels = new ArrayList<>();
