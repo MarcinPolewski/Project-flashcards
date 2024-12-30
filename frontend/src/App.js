@@ -16,6 +16,7 @@ import Login from './Components/pages/Login/Login';
 import Register from './Components/pages/Register/Register';
 import ForgotPassword from './Components/pages/ForgotPassword/ForgotPassword';
 import PasswordReset from './Components/pages/ForgotPassword/PasswordReset';
+import PrivateRoute from './Components/PrivateRoute/PrivateRoute';
 
 const APIdummy =
 
@@ -39,19 +40,17 @@ function App() {
     <OverlayProvider>
     <ThemeProvider>
       <BrowserRouter>
-        <Routes>
-          {/*<Route path="/" element={<Home details={APIdummy}/>} />*/}
-          <Route path="/" element={<Home details={APIdummy}/>} />
-          <Route path="/settings" element={<Settings details={APIdummy} />} />
-          <Route path="/statistics" element={<Statistics details={APIdummy} />} />
-          <Route path="/decks" element={<Decks details={APIdummy} />} />
-          <Route path="/import" element={<Import details={APIdummy} />} />
-          <Route path="/create-flashcard" element={<CreateFlashcard details={APIdummy} />} />
-          <Route path="/login" element={<Login/>} />
-          <Route path="/register" element={<Register/>} />
-          <Route path="/forgot-password" element={<ForgotPassword/>} />
-          <Route path="/password-reset" element={<PasswordReset/>} />
-        </Routes>
+      <Routes>
+        <Route path="/" element={<PrivateRoute><Home details={APIdummy}/></PrivateRoute>} />
+        <Route path="/settings" element={<PrivateRoute><Settings details={APIdummy} /></PrivateRoute>} />
+        <Route path="/statistics" element={<PrivateRoute><Statistics details={APIdummy} /></PrivateRoute>} />
+        <Route path="/decks" element={<PrivateRoute><Decks details={APIdummy} /></PrivateRoute>} />
+        <Route path="/create-flashcard" element={<PrivateRoute><CreateFlashcard details={APIdummy} /></PrivateRoute>} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/password-reset" element={<PasswordReset />} />
+      </Routes>
       </BrowserRouter>
     </ThemeProvider>
     </OverlayProvider>
