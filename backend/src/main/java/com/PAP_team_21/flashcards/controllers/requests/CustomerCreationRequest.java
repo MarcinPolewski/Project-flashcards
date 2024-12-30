@@ -15,10 +15,4 @@ public class CustomerCreationRequest {
     String email;
     String passwordHash;
     String username;
-    boolean accountExpired;
-    boolean accountLocked;
-    boolean credentialsExpired;
-    boolean enabled;
-    LocalDateTime creationDate;
-    String profilePicturePath;
 }
