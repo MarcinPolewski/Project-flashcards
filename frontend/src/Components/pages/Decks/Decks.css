@@ -1,0 +1,75 @@
+.decks-container {
+    margin: 30px 170px;
+}
+
+.decks-manipulate {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.decks-filter-button {
+    background-color: var(--continue-button);
+    color: var(--continue-button-text);
+    font-size: 30;
+    font-weight: 600;
+    padding: 10px 40px;
+    margin-bottom: 30px;
+    border-radius: 5%;
+    border: 1px solid var(--section-border);
+    cursor: pointer;
+
+}
+
+.decks-input {
+    font-size: 30;
+    width: 50%;
+    min-height: 30px;
+    margin-bottom: 30px;
+}
+
+.filter-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+}
+
+.filter-item input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.filter-item label {
+    cursor: pointer;
+}
+
+.filter-reverse {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+    font-size: 1.2rem;
+}
+
+.filter-reverse input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.filter-options h3 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+}
+
+.filter-options {
+    background: var(--filter-background);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px var(--box-shadow);
+    width: 400px;
+    max-width: 90%;
+}

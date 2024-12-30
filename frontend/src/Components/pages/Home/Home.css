@@ -1,0 +1,93 @@
+.home {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.home-latest-reviews {
+    margin-bottom: 40px;
+}
+
+.latest-reviews-title {
+    font-size: 1.5em;
+    margin-bottom: 15px;
+}
+
+.latest-reviews-decks {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin: 10px 100px;
+    gap: 20px;
+}
+
+.latest-review-deck {
+    flex: 1;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    max-width: 50vh;
+    height: auto;
+    min-height: 200px;
+    box-shadow: 0px 4px 6px var(--box-shadow);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.continue-button {
+    margin-top: 15px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: var(--continue-button);
+    color: var(--continue-button-text);
+    cursor: pointer;
+    width: 80%;
+    max-width: 150px;
+    align-self: center;
+}
+
+.home-my-decks {
+    margin-top: 20px;
+}
+
+.my-decks-buttons {
+    display: flex;
+    gap: 20px;
+}
+
+.my-decks-buttons button {
+    padding: 10px 15px;
+    border: 1px solid var(--section-border);
+    background: var(--my-decks-background);
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.active-tab {
+    color: var(--active-tab-text);
+    text-decoration: underline;
+}
+
+.my-decks-container {
+    margin-top: 20px;
+    max-height: 500px;
+    overflow: hidden;
+    position: relative;
+}
+
+.my-decks-container::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 50px;
+    background: linear-gradient(to bottom, transparent, var(--my-decks-background));
+}
+
+.react-circular-progressbar {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto;
+}

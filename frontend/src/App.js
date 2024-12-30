@@ -1,24 +1,61 @@
-import logo from './logo.svg';
 import './App.css';
+import { ThemeProvider } from './contexts/ThemeContext/ThemeContext';
+import { OverlayProvider } from './contexts/OverlayContext/OverlayContext';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+import Home from './Components/pages/Home/Home';
+import Settings from './Components/pages/Settings/Settings';
+import CreateFlashcard from './Components/pages/CreateFlashcard/CreateFlashcard';
+import Decks from './Components/pages/Decks/Decks';
+import Import from './Components/pages/Import/Import';
+import Statistics from './Components/pages/Statistics/Statistics';
+
+/* Avatar for testing */
+import testAvatar from './assets/test/test-avatar.png';
+import Login from './Components/pages/Login/Login';
+import Register from './Components/pages/Register/Register';
+import ForgotPassword from './Components/pages/ForgotPassword/ForgotPassword';
+import PasswordReset from './Components/pages/ForgotPassword/PasswordReset';
+
+const APIdummy =
+
+  /* debug */
+
+  {
+    avatar: testAvatar,
+    username: "Kacper",
+    email: "kacper@polska.pl",
+    daysLearning: 212, longestStreak: 20, currentStreak: 2
+  }
+
+  /* this will be fetched from API*/
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+
+    /* ATM no sections and no routing */
+
+    <OverlayProvider>
+    <ThemeProvider>
+      <BrowserRouter>
+        <Routes>
+          {/*<Route path="/" element={<Home details={APIdummy}/>} />*/}
+          <Route path="/" element={<Home details={APIdummy}/>} />
+          <Route path="/settings" element={<Settings details={APIdummy} />} />
+          <Route path="/statistics" element={<Statistics details={APIdummy} />} />
+          <Route path="/decks" element={<Decks details={APIdummy} />} />
+          <Route path="/import" element={<Import details={APIdummy} />} />
+          <Route path="/create-flashcard" element={<CreateFlashcard details={APIdummy} />} />
+          <Route path="/login" element={<Login/>} />
+          <Route path="/register" element={<Register/>} />
+          <Route path="/forgot-password" element={<ForgotPassword/>} />
+          <Route path="/password-reset" element={<PasswordReset/>} />
+        </Routes>
+      </BrowserRouter>
+    </ThemeProvider>
+    </OverlayProvider>
+
   );
 }
 
