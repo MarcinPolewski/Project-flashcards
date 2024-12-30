@@ -15,4 +15,5 @@ public class CustomerCreationRequest {
     String email;
     String passwordHash;
     String username;
+    String profilePicturePath;
 }
