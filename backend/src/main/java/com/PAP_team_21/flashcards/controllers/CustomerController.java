@@ -45,7 +45,7 @@ public class CustomerController {
         Sort sort = ascending ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
         Pageable pageable = PageRequest.of(page, size, sort);
 
-        List<Customer> customers = customerRepository.findAll();
+        List<Customer> customers = customerRepository.findAll(pageable).getContent();
 
         if (customers.isEmpty())
         {
