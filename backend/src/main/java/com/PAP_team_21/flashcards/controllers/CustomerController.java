@@ -24,7 +24,7 @@ public class CustomerController {
 
     private final CustomerRepository customerRepository;
 
-    @GetMapping("/all_customers")
+    @GetMapping("/allCustomers")
     @JsonView(JsonViewConfig.Public.class)
     public ResponseEntity<?> getAllCustomers(
             Authentication authentication,

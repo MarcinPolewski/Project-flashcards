@@ -25,7 +25,7 @@ public class AuthorityController {
     private final AuthorityRepository authorityRepository;
     private final CustomerRepository customerRepository;
 
-    @GetMapping("/all_authorities")
+    @GetMapping("/allAuthorities")
     public ResponseEntity<?> getAllAuthorities(
             Authentication authentication,
             @RequestParam(defaultValue = "0") int page,
@@ -85,7 +85,7 @@ public class AuthorityController {
         return ResponseEntity.ok(authority);
     }
 
-    @PostMapping("/update_{id}")
+    @PostMapping("/update{id}")
     public ResponseEntity<?> updateAuthority(Authentication authentication,
                                              @PathVariable int id,
                                              @RequestBody AuthorityUpdateRequest request) {
