@@ -3,6 +3,7 @@ package com.PAP_team_21.flashcards.controllers;
 import com.PAP_team_21.flashcards.AccessLevel;
 import com.PAP_team_21.flashcards.controllers.requests.FlashcardProgressCreateRequest;
 import com.PAP_team_21.flashcards.controllers.requests.FlashcardProgressUpdateRequest;
+import com.PAP_team_21.flashcards.entities.JsonViewConfig;
 import com.PAP_team_21.flashcards.entities.customer.Customer;
 import com.PAP_team_21.flashcards.entities.customer.CustomerRepository;
 import com.PAP_team_21.flashcards.entities.deck.Deck;
@@ -10,6 +11,7 @@ import com.PAP_team_21.flashcards.entities.flashcard.Flashcard;
 import com.PAP_team_21.flashcards.entities.flashcard.FlashcardRepository;
 import com.PAP_team_21.flashcards.entities.flashcardProgress.FlashcardProgress;
 import com.PAP_team_21.flashcards.entities.flashcardProgress.FlashcardProgressRepository;
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -27,6 +29,7 @@ public class FlashcardProgressController {
     private FlashcardProgressRepository flashcardProgressRepository;
 
     @GetMapping("/{id}")
+    @JsonView(JsonViewConfig.Public.class)
     public ResponseEntity<?> getFlashcardProgress(Authentication authentication, @PathVariable int id) {
         String email = authentication.getName();
         Optional<Customer> customerOpt= customerRepository.findByEmail(email);
