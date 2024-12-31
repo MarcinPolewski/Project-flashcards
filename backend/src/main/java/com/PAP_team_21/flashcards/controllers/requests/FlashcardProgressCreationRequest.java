@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class FlashcardProgressCreateRequest {
+public class FlashcardProgressCreationRequest {
     int flashcardId;
     int userId;
     LocalDateTime nextReview;

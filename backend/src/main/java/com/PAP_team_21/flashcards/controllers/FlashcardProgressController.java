@@ -1,7 +1,7 @@
 package com.PAP_team_21.flashcards.controllers;
 
 import com.PAP_team_21.flashcards.AccessLevel;
-import com.PAP_team_21.flashcards.controllers.requests.FlashcardProgressCreateRequest;
+import com.PAP_team_21.flashcards.controllers.requests.FlashcardProgressCreationRequest;
 import com.PAP_team_21.flashcards.controllers.requests.FlashcardProgressUpdateRequest;
 import com.PAP_team_21.flashcards.entities.JsonViewConfig;
 import com.PAP_team_21.flashcards.entities.customer.Customer;
@@ -60,7 +60,7 @@ public class FlashcardProgressController {
 
     @PostMapping("/create")
     public ResponseEntity<?> createFlashcardProgress(Authentication authentication,
-                                                     @RequestBody FlashcardProgressCreateRequest request) {
+                                                     @RequestBody FlashcardProgressCreationRequest request) {
         String email = authentication.getName();
         Optional<Customer> customerOpt= customerRepository.findByEmail(email);
         if (customerOpt.isEmpty())
