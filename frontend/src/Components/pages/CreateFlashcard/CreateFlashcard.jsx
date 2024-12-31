@@ -2,13 +2,16 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../../Navbar/Navbar";
 import './CreateFlashcard.css';
+import testDecks from "../../../assets/test/testDecks";
+
 
 const CreateFlashcard = (props) => {
     const navigate = useNavigate();
     
     return (
+        <div className = "main-container">
+        <Navbar details = {props.details} />
         <div className = "create-flashcard">
-            <Navbar details = {props.details} />
     
             <div className = "flashcard-container">
     
@@ -17,10 +20,12 @@ const CreateFlashcard = (props) => {
                 <div className = "inputs-container">
                     <div className = "input-group">
                         <label htmlFor = "deck"> Choose Deck </label>
-                        <select id = "deck" className = "dropdown">
-                            <option value = "deck1"> Owoce </option>
-                            <option value = "deck2"> Japoński N3 </option>
-                            <option value = "deck3"> Francuski A1 </option>
+                        <select id="deck" className="dropdown">
+                            {testDecks.map((deck, index) => (
+                            <option key={index} value={`deck${index + 1}`}>
+                                {deck.title}
+                            </option>
+                            ))}
                         </select>
                     </div>
     
@@ -36,6 +41,7 @@ const CreateFlashcard = (props) => {
                 </div>
     
             </div>
+        </div>
         </div>
     );
 }
