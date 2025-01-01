@@ -5,6 +5,9 @@ import com.PAP_team_21.flashcards.controllers.requests.CustomerUpdateRequest;
 import com.PAP_team_21.flashcards.entities.JsonViewConfig;
 import com.PAP_team_21.flashcards.entities.customer.Customer;
 import com.PAP_team_21.flashcards.entities.customer.CustomerRepository;
+import com.PAP_team_21.flashcards.entities.folder.Folder;
+import com.PAP_team_21.flashcards.entities.friendship.Friendship;
+import com.PAP_team_21.flashcards.entities.notification.Notification;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -136,4 +139,78 @@ public class CustomerController {
         return ResponseEntity.ok("Customer deleted successfully");
     }
 
+    @GetMapping("/getSelf")
+    @JsonView(JsonViewConfig.Public.class)
+    public ResponseEntity<?> getSelf(Authentication authentication) {
+        String email = authentication.getName();
+        Optional<Customer> customerOpt= customerRepository.findByEmail(email);
+        if(customerOpt.isEmpty())
+        {
+            return ResponseEntity.badRequest().body("No user with this id found");
+        }
+
+        Customer customer = customerOpt.get();
+        return ResponseEntity.ok(customer);
+    }
+
+    @GetMapping("/getReceivedFriendships")
+    @JsonView(JsonViewConfig.Public.class)
+    public ResponseEntity<?> getReceivedFriendships(Authentication authentication) {
+        String email = authentication.getName();
+        Optional<Customer> customerOpt= customerRepository.findByEmail(email);
+        if(customerOpt.isEmpty())
+        {
+            return ResponseEntity.badRequest().body("No user with this id found");
+        }
+        Customer customer = customerOpt.get();
+
+        List<Friendship> receivedFriendships = customer.getReceivedFriendships();
+        return ResponseEntity.ok(receivedFriendships);
+    }
+
+    @GetMapping("/getSentFriendships")
+    @JsonView(JsonViewConfig.Public.class)
+    public ResponseEntity<?> getSentFriendships(Authentication authentication) {
+        String email = authentication.getName();
+        Optional<Customer> customerOpt= customerRepository.findByEmail(email);
+        if(customerOpt.isEmpty())
+        {
+            return ResponseEntity.badRequest().body("No user with this id found");
+        }
+        Customer customer = customerOpt.get();
+
+        List<Friendship> sentFriendships = customer.getSentFriendships();
+        return ResponseEntity.ok(sentFriendships);
+    }
+
+    @GetMapping("/getNotifications")
+    @JsonView(JsonViewConfig.Public.class)
+    public ResponseEntity<?> getNotifications(Authentication authentication) {
+        String email = authentication.getName();
+        Optional<Customer> customerOpt= customerRepository.findByEmail(email);
+        if(customerOpt.isEmpty())
+        {
+            return ResponseEntity.badRequest().body("No user with this id found");
+        }
+        Customer customer = customerOpt.get();
+
+        List<Notification> notifications = customer.getNotifications();
+        return ResponseEntity.ok(notifications);
+    }
+
+    @GetMapping("/getRootFolder")
+    @JsonView(JsonViewConfig.Public.class)
+    public ResponseEntity<?> getRootFolder(Authentication authentication) {
+        String email = authentication.getName();
+        Optional<Customer> customerOpt= customerRepository.findByEmail(email);
+        if(customerOpt.isEmpty())
+        {
+            return ResponseEntity.badRequest().body("No user with this id found");
+        }
+        Customer customer = customerOpt.get();
+
+        Folder rootFolder = customer.getRootFolder();
+        return ResponseEntity.ok(rootFolder);
+    }
 }
+
