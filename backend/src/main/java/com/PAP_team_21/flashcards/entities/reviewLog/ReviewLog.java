@@ -45,4 +45,11 @@ public class ReviewLog {
         this.when = when;
         this.userAnswer = userAnswer;
     }
+
+    public ReviewLog(int flashcardId, int userId, int userAnswer) {
+        this.flashcardId = flashcardId;
+        this.userId = userId;
+        this.when = LocalDateTime.now();
+        this.userAnswer = userAnswer;
+    }
 }
