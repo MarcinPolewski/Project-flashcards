@@ -73,7 +73,7 @@ public class ReviewLogController {
     }
 
     @PostMapping("/update")
-    public ResponseEntity<?> createReviewLog(Authentication authentication,
+    public ResponseEntity<?> updateReviewLog(Authentication authentication,
                                              @RequestBody ReviewLogUpdateRequest request) {
         String email = authentication.getName();
         Optional<Customer> customerOpt = customerRepository.findByEmail(email);

@@ -63,7 +63,7 @@ public class NotificationController {
     }
 
     @PostMapping("/update")
-    public ResponseEntity<?> createNotification(Authentication authentication,
+    public ResponseEntity<?> updateNotification(Authentication authentication,
                                                 @RequestBody NotificationUpdateRequest request) {
         String email = authentication.getName();
         Optional<Customer> customerOpt = customerRepository.findByEmail(email);

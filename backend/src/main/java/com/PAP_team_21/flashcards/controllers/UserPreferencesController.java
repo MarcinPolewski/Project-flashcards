@@ -67,7 +67,7 @@ public class UserPreferencesController {
     }
 
     @PostMapping("/update")
-    public ResponseEntity<?> createUserPreferences(Authentication authentication,
+    public ResponseEntity<?> updateUserPreferences(Authentication authentication,
                                                    @RequestBody UserPreferencesUpdateRequest request) {
         String email = authentication.getName();
         Optional<Customer> customerOpt = customerRepository.findByEmail(email);
