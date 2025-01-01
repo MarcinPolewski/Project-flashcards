@@ -2,10 +2,12 @@ package com.PAP_team_21.flashcards.controllers;
 
 import com.PAP_team_21.flashcards.controllers.requests.UserPreferencesCreationRequest;
 import com.PAP_team_21.flashcards.controllers.requests.UserPreferencesUpdateRequest;
+import com.PAP_team_21.flashcards.entities.JsonViewConfig;
 import com.PAP_team_21.flashcards.entities.customer.Customer;
 import com.PAP_team_21.flashcards.entities.customer.CustomerRepository;
 import com.PAP_team_21.flashcards.entities.userPreferences.UserPreferences;
 import com.PAP_team_21.flashcards.entities.userPreferences.UserPreferencesRepository;
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -22,6 +24,7 @@ public class UserPreferencesController {
     private final CustomerRepository customerRepository;
 
     @GetMapping("/{id}")
+    @JsonView(JsonViewConfig.Public.class)
     public ResponseEntity<?> getUserPreferences(Authentication authentication, @PathVariable int id) {
         String email = authentication.getName();
         Optional<Customer> customerOpt = customerRepository.findByEmail(email);
