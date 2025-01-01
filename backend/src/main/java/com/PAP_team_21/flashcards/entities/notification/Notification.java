@@ -5,6 +5,8 @@ import com.PAP_team_21.flashcards.entities.friendship.Friendship;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.cglib.core.Local;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -50,6 +52,14 @@ public class Notification {
         this.received = received;
         this.text = text;
         this.creationDate = creationDate;
+        this.receivedDate = receivedDate;
+    }
+
+    public Notification(int userId, boolean received, String text, LocalDateTime receivedDate) {
+        this.userId = userId;
+        this.received = received;
+        this.text = text;
+        this.creationDate = LocalDateTime.now();
         this.receivedDate = receivedDate;
     }
 }
