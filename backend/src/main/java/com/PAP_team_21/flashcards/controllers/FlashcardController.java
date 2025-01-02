@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/deck")
+@RequestMapping("/flashcard")
 @RequiredArgsConstructor
 public class FlashcardController {
     private final CustomerRepository customerRepository;
