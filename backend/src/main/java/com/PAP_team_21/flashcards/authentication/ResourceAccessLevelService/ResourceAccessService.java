@@ -1,7 +1,9 @@
-package com.PAP_team_21.flashcards.authentication;
+package com.PAP_team_21.flashcards.authentication.ResourceAccessLevelService;
 
-import com.PAP_team_21.flashcards.AccessLevel;
 import com.PAP_team_21.flashcards.Errors.ResourceNotFoundException;
+import com.PAP_team_21.flashcards.authentication.ResourceAccessLevelService.DeckAccessServiceResponse;
+import com.PAP_team_21.flashcards.authentication.ResourceAccessLevelService.FlashcardAccessServiceResponse;
+import com.PAP_team_21.flashcards.authentication.ResourceAccessLevelService.FolderAccessServiceResponse;
 import com.PAP_team_21.flashcards.entities.customer.Customer;
 import com.PAP_team_21.flashcards.entities.customer.CustomerRepository;
 import com.PAP_team_21.flashcards.entities.deck.Deck;
@@ -10,7 +12,6 @@ import com.PAP_team_21.flashcards.entities.flashcard.Flashcard;
 import com.PAP_team_21.flashcards.entities.flashcard.FlashcardRepository;
 import com.PAP_team_21.flashcards.entities.folder.Folder;
 import com.PAP_team_21.flashcards.entities.folder.FolderJpaRepository;
-import jakarta.persistence.Access;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -35,7 +36,7 @@ public class ResourceAccessService {
         return customer.get();
     }
 
-    public AccessLevel getFolderAccessLevel(Authentication authentication, int folderId) throws ResourceNotFoundException
+    public FolderAccessServiceResponse getFolderAccessLevel(Authentication authentication, int folderId) throws ResourceNotFoundException
     {
         Customer customer = getCustomer(authentication);
 
@@ -43,10 +44,10 @@ public class ResourceAccessService {
         if(folder.isEmpty())
             throw new ResourceNotFoundException("Folder not found");
 
-        return folder.get().getAccessLevel(customer);
+        return new FolderAccessServiceResponse(folder.get(), folder.get().getAccessLevel(customer));
     }
 
-    public AccessLevel getDeckAccessLevel(Authentication authentication, int deckId) throws ResourceNotFoundException
+    public DeckAccessServiceResponse getDeckAccessLevel(Authentication authentication, int deckId) throws ResourceNotFoundException
     {
         Customer customer = getCustomer(authentication);
 
@@ -54,10 +55,10 @@ public class ResourceAccessService {
         if(deck.isEmpty())
             throw new ResourceNotFoundException("Deck not found");
 
-        return deck.get().getAccessLevel(customer);
+        return new DeckAccessServiceResponse(deck.get(), deck.get().getAccessLevel(customer));
     }
 
-    public AccessLevel getFlashcardAccessLevel(Authentication authentication, int flashcardId)
+    public FlashcardAccessServiceResponse getFlashcardAccessLevel(Authentication authentication, int flashcardId)
     {
         Customer customer = getCustomer(authentication);
 
@@ -66,7 +67,6 @@ public class ResourceAccessService {
         if(flashcard.isEmpty())
             throw new ResourceNotFoundException("Flashcard not found");
 
-        return flashcard.get().getAccessLevel(customer);
+        return new FlashcardAccessServiceResponse(flashcard.get(), flashcard.get().getAccessLevel(customer));
     }
-
 }
