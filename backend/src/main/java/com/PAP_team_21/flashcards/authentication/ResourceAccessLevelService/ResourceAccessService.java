@@ -44,7 +44,7 @@ public class ResourceAccessService {
         if(folder.isEmpty())
             throw new ResourceNotFoundException("Folder not found");
 
-        return new FolderAccessServiceResponse(folder.get(), folder.get().getAccessLevel(customer));
+        return new FolderAccessServiceResponse(folder.get(), folder.get().getAccessLevel(customer), customer);
     }
 
     public DeckAccessServiceResponse getDeckAccessLevel(Authentication authentication, int deckId) throws ResourceNotFoundException
@@ -55,7 +55,7 @@ public class ResourceAccessService {
         if(deck.isEmpty())
             throw new ResourceNotFoundException("Deck not found");
 
-        return new DeckAccessServiceResponse(deck.get(), deck.get().getAccessLevel(customer));
+        return new DeckAccessServiceResponse(deck.get(), deck.get().getAccessLevel(customer), customer);
     }
 
     public FlashcardAccessServiceResponse getFlashcardAccessLevel(Authentication authentication, int flashcardId)
@@ -67,6 +67,6 @@ public class ResourceAccessService {
         if(flashcard.isEmpty())
             throw new ResourceNotFoundException("Flashcard not found");
 
-        return new FlashcardAccessServiceResponse(flashcard.get(), flashcard.get().getAccessLevel(customer));
+        return new FlashcardAccessServiceResponse(flashcard.get(), flashcard.get().getAccessLevel(customer), customer);
     }
 }
