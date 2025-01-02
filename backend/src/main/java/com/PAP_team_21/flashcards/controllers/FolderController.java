@@ -1,7 +1,11 @@
 package com.PAP_team_21.flashcards.controllers;
 
 import com.PAP_team_21.flashcards.AccessLevel;
+import com.PAP_team_21.flashcards.Errors.ResourceNotFoundException;
+import com.PAP_team_21.flashcards.authentication.ResourceAccessLevelService.FolderAccessServiceResponse;
+import com.PAP_team_21.flashcards.authentication.ResourceAccessLevelService.ResourceAccessService;
 import com.PAP_team_21.flashcards.controllers.requests.FolderCreationRequest;
+import com.PAP_team_21.flashcards.controllers.requests.FolderUpdateRequest;
 import com.PAP_team_21.flashcards.entities.JsonViewConfig;
 import com.PAP_team_21.flashcards.entities.customer.Customer;
 import com.PAP_team_21.flashcards.entities.customer.CustomerRepository;
@@ -12,6 +16,7 @@ import com.PAP_team_21.flashcards.entities.folder.FolderJpaRepository;
 import com.PAP_team_21.flashcards.entities.folder.FolderService;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -32,6 +37,7 @@ public class FolderController {
 
     private final FolderService folderService;
     private final CustomerRepository customerRepository;
+    private final ResourceAccessService resourceAccessService;
 
     @GetMapping("/getFolderStructure")
     @JsonView(JsonViewConfig.Public.class)
@@ -45,6 +51,7 @@ public class FolderController {
     {
         Sort sort = ascending ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
         Pageable pageable = PageRequest.of(page, size, sort);
+
 
         String email = authentication.getName();
         Optional<Customer> customer = customerRepository.findByEmail(email);
@@ -61,21 +68,20 @@ public class FolderController {
     public ResponseEntity<?> createFolder(Authentication authentication,
                                           @RequestBody FolderCreationRequest request
     ) {
+        FolderAccessServiceResponse response;
+        try {
+             response = resourceAccessService.getFolderAccessLevel(authentication, request.getParentId());
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
 
-        String email = authentication.getName();
-        Optional<Customer> customer = customerRepository.findByEmail(email);
+        Folder parentFolder = response.getFolder();
+        AccessLevel userAccessLevel = response.getAccessLevel();
+        Customer customer = response.getCustomer();
 
-        if(customer.isEmpty())
-            return ResponseEntity.badRequest().body("No user with this id found");
-
-        Optional<Folder> parentFolder = folderService.findById(request.getParentId());
-        if(parentFolder.isEmpty())
-            return ResponseEntity.badRequest().body("No folder with this id found");
-
-        AccessLevel userAccessLevel = (parentFolder.get()).getAccessLevel(customer.get());
         if(userAccessLevel.equals(AccessLevel.EDITOR) || userAccessLevel.equals(AccessLevel.OWNER))
         {
-            Folder folder = new Folder(request.getName(), customer.get(), parentFolder.get());
+            Folder folder = new Folder(request.getName(), customer, parentFolder);
             folderService.save(folder);
             return ResponseEntity.ok("folder created!");
         }
@@ -83,34 +89,44 @@ public class FolderController {
     }
 
     @PostMapping("/update")
-    public ResponseEntity<?> updateFolder(Authentication authentication,@RequestBody Folder folder) {
+    public ResponseEntity<?> updateFolder(Authentication authentication,@RequestBody FolderUpdateRequest request) {
 
-        if(folderService.hasFolder(folder))
-            return ResponseEntity.badRequest().body("folder already exists");
-        else
-            return ResponseEntity.ok(folderService.save(folder));
+        FolderAccessServiceResponse response;
+        try {
+            response = resourceAccessService.getFolderAccessLevel(authentication, request.getId());
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+
+        if(response.getAccessLevel().equals(AccessLevel.OWNER) || response.getAccessLevel().equals(AccessLevel.EDITOR))
+        {
+            Folder folder = response.getFolder();
+            folder.setName(request.getName());
+            folderService.save(folder);
+            return ResponseEntity.ok("folder updated");
+        }
+
+        return ResponseEntity.badRequest().body("You do not have permission to update this folder");
     }
 
     @DeleteMapping("/delete")
     public ResponseEntity<?> deleteFolder(Authentication authentication, @RequestParam int folderId) {
-        Optional<Folder> folderOpt = folderService.findById(folderId);
+        FolderAccessServiceResponse response;
+        try {
+            response = resourceAccessService.getFolderAccessLevel(authentication, folderId);
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
 
-        if(folderOpt.isEmpty())
-            return ResponseEntity.badRequest().body("folder does not exist");
+        if(response.getFolder().equals(response.getCustomer().getRootFolder()))
+            return ResponseEntity.badRequest().body("You cannot delete the root folder");
 
-        Folder folder = folderOpt.get();
-        Optional<Customer> customer = customerRepository.findByEmail(authentication.getName());
-
-        if(customer.isEmpty())
-            return ResponseEntity.badRequest().body("No user with this id found");
-
-        AccessLevel al = folder.getAccessLevel(customer.get());
-
-        if(al.equals(AccessLevel.OWNER) || al.equals(AccessLevel.EDITOR))
+        if(response.getAccessLevel().equals(AccessLevel.OWNER) || response.getAccessLevel().equals(AccessLevel.EDITOR))
         {
             folderService.delete(folderId);
             return ResponseEntity.ok("folder deleted");
         }
+
         return ResponseEntity.badRequest().body("You do not have permission to delete this folder");
     }
 
@@ -125,18 +141,14 @@ public class FolderController {
             @RequestParam int folderId
     )
     {
-        String email = authentication.getName();
-        Optional<Customer> customerOpt = customerRepository.findByEmail(email);
-        if(customerOpt.isEmpty())
-            return ResponseEntity.badRequest().body("No user with this id found");
-
-        Optional<Folder> folderOpt = folderService.findById(folderId);
-        if(folderOpt.isEmpty())
-            return ResponseEntity.badRequest().body("No folder with this id found");
-
-        Folder folder = folderOpt.get();
-        Customer customer = customerOpt.get();
-        AccessLevel al = folder.getAccessLevel(customer);
+        FolderAccessServiceResponse response;
+        try {
+            response = resourceAccessService.getFolderAccessLevel(authentication, folderId);
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+        AccessLevel al = response.getAccessLevel();
+        Folder folder = response.getFolder();
 
         if(al.equals(AccessLevel.EDITOR) || al.equals(AccessLevel.OWNER))
         {
@@ -154,18 +166,16 @@ public class FolderController {
     @GetMapping("/children")
     @JsonView(JsonViewConfig.Public.class)
     public ResponseEntity<?> getFoldersChildren(Authentication authentication, @RequestParam int folderId) {
-        Optional<Folder> folderOpt = folderService.findById(folderId);
-        if(folderOpt.isEmpty())
-            return ResponseEntity.badRequest().body("No folder with this id found");
 
-        String email = authentication.getName();
-        Optional<Customer> customerOpt = customerRepository.findByEmail(email);
-        if(customerOpt.isEmpty())
-            return ResponseEntity.badRequest().body("No user with this id found");
+        FolderAccessServiceResponse response;
+        try {
+            response = resourceAccessService.getFolderAccessLevel(authentication, folderId);
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
 
-
-        Folder folder = folderOpt.get();
-        AccessLevel al = folder.getAccessLevel(customerOpt.get());
+        Folder folder = response.getFolder();
+        AccessLevel al = response.getAccessLevel();
         if(al != null)
         {
             Set<Folder> children = folder.getChildren();
@@ -178,17 +188,16 @@ public class FolderController {
     @GetMapping("/accessLevels")
     @JsonView(JsonViewConfig.Public.class)
     public ResponseEntity<?> getFoldersAccessLevel(Authentication authentication, @RequestParam int folderId) {
-        Optional<Folder> folderOpt = folderService.findById(folderId);
-        if(folderOpt.isEmpty())
-            return ResponseEntity.badRequest().body("No folder with this id found");
+        FolderAccessServiceResponse response;
+        try {
+            response = resourceAccessService.getFolderAccessLevel(authentication, folderId);
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
 
-        String email = authentication.getName();
-        Optional<Customer> customerOpt = customerRepository.findByEmail(email);
-        if(customerOpt.isEmpty())
-            return ResponseEntity.badRequest().body("No user with this id found");
+        Folder folder = response.getFolder();
+        AccessLevel al = response.getAccessLevel();
 
-        Folder folder = folderOpt.get();
-        AccessLevel al = folder.getAccessLevel(customerOpt.get());
         if(al != null)
         {
             return ResponseEntity.ok(folder.getAccessLevels());

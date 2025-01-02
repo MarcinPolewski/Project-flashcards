@@ -1,6 +1,10 @@
 package com.PAP_team_21.flashcards.controllers;
 
 import com.PAP_team_21.flashcards.AccessLevel;
+import com.PAP_team_21.flashcards.Errors.ResourceNotFoundException;
+import com.PAP_team_21.flashcards.authentication.ResourceAccessLevelService.DeckAccessServiceResponse;
+import com.PAP_team_21.flashcards.authentication.ResourceAccessLevelService.FlashcardAccessServiceResponse;
+import com.PAP_team_21.flashcards.authentication.ResourceAccessLevelService.ResourceAccessService;
 import com.PAP_team_21.flashcards.controllers.requests.DeckCreationRequest;
 import com.PAP_team_21.flashcards.controllers.requests.DeckUpdateRequest;
 import com.PAP_team_21.flashcards.controllers.requests.FlashcardCreationRequest;
@@ -29,28 +33,28 @@ public class FlashcardController {
     private final FolderJpaRepository folderRepository;
     private final FlashcardRepository flashcardRepository;
 
+    private final ResourceAccessService resourceAccessService;
+
     // create flashcard
     @PostMapping("/create")
     public ResponseEntity<?> createFlashcard(
             Authentication authentication,
             @RequestBody FlashcardCreationRequest request)
     {
-        String email = authentication.getName();
-        Optional<Customer> customerOpt = customerRepository.findByEmail(email);
-        if(customerOpt.isEmpty())
+        DeckAccessServiceResponse response;
+
+        try{
+            response = resourceAccessService.getDeckAccessLevel(authentication, request.getDeckId());
+        } catch (ResourceNotFoundException e)
         {
-            return ResponseEntity.badRequest().body("No user with this id found");
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
 
-        Optional<Deck> deckOpt = deckRepository.findById(request.getDeckId());
-        if(deckOpt.isEmpty())
-        {
-            return ResponseEntity.badRequest().body("No deck with this id found");
-        }
-        AccessLevel al =  deckOpt.get().getAccessLevel(customerOpt.get());
+        AccessLevel al = response.getAccessLevel();
+
         if(al.equals(AccessLevel.OWNER) || al.equals(AccessLevel.EDITOR))
         {
-            Flashcard flashcard = new Flashcard(deckOpt.get(), request.getFront(), request.getBack());
+            Flashcard flashcard = new Flashcard(response.getDeck(), request.getFront(), request.getBack());
             flashcardRepository.save(flashcard);
             return ResponseEntity.ok(flashcard);
         }
@@ -63,26 +67,24 @@ public class FlashcardController {
             Authentication authentication,
             @RequestBody FlashcardUpdateRequest request)
     {
-        String email = authentication.getName();
-        Optional<Customer> customerOpt = customerRepository.findByEmail(email);
-        if(customerOpt.isEmpty())
+        FlashcardAccessServiceResponse response;
+        try{
+            response = resourceAccessService.getFlashcardAccessLevel(authentication, request.getFlashcardId());
+        } catch (ResourceNotFoundException e)
         {
-            return ResponseEntity.badRequest().body("No user with this id found");
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
 
-       Optional<Flashcard> flashcardOpt = flashcardRepository.findById(request.getFlashcardId());
-        if(flashcardOpt.isEmpty())
-        {
-            return ResponseEntity.badRequest().body("No flashcard with this id found");
-        }
-        AccessLevel al = flashcardOpt.get().getAccessLevel(customerOpt.get());
+        AccessLevel al = response.getAccessLevel();
 
         if(al.equals(AccessLevel.OWNER) || al.equals(AccessLevel.EDITOR))
         {
-            flashcardOpt.get().setFront(request.getFront());
-            flashcardOpt.get().setBack(request.getBack());
-            flashcardRepository.save(flashcardOpt.get());
-            return ResponseEntity.ok(flashcardOpt.get());
+            Flashcard flashcard = response.getFlashcard();
+            flashcard.setFront(request.getFront());
+            flashcard.setBack(request.getBack());
+            flashcardRepository.save(flashcard);
+
+            return ResponseEntity.ok(flashcard);
         }
 
         return ResponseEntity.badRequest().body("You do not have permission to create a deck here");
@@ -95,40 +97,26 @@ public class FlashcardController {
             @RequestParam int flashcardId)
     {
 
-        String email = authentication.getName();
-        Optional<Customer> customerOpt = customerRepository.findByEmail(email);
-        if(customerOpt.isEmpty())
+        FlashcardAccessServiceResponse response;
+        try{
+            response = resourceAccessService.getFlashcardAccessLevel(authentication, flashcardId);
+        } catch (ResourceNotFoundException e)
         {
-            return ResponseEntity.badRequest().body("No user with this id found");
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
 
-        Optional<Flashcard> flashcardOpt = flashcardRepository.findById(flashcardId);
-        if(flashcardOpt.isEmpty())
-        {
-            return ResponseEntity.badRequest().body("No flashcard with this id found");
-        }
-        AccessLevel al = flashcardOpt.get().getAccessLevel(customerOpt.get());
+        AccessLevel al = response.getAccessLevel();
 
         if(al.equals(AccessLevel.OWNER) || al.equals(AccessLevel.EDITOR))
         {
+            flashcardRepository.delete(response.getFlashcard());
 
-            flashcardRepository.delete(flashcardOpt.get());
-            return ResponseEntity.ok("flashcard deleted");
+            return ResponseEntity.ok("deleted successfully");
         }
 
         return ResponseEntity.badRequest().body("You do not have permission to create a deck here");
     }
 
-
-    @PostMapping("/deleteFlashcardFromDeck")
-    public ResponseEntity<?> deleteFlashcardFromDeck(
-            Authentication authentication,
-            @RequestParam() int deckId,
-            @RequestParam() int flashcardId
-    )
-    {
-        return ResponseEntity.ok("twoja stara");
-    }
 
     @PostMapping("/copyFlashcardToDeck")
     public ResponseEntity<?> addFlashcardToDeck(
@@ -137,41 +125,39 @@ public class FlashcardController {
             @RequestParam() int flashcardId
     )
     {
-        String email = authentication.getName();
-        Optional<Customer> customerOpt = customerRepository.findByEmail(email);
-        if(customerOpt.isEmpty())
+        FlashcardAccessServiceResponse flashcardResponse;
+        try{
+            flashcardResponse = resourceAccessService.getFlashcardAccessLevel(authentication, flashcardId);
+        } catch (ResourceNotFoundException e)
         {
-            return ResponseEntity.badRequest().body("No user with this id found");
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
 
-        Optional<Deck> deckOpt = deckRepository.findById(deckId);
-        if(deckOpt.isEmpty())
-            return ResponseEntity.badRequest().body("No deck with this id found");
+        DeckAccessServiceResponse deckResponse;
+        try{
+            deckResponse = resourceAccessService.getDeckAccessLevel(authentication, deckId);
+        } catch (ResourceNotFoundException e)
+        {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
 
-        Optional<Flashcard> flashcard = flashcardRepository .findById(flashcardId);
-        if(flashcard.isEmpty())
-            return ResponseEntity.badRequest().body("No flashcard with this id found");
-
-        AccessLevel destinationDeckAccessLevel = deckOpt.get().getAccessLevel(customerOpt.get());
-        AccessLevel flashcardAccessLevel = flashcard.get().getAccessLevel(customerOpt.get());
-        if (!(destinationDeckAccessLevel.equals(AccessLevel.EDITOR)  ||
-                destinationDeckAccessLevel.equals(AccessLevel.OWNER))
-        )
+        if(!(deckResponse.getAccessLevel().equals(AccessLevel.OWNER) ||
+                deckResponse.getAccessLevel().equals(AccessLevel.EDITOR)))
         {
             return ResponseEntity.badRequest().body("You do not have permission to add to this deck: " + deckId);
         }
 
-        if(!(flashcardAccessLevel.equals(AccessLevel.EDITOR)  ||
-                flashcardAccessLevel.equals(AccessLevel.OWNER)) ||
-                flashcardAccessLevel.equals(AccessLevel.VIEWER)) // @TODO check this - is this last condidtion always false?
+        if(!(flashcardResponse.getAccessLevel().equals(AccessLevel.OWNER) ||
+                flashcardResponse.getAccessLevel().equals(AccessLevel.EDITOR) ||
+                flashcardResponse.getAccessLevel().equals(AccessLevel.VIEWER)))
         {
-            return ResponseEntity.badRequest().body("You do not have permission to  this flashcard");
+            return ResponseEntity.badRequest().body("You do not have permission to add this flashcard");
         }
 
-        Flashcard newFlashcard = new Flashcard(deckOpt.get(), flashcard.get().getFront(), flashcard.get().getBack());
+        Flashcard newFlashcard = new Flashcard(deckResponse.getDeck(), flashcardResponse.getFlashcard().getFront(), flashcardResponse.getFlashcard().getBack());
         flashcardRepository.save(newFlashcard);
 
-        return ResponseEntity.ok("Flashcard copied to deck");
+        return ResponseEntity.ok("copied successfuly");
     }
 
     @PostMapping("/moveFlashcardToOtherDeck")
@@ -182,54 +168,56 @@ public class FlashcardController {
             @RequestParam() int flashcardId
     )
     {
-        String email = authentication.getName();
-        Optional<Customer> customer = customerRepository.findByEmail(email);
-
-        if(customer.isEmpty())
+        FlashcardAccessServiceResponse flashcardResponse;
+        try{
+            flashcardResponse = resourceAccessService.getFlashcardAccessLevel(authentication, flashcardId);
+        } catch (ResourceNotFoundException e)
         {
-            return ResponseEntity.badRequest().body("No user with this id found");
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
 
-        Optional<Deck> sourceDeck = deckRepository.findById(sourceDeckId);
-        Optional<Deck> destinationDeck = deckRepository.findById(destinationDeckId);
-        Optional <Flashcard> flashcard = flashcardRepository.findById(flashcardId);
-
-        if(sourceDeck.isEmpty())
+        DeckAccessServiceResponse sourceDeckResponse;
+        try{
+            sourceDeckResponse = resourceAccessService.getDeckAccessLevel(authentication, sourceDeckId);
+        } catch (ResourceNotFoundException e)
         {
-            return ResponseEntity.badRequest().body("No source deck with this id found");
-        }
-        if(destinationDeck.isEmpty())
-        {
-            return ResponseEntity.badRequest().body("No destination deck with this id found");
-        }
-        if(flashcard.isEmpty())
-        {
-            return ResponseEntity.badRequest().body("No flashcard with this id found");
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
 
-        AccessLevel sourceDeckAccessLevel = sourceDeck.get().getAccessLevel(customer.get());
-        AccessLevel destinationDeckAccessLevel = destinationDeck.get().getAccessLevel(customer.get());
+        DeckAccessServiceResponse destinationDeckResponse;
+        try{
+            destinationDeckResponse = resourceAccessService.getDeckAccessLevel(authentication, destinationDeckId);
+        } catch (ResourceNotFoundException e)
+        {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
 
-        if(!(sourceDeckAccessLevel.equals(AccessLevel.EDITOR) || sourceDeckAccessLevel.equals(AccessLevel.OWNER)))
+        if(!(sourceDeckResponse.getAccessLevel().equals(AccessLevel.OWNER) ||
+                sourceDeckResponse.getAccessLevel().equals(AccessLevel.EDITOR)))
         {
             return ResponseEntity.badRequest().body("You do not have permission to edit this deck: " + sourceDeckId);
         }
-        if(!(destinationDeckAccessLevel.equals(AccessLevel.EDITOR) || destinationDeckAccessLevel.equals(AccessLevel.OWNER)))
+
+        if(!(destinationDeckResponse.getAccessLevel().equals(AccessLevel.OWNER) ||
+                destinationDeckResponse.getAccessLevel().equals(AccessLevel.EDITOR)))
         {
             return ResponseEntity.badRequest().body("You do not have permission to edit this deck: " + destinationDeckId);
         }
 
-        if(flashcard.get().getDeck().getId() != sourceDeckId)
+        if(!(flashcardResponse.getAccessLevel().equals(AccessLevel.OWNER) ||
+                flashcardResponse.getAccessLevel().equals(AccessLevel.EDITOR) ||
+                flashcardResponse.getAccessLevel().equals(AccessLevel.VIEWER)))
+        {
+            return ResponseEntity.badRequest().body("You do not have permission to move this flashcard");
+        }
+
+        if(flashcardResponse.getFlashcard().getDeck().getId() != sourceDeckId)
         {
             return ResponseEntity.badRequest().body("Flashcard is not in source deck");
         }
 
-        sourceDeck.get().getFlashcards().remove(flashcard.get());
-        deckRepository.save(sourceDeck.get());
-
-        destinationDeck.get().getFlashcards().add(flashcard.get());
-        deckRepository.save(destinationDeck.get());
-
+        flashcardResponse.getFlashcard().setDeck(destinationDeckResponse.getDeck());
+        flashcardRepository.save(flashcardResponse.getFlashcard());
 
         return ResponseEntity.ok("flashcard moved!");
     }
