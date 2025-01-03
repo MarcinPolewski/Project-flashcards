@@ -22,7 +22,7 @@ public class UserStatisticsController {
     private final UserStatisticsRepository userStatisticsRepository;
     private final CustomerRepository customerRepository;
 
-    @GetMapping("/{id}")
+    @GetMapping("/getUserStatistics/{id}")
     @JsonView(JsonViewConfig.Public.class)
     public ResponseEntity<?> getUserStatistics(Authentication authentication, @PathVariable int id) {
         String email = authentication.getName();
