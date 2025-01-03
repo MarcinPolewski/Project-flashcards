@@ -251,6 +251,93 @@ public class CustomerController {
         return ResponseEntity.ok(friends);
     }
 
+    @GetMapping("/getFriendById/{id}")
+    @JsonView(JsonViewConfig.Public.class)
+    public ResponseEntity<?> getFriendById(Authentication authentication, @PathVariable int id) {
+        String email = authentication.getName();
+        Optional<Customer> customerOpt = customerRepository.findByEmail(email);
+        if (customerOpt.isEmpty())
+        {
+            return ResponseEntity.badRequest().body("No user with this id found");
+        }
+        Customer customer = customerOpt.get();
+
+        Optional<Customer> customerToFindOpt = customerRepository.findById(id);
+        if (customerToFindOpt.isEmpty())
+        {
+            return ResponseEntity.badRequest().body("No user with this id found");
+        }
+
+        List<Friendship> possibleFriendships = customer.getSentFriendships();
+
+        Customer friend = null;
+        for (Friendship friendship : possibleFriendships) {
+            if (friendship.getReceiverId() == id && friendship.isAccepted()) {
+                friend = friendship.getReceiver();
+                break;
+            }
+        }
+
+        if (friend == null) {
+            possibleFriendships = customer.getReceivedFriendships();
+            for (Friendship friendship : possibleFriendships) {
+                if (friendship.getSenderId() == id && friendship.isAccepted()) {
+                    friend = friendship.getSender();
+                    break;
+                }
+            }
+        }
+
+        if (friend == null) {
+            return ResponseEntity.badRequest().body("No friend with this id found");
+        }
+        return ResponseEntity.ok(friend);
+    }
+
+    @GetMapping("/getFriendById/{email}")
+    @JsonView(JsonViewConfig.Public.class)
+    public ResponseEntity<?> getFriendByEmail(Authentication authentication, @PathVariable String email) {
+        String userEmail = authentication.getName();
+        Optional<Customer> customerOpt = customerRepository.findByEmail(userEmail);
+        if (customerOpt.isEmpty())
+        {
+            return ResponseEntity.badRequest().body("No user with this id found");
+        }
+        Customer customer = customerOpt.get();
+
+        Optional<Customer> customerToFindOpt = customerRepository.findByEmail(email);
+        if (customerToFindOpt.isEmpty())
+        {
+            return ResponseEntity.badRequest().body("No user with this id found");
+        }
+
+        int id = customerToFindOpt.get().getId();
+        List<Friendship> possibleFriendships = customer.getSentFriendships();
+
+        Customer friend = null;
+        for (Friendship friendship : possibleFriendships) {
+            if (friendship.getReceiverId() == id && friendship.isAccepted()) {
+                friend = friendship.getReceiver();
+                break;
+            }
+        }
+
+        if (friend == null) {
+            possibleFriendships = customer.getReceivedFriendships();
+            for (Friendship friendship : possibleFriendships) {
+                if (friendship.getSenderId() == id && friendship.isAccepted()) {
+                    friend = friendship.getSender();
+                    break;
+                }
+            }
+        }
+
+        if (friend == null) {
+            return ResponseEntity.badRequest().body("No friend with this id found");
+        }
+        return ResponseEntity.ok(friend);
+    }
+
     @PostMapping("/sentFriendshipOfferById/{id}")
     public ResponseEntity<?> sentFriendshipOfferById(Authentication authentication, @PathVariable int id) {
         String email = authentication.getName();
