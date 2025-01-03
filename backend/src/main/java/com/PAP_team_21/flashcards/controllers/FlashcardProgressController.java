@@ -41,7 +41,7 @@ public class FlashcardProgressController {
 
         Optional<FlashcardProgress> flashcardProgressOpt = flashcardProgressRepository.findById(id);
         if (flashcardProgressOpt.isEmpty()) {
-            return ResponseEntity.badRequest().body("No flashcard progress with id "+ id + " found");
+            return ResponseEntity.badRequest().body("No flashcard progress with this id found");
         }
 
         FlashcardProgress flashcardProgress = flashcardProgressOpt.get();
