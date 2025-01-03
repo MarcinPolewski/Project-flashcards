@@ -28,7 +28,7 @@ public class FlashcardProgressController {
     private FlashcardRepository flashcardRepository;
     private FlashcardProgressRepository flashcardProgressRepository;
 
-    @GetMapping("/{id}")
+    @GetMapping("/getFlashcardProgress/{id}")
     @JsonView(JsonViewConfig.Public.class)
     public ResponseEntity<?> getFlashcardProgress(Authentication authentication, @PathVariable int id) {
         String email = authentication.getName();
