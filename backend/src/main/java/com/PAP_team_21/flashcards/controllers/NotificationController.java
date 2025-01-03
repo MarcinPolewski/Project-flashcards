@@ -22,7 +22,7 @@ public class NotificationController {
     private final NotificationRepository notificationRepository;
     private final CustomerRepository customerRepository;
 
-    @GetMapping("/{id}")
+    @GetMapping("/getNotification/{id}")
     @JsonView(JsonViewConfig.Public.class)
     public ResponseEntity<?> getNotification(Authentication authentication, @PathVariable int id) {
         String email = authentication.getName();
@@ -54,12 +54,16 @@ public class NotificationController {
         {
             return ResponseEntity.badRequest().body("No user with this id found");
         }
+        Customer customer = customerOpt.get();
 
-        Notification notification = new Notification(request.getUserId(), request.isReceived(),
-                                                    request.getText(), request.getReceivedDate());
+        if (request.getUserId() == customer.getId()) {
+            Notification notification = new Notification(request.getUserId(), request.isReceived(),
+                    request.getText(), request.getReceivedDate());
+                notificationRepository.save(notification);
+                return ResponseEntity.ok(notification);
+        }
 
-        notificationRepository.save(notification);
-        return ResponseEntity.ok(notification);
+        return ResponseEntity.badRequest().body("This notification does not belong to user");
     }
 
     @PostMapping("/update")
@@ -82,8 +86,6 @@ public class NotificationController {
             return ResponseEntity.badRequest().body("This notification does not belong to user");
         }
         notification.setReceived(request.isReceived());
-        notification.setText(request.getText());
-        notification.setReceivedDate(request.getReceivedDate());
 
         notificationRepository.save(notification);
         return ResponseEntity.ok(notification);
