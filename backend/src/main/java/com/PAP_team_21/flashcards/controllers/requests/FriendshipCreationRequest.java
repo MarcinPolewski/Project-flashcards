@@ -12,5 +12,4 @@ import lombok.NoArgsConstructor;
 public class FriendshipCreationRequest {
     int senderId;
     int receiverId;
-    boolean accepted;
 }
