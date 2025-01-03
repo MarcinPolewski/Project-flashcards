@@ -39,11 +39,11 @@ public class CustomerDaoImpl implements CustomerDao {
     }
 
     @Override
-    public Customer findUserByUsername(String username) {
+    public List<Customer> findUserByUsername(String username) {
         String jpql = "SELECT u FROM Customer u WHERE u.username = :username";;
         return entityManager.createQuery(jpql, Customer.class)
                 .setParameter("username", username)
-                .getSingleResult();
+                .getResultList();
     }
 
     @Override
@@ -75,4 +75,18 @@ public class CustomerDaoImpl implements CustomerDao {
 //        }
 //        entityManager.remove(customer);
     }
+
+    @Override
+    public boolean checkIfEmailAvailable(String email) {
+        String jpql = "SELECT u FROM Customer u";
+        List<Customer> customers = entityManager.createQuery(jpql, Customer.class).getResultList();
+        for (Customer customer : customers) {
+            if (customer.getEmail().equals(email)) {
+                return false;
+            }
+        }
+        return true;
+    }
 }
+
+
