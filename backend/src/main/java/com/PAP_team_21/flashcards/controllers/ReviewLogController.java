@@ -8,6 +8,7 @@ import com.PAP_team_21.flashcards.entities.customer.Customer;
 import com.PAP_team_21.flashcards.entities.customer.CustomerRepository;
 import com.PAP_team_21.flashcards.entities.deck.Deck;
 import com.PAP_team_21.flashcards.entities.flashcard.Flashcard;
+import com.PAP_team_21.flashcards.entities.flashcard.FlashcardRepository;
 import com.PAP_team_21.flashcards.entities.reviewLog.ReviewLog;
 import com.PAP_team_21.flashcards.entities.reviewLog.ReviewLogRepository;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -25,8 +26,9 @@ public class ReviewLogController {
 
     private final ReviewLogRepository reviewLogRepository;
     private final CustomerRepository customerRepository;
+    private final FlashcardRepository flashcardRepository;
 
-    @GetMapping("/{id}")
+    @GetMapping("/getReviewLog/{id}")
     @JsonView(JsonViewConfig.Public.class)
     public ResponseEntity<?> getReviewLog(Authentication authentication, @PathVariable int id) {
         String email = authentication.getName();
@@ -63,6 +65,21 @@ public class ReviewLogController {
         if(customerOpt.isEmpty())
         {
             return ResponseEntity.badRequest().body("No user with this id found");
+        }
+        Customer customer = customerOpt.get();
+
+        Optional<Flashcard> flashcardOpt = flashcardRepository.findById(request.getFlashcardId());
+        if(flashcardOpt.isEmpty())
+        {
+            return ResponseEntity.badRequest().body("No flashcard with this id found");
+        }
+        Flashcard flashcard = flashcardOpt.get();
+
+        Deck deck = flashcard.getDeck();
+        AccessLevel al = deck.getAccessLevel(customer);
+        if (al == null)
+        {
+            return ResponseEntity.badRequest().body("You dont have access to this flashcard");
         }
 
         ReviewLog reviewLog = new ReviewLog(request.getFlashcardId(), request.getUserId(),
