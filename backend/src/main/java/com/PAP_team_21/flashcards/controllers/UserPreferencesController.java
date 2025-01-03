@@ -23,7 +23,7 @@ public class UserPreferencesController {
     private final UserPreferencesRepository userPreferencesRepository;
     private final CustomerRepository customerRepository;
 
-    @GetMapping("/{id}")
+    @GetMapping("getUserPreferences/{id}")
     @JsonView(JsonViewConfig.Public.class)
     public ResponseEntity<?> getUserPreferences(Authentication authentication, @PathVariable int id) {
         String email = authentication.getName();
