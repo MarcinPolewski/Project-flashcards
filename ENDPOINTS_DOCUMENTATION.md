@@ -148,38 +148,6 @@ This endpoint retrieves a list of customers by their username.
 
 ---
 
-### `POST /customer/create`
-
-This endpoint creates a new customer.
-
-**Request Body:**
-- `email`: The email of the customer (must be unique).
-- `passwordHash`: The hashed password of the customer.
-- `username`: The username of the customer.
-- `profilePicturePath`: The path to the customer's profile picture.
-
-**Response:**
-- 200 OK: Returns the created customer data.
-- 400 Bad Request: If a customer with the same email already exists or if the user is not authenticated.
-
----
-
-### `POST /customer/update`
-
-This endpoint updates the data of an existing customer.
-
-**Request Body:**
-- `email`: The email of the customer.
-- `passwordHash`: The updated password hash.
-- `username`: The updated username.
-- `profilePicturePath`: The updated path to the profile picture.
-
-**Response:**
-- 200 OK: Returns the updated customer data.
-- 400 Bad Request: If the user is not authenticated or if the customer is not found.
-
----
-
 ### `POST /customer/delete`
 
 This endpoint deletes a customer.
@@ -375,6 +343,8 @@ All endpoints require the user to be authenticated. Authentication is performed 
 - **EDITOR**: Permissions to modify the deck.
 - **VIEWER**: No permissions to modify or delete the deck.
 
+---
+
 # API Documentation: Demo Controller
 
 This document provides a description of the API endpoint available in the `DemoController` class, which is used for testing secured endpoints and retrieving user information.
@@ -391,74 +361,7 @@ This endpoint demonstrates a secured route where the user's email is extracted f
 **Response:**
 - 200 OK: Returns a message with the authenticated user's email.
 
-
-# API Documentation: FlashcardProgress Controller
-
-## Overview
-The `FlashcardProgressController` class is a REST controller responsible for managing flashcard progress data. It provides endpoints for retrieving, creating, updating, and deleting flashcard progress entries.
-
-## Dependencies
-This class relies on the following repositories and entities:
-
-- `CustomerRepository`: Used to fetch customer data.
-- `FlashcardRepository`: Used to fetch flashcard data.
-- `FlashcardProgressRepository`: Used to manage flashcard progress data.
-- `AccessLevel`: Determines the access level of a user to a deck.
-- `JsonViewConfig`: Configures JSON views.
-
-## Endpoints
-### 1. `@GetMapping("/getFlashcardProgress/{id}")`
-#### Description
-Fetches the flashcard progress data for the given ID.
-#### Parameters
-- `Authentication authentication`: Contains authentication details.
-- `@PathVariable int id`: ID of the flashcard progress to retrieve.
-#### Response
-- 200: Returns the flashcard progress data.
-- 400: Returns an error message if the user or flashcard progress is not found or if the user does not have access.
-
-### 2. `@PostMapping("/create")`
-#### Description
-Creates a new flashcard progress entry.
-#### Parameters
-- `Authentication authentication`: Contains authentication details.
-- `@RequestBody FlashcardProgressCreationRequest request`: Contains details of the flashcard progress to create.
-#### Response
-- 200: Returns the created flashcard progress.
-- 400: Returns an error message if the user or flashcard is not found or if the user does not have access.
-
-### 3. `@PostMapping("/update")`
-#### Description
-Updates an existing flashcard progress entry.
-#### Parameters
-- `Authentication authentication`: Contains authentication details.
-- `@RequestBody FlashcardProgressUpdateRequest request`: Contains updated details of the flashcard progress.
-#### Response
-- 200: Returns the updated flashcard progress.
-- 400: Returns an error message if the user, flashcard progress, or flashcard is not found or if the user does not have access.
-
-### 4. `@DeleteMapping("/delete")`
-#### Description
-Deletes a flashcard progress entry.
-#### Parameters
-- `Authentication authentication`: Contains authentication details.
-- `@RequestParam int flashcardProgressId`: ID of the flashcard progress to delete.
-#### Response
-- 200: Returns a success message.
-- 400: Returns an error message if the user, flashcard progress, or flashcard is not found or if the user does not have access.
-
-## Error Handling
-All endpoints validate the user's identity and access permissions. Error messages are returned for invalid operations such as unauthorized access or non-existent entities.
-
-## Annotations Used
-- `@RestController`: Marks this class as a REST controller.
-- `@RequestMapping`: Maps HTTP requests to handler methods.
-- `@RequiredArgsConstructor`: Automatically generates a constructor with required dependencies.
-- `@JsonView`: Controls the JSON output view.
-
-## Security
-Authentication is managed through Spring Security's `Authentication` object, which retrieves the currently authenticated user's email.
-
+---
 
 # API Documentation: Flashcard Controller
 
@@ -555,6 +458,52 @@ For the complete Java file, refer to the generated link [here](./flashcard_contr
 
 ---
 
+# API Documentation: FlashcardProgress Controller
+
+## Overview
+The `FlashcardProgressController` class is a REST controller responsible for managing flashcard progress data. It provides endpoints for retrieving, creating, updating, and deleting flashcard progress entries.
+
+## Dependencies
+This class relies on the following repositories and entities:
+
+- `CustomerRepository`: Used to fetch customer data.
+- `FlashcardRepository`: Used to fetch flashcard data.
+- `FlashcardProgressRepository`: Used to manage flashcard progress data.
+- `AccessLevel`: Determines the access level of a user to a deck.
+- `JsonViewConfig`: Configures JSON views.
+
+## Endpoints
+### 1. `@GetMapping("/getFlashcardProgress/{id}")`
+#### Description
+Fetches the flashcard progress data for the given ID.
+#### Parameters
+- `Authentication authentication`: Contains authentication details.
+- `@PathVariable int id`: ID of the flashcard progress to retrieve.
+#### Response
+- 200: Returns the flashcard progress data.
+- 400: Returns an error message if the user or flashcard progress is not found or if the user does not have access.
+
+### 2. `@DeleteMapping("/delete")`
+#### Description
+Deletes a flashcard progress entry.
+#### Parameters
+- `Authentication authentication`: Contains authentication details.
+- `@RequestParam int flashcardProgressId`: ID of the flashcard progress to delete.
+#### Response
+- 200: Returns a success message.
+- 400: Returns an error message if the user, flashcard progress, or flashcard is not found or if the user does not have access.
+
+## Error Handling
+All endpoints validate the user's identity and access permissions. Error messages are returned for invalid operations such as unauthorized access or non-existent entities.
+
+## Annotations Used
+- `@RestController`: Marks this class as a REST controller.
+- `@RequestMapping`: Maps HTTP requests to handler methods.
+- `@RequiredArgsConstructor`: Automatically generates a constructor with required dependencies.
+- `@JsonView`: Controls the JSON output view.
+
+## Security
+Authentication is managed through Spring Security's `Authentication` object, which retrieves the currently authenticated user's email.
 
 # API Documentation: Folder
 
@@ -909,6 +858,134 @@ Generates a PDF document for a specific deck by its ID.
     "error": "Deck not found"
   }
 
+# API Documentation: Review Controller
+
+The `ReviewController` manages operations related to reviewing flashcards, including retrieving flashcards to review and updating review results.
+
+---
+
+## Endpoints
+
+### 1. **Request Review**
+Retrieve flashcards from a specific deck to be reviewed.
+
+- **URL:** `/folder/requestReview`
+- **Method:** `POST`
+- **Request Body:** (JSON)
+  - `deckId` (int) - The ID of the deck from which to retrieve flashcards for review.
+  - `packageSize` (int) - The number of flashcards to include in the review package.
+- **Response:**
+  - **200 OK**:
+    - Returns a `FlashcardsToReviewResponse` containing the list of flashcards to review.
+  - **400 Bad Request** - Errors include:
+    - User does not have access to the specified deck.
+
+---
+
+### 2. **Send Back Results**
+Send review results for specific flashcards and update their review status.
+
+- **URL:** `/folder/sendBackResults`
+- **Method:** `POST`
+- **Request Body:** (JSON)
+  - `flashcardId` (int) - The ID of the reviewed flashcard.
+  - `userAnswer` (String) - The user's response or answer to the flashcard review.
+- **Response:**
+  - **200 OK**:
+    - Confirms that the flashcard review was successfully processed.
+  - **400 Bad Request** - Errors include:
+    - User does not have access to the specified flashcard.
+
+---
+
+## Dependencies
+- **Services:**
+  - `ReviewService` - Handles the logic for retrieving flashcards for review and updating review results.
+  - `ResourceAccessService` - Validates user access to decks and flashcards.
+- **Security:**
+  - Authenticated users can only access decks and flashcards for which they have appropriate permissions.
+
+---
+
+## Security Considerations
+- **Authentication:** Required for all endpoints.
+- **Authorization:** Ensures that users can only access flashcards and decks for which they have permission.
+- All endpoints enforce strict ownership checks to ensure data privacy.
+
+---
+
+## Example Requests and Responses
+
+### Request Review
+**POST** `/folder/requestReview`
+
+**Request Body:**
+```json
+{
+    "deckId": 123,
+    "packageSize": 10
+}
+```
+
+**Response:**
+- **200 OK**:
+    ```json
+    {
+        "flashcards": [
+            {
+                "id": 1,
+                "question": "What is Java?",
+                "answer": "A programming language."
+            },
+            {
+                "id": 2,
+                "question": "What is polymorphism?",
+                "answer": "An OOP concept allowing multiple behaviors."
+            }
+        ]
+    }
+    ```
+- **400 Bad Request**:
+    ```json
+    {
+        "error": "You do not have access to this deck"
+    }
+    ```
+
+---
+
+### Send Back Results
+**POST** `/folder/sendBackResults`
+
+**Request Body:**
+```json
+{
+    "flashcardId": 1,
+    "userAnswer": "A programming language."
+}
+```
+
+**Response:**
+- **200 OK**:
+    ```json
+    {
+        "message": "Flashcard reviewed"
+    }
+    ```
+- **400 Bad Request**:
+    ```json
+    {
+        "error": "You do not have access to this flashcard"
+    }
+    ```
+---
+
+## Notes
+- The `ReviewController` endpoints are designed to ensure seamless integration with user authentication and resource-level access control.
+- Responses include error messages for unauthorized or invalid access attempts, promoting secure use of the API.
+
+---
+
 # API Documentation: ReviewLogController
 
 The `ReviewLogController` manages operations on review logs, such as retrieval, creation, updating, and deletion. Each review log is associated with a specific flashcard and contains information about user reviews.
@@ -933,42 +1010,7 @@ Retrieve a review log by its ID.
 
 ---
 
-### 2. **Create Review Log**
-Create a new review log.
-
-- **URL:** `/reviewLog/create`
-- **Method:** `POST`
-- **Request Body:** (JSON)
-    - `flashcardId` (int) - ID of the flashcard.
-    - `userId` (int) - ID of the user creating the review log.
-    - `userAnswer` (String) - The answer provided by the user.
-- **Response:**
-    - **200 OK** - Returns the created review log.
-    - **400 Bad Request** - Errors include:
-        - User not found.
-        - Flashcard not found.
-        - Access denied to the flashcard.
-
----
-
-### 3. **Update Review Log**
-Update the user’s answer in a review log.
-
-- **URL:** `/reviewLog/update`
-- **Method:** `POST`
-- **Request Body:** (JSON)
-    - `reviewLogId` (int) - ID of the review log to update.
-    - `userAnswer` (String) - Updated answer by the user.
-- **Response:**
-    - **200 OK** - Returns the updated review log.
-    - **400 Bad Request** - Errors include:
-        - User not found.
-        - Review log not found.
-        - Review log does not belong to the user.
-
----
-
-### 4. **Delete Review Log**
+### 2. **Delete Review Log**
 Delete a review log by its ID.
 
 - **URL:** `/reviewLog/delete`
@@ -1008,24 +1050,7 @@ Retrieve a user's preferences by ID.
 
 ---
 
-### 2. **Create User Preferences**
-Create new user preferences.
-
-- **URL:** `/userPreferences/create`
-- **Method:** `POST`
-- **Request Body:** (JSON)
-    - `userId` (int) - The ID of the user for whom preferences are being created.
-    - `darkMode` (boolean) - Preference for dark mode.
-    - `language` (String) - Preferred language of the user.
-- **Response:**
-    - **200 OK** - Returns the created user preferences.
-    - **400 Bad Request** - Errors include:
-        - User not found.
-        - User preferences do not belong to the authenticated user.
-
----
-
-### 3. **Update User Preferences**
+### 2. **Update User Preferences**
 Update an existing user's preferences.
 
 - **URL:** `/userPreferences/update`
@@ -1036,22 +1061,6 @@ Update an existing user's preferences.
     - `language` (String) - Updated preferred language.
 - **Response:**
     - **200 OK** - Returns the updated user preferences.
-    - **400 Bad Request** - Errors include:
-        - User not found.
-        - User preferences not found.
-        - User preferences do not belong to the authenticated user.
-
----
-
-### 4. **Delete User Preferences**
-Delete user preferences by ID.
-
-- **URL:** `/userPreferences/delete`
-- **Method:** `DELETE`
-- **Query Parameters:**
-    - `userPreferencesId` (int) - The ID of the user preferences to delete.
-- **Response:**
-    - **200 OK** - Confirms successful deletion.
     - **400 Bad Request** - Errors include:
         - User not found.
         - User preferences not found.
@@ -1098,25 +1107,7 @@ Retrieve the statistics for a specific user by ID.
 
 ---
 
-### 2. **Create User Statistics**
-Create a new user statistics record.
-
-- **URL:** `/userStatistics/create`
-- **Method:** `POST`
-- **Request Body:** (JSON)
-    - `userId` (int) - The ID of the user for whom the statistics are being created.
-    - `totalTimeSpent` (long) - The total time the user has spent in the application (in seconds or milliseconds as appropriate).
-    - `loginCount` (int) - The number of times the user has logged in.
-    - `lastLogin` (String) - Timestamp of the user's last login.
-- **Response:**
-    - **200 OK** - Returns the created user statistics object.
-    - **400 Bad Request** - Errors include:
-        - User not found.
-        - User statistics do not belong to the authenticated user.
-
----
-
-### 3. **Update User Statistics**
+### 2. **Update User Statistics**
 Update an existing user statistics record.
 
 - **URL:** `/userStatistics/update`
@@ -1128,22 +1119,6 @@ Update an existing user statistics record.
     - `lastLogin` (String) - Updated last login timestamp.
 - **Response:**
     - **200 OK** - Returns the updated user statistics object.
-    - **400 Bad Request** - Errors include:
-        - User not found.
-        - User statistics not found.
-        - User statistics do not belong to the authenticated user.
-
----
-
-### 4. **Delete User Statistics**
-Delete user statistics by ID.
-
-- **URL:** `/userStatistics/delete`
-- **Method:** `DELETE`
-- **Query Parameters:**
-    - `userStatisticsId` (int) - The ID of the user statistics to delete.
-- **Response:**
-    - **200 OK** - Confirms successful deletion.
     - **400 Bad Request** - Errors include:
         - User not found.
         - User statistics not found.
