@@ -64,7 +64,7 @@ public class FriendshipController {
             return ResponseEntity.ok(friendship);
         }
 
-        return ResponseEntity.ok("User do not have access to this friendship");
+        return ResponseEntity.badRequest().body("User do not have access to this friendship");
     }
 
     @PostMapping("/update")
