@@ -1623,21 +1623,25 @@ Generates a PDF document for a specific deck by its ID.
 - **Method:** `GET`
 - **Parameters:**
   - `Authentication authentication`
-    - `id` (int) - The ID of the deck for which the PDF will be generated.
+  - `id` (int) - The ID of the deck for which the PDF will be generated.
 - **Response:**
-    - **200 OK** - Returns a byte array containing the PDF file. Includes headers for file download:
-        - `Content-Disposition`: `attachment; filename={deckName}.pdf`
-        - `Content-Type`: `application/pdf`
-    - **404 Not Found** - Deck with the specified ID was not found.
 
----
-
-## Dependencies
-- **Repositories:**
-    - `DeckRepository` - For retrieving the deck by its ID.
-- **Utilities:**
-    - `PdfGenerator` - For converting the deck's data into a PDF format.
-
+  **200 OK** - Returns a byte array containing the PDF file. Includes headers for file download.
+  - `Content-Disposition`: `attachment; filename={deckName}.pdf`
+  - `Content-Type`: `application/pdf`
+  
+  **400 Bad Request** - User with the specified ID was not found. 
+  ```json
+  "No user with this id found"
+  ```
+  **403 Forbidden** - User with the specified ID was not found.
+  ```json
+  "You do not have access to this deck"
+  ```
+  **404 Not Found** - Deck with the specified ID was not found.
+  ```json
+  "No deck with this id found"
+  ```
 ---
 
 ## Implementation Details
