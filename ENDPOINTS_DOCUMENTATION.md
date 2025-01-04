@@ -1478,9 +1478,27 @@ Retrieves a specific notification by its ID.
   - `Authentication authentication`
   - `id` (int) - The ID of the notification to retrieve.
 - **Response:**
-    - **200 OK** - The requested notification.
-    - **400 Bad Request** - Notification or user not found, or the notification does not belong to the user.
 
+  **200 OK** - The requested notification.
+  ```json
+  {
+    "id": 1,
+    "userId": 3,
+    "received": true,
+    "text": "Hello World",
+    "receivedDate": "2025-01-04 14:23:45"
+  }
+  ```
+  **400 Bad Request** - Notification or user not found, or the notification does not belong to the user.
+  ```json
+  "No notification with this id found"
+  ```
+  ```json
+  "No user with this id found"
+  ```
+  ```json
+  "This notification does not belong to the user"
+  ```
 ---
 
 ### 2. **Create Notification**
@@ -1490,15 +1508,34 @@ Creates a new notification for a user.
 - **Method:** `POST`
 - **Parameters:**
   - `Authentication authentication`
-    - **Body:** `NotificationCreationRequest`:
-        - `userId` (int) - The ID of the user to whom the notification belongs.
-        - `text` (String) - The content of the notification.
-        - `received` (boolean) - Indicates whether the notification has been received.
-        - `receivedDate` (Date) - The date the notification was received.
+- **Request Body:**
+  ```json
+    {
+      "userId": 1,
+      "text": "Hello World",
+      "received": false,
+      "receivedDate": "2025-01-04 14:23:45"
+    }
+  ```
 - **Response:**
-    - **200 OK** - Notification created successfully.
-    - **400 Bad Request** - User not found or the notification does not belong to the user.
 
+  **200 OK** - Notification created successfully.
+  ```json
+  {
+    "id": 1,
+    "userId": 3,
+    "received": true,
+    "text": "Hello World",
+    "receivedDate": "2025-01-04 14:23:45"
+  }
+  ```
+  **400 Bad Request** - User not found or the notification does not belong to the user.
+  ```json
+  "No user with this id found"
+  ```
+  ```json
+  "This notification does not belong to the user"
+  ```
 ---
 
 ### 3. **Update Notification**
@@ -1508,13 +1545,37 @@ Updates the status of a notification (e.g., marking it as received).
 - **Method:** `POST`
 - **Parameters:**
   - `Authentication authentication`
-    - **Body:** `NotificationUpdateRequest`:
-        - `notificationId` (int) - The ID of the notification to update.
-        - `received` (boolean) - Indicates the updated status of the notification.
+- **Request Body:**
+  ```json
+    {
+      "notificationId": 1,
+      "text": "Hello World",
+      "received": true,
+      "receivedDate": "2025-01-04 14:23:45"
+    }
+  ```
 - **Response:**
-    - **200 OK** - Notification updated successfully.
-    - **400 Bad Request** - Notification or user not found, or the notification does not belong to the user.
 
+  **200 OK** - Notification updated successfully.
+  ```json
+  {
+    "id": 1,
+    "userId": 3,
+    "received": true,
+    "text": "Hello World",
+    "receivedDate": "2025-01-04 14:23:45"
+  }
+  ```
+  **400 Bad Request** -  Notification or user not found, or the notification does not belong to the user.
+  ```json
+  "No notification with this id found"
+  ```
+  ```json
+  "No user with this id found"
+  ```
+  ```json
+  "This notification does not belong to the user"
+  ```
 ---
 
 ### 4. **Delete Notification**
@@ -1524,29 +1585,27 @@ Deletes a specific notification by its ID.
 - **Method:** `DELETE`
 - **Parameters:**
   - `Authentication authentication`
-    - `notificationId` (int) - The ID of the notification to delete.
+  - `notificationId` (int) - The ID of the notification to delete.
 - **Response:**
-    - **200 OK** - Notification successfully deleted.
-    - **400 Bad Request** - Notification or user not found, or the notification does not belong to the user.
-
----
-
-## Dependencies
-- **Repositories:**
-    - `NotificationRepository`
-    - `CustomerRepository`
-- **Entities:**
-    - `Notification`
-    - `Customer`
-- **Configuration:**
-    - `JsonViewConfig`
-
+  **200 OK** - Notification deleted successfully.
+  ```json
+  "Notification deleted successfully"
+  ```
+  **400 Bad Request** -  Notification or user not found, or the notification does not belong to the user.
+  ```json
+  "No notification with this id found"
+  ```
+  ```json
+  "No user with this id found"
+  ```
+  ```json
+  "This notification does not belong to the user"
+  ```
 ---
 
 ## Notes
 - Notifications are user-specific, and actions can only be performed by the owner of the notification.
 - All actions require authentication.
-- The `JsonViewConfig.Public` ensures only public fields of the notification are exposed when retrieved.
 - Validation checks are performed to ensure notifications belong to the authenticated user.
 
 ---
