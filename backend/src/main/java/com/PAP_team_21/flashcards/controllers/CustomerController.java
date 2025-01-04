@@ -84,7 +84,7 @@ public class CustomerController {
         return ResponseEntity.ok(customers);
     }
 
-    @PostMapping("/delete")
+    @DeleteMapping("/delete")
     public ResponseEntity<?> deleteCustomer(Authentication authentication) {
         String email = authentication.getName();
         Optional<Customer> customerOpt = customerRepository.findByEmail(email);
@@ -99,7 +99,7 @@ public class CustomerController {
     }
 
     @GetMapping("/getSelf")
-    @JsonView(JsonViewConfig.Public.class)
+    @JsonView(JsonViewConfig.Internal.class)
     public ResponseEntity<?> getSelf(Authentication authentication) {
         String email = authentication.getName();
         Optional<Customer> customerOpt= customerRepository.findByEmail(email);
