@@ -1074,14 +1074,25 @@ Retrieves the folder structure of the authenticated user.
 - **Method:** `GET`
 - **JSON View:** `JsonViewConfig.Public`
 - **Parameters:**
+    - `Authentication authentication`
     - `page` (int, optional, default: `0`) - The page number for pagination.
     - `size` (int, optional, default: `5`) - The size of each page.
     - `sortBy` (String, optional, default: `id`) - The field to sort by.
     - `ascending` (boolean, optional, default: `true`) - Sorting order.
 - **Response:**
-    - **200 OK** - The root folder structure of the authenticated user.
-    - **400 Bad Request** - No user found.
-
+  
+  **200 OK:** 
+  The root folder structure of the authenticated user.
+  ```json
+  {
+    "id": 1,
+    "name": "Folder1"
+  }
+  ```
+  **400 Bad Request** - No user found.
+  ```json
+  "No user with this id found"
+  ```
 ---
 
 ### 2. **Create Folder**
@@ -1090,13 +1101,26 @@ Creates a new folder for the authenticated user under a specified parent folder.
 - **URL:** `/create`
 - **Method:** `POST`
 - **Parameters:**
-    - **Body:** `FolderCreationRequest`:
-        - `name` (String) - The name of the folder.
-        - `parentId` (int) - The ID of the parent folder.
+  - `Authentication authentication`
+  
+  **Request Body:**
+  ```json
+    {
+      "name": "Folder1",
+      "parentId": 2 
+    }
+  ```
 - **Response:**
-    - **200 OK** - Folder created successfully.
-    - **400 Bad Request** - User or parent folder not found, or insufficient permissions.
 
+  **200 OK:**
+  The root folder structure of the authenticated user.
+  ```json
+  "folder created!"
+  ```
+  **400 Bad Request** - No permission to create folder.
+  ```json
+  "You do not have permission to create a folder here"
+  ```
 ---
 
 ### 3. **Update Folder**
@@ -1105,11 +1129,26 @@ Updates an existing folder.
 - **URL:** `/update`
 - **Method:** `POST`
 - **Parameters:**
-    - **Body:** `Folder` - The folder entity with updated details.
+  - `Authentication authentication`
+  
+  **Request Body:**
+  ```json
+    {
+      "id": 1,
+      "name": "Folder1" 
+    }
+  ```
 - **Response:**
-    - **200 OK** - Folder updated successfully.
-    - **400 Bad Request** - Folder already exists.
 
+  **200 OK:**
+  The root folder structure of the authenticated user.
+  ```json
+  "folder updated!"
+  ```
+  **400 Bad Request** - No permission to update the folder.
+  ```json
+  "You do not have permission to update this folder"
+  ```
 ---
 
 ### 4. **Delete Folder**
@@ -1118,11 +1157,22 @@ Deletes a folder by ID.
 - **URL:** `/delete`
 - **Method:** `DELETE`
 - **Parameters:**
+    - `Authentication authentication`
     - `folderId` (int) - The ID of the folder to delete.
 - **Response:**
-    - **200 OK** - Folder deleted successfully.
-    - **400 Bad Request** - Folder not found, or insufficient permissions.
 
+  **200 OK:**
+  The root folder structure of the authenticated user.
+  ```json
+  "folder deleted!"
+  ```
+  **400 Bad Request** - No permission to delete the folder or attempt to delete the root folder.
+  ```json
+  "You do not have permission to update this folder"
+  ```
+  ```json
+  "You cannot delete the root folder"
+  ```
 ---
 
 ### 5. **Get Decks in Folder**
@@ -1132,15 +1182,37 @@ Retrieves all decks in a specified folder.
 - **Method:** `GET`
 - **JSON View:** `JsonViewConfig.Public`
 - **Parameters:**
+    - `Authentication authentication`
     - `page` (int, optional, default: `0`) - The page number for pagination.
     - `size` (int, optional, default: `5`) - The size of each page.
     - `sortBy` (String, optional, default: `id`) - The field to sort by.
     - `ascending` (boolean, optional, default: `true`) - Sorting order.
     - `folderId` (int) - The ID of the folder.
 - **Response:**
-    - **200 OK** - List of decks in the folder.
-    - **400 Bad Request** - Folder not found, invalid sort field, or insufficient permissions.
 
+  **200 OK** - List of decks in the folder.
+  ```json
+  [
+    {
+      "id": 1,
+      "name": "deck1"
+    },
+    {
+      "id": 2,
+      "name": "deck2"
+    }
+  ]
+  ```
+  **400 Bad Request** - Folder not found, invalid sort field, or insufficient permissions.
+  ```json
+  "Folder not found"
+  ```
+  ```json
+  "Invalid sort field"
+  ```
+  ```json
+  "You do not have permission to view this folder"
+  ```
 ---
 
 ### 6. **Get Folder Children**
@@ -1150,11 +1222,34 @@ Retrieves all child folders of a specified folder.
 - **Method:** `GET`
 - **JSON View:** `JsonViewConfig.Public`
 - **Parameters:**
+    - `Authentication authentication`
     - `folderId` (int) - The ID of the folder.
 - **Response:**
-    - **200 OK** - List of child folders.
-    - **400 Bad Request** - Folder or user not found, or insufficient permissions.
 
+  **200 OK** - List of child folders.
+  ```json
+  [
+    {
+      "id": 1,
+      "name": "folder1"
+    },
+    {
+      "id": 2,
+      "name": "folder2"
+    }
+  ]
+  ```
+  **400 Bad Request** - Folder or user not found, or insufficient permissions
+  "Folder not found"
+  ```json
+  "Folder not found"
+  ```
+  ```json
+  "User not found"
+  ```
+  ```json
+  "You do not have permission to view this folder"
+  ```
 ---
 
 ### 7. **Get Folder Access Levels**
@@ -1164,11 +1259,36 @@ Retrieves access levels for a specified folder.
 - **Method:** `GET`
 - **JSON View:** `JsonViewConfig.Public`
 - **Parameters:**
+    - `Authentication authentication`
     - `folderId` (int) - The ID of the folder.
 - **Response:**
-    - **200 OK** - Access levels for the folder.
-    - **400 Bad Request** - Folder or user not found, or insufficient permissions.
 
+  **200 OK** - Access levels for the folder.
+  ```json
+  [
+    {
+      "id": 1,
+      "customerId": 3,
+      "AccessLevel": "VIEWER"
+    },
+    {
+      "id": 2,
+      "customerId": 4,
+      "AccessLevel": "EDITOR"
+    }
+  ]
+  ```
+  **400 Bad Request** - Folder or user not found, or insufficient permissions
+  "Folder not found"
+  ```json
+  "Folder not found"
+  ```
+  ```json
+  "User not found"
+  ```
+  ```json
+  "You do not have permission to view this folder"
+  ```
 ---
 
 ## Notes
