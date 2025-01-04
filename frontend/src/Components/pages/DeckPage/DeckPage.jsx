@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import testDecks from '../../../assets/test/testDecks';
-import testFlashcards from '../../../assets/test/testFlashcards';
+import testDecks from '../../../assets/mockData/testDecks';
+import testFlashcards from '../../../assets/mockData/testFlashcards';
 import './DeckPage.css';
 
 import Navbar from '../../Navbar/Navbar';

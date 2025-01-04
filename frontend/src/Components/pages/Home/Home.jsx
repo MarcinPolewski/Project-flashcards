@@ -2,16 +2,15 @@ import React, { useState } from "react";
 import { CircularProgressbar } from "react-circular-progressbar";
 
 import Navbar from "../../Navbar/Navbar";
-import Deck from "../../Deck/Deck";
 
 import sortDecksByDate from "../../../utils/sortDecksByDate";
 
 import './Home.css';
 import 'react-circular-progressbar/dist/styles.css';
 
-import testDecks from "../../../assets/test/testDecks";
+import testDecks from "../../../assets/mockData/testDecks";
 import Folder from "../../Folder/Folder";
-import testFolders from "../../../assets/test/testFolders";
+import testFolders from "../../../assets/mockData/testFolders";
 
 
 const Home = (props) => {
@@ -53,7 +52,6 @@ const Home = (props) => {
             <div className="my-decks-container">
             {
             testFolders
-                .slice(0, 5)
                 .map((folder, idx) => (
                     <Folder key={idx} id={folder.id} title={folder.name}/>
             ))}

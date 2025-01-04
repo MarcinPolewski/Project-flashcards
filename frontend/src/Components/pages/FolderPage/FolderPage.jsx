@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import testDecks from "../../../assets/test/testDecks";
-import testFolders from "../../../assets/test/testFolders";
+import testDecks from "../../../assets/mockData/testDecks";
+import testFolders from "../../../assets/mockData/testFolders";
 import './FolderPage.css';
 
 import Navbar from "../../Navbar/Navbar";
