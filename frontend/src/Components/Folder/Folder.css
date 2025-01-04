@@ -5,7 +5,6 @@
     box-shadow: 0px 4px 6px var(--box-shadow);
     position: relative;
     margin-bottom: 20px;
-    cursor: pointer;
 }
 
 .folder-header {

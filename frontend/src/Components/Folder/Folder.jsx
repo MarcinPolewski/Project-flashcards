@@ -11,8 +11,13 @@ const Folder = ( { id, title } ) => {
         navigate(`/folder/${id}`)
     }
 
-    return <div className="folder" onClick={handleClick}>
+    return <div className="folder">
         <div className="card-title">{title}</div>
+
+
+        <button className="folder-page-btn folder-page-study-btn" onClick={handleClick}>Open</button>
+        <button className="folder-page-btn folder-page-edit-btn">Edit</button>
+        <button className="folder-page-btn folder-page-delete-btn">Delete</button>
     </div>
 }
 
