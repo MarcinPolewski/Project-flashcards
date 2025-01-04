@@ -1,6 +1,8 @@
 package com.PAP_team_21.flashcards.entities.userStatistics;
 
+import com.PAP_team_21.flashcards.entities.JsonViewConfig;
 import com.PAP_team_21.flashcards.entities.customer.Customer;
+import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,18 +16,23 @@ public class UserStatistics {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
+    @JsonView(JsonViewConfig.Public.class)
     private int id;
 
     @Column(name = "user_id", insertable = false, updatable = false)
+    @JsonView(JsonViewConfig.Public.class)
     private int userId;
 
     @Column(name = "total_time_spent")
+    @JsonView(JsonViewConfig.Public.class)
     private int totalTimeSpent;
 
     @Column(name = "login_count")
+    @JsonView(JsonViewConfig.Public.class)
     private int loginCount;
 
     @Column(name = "last_login")
+    @JsonView(JsonViewConfig.Public.class)
     private LocalDateTime lastLogin;
 
     @OneToOne(fetch = FetchType.EAGER)

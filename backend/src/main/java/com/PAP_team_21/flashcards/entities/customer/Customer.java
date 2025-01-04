@@ -39,6 +39,7 @@ public class Customer {
     private String email;
 
     @Column(name = "password_hash")
+    @JsonView(JsonViewConfig.Internal.class)
     private String passwordHash;
 
     @Column(name = "username")
@@ -46,21 +47,27 @@ public class Customer {
     private String username;
 
     @Column(name = "account_expired")
+    @JsonView(JsonViewConfig.Internal.class)
     private boolean accountExpired;
 
     @Column(name = "account_locked")
+    @JsonView(JsonViewConfig.Internal.class)
     private boolean accountLocked;
 
     @Column(name = "credentials_expired")
+    @JsonView(JsonViewConfig.Internal.class)
     private boolean credentialsExpired;
 
     @Column(name = "enabled")
+    @JsonView(JsonViewConfig.Internal.class)
     private boolean enabled;
 
     @Column(name = "profile_creation_date")
+    @JsonView(JsonViewConfig.Internal.class)
     private LocalDateTime profileCreationDate;
 
     @Column(name = "profile_picture_path")
+    @JsonView(JsonViewConfig.Internal.class)
     private String profilePicturePath;
 
     @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL)
