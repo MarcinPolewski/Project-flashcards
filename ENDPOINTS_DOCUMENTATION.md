@@ -1,5 +1,5 @@
 
-# AuthenticationController API Documentation
+# API Documentation: AuthenticationController
 
 ## 1. `POST /api/auth/register`
 
@@ -118,8 +118,24 @@ This endpoint retrieves a customer by their ID.
 
 **Response:**
 - 200 OK: Returns the customer data.
-- 400 Bad Request: If the customer is not found or the user is not authenticated.
+    ```json
+    {
+        "id": 1,
+        "email": "kacper@polska.pl",
+        "username": "kacper123"
+    }
+    ```
+- 400 Bad Request:
 
+  If the user is not authenticated:
+  ```json
+  "No user with this id found"
+  ```
+ 
+  or the customer is not found.
+  ```json
+  "Customer not found"
+  ```
 ---
 
 ### `GET /customer/findByEmail/{email}`
@@ -131,8 +147,24 @@ This endpoint retrieves a customer by their email.
 
 **Response:**
 - 200 OK: Returns the customer data.
-- 400 Bad Request: If the customer is not found or the user is not authenticated.
+    ```json
+    {
+        "id": 1,
+        "email": "kacper@polska.pl",
+        "username": "kacper123"
+    }
+    ```
+- 400 Bad Request:
 
+  If the user is not authenticated:
+  ```json
+  "No user with this id found"
+  ```
+
+  or the customer is not found.
+  ```json
+  "Customer not found"
+  ```
 ---
 
 ### `GET /customer/findByUsername/{username}`
@@ -144,8 +176,31 @@ This endpoint retrieves a list of customers by their username.
 
 **Response:**
 - 200 OK: Returns a list of customers with the specified username.
-- 400 Bad Request: If no customers are found or the user is not authenticated.
+  ```json
+    [
+      {
+          "id": 1,
+          "username": "john_doe",
+          "email": "john.doe@example.com"
+      },
+      {
+          "id": 2,
+          "username": "jane_doe",
+          "email": "jane.doe@example.com"
+      }
+    ]
+    ```
+- 400 Bad Request:
 
+  If the user is not authenticated:
+  ```json
+  "No user with this id found"
+  ```
+
+  or customers are not found.
+  ```json
+  "Customers not found"
+  ```
 ---
 
 ### `POST /customer/delete`
@@ -154,8 +209,15 @@ This endpoint deletes a customer.
 
 **Response:**
 - 200 OK: Confirmation message that the customer was deleted.
-- 400 Bad Request: If the customer is not found or the user is not authenticated.
+  ```json
+  "Customer deleted successfully"
+  ```
+- 400 Bad Request:
 
+  If the user is not authenticated:
+  ```json
+  "No user with this id found"
+  ```
 ---
 
 ### `GET /customer/getSelf`
@@ -164,8 +226,24 @@ This endpoint retrieves the authenticated customer's data.
 
 **Response:**
 - 200 OK: Returns the authenticated customer's data.
-- 400 Bad Request: If the user is not authenticated.
+  ```json
+    {
+        "id": 1,
+        "email": "kacper@polska.pl",
+        "username": "kacper123",
+        "accountExpired": false,
+        "accountLocked": false,
+        "credentialsExpired": false,
+        "enabled": false,
+        "profilePicturePath": "/profilePicture.png"
+    }
+    ```
+- 400 Bad Request: 
 
+  If the user is not authenticated.
+  ```json
+  "No user with this id found"
+  ```
 ---
 
 ### `GET /customer/getReceivedFriendships`
@@ -174,7 +252,28 @@ This endpoint retrieves a list of received friendships for the authenticated cus
 
 **Response:**
 - 200 OK: Returns a list of received friendships.
-- 400 Bad Request: If the user is not authenticated.
+  ```json
+    [
+      {
+          "id": 1,
+          "senderId": 2,
+          "ReceiverId": 3,
+          "accepted": true
+      },
+      {
+          "id": 2,
+          "senderId": 3,
+          "ReceiverId": 4,
+          "accepted": false
+      }
+    ]
+    ```
+- 400 Bad Request: 
+
+  If the user is not authenticated.
+  ```json
+  "No user with this id found"
+  ```
 
 ---
 
@@ -184,8 +283,28 @@ This endpoint retrieves a list of sent friendships for the authenticated custome
 
 **Response:**
 - 200 OK: Returns a list of sent friendships.
-- 400 Bad Request: If the user is not authenticated.
+  ```json
+    [
+      {
+          "id": 1,
+          "senderId": 2,
+          "ReceiverId": 3,
+          "accepted": true
+      },
+      {
+          "id": 2,
+          "senderId": 3,
+          "ReceiverId": 4,
+          "accepted": false
+      }
+    ]
+    ```
+- 400 Bad Request: 
 
+  If the user is not authenticated.
+  ```json
+  "No user with this id found"
+  ```
 ---
 
 ### `GET /customer/getNotifications`
@@ -194,8 +313,30 @@ This endpoint retrieves a list of notifications for the authenticated customer.
 
 **Response:**
 - 200 OK: Returns a list of notifications.
-- 400 Bad Request: If the user is not authenticated.
+  ```json
+    [
+      {
+          "id": 1,
+          "userId": 2,
+          "received": true,
+          "text": "Hello",
+          "ReceivedDate": "2025-01-04 14:23:45"
+      },
+      {
+          "id": 2,
+          "userId": 3,
+          "received": false,
+          "text": "Bye",
+          "ReceivedDate": "2025-01-04 14:23:45"
+      }
+    ]
+    ```
+- 400 Bad Request: 
 
+  If the user is not authenticated.
+  ```json
+  "No user with this id found"
+  ```
 ---
 
 ### `GET /customer/getRootFolder`
@@ -204,8 +345,18 @@ This endpoint retrieves the root folder of the authenticated customer.
 
 **Response:**
 - 200 OK: Returns the root folder data.
-- 400 Bad Request: If the user is not authenticated.
+  ```json
+  {
+    "id": 1,
+    "name": "MyFirstFolder"
+  }
+  ```
+- 400 Bad Request: 
 
+  If the user is not authenticated.
+  ```json
+  "No user with this id found"
+  ```
 ---
 
 ### `GET /customer/getFriends`
@@ -214,8 +365,26 @@ This endpoint retrieves a list of the authenticated customer's friends.
 
 **Response:**
 - 200 OK: Returns a list of friends.
-- 400 Bad Request: If the user is not authenticated.
+  ```json
+  [
+    {
+      "id": 1,
+      "username": "john_doe",
+      "email": "john.doe@example.com"
+    },
+    {
+      "id": 2,
+      "username": "jane_doe",
+      "email": "jane.doe@example.com"
+    }
+  ]
+  ```
+- 400 Bad Request: 
 
+  If the user is not authenticated.
+  ```json
+  "No user with this id found"
+  ```
 ---
 
 ### `GET /customer/getFriendById/{id}`
@@ -227,8 +396,24 @@ This endpoint retrieves a friend by their ID.
 
 **Response:**
 - 200 OK: Returns the friend data.
-- 400 Bad Request: If no friend is found with the specified ID or if the user is not authenticated.
+  ```json
+  {
+    "id": 1,
+    "username": "john_doe",
+    "email": "john.doe@example.com"
+  }
+  ```
+- 400 Bad Request:
 
+  If the user is not authenticated:
+  ```json
+  "No user with this id found"
+  ```
+
+  or friend is not found.
+  ```json
+  "No friend with this id found"
+  ```
 ---
 
 ### `GET /customer/getFriendByEmail/{email}`
@@ -240,8 +425,135 @@ This endpoint retrieves a friend by their email.
 
 **Response:**
 - 200 OK: Returns the friend data.
-- 400 Bad Request: If no friend is found with the specified email or if the user is not authenticated.
+  ```json
+  {
+    "id": 1,
+    "username": "john_doe",
+    "email": "john.doe@example.com"
+  }
+  ```
+- 400 Bad Request:
 
+  If the user is not authenticated:
+  ```json
+  "No user with this id found"
+  ```
+
+  or friend is not found.
+  ```json
+  "No friend with this id found"
+  ```
+---
+
+### `POST /customer/sentFriendshipOfferById/{id}`
+
+This endpoint sends FriendShip offer to the other customer.
+
+**Parameters:**
+- `id` (path): The id of the customer to whom the friendship offer wil be sent.
+
+**Response:**
+- 200 OK: Returns the friendship data and notification data.
+  ```json
+    {
+    "friendship":
+      {
+          "id": 2,
+          "senderId": 3,
+          "ReceiverId": 4,
+          "accepted": false
+      }
+    ,
+    "notification":
+      {
+          "id": 1,
+          "userId": 2,
+          "received": true,
+          "text": "Hello",
+          "ReceivedDate": "2025-01-04 14:23:45"
+      }
+  }
+  ```
+- 400 Bad Request:
+
+  If the user is not authenticated:
+  ```json
+  "No user with this id found"
+  ```
+
+  or friend is not found.
+  ```json
+  "No friend with this id found"
+  ```
+---
+
+### `POST /customer/sentFriendshipOfferByEmail/{email}`
+
+This endpoint sends FriendShip offer to the other customer.
+
+**Parameters:**
+- `email` (path): The email of the customer to whom the friendship offer wil be sent.
+
+**Response:**
+- 200 OK: Returns the friendship data and notification data.
+  ```json
+    {
+    "friendship":
+      {
+          "id": 2,
+          "senderId": 3,
+          "ReceiverId": 4,
+          "accepted": false
+      }
+    ,
+    "notification":
+      {
+          "id": 1,
+          "userId": 2,
+          "received": true,
+          "text": "Hello",
+          "ReceivedDate": "2025-01-04 14:23:45"
+      }
+  }
+  ```
+- 400 Bad Request:
+
+  If the user is not authenticated:
+  ```json
+  "No user with this id found"
+  ```
+ 
+  or friend is not found.
+  ```json
+  "No friend with this id found"
+  ```
+---
+
+---
+### `GET acceptFriendshipOfferById/{id}`
+
+This endpoint accepts the friendship offer.
+
+**Response:**
+- 200 OK: Returns the friendship data.
+  ```json
+    {
+        "id": 1,
+        "senderId": 2,
+        "ReceiverId": 3,
+        "accepted": true
+    }
+  ```
+- 400 Bad Request:
+
+  If the user is not authenticated.
+  ```json
+  "No user with this id found"
+  ```
+  or friendship is not found
+  ```json
+  "No friendship with this id found"
+  ```
 ---
 
 ## Error Responses
