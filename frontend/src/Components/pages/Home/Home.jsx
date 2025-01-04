@@ -13,9 +13,6 @@ import testDecks from "../../../assets/test/testDecks";
 
 
 const Home = (props) => {
-
-    const [myDecksClicked, setMyDecksClicked] = useState(true);
-
     return <div>
 
     <Navbar details={props.details}/>
@@ -39,27 +36,21 @@ const Home = (props) => {
 
         </div>
 
-        <div className="home-my-decks">
+        <div className="home-latest-reviews">
 
-            <div className="my-decks-buttons">
-                <div className={myDecksClicked ? "active-tab" : ""} onClick={() => {
-                    setMyDecksClicked(true);
-                }}>
-                    My Decks
-                </div>
-                <div className={!myDecksClicked ? "active-tab" : ""} onClick={() => {
-                    setMyDecksClicked(false);
-                }}>
-                    Imported Decks
-                </div>
+            <div className="latest-reviews-title">Notifications</div>
+            <div className="latest-reviews-decks">
+                <div>Hello</div>
             </div>
 
-            {/* będzie w bazie danych flaga od decków personalnych i importowanych */}
+        </div>
 
+        <div className="home-my-decks">
+
+            <div className="latest-reviews-title">Deck Folders</div>
             <div className="my-decks-container">
             {
             testDecks
-                .filter(deck => myDecksClicked ? deck.imported === false : deck.imported === true)
                 .slice(0, 5)
                 .map((deck, idx) => (
                     <Deck key={idx} deckState={deck}/>
