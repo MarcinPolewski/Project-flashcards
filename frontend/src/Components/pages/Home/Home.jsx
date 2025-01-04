@@ -11,9 +11,13 @@ import 'react-circular-progressbar/dist/styles.css';
 import testDecks from "../../../assets/mockData/testDecks";
 import Folder from "../../Folder/Folder";
 import testFolders from "../../../assets/mockData/testFolders";
+import { useNavigate } from "react-router-dom";
 
 
 const Home = (props) => {
+
+    const navigate = useNavigate();
+
     return <div>
 
     <Navbar details={props.details}/>
@@ -30,7 +34,7 @@ const Home = (props) => {
                     <div key={idx} className="latest-review-deck">
                         <div className="deck-title">{deck.title}</div>
                         <CircularProgressbar className="react-circular-progressbar" value={deck.progress} text={`${deck.progress}%`} />
-                        <button className="continue-button">Continue</button>
+                        <button className="continue-button" onClick={() => navigate(`/deck/study/${deck.id}`)}>Continue</button>
                     </div>
                 ))}
             </div>
