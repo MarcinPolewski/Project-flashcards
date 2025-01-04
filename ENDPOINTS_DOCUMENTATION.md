@@ -1761,14 +1761,28 @@ Retrieve a review log by its ID.
 - **Method:** `GET`
 - **Parameters:**
   - `Authentication authentication`
-    - `id` (int) - The ID of the review log to retrieve.
+  - `id` (int) - The ID of the review log to retrieve.
 - **Response:**
     - **200 OK** - Returns the review log.
-    - **400 Bad Request** - Errors include:
-        - User not found.
-        - Review log not found.
-        - Access denied to the flashcard.
-
+    ```json
+    {
+      "id": 1,
+      "flashcardId": 3,
+      "userId": 2,
+      "when": "2025-01-04 14:23:45",
+     "userAnswer": 1
+    }
+    ```
+    - **400 Bad Request** - User not found or Review log not found or access denied to the flashcard.
+    ```json
+    "No User with this id found"
+    ```
+    ```json
+    "No reviewLog with this id found"
+    ```
+    ```json
+    "You do not have access to this flashcard"
+    ```
 ---
 
 ### 2. **Delete Review Log**
@@ -1781,11 +1795,19 @@ Delete a review log by its ID.
   - `reviewLogId` (int) - ID of the review log to delete.
 - **Response:**
     - **200 OK** - Confirms successful deletion.
-    - **400 Bad Request** - Errors include:
-        - User not found.
-        - Review log not found.
-        - Review log does not belong to the user.
-
+      ```json
+      "ReviewLog deleted successfully"
+      ```
+    - **400 Bad Request** - User not found or Review log not found or access denied to the flashcard.
+      ```json
+      "No User with this id found"
+      ```
+      ```json
+      "No reviewLog with this id found"
+      ```
+      ```json
+      "This reviewLog does not belong to the user"
+      ```
 ---
 
 # API Documentation: UserPreferencesController
@@ -1806,11 +1828,24 @@ Retrieve a user's preferences by ID.
   - `id` (int) - The ID of the user preferences to retrieve.
 - **Response:**
     - **200 OK** - Returns the user preferences.
-    - **400 Bad Request** - Errors include:
-        - User not found.
-        - User preferences not found.
-        - User preferences do not belong to the authenticated user.
-
+    ```json
+    {
+      "id": 1,
+      "userId": 3,
+      "darkMode": true,
+      "language": 2
+    }
+    ```
+    - **400 Bad Request** - User not found, UserPreferences not found, User preferences do not belong to the authenticated user.
+    ```json
+    "No User with this id found"
+    ```
+    ```json
+    "No reviewLog with this id found"
+    ```
+    ```json 
+    "This reviewLog does not belong to the user"
+    ```
 ---
 
 ### 2. **Update User Preferences**
@@ -1820,26 +1855,34 @@ Update an existing user's preferences.
 - **Method:** `POST`
 - **Parameters:**
   - `Authentication authentication`
-- **Request Body:** (JSON)
-    - `userPreferencesId` (int) - The ID of the user preferences to update.
-    - `darkMode` (boolean) - Updated preference for dark mode.
-    - `language` (String) - Updated preferred language.
+- **Request Body:**
+```json
+{
+    "userPreferencesId": 1,
+    "darkMode": false,
+    "language": 1
+}
+```
 - **Response:**
     - **200 OK** - Returns the updated user preferences.
-    - **400 Bad Request** - Errors include:
-        - User not found.
-        - User preferences not found.
-        - User preferences do not belong to the authenticated user.
-
----
-
-## Dependencies
-- **Repositories:**
-    - `UserPreferencesRepository` - For managing user preferences entities.
-    - `CustomerRepository` - For retrieving customer data.
-- **Security:**
-    - The controller ensures that the authenticated user can only access or modify their own preferences by comparing the `userId` in the preferences with the authenticated user's ID.
-
+    ```json
+    {
+      "id": 1,
+      "userId": 3,
+      "darkMode": true,
+      "language": 2
+    }
+    ```
+    - **400 Bad Request** - User not found, UserPreferences not found, User preferences do not belong to the authenticated user.
+    ```json
+    "No User with this id found"
+    ```
+    ```json
+    "No UserPreferences with this id found"
+    ```
+    ```json 
+    "UserPreferences do not belong to the user"
+    ```
 ---
 
 ## Security Considerations
@@ -1866,11 +1909,25 @@ Retrieve the statistics for a specific user by ID.
   - `id` (int) - The ID of the user statistics to retrieve.
 - **Response:**
     - **200 OK** - Returns the user statistics object.
-    - **400 Bad Request** - Errors include:
-        - User not found.
-        - User statistics not found.
-        - User statistics do not belong to the authenticated user.
-
+      ```json
+      {
+        "id": 1,
+        "userId": 3,
+        "totalTimeSpent": 100,
+        "loginCount": 2,
+        "lastLogin": "2025-01-04 14:23:45"
+      }
+      ```
+    - **400 Bad Request**:  User not found, User statistics not found, User statistics do not belong to the authenticated user.
+      ```json
+      "No User with this id found"
+      ```
+      ```json
+      "No UserStatistics with this id found"
+      ```
+      ```json 
+      "This UserStatistics do not belong to the user"
+      ```
 ---
 
 ### 2. **Update User Statistics**
@@ -1880,16 +1937,26 @@ Update an existing user statistics record.
 - **Method:** `POST`
 - **Parameters:**
   - `Authentication authentication`
-- **Request Body:** (JSON)
-    - `userStatisticsId` (int) - The ID of the user statistics to update.
-    - `totalTimeSpent` (long) - Updated total time spent.
-    - `loginCount` (int) - Updated login count.
-    - `lastLogin` (String) - Updated last login timestamp.
-- **Response:**
-    - **200 OK** - Returns the updated user statistics object.
-    - **400 Bad Request** - Errors include:
-        - User not found.
-        - User statistics not found.
-        - User statistics do not belong to the authenticated user.
+- **Request Body:**
+  ```json
+  {
+      "userStatisticsId": 1,
+      "totalTimeSpent": 3,
+      "loginCount": 2,
+      "lastLogin": "2025-01-04 14:23:45"
+  }
+  ```
 
+- **Response:**
+    - **200 OK**:  Returns the updated user statistics object.
+    - **400 Bad Request**: User not found, User statistics not found, User statistics do not belong to the authenticated user.
+      ```json
+      "No User with this id found"
+      ```
+      ```json
+      "No UserStatistics with this id found"
+      ```
+      ```json 
+      "This UserStatistics do not belong to the user"
+      ```
 ---
