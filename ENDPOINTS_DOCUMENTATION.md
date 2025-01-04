@@ -1668,15 +1668,41 @@ Retrieve flashcards from a specific deck to be reviewed.
 - **Method:** `POST`
 - **Parameters:**
   - `Authentication authentication`
-- **Request Body:** (JSON)
-  - `deckId` (int) - The ID of the deck from which to retrieve flashcards for review.
-  - `packageSize` (int) - The number of flashcards to include in the review package.
-- **Response:**
-  - **200 OK**:
-    - Returns a `FlashcardsToReviewResponse` containing the list of flashcards to review.
-  - **400 Bad Request** - Errors include:
-    - User does not have access to the specified deck.
 
+- **Request Body:**
+```json
+{
+    "deckId": 123,
+    "packageSize": 10
+}
+```
+- **Response:**
+  - **200 OK**: Returns a `FlashcardsToReviewResponse` containing the list of flashcards to review.
+
+  ```json
+    {
+        "flashcards": [
+            {
+                "id": 1,
+                "deckId": 2,
+                "front": "apple",
+                "back": "jabłko"
+            },
+            {
+                "id": 2,
+                "deckId": 2,
+                "front": "banana",
+                "back": "banan"
+            }
+        ]
+    }
+    ```
+  - **400 Bad Request**: User does not have access to the specified flashcard.
+  ```json
+    {
+        "error": "You do not have access to this deck"
+    }
+  ```
 ---
 
 ### 2. **Send Back Results**
@@ -1686,24 +1712,25 @@ Send review results for specific flashcards and update their review status.
 - **Method:** `POST`
 - **Parameters:**
   - `Authentication authentication`
-- **Request Body:** (JSON)
-  - `flashcardId` (int) - The ID of the reviewed flashcard.
-  - `userAnswer` (String) - The user's response or answer to the flashcard review.
+    **Request Body:**
+  ```json
+  {
+      "flashcardId": 1,
+      "userAnswer": "A programming language."
+  }
+  ``` 
 - **Response:**
-  - **200 OK**:
-    - Confirms that the flashcard review was successfully processed.
-  - **400 Bad Request** - Errors include:
-    - User does not have access to the specified flashcard.
-
----
-
-## Dependencies
-- **Services:**
-  - `ReviewService` - Handles the logic for retrieving flashcards for review and updating review results.
-  - `ResourceAccessService` - Validates user access to decks and flashcards.
-- **Security:**
-  - Authenticated users can only access decks and flashcards for which they have appropriate permissions.
-
+  - **200 OK**: Confirms that the flashcard review was successfully processed.
+  ```json
+  "Flashcard Reviewed"
+  ```
+  - **400 Bad Request** - User does not have access to the specified flashcard or deck.
+  ```json
+  "You do not have access to this flashcard"
+  ```
+  ```json
+  "You do not have access to this deck"
+  ```
 ---
 
 ## Security Considerations
@@ -1711,72 +1738,6 @@ Send review results for specific flashcards and update their review status.
 - **Authorization:** Ensures that users can only access flashcards and decks for which they have permission.
 - All endpoints enforce strict ownership checks to ensure data privacy.
 
----
-
-## Example Requests and Responses
-
-### Request Review
-**POST** `/folder/requestReview`
-
-**Request Body:**
-```json
-{
-    "deckId": 123,
-    "packageSize": 10
-}
-```
-
-**Response:**
-- **200 OK**:
-    ```json
-    {
-        "flashcards": [
-            {
-                "id": 1,
-                "question": "What is Java?",
-                "answer": "A programming language."
-            },
-            {
-                "id": 2,
-                "question": "What is polymorphism?",
-                "answer": "An OOP concept allowing multiple behaviors."
-            }
-        ]
-    }
-    ```
-- **400 Bad Request**:
-    ```json
-    {
-        "error": "You do not have access to this deck"
-    }
-    ```
-
----
-
-### Send Back Results
-**POST** `/folder/sendBackResults`
-
-**Request Body:**
-```json
-{
-    "flashcardId": 1,
-    "userAnswer": "A programming language."
-}
-```
-
-**Response:**
-- **200 OK**:
-    ```json
-    {
-        "message": "Flashcard reviewed"
-    }
-    ```
-- **400 Bad Request**:
-    ```json
-    {
-        "error": "You do not have access to this flashcard"
-    }
-    ```
 ---
 
 ## Notes
