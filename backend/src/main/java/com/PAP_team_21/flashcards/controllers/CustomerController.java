@@ -1,7 +1,5 @@
 package com.PAP_team_21.flashcards.controllers;
 
-import com.PAP_team_21.flashcards.controllers.requests.CustomerCreationRequest;
-import com.PAP_team_21.flashcards.controllers.requests.CustomerUpdateRequest;
 import com.PAP_team_21.flashcards.entities.FriendshipResponse;
 import com.PAP_team_21.flashcards.entities.JsonViewConfig;
 import com.PAP_team_21.flashcards.entities.customer.Customer;
@@ -84,53 +82,6 @@ public class CustomerController {
             return ResponseEntity.badRequest().body("Customer not found");
         }
         return ResponseEntity.ok(customers);
-    }
-
-    @PostMapping("/create")
-    public ResponseEntity<?> createCustomer(Authentication authentication, @RequestBody CustomerCreationRequest request) {
-        String email = authentication.getName();
-        Optional<Customer> customerOpt= customerRepository.findByEmail(email);
-        if(customerOpt.isEmpty())
-        {
-            return ResponseEntity.badRequest().body("No user with this id found");
-        }
-
-        Optional<Customer> existingCustomerOpt = customerRepository.findByEmail(request.getEmail());
-        if(existingCustomerOpt.isPresent()) {
-            return ResponseEntity.badRequest().body("A user with this email already exists");
-        }
-
-        Customer customer = new Customer(request.getEmail(), request.getPasswordHash(),
-                                        request.getUsername(), request.getProfilePicturePath());
-        customer.setEnabled(true);
-        customer.setCredentialsExpired(false);
-        customer.setAccountLocked(false);
-        customer.setAccountExpired(false);
-        customerRepository.save(customer);
-        return ResponseEntity.ok(customer);
-    }
-
-    @PostMapping("/update")
-    public ResponseEntity<?> updateCustomer(Authentication authentication, @RequestBody CustomerUpdateRequest request)
-    {
-        String email = authentication.getName();
-        Optional<Customer> customerOpt = customerRepository.findByEmail(email);
-
-        if(customerOpt.isEmpty()) {
-            return ResponseEntity.badRequest().body("No user found with this id");
-        }
-
-        Customer customer = customerOpt.get();
-
-        if (customerService.checkIfEmailAvailable(request.getEmail()) || email.equals(request.getEmail())) {
-            customer.setEmail(request.getEmail());
-        }
-        customer.setPasswordHash(request.getPasswordHash());
-        customer.setUsername(request.getUsername());
-        customer.setProfilePicturePath(request.getProfilePicturePath());
-
-        customerRepository.save(customer);
-        return ResponseEntity.ok(customer);
     }
 
     @PostMapping("/delete")
@@ -294,7 +245,7 @@ public class CustomerController {
         return ResponseEntity.ok(friend);
     }
 
-    @GetMapping("/getFriendById/{email}")
+    @GetMapping("/getFriendByEmail/{email}")
     @JsonView(JsonViewConfig.Public.class)
     public ResponseEntity<?> getFriendByEmail(Authentication authentication, @PathVariable String email) {
         String userEmail = authentication.getName();

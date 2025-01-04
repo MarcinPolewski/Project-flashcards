@@ -1,8 +1,6 @@
 package com.PAP_team_21.flashcards.controllers;
 
 import com.PAP_team_21.flashcards.AccessLevel;
-import com.PAP_team_21.flashcards.controllers.requests.ReviewLogCreationRequest;
-import com.PAP_team_21.flashcards.controllers.requests.ReviewLogUpdateRequest;
 import com.PAP_team_21.flashcards.entities.JsonViewConfig;
 import com.PAP_team_21.flashcards.entities.customer.Customer;
 import com.PAP_team_21.flashcards.entities.customer.CustomerRepository;
@@ -54,63 +52,6 @@ public class ReviewLogController {
             return ResponseEntity.badRequest().body("You dont have access to this flashcard");
         }
 
-        return ResponseEntity.ok(reviewLog);
-    }
-
-    @PostMapping("/create")
-    public ResponseEntity<?> createReviewLog(Authentication authentication,
-                                             @RequestBody ReviewLogCreationRequest request) {
-        String email = authentication.getName();
-        Optional<Customer> customerOpt= customerRepository.findByEmail(email);
-        if(customerOpt.isEmpty())
-        {
-            return ResponseEntity.badRequest().body("No user with this id found");
-        }
-        Customer customer = customerOpt.get();
-
-        Optional<Flashcard> flashcardOpt = flashcardRepository.findById(request.getFlashcardId());
-        if(flashcardOpt.isEmpty())
-        {
-            return ResponseEntity.badRequest().body("No flashcard with this id found");
-        }
-        Flashcard flashcard = flashcardOpt.get();
-
-        Deck deck = flashcard.getDeck();
-        AccessLevel al = deck.getAccessLevel(customer);
-        if (al == null)
-        {
-            return ResponseEntity.badRequest().body("You dont have access to this flashcard");
-        }
-
-        ReviewLog reviewLog = new ReviewLog(request.getFlashcardId(), request.getUserId(),
-                                            request.getUserAnswer());
-
-        reviewLogRepository.save(reviewLog);
-        return ResponseEntity.ok(reviewLog);
-    }
-
-    @PostMapping("/update")
-    public ResponseEntity<?> updateReviewLog(Authentication authentication,
-                                             @RequestBody ReviewLogUpdateRequest request) {
-        String email = authentication.getName();
-        Optional<Customer> customerOpt = customerRepository.findByEmail(email);
-        if (customerOpt.isEmpty())
-        {
-            return ResponseEntity.badRequest().body("No user with this id found");
-        }
-
-        Optional<ReviewLog> reviewLogOpt = reviewLogRepository.findById(request.getReviewLogId());
-        if (reviewLogOpt.isEmpty()) {
-            return ResponseEntity.badRequest().body("No reviewLog with this id found");
-        }
-        ReviewLog reviewLog = reviewLogOpt.get();
-
-        if (reviewLog.getUserId() != customerOpt.get().getId()) {
-            return ResponseEntity.badRequest().body("This reviewLog does not belong to user");
-        }
-        reviewLog.setUserAnswer(request.getUserAnswer());
-
-        reviewLogRepository.save(reviewLog);
         return ResponseEntity.ok(reviewLog);
     }
 
