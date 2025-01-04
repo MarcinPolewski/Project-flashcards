@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import testDecks from "../../../assets/mockData/testDecks";
 import testFolders from "../../../assets/mockData/testFolders";
 import './FolderPage.css';
@@ -10,6 +10,8 @@ const FolderPage = (props) => {
     const { id } = useParams();
     const [folder, setFolder] = useState(null);
     const [decks, setDecks] = useState([]);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         const foundFolder = testFolders.find(fold => fold.id === parseInt(id));
@@ -23,33 +25,50 @@ const FolderPage = (props) => {
     }, [id]);
 
     return (
+        <div>
+        <Navbar details={props.details} />
         <div className="folder-page">
-            <Navbar details = {props.details} />
 
             {folder ? (
                 <>
-                    <h1>{folder.name}</h1>
-                    <p>Created: {folder.createdAt}</p>
-                    <p>Last Modified: {folder.modifiedAt}</p>
+                    <h1 className="folder-page-h1">{folder.name}</h1>
+                    <p className="folder-page-p">Created: {folder.createdAt}</p>
+                    <p className="folder-page-p">Last Modified: {folder.modifiedAt}</p>
 
-                    <h3>Decks in this folder:</h3>
+                    <h3 className="folder-page-h3">Decks in this folder:</h3>
                     {decks.length > 0 ? (
-                        <ul>
-                            {decks.map(deck => (
-                                <li key={deck.id}>
-                                    <Link to={`/deck/${deck.id}`}>
-                                        {deck.title} - Progress: {deck.progress}%
-                                    </Link>
-                                </li>
+                        <div className="folder-page-deck-list">
+                        {decks.map(deck => (
+                            <div key={deck.id} className="folder-page-deck-card">
+                                <div className="folder-page-deck-card-content">
+                                    <h4>{deck.title}</h4>
+                                    <p className="folder-page-deck-progress">Progress: {deck.progress}%</p>
+                                    <p className="folder-page-deck-card-info">New Cards: {deck.newCards}</p>
+                                    <p className="folder-page-deck-card-info">Learning Cards: {deck.learningCards}</p>
+                                    <p className="folder-page-deck-card-info">Reviewing Cards: {deck.reviewingCards}</p>
+                                    <p className="folder-page-deck-card-info">Created: {deck.createdAt}</p>
+                                    <p className="folder-page-deck-card-info">Last Modified: {deck.lastModified}</p>
+                                </div>
+                                <div className="folder-page-deck-card-actions">
+                                <button onClick={() => navigate(`/deck/study/${deck.id}`)} className="folder-page-study-btn">
+                                    Study
+                                </button>
+                                <button onClick={() => navigate(`/deck/${deck.id}`)} className="folder-page-edit-btn">
+                                    Edit
+                                </button>
+                                    <button className="folder-page-btn folder-page-delete-btn">Delete</button>
+                                </div>
+                                </div>
                             ))}
-                        </ul>
+                        </div>
                     ) : (
-                        <p>No decks available in this folder</p>
+                        <p className="folder-page-no-decks">No decks available in this folder</p>
                     )}
                 </>
             ) : (
-                <p>No folder found with this ID</p>
+                <p className="folder-page-not-found">No folder found with this ID</p>
             )}
+        </div>
         </div>
     );
 };

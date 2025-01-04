@@ -128,13 +128,19 @@ const Settings = (props) => {
                     <>
                         <label>New Password</label>
                         <input type="password" value={formData.password} onChange={handleInputChange('password')} />
-                        <label>Re-enter New Password</label>
+                        <label>Reenter New Password</label>
                         <input type="password" value={formData.confirmPassword} onChange={handleInputChange('confirmPassword')} />
                     </>
                 );
             case 'delete':
                 return (
-                    <p className="warning-text">Are you sure you want to delete your account? This action cannot be undone.</p>
+                    <>
+                        <p className="warning-text">Are you sure you want to delete your account? This action cannot be undone.</p>
+                        <label>Enter Password</label>
+                        <input type="password" value={formData.password} onChange={handleInputChange('password')} />
+                        <label>Reenter Password</label>
+                        <input type="password" value={formData.confirmPassword} onChange={handleInputChange('confirmPassword')} />
+                    </>
                 );
             default:
                 return null;
