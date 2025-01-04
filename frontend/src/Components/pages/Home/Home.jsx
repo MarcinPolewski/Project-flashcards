@@ -11,6 +11,7 @@ import 'react-circular-progressbar/dist/styles.css';
 
 import testDecks from "../../../assets/test/testDecks";
 import Folder from "../../Folder/Folder";
+import testFolders from "../../../assets/test/testFolders";
 
 
 const Home = (props) => {
@@ -51,10 +52,10 @@ const Home = (props) => {
             <div className="latest-reviews-title">Deck Folders</div>
             <div className="my-decks-container">
             {
-            testDecks
+            testFolders
                 .slice(0, 5)
                 .map((folder, idx) => (
-                    <Folder key={idx} id={folder.id} title={folder.title}/>
+                    <Folder key={idx} id={folder.id} title={folder.name}/>
             ))}
             </div>
 

@@ -1,4 +1,4 @@
-const testDecks  = [
+const testDecks = [
     {
         id: 1,
         title: "Japanese N5",
@@ -12,7 +12,6 @@ const testDecks  = [
         lastUsed: "2023-11-20",
         lastModified: "2023-11-05"
     },
-
     {
         id: 2,
         title: "Owoce",
@@ -26,8 +25,8 @@ const testDecks  = [
         lastUsed: "2023-11-10",
         lastModified: "2023-10-25"
     },
-
     {
+        id: 3,
         title: "Warzywa",
         newCards: 60,
         learningCards: 35,
@@ -39,8 +38,8 @@ const testDecks  = [
         lastUsed: "2023-11-15",
         lastModified: "2023-11-03"
     },
-
     {
+        id: 4,
         title: "English Grammar",
         newCards: 35,
         learningCards: 50,
@@ -52,8 +51,8 @@ const testDecks  = [
         lastUsed: "2023-11-17",
         lastModified: "2023-11-10"
     },
-
     {
+        id: 5,
         title: "Spanish N5",
         newCards: 50,
         learningCards: 20,
@@ -65,8 +64,8 @@ const testDecks  = [
         lastUsed: "2023-11-18",
         lastModified: "2023-11-07"
     },
-
     {
+        id: 6,
         title: "Kanji Level 1",
         newCards: 80,
         learningCards: 40,
@@ -78,8 +77,8 @@ const testDecks  = [
         lastUsed: "2023-11-19",
         lastModified: "2023-11-10"
     },
-
     {
+        id: 7,
         title: "French A2",
         newCards: 55,
         learningCards: 25,
@@ -91,8 +90,8 @@ const testDecks  = [
         lastUsed: "2023-11-12",
         lastModified: "2023-11-02"
     },
-
     {
+        id: 8,
         title: "Imported Japanese N5",
         newCards: 50,
         learningCards: 25,
@@ -104,8 +103,8 @@ const testDecks  = [
         lastUsed: "2023-11-20",
         lastModified: "2023-11-05"
     },
-
     {
+        id: 9,
         title: "Imported Owoce",
         newCards: 50,
         learningCards: 25,
@@ -117,8 +116,8 @@ const testDecks  = [
         lastUsed: "2023-11-10",
         lastModified: "2023-10-25"
     },
-
     {
+        id: 10,
         title: "Imported Warzywa",
         newCards: 50,
         learningCards: 25,

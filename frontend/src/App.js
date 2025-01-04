@@ -10,6 +10,7 @@ import Decks from './Components/pages/Decks/Decks';
 import Import from './Components/pages/Import/Import';
 import Statistics from './Components/pages/Statistics/Statistics';
 import FolderPage from './Components/pages/FolderPage/FolderPage';
+import DeckPage from './Components/pages/DeckPage/DeckPage';
 
 /* Avatar for testing */
 import testAvatar from './assets/test/test-avatar.png';
@@ -53,6 +54,7 @@ function App() {
           <Route path="/forgot-password" element={<ForgotPassword/>} />
           <Route path="/password-reset" element={<PasswordReset/>} />
           <Route path="/folder/:id" element={<FolderPage />} />
+          <Route path="/deck/:id" element={<DeckPage />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
