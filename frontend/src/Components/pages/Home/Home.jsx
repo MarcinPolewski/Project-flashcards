@@ -10,6 +10,7 @@ import './Home.css';
 import 'react-circular-progressbar/dist/styles.css';
 
 import testDecks from "../../../assets/test/testDecks";
+import Folder from "../../Folder/Folder";
 
 
 const Home = (props) => {
@@ -52,8 +53,8 @@ const Home = (props) => {
             {
             testDecks
                 .slice(0, 5)
-                .map((deck, idx) => (
-                    <Deck key={idx} deckState={deck}/>
+                .map((folder, idx) => (
+                    <Folder key={idx} id={folder.id} title={folder.title}/>
             ))}
             </div>
 

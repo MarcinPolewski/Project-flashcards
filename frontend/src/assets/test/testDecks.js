@@ -1,5 +1,6 @@
 const testDecks  = [
     {
+        id: 1,
         title: "Japanese N5",
         newCards: 50,
         learningCards: 25,
@@ -13,6 +14,7 @@ const testDecks  = [
     },
 
     {
+        id: 2,
         title: "Owoce",
         newCards: 40,
         learningCards: 15,

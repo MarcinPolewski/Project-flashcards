@@ -9,6 +9,7 @@ import CreateFlashcard from './Components/pages/CreateFlashcard/CreateFlashcard'
 import Decks from './Components/pages/Decks/Decks';
 import Import from './Components/pages/Import/Import';
 import Statistics from './Components/pages/Statistics/Statistics';
+import FolderPage from './Components/pages/FolderPage/FolderPage';
 
 /* Avatar for testing */
 import testAvatar from './assets/test/test-avatar.png';
@@ -51,6 +52,7 @@ function App() {
           <Route path="/register" element={<Register/>} />
           <Route path="/forgot-password" element={<ForgotPassword/>} />
           <Route path="/password-reset" element={<PasswordReset/>} />
+          <Route path="/folder/:id" element={<FolderPage />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
