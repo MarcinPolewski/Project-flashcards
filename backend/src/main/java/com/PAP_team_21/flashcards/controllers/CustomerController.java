@@ -216,7 +216,7 @@ public class CustomerController {
         Optional<Customer> customerToFindOpt = customerRepository.findById(id);
         if (customerToFindOpt.isEmpty())
         {
-            return ResponseEntity.badRequest().body("No user with this id found");
+            return ResponseEntity.badRequest().body("No friend with this id found");
         }
 
         List<Friendship> possibleFriendships = customer.getSentFriendships();
@@ -259,7 +259,7 @@ public class CustomerController {
         Optional<Customer> customerToFindOpt = customerRepository.findByEmail(email);
         if (customerToFindOpt.isEmpty())
         {
-            return ResponseEntity.badRequest().body("No user with this id found");
+            return ResponseEntity.badRequest().body("No friend with this id found");
         }
 
         int id = customerToFindOpt.get().getId();
