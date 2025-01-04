@@ -3,6 +3,8 @@ import React, {useContext, useState, useEffect} from "react";
 import Navbar from "../../Navbar/Navbar";
 import Overlay from "../../Overlay/Overlay";
 
+import renderFormContent from "../../../utils/renderFormContent";
+
 import './Settings.css';
 import { ThemeContext } from "../../../contexts/ThemeContext/ThemeContext";
 import { useOverlay } from "../../../contexts/OverlayContext/OverlayContext";
@@ -38,7 +40,8 @@ const Settings = (props) => {
     const handleEmailChange = (event) => setEditedEmail(event.target.value);
     const handleUsernameChange = (event) => setEditedUsername(event.target.value);
 
-    const handleEditClick = () => {
+    const handleEditClick = (type) => {
+        setFormType(type);
         toggleOverlay();
     };
 
@@ -89,7 +92,7 @@ const Settings = (props) => {
                             <div className="label">Email</div>
                             <div className="value">{email}</div>
                         </div>
-                        <button className="edit-button" onClick={handleEditClick}>Edit</button>
+                        <button className="edit-button" onClick={() => handleEditClick('email')}>Edit</button>
                     </div>
                     <hr />
                     <div className="personal-info-item">
@@ -97,7 +100,7 @@ const Settings = (props) => {
                             <div className="label">Username</div>
                             <div className="value">{username}</div>
                         </div>
-                        <button className="edit-button" onClick={handleEditClick}>Edit</button>
+                        <button className="edit-button" onClick={() => handleEditClick('username')}>Edit</button>
                     </div>
                 </div>
             </SettingsSection>
@@ -176,7 +179,7 @@ const Settings = (props) => {
             <SettingsSection title="Account and privacy">
                 <div className="account-item">
                     <div className="label">Change your password</div>
-                    <button className="edit-button">Edit</button>
+                    <button className="edit-button" onClick={() => handleEditClick('password')}>Edit</button>
                 </div>
                 <hr />
                 <div className="account-item">
@@ -186,23 +189,26 @@ const Settings = (props) => {
                             This will delete all your data and cannot be undone.
                         </p>
                     </div>
-                    <button className="delete-button">Delete account</button>
+                    <button className="delete-button" onClick={() => handleEditClick('delete')}>Delete account</button>
                 </div>
             </SettingsSection>
         </div>
 
         <Overlay isOpen={isOverlayOpen} closeOverlay={closeOverlay}>
             <div className="overlay-form">
-                <h2>Edit Information</h2>
+                <h2>{formType === 'delete' ? 'Confirm Deletion' : 'Edit Information'}</h2>
                 <div className="overlay-input">
-                    <label>Email</label>
-                    <input type="email" value={editedEmail} onChange={handleEmailChange} />
+                    {renderFormContent({
+                        formType,
+                        editedEmail,
+                        handleEmailChange,
+                        editedUsername,
+                        handleUsernameChange,
+                    })}
                 </div>
-                <div className="overlay-input">
-                    <label>Username</label>
-                    <input type="text" value={editedUsername} onChange={handleUsernameChange} />
-                </div>
-                <button onClick={closeOverlay}>Save</button>
+                <button onClick={closeOverlay}>
+                    {formType === 'delete' ? 'Confirm' : 'Send Confirmation Mail'}
+                </button>
             </div>
         </Overlay>
 
