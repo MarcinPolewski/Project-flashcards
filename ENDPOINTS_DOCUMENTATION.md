@@ -64,6 +64,9 @@
 
 **Description**: This endpoint is invoked after a successful social login (OAuth2). It retrieves or creates a user based on the email from the OAuth2 provider and generates a JWT token for the user.
 
+#### Parameters
+- `Authentication authentication`: Contains authentication details.
+
 **Request**:  
 This endpoint does not require any request body. The authentication will be handled by Spring Security automatically.
 
@@ -92,7 +95,6 @@ In case of an error (e.g., invalid credentials, server issue), the responses may
   "error": "Error message"
 }
 ```
-
 ---
 
 ## Additional Information
@@ -114,6 +116,7 @@ This document provides a detailed description of the API endpoints available in 
 This endpoint retrieves a customer by their ID.
 
 **Parameters:**
+- `Authentication authentication`: Contains authentication details.
 - `id` (path): The ID of the customer to be fetched.
 
 **Response:**
@@ -143,6 +146,7 @@ This endpoint retrieves a customer by their ID.
 This endpoint retrieves a customer by their email.
 
 **Parameters:**
+- `Authentication authentication`: Contains authentication details.
 - `email` (path): The email of the customer to be fetched.
 
 **Response:**
@@ -172,6 +176,7 @@ This endpoint retrieves a customer by their email.
 This endpoint retrieves a list of customers by their username.
 
 **Parameters:**
+- `Authentication authentication`: Contains authentication details.
 - `username` (path): The username of the customer to be searched.
 
 **Response:**
@@ -207,6 +212,9 @@ This endpoint retrieves a list of customers by their username.
 
 This endpoint deletes a customer.
 
+**Parameters:**
+- `Authentication authentication`: Contains authentication details.
+
 **Response:**
 - 200 OK: Confirmation message that the customer was deleted.
   ```json
@@ -223,6 +231,9 @@ This endpoint deletes a customer.
 ### `GET /customer/getSelf`
 
 This endpoint retrieves the authenticated customer's data.
+
+**Parameters:**
+- `Authentication authentication`: Contains authentication details.
 
 **Response:**
 - 200 OK: Returns the authenticated customer's data.
@@ -249,6 +260,9 @@ This endpoint retrieves the authenticated customer's data.
 ### `GET /customer/getReceivedFriendships`
 
 This endpoint retrieves a list of received friendships for the authenticated customer.
+
+**Parameters:**
+- `Authentication authentication`: Contains authentication details.
 
 **Response:**
 - 200 OK: Returns a list of received friendships.
@@ -281,6 +295,9 @@ This endpoint retrieves a list of received friendships for the authenticated cus
 
 This endpoint retrieves a list of sent friendships for the authenticated customer.
 
+**Parameters:**
+- `Authentication authentication`: Contains authentication details.
+
 **Response:**
 - 200 OK: Returns a list of sent friendships.
   ```json
@@ -311,6 +328,9 @@ This endpoint retrieves a list of sent friendships for the authenticated custome
 
 This endpoint retrieves a list of notifications for the authenticated customer.
 
+**Parameters:**
+- `Authentication authentication`: Contains authentication details.
+
 **Response:**
 - 200 OK: Returns a list of notifications.
   ```json
@@ -339,6 +359,9 @@ This endpoint retrieves a list of notifications for the authenticated customer.
   ```
 ---
 
+**Parameters:**
+- `Authentication authentication`: Contains authentication details.
+
 ### `GET /customer/getRootFolder`
 
 This endpoint retrieves the root folder of the authenticated customer.
@@ -358,6 +381,9 @@ This endpoint retrieves the root folder of the authenticated customer.
   "No user with this id found"
   ```
 ---
+
+**Parameters:**
+- `Authentication authentication`: Contains authentication details.
 
 ### `GET /customer/getFriends`
 
@@ -392,6 +418,7 @@ This endpoint retrieves a list of the authenticated customer's friends.
 This endpoint retrieves a friend by their ID.
 
 **Parameters:**
+- `Authentication authentication`: Contains authentication details.
 - `id` (path): The ID of the friend to be fetched.
 
 **Response:**
@@ -421,6 +448,7 @@ This endpoint retrieves a friend by their ID.
 This endpoint retrieves a friend by their email.
 
 **Parameters:**
+- `Authentication authentication`: Contains authentication details.
 - `email` (path): The email of the friend to be fetched.
 
 **Response:**
@@ -450,6 +478,7 @@ This endpoint retrieves a friend by their email.
 This endpoint sends FriendShip offer to the other customer.
 
 **Parameters:**
+- `Authentication authentication`: Contains authentication details.
 - `id` (path): The id of the customer to whom the friendship offer wil be sent.
 
 **Response:**
@@ -492,6 +521,7 @@ This endpoint sends FriendShip offer to the other customer.
 This endpoint sends FriendShip offer to the other customer.
 
 **Parameters:**
+- `Authentication authentication`: Contains authentication details.
 - `email` (path): The email of the customer to whom the friendship offer wil be sent.
 
 **Response:**
@@ -530,9 +560,13 @@ This endpoint sends FriendShip offer to the other customer.
 ---
 
 ---
-### `GET acceptFriendshipOfferById/{id}`
+### `POST acceptFriendshipOfferById/{id}`
 
 This endpoint accepts the friendship offer.
+
+**Parameters:**
+- `Authentication authentication`: Contains authentication details.
+- `id`: Friendship id.
 
 **Response:**
 - 200 OK: Returns the friendship data.
@@ -770,8 +804,12 @@ This endpoint demonstrates a secured route where the user's email is extracted f
 - The request requires authentication (either via UsernamePasswordAuthenticationToken or OAuth2AuthenticationToken).
 
 **Response:**
-- 200 OK: Returns a message with the authenticated user's email.
+- 200 OK: 
 
+Returns a message with the authenticated user's email.
+```json
+  "Your email is ..."
+```
 ---
 
 # API Documentation: Flashcard Controller
