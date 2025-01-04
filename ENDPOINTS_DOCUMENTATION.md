@@ -559,7 +559,6 @@ This endpoint sends FriendShip offer to the other customer.
   ```
 ---
 
----
 ### `POST acceptFriendshipOfferById/{id}`
 
 This endpoint accepts the friendship offer.
@@ -615,6 +614,7 @@ This document provides a detailed description of the API endpoints available in 
 This endpoint retrieves flashcards from a specified deck.
 
 **Parameters:**
+- `Authentication authentication`: Contains authentication details.
 - `page` (query): The page number for pagination (default: 0).
 - `size` (query): The number of items per page (default: 5).
 - `sortBy` (query): The field to sort by (default: `id`).
@@ -658,6 +658,9 @@ or if the deck does not exist.
 
 This endpoint creates a new deck in a folder.
 
+**Parameters:**
+- `Authentication authentication`: Contains authentication details.
+
 **Request Body:**
   ```json
     {
@@ -696,6 +699,9 @@ or if the folder does not exist.
 ### `PUT /deck/update`
 
 This endpoint updates the name of an existing deck.
+
+**Parameters:**
+- `Authentication authentication`: Contains authentication details.
 
 **Request Body:**
   ```json
@@ -746,6 +752,7 @@ or if the deck does not exist.
 This endpoint deletes a specified deck.
 
 **Parameters:**
+- `Authentication authentication`: Contains authentication details.
 - `deckId` (query): The ID of the deck to delete.
 
 **Response:**
@@ -800,6 +807,9 @@ This document provides a description of the API endpoint available in the `DemoC
 
 This endpoint demonstrates a secured route where the user's email is extracted from the authentication token and returned in the response.
 
+**Parameters:**
+- `Authentication authentication`: Contains authentication details.
+
 **Request:**
 - The request requires authentication (either via UsernamePasswordAuthenticationToken or OAuth2AuthenticationToken).
 
@@ -833,11 +843,35 @@ This class relies on the following repositories and services:
 Creates a new flashcard in a specified deck.
 #### Parameters
 - `Authentication authentication`: Contains authentication details.
-- `@RequestBody FlashcardCreationRequest request`: Contains deck ID, front, and back content of the flashcard.
-#### Response
-- 200: Returns the created flashcard.
-- 400: Returns an error message if the user does not have the necessary access level or the deck is not found.
+  
+**Request Body:**
+  ```json
+    {
+      "deckId": 1,
+      "front": "vegetables",
+      "back": "warzywa"
+    }
+  ```
 
+#### Response
+- 200 OK: 
+
+Returns the created flashcard.
+
+  ```json
+    {
+      "id": 1,
+      "deckId": 1,
+      "front": "vegetables",
+      "back": "warzywa"
+    }
+  ```
+- 400 Bad Request: 
+
+Returns an error message if the user does not have the necessary access level or the deck is not found.
+  ```json
+  "You do not have permission to create a deck here"
+  ```
 ---
 
 ### 2. `@PostMapping("/update")`
@@ -845,11 +879,34 @@ Creates a new flashcard in a specified deck.
 Updates an existing flashcard.
 #### Parameters
 - `Authentication authentication`: Contains authentication details.
-- `@RequestBody FlashcardUpdateRequest request`: Contains flashcard ID, updated front, and back content.
+  
+**Request Body:**
+  ```json
+    {
+      "flashcardId": 1,
+      "front": "vegetables",
+      "back": "warzywa"
+    }
+  ```
 #### Response
-- 200: Returns the updated flashcard.
-- 400: Returns an error message if the user does not have the necessary access level or the flashcard is not found.
+- 200 OK: 
 
+Returns the updated flashcard.
+
+```json
+  {
+    "id": 1,
+    "deckId": 1,
+    "front": "vegetables",
+    "back": "warzywa"
+  }
+```
+- 400 Bad Request:
+
+Returns an error message if the user does not have the necessary access level or the flashcard is not found.
+  ```json
+  "You do not have permission to create a deck here"
+  ```
 ---
 
 ### 3. `@DeleteMapping("/delete")`
@@ -859,9 +916,16 @@ Deletes a flashcard.
 - `Authentication authentication`: Contains authentication details.
 - `@RequestParam int flashcardId`: ID of the flashcard to delete.
 #### Response
-- 200: Returns a success message.
-- 400: Returns an error message if the user does not have the necessary access level or the flashcard is not found.
+- 200 OK:
 
+Returns a success message.
+```json
+"deleted successfully"
+```
+- 400: Returns an error message if the user does not have the necessary access level or the flashcard is not found.
+```json
+"Flashcard deleted successfully"
+```
 ---
 
 ### 4. `@PostMapping("/copyFlashcardToDeck")`
@@ -872,9 +936,23 @@ Copies a flashcard to another deck.
 - `@RequestParam int deckId`: ID of the destination deck.
 - `@RequestParam int flashcardId`: ID of the flashcard to copy.
 #### Response
-- 200: Returns a success message.
-- 400: Returns an error message if the user does not have the necessary access level for the deck or flashcard.
+- 200 OK: 
 
+Returns a success message.
+```json
+"copied successfully"
+```
+- 400 Bad Request: 
+
+Returns an error message if the user does not have the necessary access level 
+for the deck or flashcard.
+```json
+"You do not have permission to add to this deck"
+```
+
+```json
+"You do not have permission to add this flashcard"
+```
 ---
 
 ### 5. `@PostMapping("/moveFlashcardToOtherDeck")`
@@ -886,8 +964,26 @@ Moves a flashcard from one deck to another.
 - `@RequestParam int destinationDeckId`: ID of the destination deck.
 - `@RequestParam int flashcardId`: ID of the flashcard to move.
 #### Response
-- 200: Returns a success message.
-- 400: Returns an error message if the user does not have the necessary access level for the decks or flashcard, or if the flashcard is not in the source deck.
+- 200 OK: 
+
+Returns a success message.
+```json
+"flashcard moved"
+```
+
+- 400 Bad Request:
+
+Returns an error message if the user does not have the necessary access 
+level for the decks or flashcard, or if the flashcard is not in the source deck.
+```json
+"You do not have permission to edit this deck"
+```
+```json
+"You do not have permission to move this flashcard"
+```
+```json
+"Flashcard is not in source deck"
+```
 
 ## Security
 Access control is enforced using the `ResourceAccessService`. Only users with appropriate access levels (e.g., OWNER, EDITOR) can modify resources.
@@ -905,7 +1001,7 @@ Custom exceptions like `ResourceNotFoundException` are used to handle cases wher
 # API Documentation: FlashcardProgress Controller
 
 ## Overview
-The `FlashcardProgressController` class is a REST controller responsible for managing flashcard progress data. It provides endpoints for retrieving, creating, updating, and deleting flashcard progress entries.
+The `FlashcardProgressController` class is a REST controller responsible for managing flashcard progress data. It provides endpoints for retrieving flashcard progress entries.
 
 ## Dependencies
 This class relies on the following repositories and entities:
@@ -924,18 +1020,30 @@ Fetches the flashcard progress data for the given ID.
 - `Authentication authentication`: Contains authentication details.
 - `@PathVariable int id`: ID of the flashcard progress to retrieve.
 #### Response
-- 200: Returns the flashcard progress data.
-- 400: Returns an error message if the user or flashcard progress is not found or if the user does not have access.
+- 200 OK: 
 
-### 2. `@DeleteMapping("/delete")`
-#### Description
-Deletes a flashcard progress entry.
-#### Parameters
-- `Authentication authentication`: Contains authentication details.
-- `@RequestParam int flashcardProgressId`: ID of the flashcard progress to delete.
-#### Response
-- 200: Returns a success message.
-- 400: Returns an error message if the user, flashcard progress, or flashcard is not found or if the user does not have access.
+Returns the flashcard progress data.
+```json
+  {
+    "id": 1,
+    "flashcardId": 1,
+    "nextReview": "2025-01-04 14:23:45",
+    "valid": true
+  }
+```
+- 400 Bad Request:
+
+Returns an error message if the user or flashcard progress is not found or 
+if the user does not have access.
+```json
+"No user with this id found"
+```
+```json
+"No flashcard progress with this id found"
+```
+```json
+"You dont have access to this flashcard"
+```
 
 ## Error Handling
 All endpoints validate the user's identity and access permissions. Error messages are returned for invalid operations such as unauthorized access or non-existent entities.
