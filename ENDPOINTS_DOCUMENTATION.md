@@ -1314,12 +1314,30 @@ Retrieves details of a specific friendship by its ID.
 - **URL:** `/getFriendship/{id}`
 - **Method:** `GET`
 - **JSON View:** `JsonViewConfig.Public`
-- **Path Variables:**
+- **Parameters:**
+    - `Authentication authentication`
     - `id` (int) - The ID of the friendship to retrieve.
 - **Response:**
-    - **200 OK** - Details of the friendship.
-    - **400 Bad Request** - Friendship or user not found, or user does not have access.
 
+  **200 OK** - Details of the friendship.
+  ```json
+  {
+    "id": 1,
+    "senderId": 3,
+    "receiverId": 4,
+    "accepted": true
+  }
+  ```
+  **400 Bad Request** - Friendship or user not found, or user does not have access.
+  ```json
+  "No friendship with this id found"
+  ```
+  ```json
+  "No user with this id found"
+  ```
+  ```json
+  "User do not have access to this friendship"
+  ```
 ---
 
 ### 2. **Create Friendship**
@@ -1328,13 +1346,33 @@ Creates a new friendship between two users.
 - **URL:** `/create`
 - **Method:** `POST`
 - **Parameters:**
-    - **Body:** `FriendshipCreationRequest`:
-        - `senderId` (int) - The ID of the sender initiating the friendship.
-        - `receiverId` (int) - The ID of the receiver of the friendship request.
+  - `Authentication authentication`
+    
+- **Request Body:**
+  ```json
+    {
+      "senderId": 1,
+      "receiverId": 2
+    }
+  ```
 - **Response:**
-    - **200 OK** - Friendship created successfully.
-    - **400 Bad Request** - User not found or user does not have access.
 
+  **200 OK** - Friendship created successfully.
+  ```json
+  {
+    "id": 1,
+    "senderId": 3,
+    "receiverId": 4,
+    "accepted": true
+  }
+  ```
+  **400 Bad Request** - User not found or user does not have access.
+  ```json
+  "No user with this id found"
+  ```
+  ```json
+  "User do not have access to this friendship"
+  ```
 ---
 
 ### 3. **Update Friendship**
@@ -1343,13 +1381,35 @@ Updates the status of an existing friendship (e.g., accepting a request).
 - **URL:** `/update`
 - **Method:** `POST`
 - **Parameters:**
-    - **Body:** `FriendshipUpdateRequest`:
-        - `friendshipId` (int) - The ID of the friendship to update.
-        - `accepted` (boolean) - Whether the friendship request is accepted.
+  - `Authentication authentication`
+- **Request Body:**
+  ```json
+    {
+      "friendshipId": 1,
+      "accepted": true
+    }
+  ```
 - **Response:**
-    - **200 OK** - Friendship updated successfully.
-    - **400 Bad Request** - Friendship or user not found, or user does not have access.
 
+  **200 OK** - Friendship updated successfully.
+  ```json
+  {
+    "id": 1,
+    "senderId": 3,
+    "receiverId": 4,
+    "accepted": true
+  }
+  ```
+  **400 Bad Request** -  Friendship or user not found, or user does not have access.
+  ```json
+  "No friendship with this id found"
+  ```
+  ```json
+  "No user with this id found"
+  ```
+  ```json
+  "User do not have access to this friendship"
+  ```
 ---
 
 ### 4. **Delete Friendship**
@@ -1358,11 +1418,24 @@ Deletes an existing friendship.
 - **URL:** `/delete`
 - **Method:** `DELETE`
 - **Parameters:**
-    - `friendshipId` (int) - The ID of the friendship to delete.
+  - `Authentication authentication`
+  - `friendshipId` (int) - The ID of the friendship to delete.
 - **Response:**
-    - **200 OK** - Friendship deleted successfully.
-    - **400 Bad Request** - Friendship or user not found, or user does not have access.
 
+  **200 OK** - Friendship deleted successfully.
+  ```json
+  "Friendship deleted successfully"
+  ```
+  **400 Bad Request** -  Friendship or user not found, or user does not have access.
+  ```json
+  "No friendship with this id found"
+  ```
+  ```json
+  "No user with this id found"
+  ```
+  ```json
+  "User do not have access to this friendship"
+  ```
 ---
 
 ## Dependencies
@@ -1401,8 +1474,9 @@ Retrieves a specific notification by its ID.
 - **URL:** `/getNotification/{id}`
 - **Method:** `GET`
 - **JSON View:** `JsonViewConfig.Public`
-- **Path Variables:**
-    - `id` (int) - The ID of the notification to retrieve.
+- **Parameters:**
+  - `Authentication authentication`
+  - `id` (int) - The ID of the notification to retrieve.
 - **Response:**
     - **200 OK** - The requested notification.
     - **400 Bad Request** - Notification or user not found, or the notification does not belong to the user.
@@ -1415,6 +1489,7 @@ Creates a new notification for a user.
 - **URL:** `/create`
 - **Method:** `POST`
 - **Parameters:**
+  - `Authentication authentication`
     - **Body:** `NotificationCreationRequest`:
         - `userId` (int) - The ID of the user to whom the notification belongs.
         - `text` (String) - The content of the notification.
@@ -1432,6 +1507,7 @@ Updates the status of a notification (e.g., marking it as received).
 - **URL:** `/update`
 - **Method:** `POST`
 - **Parameters:**
+  - `Authentication authentication`
     - **Body:** `NotificationUpdateRequest`:
         - `notificationId` (int) - The ID of the notification to update.
         - `received` (boolean) - Indicates the updated status of the notification.
@@ -1447,6 +1523,7 @@ Deletes a specific notification by its ID.
 - **URL:** `/delete`
 - **Method:** `DELETE`
 - **Parameters:**
+  - `Authentication authentication`
     - `notificationId` (int) - The ID of the notification to delete.
 - **Response:**
     - **200 OK** - Notification successfully deleted.
@@ -1485,7 +1562,8 @@ Generates a PDF document for a specific deck by its ID.
 
 - **URL:** `/generatePdf/{id}`
 - **Method:** `GET`
-- **Path Variables:**
+- **Parameters:**
+  - `Authentication authentication`
     - `id` (int) - The ID of the deck for which the PDF will be generated.
 - **Response:**
     - **200 OK** - Returns a byte array containing the PDF file. Includes headers for file download:
@@ -1512,24 +1590,6 @@ Generates a PDF document for a specific deck by its ID.
 
 ---
 
-## Example Request and Response
-
-### Request
-**GET** `/generatePdf/1`
-
-### Successful Response
-- **Headers:**
-    - `Content-Disposition`: `attachment; filename=SampleDeck.pdf`
-    - `Content-Type`: `application/pdf`
-- **Body:** Binary data of the PDF file.
-
-### Error Response
-- **404 Not Found**:
-  ```json
-  {
-    "error": "Deck not found"
-  }
-
 # API Documentation: Review Controller
 
 The `ReviewController` manages operations related to reviewing flashcards, including retrieving flashcards to review and updating review results.
@@ -1543,6 +1603,8 @@ Retrieve flashcards from a specific deck to be reviewed.
 
 - **URL:** `/folder/requestReview`
 - **Method:** `POST`
+- **Parameters:**
+  - `Authentication authentication`
 - **Request Body:** (JSON)
   - `deckId` (int) - The ID of the deck from which to retrieve flashcards for review.
   - `packageSize` (int) - The number of flashcards to include in the review package.
@@ -1559,6 +1621,8 @@ Send review results for specific flashcards and update their review status.
 
 - **URL:** `/folder/sendBackResults`
 - **Method:** `POST`
+- **Parameters:**
+  - `Authentication authentication`
 - **Request Body:** (JSON)
   - `flashcardId` (int) - The ID of the reviewed flashcard.
   - `userAnswer` (String) - The user's response or answer to the flashcard review.
@@ -1671,7 +1735,8 @@ Retrieve a review log by its ID.
 
 - **URL:** `/reviewLog/getReviewLog/{id}`
 - **Method:** `GET`
-- **Path Variables:**
+- **Parameters:**
+  - `Authentication authentication`
     - `id` (int) - The ID of the review log to retrieve.
 - **Response:**
     - **200 OK** - Returns the review log.
@@ -1687,8 +1752,9 @@ Delete a review log by its ID.
 
 - **URL:** `/reviewLog/delete`
 - **Method:** `DELETE`
-- **Query Parameters:**
-    - `reviewLogId` (int) - ID of the review log to delete.
+- **Parameters:**
+  - `Authentication authentication`
+  - `reviewLogId` (int) - ID of the review log to delete.
 - **Response:**
     - **200 OK** - Confirms successful deletion.
     - **400 Bad Request** - Errors include:
@@ -1711,8 +1777,9 @@ Retrieve a user's preferences by ID.
 
 - **URL:** `/userPreferences/getUserPreferences/{id}`
 - **Method:** `GET`
-- **Path Variables:**
-    - `id` (int) - The ID of the user preferences to retrieve.
+- **Parameters:**
+  - `Authentication authentication`
+  - `id` (int) - The ID of the user preferences to retrieve.
 - **Response:**
     - **200 OK** - Returns the user preferences.
     - **400 Bad Request** - Errors include:
@@ -1727,6 +1794,8 @@ Update an existing user's preferences.
 
 - **URL:** `/userPreferences/update`
 - **Method:** `POST`
+- **Parameters:**
+  - `Authentication authentication`
 - **Request Body:** (JSON)
     - `userPreferencesId` (int) - The ID of the user preferences to update.
     - `darkMode` (boolean) - Updated preference for dark mode.
@@ -1768,8 +1837,9 @@ Retrieve the statistics for a specific user by ID.
 
 - **URL:** `/userStatistics/getUserStatistics/{id}`
 - **Method:** `GET`
-- **Path Variables:**
-    - `id` (int) - The ID of the user statistics to retrieve.
+- **Parameters:**
+  - `Authentication authentication`
+  - `id` (int) - The ID of the user statistics to retrieve.
 - **Response:**
     - **200 OK** - Returns the user statistics object.
     - **400 Bad Request** - Errors include:
@@ -1784,6 +1854,8 @@ Update an existing user statistics record.
 
 - **URL:** `/userStatistics/update`
 - **Method:** `POST`
+- **Parameters:**
+  - `Authentication authentication`
 - **Request Body:** (JSON)
     - `userStatisticsId` (int) - The ID of the user statistics to update.
     - `totalTimeSpent` (long) - Updated total time spent.
