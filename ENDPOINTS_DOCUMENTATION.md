@@ -589,8 +589,35 @@ This endpoint retrieves flashcards from a specified deck.
 
 **Response:**
 - 200 OK: Returns a list of flashcards from the specified deck.
-- 400 Bad Request: If the user does not have access to the deck or if the deck does not exist.
+  ```json
+  [
+    {
+      "id": 1,
+      "deckId": 2,
+      "front": "apple",
+      "back": "jabłko"
+    },
+    {
+      "id": 2,
+      "deckId": 2,
+      "front": "banana",
+      "back": "banan"
+    }
+  ]
+  ```
+  
+- 400 Bad Request: 
 
+If the user does not have access to the deck
+  ```json
+  "You do not have access to this deck"
+  ```
+
+
+or if the deck does not exist.
+  ```json
+  "Error message from the exception (e.g., 'Deck not found')"
+  ```
 ---
 
 ### `POST /deck/create`
@@ -598,13 +625,38 @@ This endpoint retrieves flashcards from a specified deck.
 This endpoint creates a new deck in a folder.
 
 **Request Body:**
-- `folderId`: The ID of the folder where the deck will be created.
-- `name`: The name of the new deck.
+  ```json
+    {
+      "folderId": 1,
+      "name": "fruits"
+    }
+  ```
+---
 
 **Response:**
 - 200 OK: Returns the created deck.
-- 400 Bad Request: If the user does not have permission to create a deck in the specified folder, or if the folder does not exist.
+  ```json
+  {
+    "id": 1,
+    "name": "fruits"
+  }
+  ```
+- 400 Bad Request:
 
+If the user is not authenticated.
+  ```json
+  "No user with this id found"
+  ```
+
+or if the user does not have permission to create a deck in the specified folder
+  ```json
+  "You do not have permission to create a deck here"
+  ```
+---
+or if the folder does not exist.
+  ```json
+  "No folder with this id found"
+  ```
 ---
 
 ### `PUT /deck/update`
@@ -612,13 +664,47 @@ This endpoint creates a new deck in a folder.
 This endpoint updates the name of an existing deck.
 
 **Request Body:**
-- `deckId`: The ID of the deck to update.
-- `name`: The new name for the deck.
+  ```json
+    {
+      "deckId": 1,
+      "name": "vegetables"
+    }
+  ```
 
 **Response:**
 - 200 OK: Returns the updated deck.
-- 400 Bad Request: If the user does not have permission to update the deck, or if the deck does not exist.
+  ```json
+  [
+    {
+      "id": 1,
+      "deckId": 2,
+      "front": "apple",
+      "back": "jabłko"
+    },
+    {
+      "id": 2,
+      "deckId": 2,
+      "front": "banana",
+      "back": "banan"
+    }
+  ]
+  ```
+400 Bad Request: 
 
+If the user is not authenticated.
+  ```json
+  "No user with this id found"
+  ```
+
+or if the user does not have permission to update the deck
+  ```json
+  "You do not have permission to update this deck"
+  ```
+---
+or if the deck does not exist.
+  ```json
+  "No deck with this id found"
+  ```
 ---
 
 ### `DELETE /deck/delete`
@@ -629,9 +715,22 @@ This endpoint deletes a specified deck.
 - `deckId` (query): The ID of the deck to delete.
 
 **Response:**
-- 200 OK: Confirmation message that the deck was deleted.
-- 400 Bad Request: If the user does not have permission to delete the deck, or if the deck does not exist.
+- 200 OK:
 
+Confirmation message that the deck was deleted.
+```json
+  "deck deleted"
+  ```
+- 400 Bad Request: 
+
+If the user does not have permission to delete the deck
+  ```json
+  "You do not have permission to delete this deck"
+  ```
+or if the deck does not exist.
+  ```json
+  "No deck with this id found"
+  ```
 ---
 
 ## Error Responses
@@ -762,11 +861,6 @@ Custom exceptions like `ResourceNotFoundException` are used to handle cases wher
 - `@RestController`: Marks this class as a REST controller.
 - `@RequestMapping`: Maps HTTP requests to handler methods.
 - `@RequiredArgsConstructor`: Generates a constructor for the class's dependencies.
-
----
-
-# Links
-For the complete Java file, refer to the generated link [here](./flashcard_controller.java).
 
 ---
 
