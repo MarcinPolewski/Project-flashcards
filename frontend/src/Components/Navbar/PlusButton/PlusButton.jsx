@@ -3,6 +3,7 @@ import './PlusButton.css';
 import { useOverlay } from "../../../contexts/OverlayContext/OverlayContext";
 import { useNavigate } from "react-router-dom";
 import Overlay from "../../Overlay/Overlay";
+import testFolders from "../../../assets/mockData/testFolders";
 
 const PlusButton = () => {
     const navigate = useNavigate();
@@ -17,9 +18,9 @@ const PlusButton = () => {
     useEffect(() => {
         const fetchFolders = async () => {
             try {
-                const response = await fetch("/api/folders");
-                const data = await response.json();
-                setFolders(data);
+                // const response = await fetch("/api/folders");
+                // const data = await response.json();
+                setFolders(testFolders);
             } catch (error) {
                 console.error("Error fetching folders:", error);
             }

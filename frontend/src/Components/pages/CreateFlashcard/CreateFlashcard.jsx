@@ -5,13 +5,15 @@ import './CreateFlashcard.css';
 
 const CreateFlashcard = (props) => {
     const navigate = useNavigate();
-    
+
     return (
+        <div>
+
+        <Navbar details = {props.details} />
         <div className = "create-flashcard">
-            <Navbar details = {props.details} />
-    
+
             <div className = "flashcard-container">
-    
+
                 <h2> Create Flashcard </h2>
 
                 <div className = "inputs-container">
@@ -23,7 +25,7 @@ const CreateFlashcard = (props) => {
                             <option value = "deck3"> Francuski A1 </option>
                         </select>
                     </div>
-    
+
                     <div className = "flashcard-inputs">
                         <textarea placeholder = "Front" className = "textarea"></textarea>
                         <textarea placeholder = "Back" className = "textarea"></textarea>
@@ -34,8 +36,9 @@ const CreateFlashcard = (props) => {
                     <button className = "cancel-button" onClick={() => navigate("/")}> Cancel </button>
                     <button className = "add-button"> Add </button>
                 </div>
-    
+
             </div>
+        </div>
         </div>
     );
 }
