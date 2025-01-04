@@ -4,7 +4,9 @@ import testDecks from "../../../assets/test/testDecks";
 import testFolders from "../../../assets/test/testFolders";
 import './FolderPage.css';
 
-const FolderPage = () => {
+import Navbar from "../../Navbar/Navbar";
+
+const FolderPage = (props) => {
     const { id } = useParams();
     const [folder, setFolder] = useState(null);
     const [decks, setDecks] = useState([]);
@@ -20,27 +22,33 @@ const FolderPage = () => {
         }
     }, [id]);
 
-    if (folder === null) return <p>Folder not found!</p>;
-
     return (
         <div className="folder-page">
-            <h1>{folder.name}</h1>
-            <p>Created: {folder.createdAt}</p>
-            <p>Last Modified: {folder.modifiedAt}</p>
+            <Navbar details = {props.details} />
 
-            <h3>Decks in this folder:</h3>
-            {decks.length > 0 ? (
-                <ul>
-                    {decks.map(deck => (
-                        <li key={deck.id}>
-                            <Link to={`/deck/${deck.id}`}>
-                                {deck.title} - Progress: {deck.progress}%
-                            </Link>
-                        </li>
-                    ))}
-                </ul>
+            {folder ? (
+                <>
+                    <h1>{folder.name}</h1>
+                    <p>Created: {folder.createdAt}</p>
+                    <p>Last Modified: {folder.modifiedAt}</p>
+
+                    <h3>Decks in this folder:</h3>
+                    {decks.length > 0 ? (
+                        <ul>
+                            {decks.map(deck => (
+                                <li key={deck.id}>
+                                    <Link to={`/deck/${deck.id}`}>
+                                        {deck.title} - Progress: {deck.progress}%
+                                    </Link>
+                                </li>
+                            ))}
+                        </ul>
+                    ) : (
+                        <p>No decks available in this folder</p>
+                    )}
+                </>
             ) : (
-                <p>No decks available in this folder</p>
+                <p>No folder found with this ID</p>
             )}
         </div>
     );

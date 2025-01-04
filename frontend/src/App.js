@@ -53,8 +53,8 @@ function App() {
           <Route path="/register" element={<Register/>} />
           <Route path="/forgot-password" element={<ForgotPassword/>} />
           <Route path="/password-reset" element={<PasswordReset/>} />
-          <Route path="/folder/:id" element={<FolderPage />} />
-          <Route path="/deck/:id" element={<DeckPage />} />
+          <Route path="/folder/:id" element={<FolderPage details={APIdummy}/>} />
+          <Route path="/deck/:id" element={<DeckPage details={APIdummy}/>} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>

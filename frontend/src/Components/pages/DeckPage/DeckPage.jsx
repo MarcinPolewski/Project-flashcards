@@ -4,7 +4,9 @@ import testDecks from '../../../assets/test/testDecks';
 import testFlashcards from '../../../assets/test/testFlashcards';
 import './DeckPage.css';
 
-const DeckPage = () => {
+import Navbar from '../../Navbar/Navbar';
+
+const DeckPage = (props) => {
     const { id } = useParams();
     const [deck, setDeck] = useState(null);
     const [flashcards, setFlashcards] = useState([]);
@@ -22,6 +24,10 @@ const DeckPage = () => {
 
     return (
         <div className="deck-page">
+            <Navbar details = {props.details} />
+
+            {deck ? (
+                <>
             <h1>{deck.title}</h1>
             <p>Progress: {deck.progress}%</p>
             <p>New Cards: {deck.newCards}</p>
@@ -41,6 +47,8 @@ const DeckPage = () => {
             ) : (
                 <p>No flashcards available in this deck</p>
             )}
+            </>) : <p>Deck not found!</p>
+            }
         </div>
     );
 };
