@@ -568,7 +568,7 @@ All endpoints require the user to be authenticated. Authentication is performed 
 
 ## JSON Views
 
-The responses include a JSON view configuration that controls the data fields included in the response, as defined in `JsonViewConfig.Public`.
+The responses include a JSON view configuration that controls the data fields included in the response, as defined in `JsonViewConfig.Public` and `JsonViewConfig.Internal`.
 
 # API Documentation: Deck Controller
 
