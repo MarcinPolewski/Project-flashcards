@@ -2,6 +2,7 @@ package com.PAP_team_21.flashcards.entities.flashcardProgress;
 
 import com.PAP_team_21.flashcards.entities.flashcard.Flashcard;
 import com.PAP_team_21.flashcards.entities.customer.Customer;
+import com.PAP_team_21.flashcards.entities.reviewLog.ReviewLog;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,8 +27,9 @@ public class FlashcardProgress {
     @Column(name = "next_review")
     private LocalDateTime next_review;
 
-    @Column(name = "valid")
-    private boolean valid;
+    @OneToOne
+    @JoinColumn(name="last_review_id")
+    private ReviewLog lastReviewLog;
 
     @ManyToOne
     @JoinColumn(name = "flashcard_id")
@@ -36,6 +38,7 @@ public class FlashcardProgress {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private Customer customer;
+
 
     public FlashcardProgress() {}
 
