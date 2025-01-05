@@ -42,10 +42,10 @@ public class FlashcardProgress {
 
     public FlashcardProgress() {}
 
-    public FlashcardProgress(int flashcard_id, int user_id, LocalDateTime next_review, boolean valid) {
+    public FlashcardProgress(int flashcard_id, int user_id, LocalDateTime next_review, ReviewLog lastReviewLog) {
         this.flashcard_id = flashcard_id;
         this.user_id = user_id;
         this.next_review = next_review;
-        this.valid = valid;
+        this.lastReviewLog = lastReviewLog;
     }
 }
