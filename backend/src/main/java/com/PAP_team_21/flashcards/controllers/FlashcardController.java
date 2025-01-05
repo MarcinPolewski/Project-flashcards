@@ -5,24 +5,17 @@ import com.PAP_team_21.flashcards.Errors.ResourceNotFoundException;
 import com.PAP_team_21.flashcards.authentication.ResourceAccessLevelService.DeckAccessServiceResponse;
 import com.PAP_team_21.flashcards.authentication.ResourceAccessLevelService.FlashcardAccessServiceResponse;
 import com.PAP_team_21.flashcards.authentication.ResourceAccessLevelService.ResourceAccessService;
-import com.PAP_team_21.flashcards.controllers.requests.DeckCreationRequest;
-import com.PAP_team_21.flashcards.controllers.requests.DeckUpdateRequest;
 import com.PAP_team_21.flashcards.controllers.requests.FlashcardCreationRequest;
 import com.PAP_team_21.flashcards.controllers.requests.FlashcardUpdateRequest;
-import com.PAP_team_21.flashcards.entities.customer.Customer;
 import com.PAP_team_21.flashcards.entities.customer.CustomerRepository;
-import com.PAP_team_21.flashcards.entities.deck.Deck;
 import com.PAP_team_21.flashcards.entities.deck.DeckRepository;
 import com.PAP_team_21.flashcards.entities.flashcard.Flashcard;
-import com.PAP_team_21.flashcards.entities.flashcard.FlashcardRepository;
-import com.PAP_team_21.flashcards.entities.folder.Folder;
+import com.PAP_team_21.flashcards.entities.flashcard.FlashcardService;
 import com.PAP_team_21.flashcards.entities.folder.FolderJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/flashcard")
@@ -31,7 +24,7 @@ public class FlashcardController {
     private final CustomerRepository customerRepository;
     private final DeckRepository deckRepository;
     private final FolderJpaRepository folderRepository;
-    private final FlashcardRepository flashcardRepository;
+    private final FlashcardService flashcardService;
 
     private final ResourceAccessService resourceAccessService;
 
@@ -55,7 +48,7 @@ public class FlashcardController {
         if(al.equals(AccessLevel.OWNER) || al.equals(AccessLevel.EDITOR))
         {
             Flashcard flashcard = new Flashcard(response.getDeck(), request.getFront(), request.getBack());
-            flashcardRepository.save(flashcard);
+            flashcardService.save(flashcard);
             return ResponseEntity.ok(flashcard);
         }
 
@@ -82,7 +75,7 @@ public class FlashcardController {
             Flashcard flashcard = response.getFlashcard();
             flashcard.setFront(request.getFront());
             flashcard.setBack(request.getBack());
-            flashcardRepository.save(flashcard);
+            flashcardService.save(flashcard);
 
             return ResponseEntity.ok(flashcard);
         }
@@ -109,7 +102,7 @@ public class FlashcardController {
 
         if(al.equals(AccessLevel.OWNER) || al.equals(AccessLevel.EDITOR))
         {
-            flashcardRepository.delete(response.getFlashcard());
+            flashcardService.delete(response.getFlashcard());
 
             return ResponseEntity.ok("deleted successfully");
         }
@@ -155,7 +148,7 @@ public class FlashcardController {
         }
 
         Flashcard newFlashcard = new Flashcard(deckResponse.getDeck(), flashcardResponse.getFlashcard().getFront(), flashcardResponse.getFlashcard().getBack());
-        flashcardRepository.save(newFlashcard);
+        flashcardService.save(newFlashcard);
 
         return ResponseEntity.ok("copied successfuly");
     }
@@ -217,7 +210,7 @@ public class FlashcardController {
         }
 
         flashcardResponse.getFlashcard().setDeck(destinationDeckResponse.getDeck());
-        flashcardRepository.save(flashcardResponse.getFlashcard());
+        flashcardService.save(flashcardResponse.getFlashcard());
 
         return ResponseEntity.ok("flashcard moved!");
     }

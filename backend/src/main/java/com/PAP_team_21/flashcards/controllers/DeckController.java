@@ -10,7 +10,6 @@ import com.PAP_team_21.flashcards.controllers.requests.DeckUpdateRequest;
 import com.PAP_team_21.flashcards.entities.customer.CustomerRepository;
 import com.PAP_team_21.flashcards.entities.deck.Deck;
 import com.PAP_team_21.flashcards.entities.deck.DeckRepository;
-import com.PAP_team_21.flashcards.entities.flashcard.FlashcardRepository;
 import com.PAP_team_21.flashcards.entities.folder.FolderJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -45,7 +44,7 @@ public class DeckController {
         {
             return ResponseEntity.badRequest().body("You dont have access to this deck");
         }
-        return ResponseEntity.ok(response.getDeck().getFlashcards());
+        return ResponseEntity.ok(response.getDeck().getFlashcards( page,  size,  sortBy,  ascending));
     }
 
     @PostMapping("/create")
