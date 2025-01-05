@@ -4,7 +4,7 @@ import '../../AuthSection/Auth.css';
 import AuthSection from "../../AuthSection/AuthSection";
 
 import { handleOAuth2 } from "../../../utils/handleOAuth2";
-import { registerUser } from "../../../services/authService";
+import { registerUser } from "../../../services/AuthService";
 import { useNavigate } from "react-router-dom";
 
 const Register = () => {

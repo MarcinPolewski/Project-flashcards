@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import '../../AuthSection/Auth.css';
 import AuthSection from "../../AuthSection/AuthSection";
 import { useNavigate } from "react-router-dom";
-import { loginUser } from "../../../services/authService";
+import { loginUser } from "../../../services/AuthService";
 
 import { handleOAuth2 } from "../../../utils/handleOAuth2";
 
