@@ -6,12 +6,14 @@ import com.PAP_team_21.flashcards.entities.deck.Deck;
 import com.PAP_team_21.flashcards.entities.flashcard.Flashcard;
 import com.PAP_team_21.flashcards.entities.flashcard.FlashcardService;
 import com.PAP_team_21.flashcards.entities.folder.Folder;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.FormattableFlags;
 import java.util.List;
 
@@ -22,6 +24,7 @@ public class ReviewService {
     private final FlashcardService flashcardService;
 
 
+    @Transactional
     public List<Flashcard> reviewBy(Customer customer, Deck deck, int batchSize)
     {
         // !!! to be defined later !!!
@@ -49,6 +52,7 @@ public class ReviewService {
 
         ArrayList<Flashcard> result = new ArrayList<>();
 
+        // how many flashcards of type a we want in returned batch
         int typeAFlashcardsCnt = (int) (learning_ratio*batchSize);
         int typeBFlashcardsCnt = batchSize - typeAFlashcardsCnt;
 
@@ -66,14 +70,14 @@ public class ReviewService {
             result.addAll(dueFlashcards);
 
             int howManyLeftToAdd = batchSize - dueFlashcards.size();
-            int howManyNewCardsCanBeIntroduced = max_currently_learning - totalInLearningCnt;
+            int howManyNewCardsCanBeIntroduced = Math.min(max_currently_learning - totalInLearningCnt,
+                    howManyLeftToAdd);
 
             if(howManyNewCardsCanBeIntroduced > 0)
             {
-                int howManyNewToAdd = Math.min(howManyLeftToAdd, howManyNewCardsCanBeIntroduced);
                 List<Flashcard> newFlashcards = flashcardService.getNewFlashcards(customer,
                         deck,
-                        howManyNewToAdd);
+                        howManyNewCardsCanBeIntroduced);
                 result.addAll(newFlashcards);
             }
 
@@ -102,6 +106,7 @@ public class ReviewService {
                     review_gap_constant,
                     last_review_constant,
                     Pageable.ofSize(typeAFlashcardsCnt));
+            result.addAll(dueInLearning);
             if(dueInLearning.size() <  typeAFlashcardsCnt)
             {
                 // try to introduce new flashcards
@@ -147,7 +152,7 @@ public class ReviewService {
         }
 
 
-
+        Collections.shuffle(result);
         return result;
     }
 //    public List<Flashcard> reviewBy(Customer customer, Deck deck, int page, int size, String sortBy, boolean ascending) {
