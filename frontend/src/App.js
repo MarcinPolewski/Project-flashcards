@@ -9,6 +9,8 @@ import CreateFlashcard from './Components/pages/CreateFlashcard/CreateFlashcard'
 import Decks from './Components/pages/Decks/Decks';
 import Import from './Components/pages/Import/Import';
 import Statistics from './Components/pages/Statistics/Statistics';
+import FolderPage from './Components/pages/FolderPage/FolderPage';
+import DeckPage from './Components/pages/DeckPage/DeckPage';
 
 /* Avatar for testing */
 import testAvatar from './assets/test/test-avatar.png';
@@ -56,17 +58,21 @@ function App() {
     <OverlayProvider>
     <ThemeProvider>
       <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<PrivateRoute><Home details={APIdummy}/></PrivateRoute>} />
-        <Route path="/settings" element={<PrivateRoute><Settings details={APIdummy} /></PrivateRoute>} />
-        <Route path="/statistics" element={<PrivateRoute><Statistics details={APIdummy} /></PrivateRoute>} />
-        <Route path="/decks" element={<PrivateRoute><Decks details={APIdummy} /></PrivateRoute>} />
-        <Route path="/create-flashcard" element={<PrivateRoute><CreateFlashcard details={APIdummy} /></PrivateRoute>} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/password-reset" element={<PasswordReset />} />
-      </Routes>
+        <Routes>
+          {/*<Route path="/" element={<Home details={APIdummy}/>} />*/}
+          <Route path="/" element={<Home details={APIdummy}/>} />
+          <Route path="/settings" element={<Settings details={APIdummy} />} />
+          <Route path="/statistics" element={<Statistics details={APIdummy} />} />
+          <Route path="/decks" element={<Decks details={APIdummy} />} />
+          <Route path="/import" element={<Import details={APIdummy} />} />
+          <Route path="/create-flashcard" element={<CreateFlashcard details={APIdummy} />} />
+          <Route path="/login" element={<Login/>} />
+          <Route path="/register" element={<Register/>} />
+          <Route path="/forgot-password" element={<ForgotPassword/>} />
+          <Route path="/password-reset" element={<PasswordReset/>} />
+          <Route path="/folder/:id" element={<PrivateRoute><FolderPage details={APIdummy}/></PrivateRoute>} />
+          <Route path="/deck/:id" element={<PrivateRoute><DeckPage details={APIdummy}/> </PrivateRoute>} />
+        </Routes>
       </BrowserRouter>
     </ThemeProvider>
     </OverlayProvider>

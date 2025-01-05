@@ -1,0 +1,199 @@
+/* FolderPage.css */
+.folder-page {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    background-color: #f4f4f4;
+    min-height: 100vh;
+}
+
+.folder-page-h1 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.folder-page-p {
+    font-size: 1rem;
+    color: #666;
+    margin: 5px 0;
+}
+
+.folder-page-h3 {
+    font-size: 1.5rem;
+    margin-top: 20px;
+    color: #333;
+}
+
+.folder-page-ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.folder-page-ul-li {
+    margin-bottom: 10px;
+}
+
+.folder-page-ul-li-a {
+    text-decoration: none;
+    font-size: 1.2rem;
+    color: #007BFF;
+    transition: color 0.3s;
+}
+
+.folder-page-ul-li-a:hover {
+    color: #0056b3;
+}
+
+.folder-page-no-decks {
+    font-size: 1.2rem;
+    color: #888;
+}
+
+.folder-page-not-found {
+    font-size: 1.2rem;
+    color: red;
+    font-weight: bold;
+}
+
+.folder-page-folder-details {
+    margin-bottom: 20px;
+}
+
+.folder-page-folder-details-p {
+    margin: 5px 0;
+}
+
+.folder-page-deck-list {
+    margin-top: 20px;
+}
+
+.folder-page-deck-list-li {
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    transition: background-color 0.3s;
+}
+
+.folder-page-deck-list-li:hover {
+    background-color: #f1f1f1;
+}
+
+.folder-page-deck-progress {
+    font-size: 1rem;
+    color: #28a745;
+    font-weight: bold;
+}
+
+.folder-page-deck-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.folder-page-deck-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto auto;
+    gap: 20px;
+    margin-top: 20px;
+    justify-items: center;
+}
+
+.folder-page-deck-card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 15px;
+    width: 250px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.folder-page-deck-list > .folder-page-deck-card:nth-child(4),
+.folder-page-deck-list > .folder-page-deck-card:nth-child(5) {
+    grid-column: span 1;
+    justify-self: center;
+}
+
+.folder-page-deck-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.folder-page-deck-card-content {
+    margin-bottom: 10px;
+}
+
+.folder-page-deck-card h4 {
+    font-size: 1.3rem;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.folder-page-deck-card p {
+    font-size: 0.9rem;
+    color: #666;
+    margin: 3px 0;
+}
+
+.folder-page-deck-card-info {
+    font-size: 0.9rem;
+    color: #888;
+}
+
+.folder-page-deck-card-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.folder-page-edit-btn,
+.folder-page-delete-btn,
+.folder-page-study-btn {
+    background-color: #007BFF; /* Kolor niebieski */
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    font-size: 0.9rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.folder-page-edit-btn:hover,
+.folder-page-delete-btn:hover,
+.folder-page-study-btn:hover {
+    background-color: #0056b3;
+}
+
+.folder-page-delete-btn {
+    background-color: #dc3545;
+}
+
+.folder-page-delete-btn:hover {
+    background-color: #c82333;
+}
+
+.folder-page-study-btn {
+    background-color: #28a745;
+}
+
+.folder-page-study-btn:hover {
+    background-color: #218838;
+}
+
+
+@media (max-width: 1024px) {
+    .folder-page-deck-list {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .folder-page-deck-list {
+        grid-template-columns: 1fr;
+    }
+}

@@ -40,23 +40,37 @@
     margin-top: 20px;
 }
 
-.deck-action-button {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    background: var(--deck-action-button);
+.folder-page-edit-btn,
+.folder-page-delete-btn,
+.folder-page-study-btn {
+    background-color: #007BFF;
+    color: white;
     border: none;
-    cursor: pointer;
-}
-
-.deck-dropdown {
-    display: none;
-    position: absolute;
-    top: 40px;
-    left: 0;
-    background: var(--deck-dropdown);
-    border: 1px solid var(--section-border);
+    padding: 8px 15px;
+    font-size: 0.9rem;
     border-radius: 5px;
-    box-shadow: 0px 4px 6px var(--box-shadow);
+    cursor: pointer;
+    transition: background-color 0.3s;
 }
 
+.folder-page-edit-btn:hover,
+.folder-page-delete-btn:hover,
+.folder-page-study-btn:hover {
+    background-color: #0056b3;
+}
+
+.folder-page-delete-btn {
+    background-color: #dc3545;
+}
+
+.folder-page-delete-btn:hover {
+    background-color: #c82333;
+}
+
+.folder-page-study-btn {
+    background-color: #28a745;
+}
+
+.folder-page-study-btn:hover {
+    background-color: #218838;
+}
