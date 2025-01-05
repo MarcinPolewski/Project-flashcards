@@ -41,7 +41,7 @@ CREATE TABLE `Flashcards_Progresses`(
                                         `flashcard_id` INT UNSIGNED NOT NULL,
                                         `user_id` INT UNSIGNED NOT NULL,
                                         `next_review` DATETIME NOT NULL,
-                                        `valid` BOOLEAN NOT NULL
+                                        `last_review_id` INT UNSIGNED NOT NULL
 );
 CREATE TABLE `User_Preferences`(
                                    `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -142,6 +142,9 @@ ALTER TABLE
     `Review_Logs` ADD CONSTRAINT `review_logs_user_id_foreign` FOREIGN KEY(`user_id`) REFERENCES `Customers`(`id`);
 ALTER TABLE
     `Flashcards_Progresses` ADD CONSTRAINT `flashcards_progresses_user_id_foreign` FOREIGN KEY(`user_id`) REFERENCES `Customers`(`id`);
+ALTER TABLE
+    `Flashcards_Progresses` ADD CONSTRAINT `flashcards_progresses_last_review_id_foreign` FOREIGN KEY(`last_review_id`) REFERENCES `Review_Logs`(`id`);
+
 
 -- things from old chart
 CREATE TABLE `Authorities`(
