@@ -1,6 +1,6 @@
 import api from "../api/api";
 
-export const FriendshipService = {
+const FriendshipService = {
     getFriendship: async (id) => {
         const response = await api.get(`/friendship/getFriendship/${id}`);
         return response.data;
@@ -18,3 +18,5 @@ export const FriendshipService = {
         return response.data;
     }
 };
+
+export default FriendshipService;

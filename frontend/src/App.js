@@ -20,7 +20,7 @@ import ForgotPassword from './Components/pages/ForgotPassword/ForgotPassword';
 import PasswordReset from './Components/pages/ForgotPassword/PasswordReset';
 import PrivateRoute from './Components/PrivateRoute/PrivateRoute';
 import { useEffect, useState } from 'react';
-import { getUserData } from './services/userService';
+import CustomerService from './services/CustomerService';
 
 const APIdummy =
 
@@ -43,7 +43,7 @@ function App() {
   useEffect(() => {
       const fetchUserData = async () => {
         try {
-          const data = await getUserData();
+          const data = await CustomerService.getUserData();
           setUserData(data);
         } catch (error) {
           console.error("Error fetching user data", error);

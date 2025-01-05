@@ -1,6 +1,6 @@
 import api from "../api/api";
 
-export const DeckService = {
+const DeckService = {
     getFlashcards: async (deckId, page = 0, size = 5, sortBy = 'id', ascending = true) => {
         const response = await api.get('/deck/flashcards', {
             params: { deckId, page, size, sortBy, ascending }
@@ -20,3 +20,5 @@ export const DeckService = {
         return response.data;
     }
 };
+
+export default DeckService;

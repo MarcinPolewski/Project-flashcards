@@ -1,6 +1,6 @@
 import api from "../api/api";
 
-export const ReviewService = {
+const ReviewService = {
     requestReview: async (deckId, packageSize) => {
         const response = await api.post('/folder/requestReview', { deckId, packageSize });
         return response.data;
@@ -10,3 +10,5 @@ export const ReviewService = {
         return response.data;
     }
 };
+
+export default ReviewService;

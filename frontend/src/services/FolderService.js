@@ -1,6 +1,6 @@
 import api from "../api/api";
 
-export const FolderService = {
+const FolderService = {
     getFolderStructure: async () => {
         const response = await api.get('/folder/getFolderStructure');
         return response.data;
@@ -26,3 +26,5 @@ export const FolderService = {
         return response.data;
     }
 };
+
+export default FolderService;

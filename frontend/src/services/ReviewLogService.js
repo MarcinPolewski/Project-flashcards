@@ -1,6 +1,6 @@
 import api from "../api/api";
 
-export const ReviewLogService = {
+const ReviewLogService = {
     getReviewLog: async (id) => {
         const response = await api.get(`/reviewLog/getReviewLog/${id}`);
         return response.data;
@@ -10,3 +10,5 @@ export const ReviewLogService = {
         return response.data;
     }
 };
+
+export default ReviewLogService;

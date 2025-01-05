@@ -1,6 +1,6 @@
 import api from "../api/api";
 
-export const CustomerService = {
+const CustomerService = {
   findById: async (id) => {
       const response = await api.get(`/customer/findById/${id}`);
       return response.data;
@@ -22,3 +22,5 @@ export const CustomerService = {
       return response.data;
   }
 };
+
+export default CustomerService;

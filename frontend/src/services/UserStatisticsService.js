@@ -1,6 +1,6 @@
 import api from "../api/api";
 
-export const UserStatisticsService = {
+const UserStatisticsService = {
     getUserStatistics: async (id) => {
         const response = await api.get(`/userStatistics/getUserStatistics/${id}`);
         return response.data;
@@ -10,3 +10,5 @@ export const UserStatisticsService = {
         return response.data;
     }
 };
+
+export default UserStatisticsService

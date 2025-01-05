@@ -1,6 +1,6 @@
 import api from "../api/api";
 
-export const FlashcardService = {
+const FlashcardService = {
     createFlashcard: async (deckId, front, back) => {
         const response = await api.post('/flashcard/create', { deckId, front, back });
         return response.data;
@@ -22,3 +22,5 @@ export const FlashcardService = {
         return response.data;
     }
 };
+
+export default FlashcardService;
