@@ -8,10 +8,13 @@ import com.PAP_team_21.flashcards.entities.flashcard.FlashcardService;
 import com.PAP_team_21.flashcards.entities.folder.Folder;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import java.time.temporal.TemporalUnit;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.FormattableFlags;
@@ -28,8 +31,8 @@ public class ReviewService {
     public List<Flashcard> reviewBy(Customer customer, Deck deck, int batchSize)
     {
         // !!! to be defined later !!!
-        int review_gap_constant = 30;
-        int last_review_constant = 30;
+        Duration review_gap_constant = Duration.ofMinutes(10);
+        Duration last_review_constant = Duration.ofMinutes(10);
         int max_currently_learning = 20; // max number of flashcards that are repeated in learning phase
         float learning_ratio = 0.7f; // ratio of flashcards that are repeated in learning phase
 
