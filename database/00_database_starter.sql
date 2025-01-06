@@ -102,6 +102,17 @@ CREATE TABLE `Access_Levels_Folders`(
                                         `access_level_id` INT UNSIGNED NOT NULL,
                                         `folder_id` INT UNSIGNED NOT NULL
 );
+
+CREATE TABLE `Sent_Verification_Codes`(
+                                        `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                                        `customer_id` INT UNSIGNED NOT NULL,
+                                        `expiration_date` DATETIME NOT NULL,
+                                        `code` VARCHAR(255) NOT NULL
+);
+
+ALTER TABLE
+    `Sent_Verification_Codes` ADD CONSTRAINT `sent_verification_tokens_user_id_foreign` FOREIGN KEY(`customer_id`) REFERENCES `Customers`(`id`);
+
 ALTER TABLE
     `User_Preferences` ADD CONSTRAINT `user_preferences_user_id_foreign` FOREIGN KEY(`user_id`) REFERENCES `Customers`(`id`);
 ALTER TABLE
