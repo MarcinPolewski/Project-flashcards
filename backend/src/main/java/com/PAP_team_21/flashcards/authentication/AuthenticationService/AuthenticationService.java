@@ -3,7 +3,7 @@ package com.PAP_team_21.flashcards.authentication.AuthenticationService;
 import com.PAP_team_21.flashcards.Errors.AlreadyVerifiedException;
 import com.PAP_team_21.flashcards.Errors.CodeExpiredException;
 import com.PAP_team_21.flashcards.Errors.ResourceNotFoundException;
-import com.PAP_team_21.flashcards.authentication.AuthenticationResponse;
+import com.PAP_team_21.flashcards.authentication.AuthenticationEmailSender.AuthenticationEmailSender;
 import com.PAP_team_21.flashcards.entities.customer.Customer;
 import com.PAP_team_21.flashcards.entities.customer.CustomerRepository;
 import com.PAP_team_21.flashcards.entities.folderAccessLevel.FolderAccessLevel;
@@ -12,11 +12,9 @@ import com.PAP_team_21.flashcards.entities.sentVerificationCodes.SentVerificatio
 import com.PAP_team_21.flashcards.entities.sentVerificationCodes.SentVerificationCodeRepository;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -28,9 +26,9 @@ import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
+import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.Date;
-import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -42,18 +40,30 @@ public class AuthenticationService {
     private final CustomerRepository customerRepository;
     private final FolderAccessLevelRepository folderAccessLevelRepository;
     private final SentVerificationCodeRepository sentVerificationCodeRepository;
+    private final AuthenticationEmailSender emailSender;
+
+    private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    private static final SecureRandom RANDOM = new SecureRandom();
+
 
     @Value("${jwt.token-valid-time}")
-    private long tokenValidTime;
+    private long JwtTokenValidTime;
 
     @Value("${jwt.secret-key}")
     private String jwtSecret;
 
-    public void registerUser(String email, String name,  String password) throws RuntimeException{
+    @Value("${verification-code.length}")
+    private int verificationCodeLength;
+
+    @Value("${verification-code.expiration-minutes}")
+    private int verificationCodeExpirationMinutes;
+
+    public void registerUser(String email, String name,  String password) throws RuntimeException, MessagingException{
         String passwordHash = passwordEncoder.encode(password);
 
 
         Customer customer = new Customer(email, name, passwordHash);
+        customer.setEnabled(false);
         customer.setProfileCreationDate(LocalDateTime.now());
 
         FolderAccessLevel al = customer.getFolderAccessLevels().get(0);
@@ -66,6 +76,7 @@ public class AuthenticationService {
             throw new RuntimeException("user already exists");
         }
         folderAccessLevelRepository.save(al);
+        handleVerificationCode(customer);
     }
 
     public String loginUser(String email, String password) throws AuthenticationException {
@@ -89,7 +100,7 @@ public class AuthenticationService {
                     .subject("JWT Token")
                     .claim("email", email)
                     .issuedAt(issued)
-                    .expiration(new Date(issued.getTime() + tokenValidTime))
+                    .expiration(new Date(issued.getTime() + JwtTokenValidTime))
                     .signWith(secretKey)
                     .compact();
         }
@@ -127,7 +138,7 @@ public class AuthenticationService {
                     .subject("JWT Token")
                     .claim("email", email)
                     .issuedAt(issued)
-                    .expiration(new Date(issued.getTime() + tokenValidTime))
+                    .expiration(new Date(issued.getTime() + JwtTokenValidTime))
                     .signWith(secretKey)
                     .compact();
         }
@@ -135,12 +146,6 @@ public class AuthenticationService {
         {
             throw new RuntimeException("not an OAuth2 token provided");
         }
-    }
-
-
-    public void sendVerificationEmail(String email)
-    {
-
     }
 
     private Customer extractCustomer(Authentication authentication) throws ResourceNotFoundException
@@ -155,6 +160,7 @@ public class AuthenticationService {
         }
         return customerOptional.get();
     }
+
     public void verifyUser(Authentication authentication, String code) throws RuntimeException
     {
         Customer customer = extractCustomer(authentication);
@@ -170,13 +176,7 @@ public class AuthenticationService {
             throw new AlreadyVerifiedException("user already verified");
         }
 
-        if(verificationCode.isExpired())
-        {
-            throw new CodeExpiredException("verification code expired");
-        }
-
-
-        if(customer.getSentVerificationCode().getCode().equals(code))
+        if(customer.getSentVerificationCode().check(code))
         {
             customer.setEnabled(true);
             customer.setSentVerificationCode(null);
@@ -190,12 +190,83 @@ public class AuthenticationService {
         }
     }
 
-    public void forgotPasswordRequest(String email) {
+    public void forgotPasswordRequest(String email) throws RuntimeException, MessagingException
+    {
+        Optional<Customer> customerOptional = customerRepository.findByEmail(email);
+
+        if(customerOptional.isEmpty())
+        {
+            throw new RuntimeException("customer with this email not found");
+        }
+
+        handleVerificationCode(customerOptional.get());
     }
 
-    public void forgotPassword(String email, String code, String newPassword) {
+    public void forgotPassword(String email, String code, String newPassword) throws RuntimeException
+    {
+        Optional<Customer> customerOptional = customerRepository.findByEmail(email);
+
+        if(customerOptional.isEmpty())
+        {
+            throw new RuntimeException("customer with this email not found");
+        }
+
+        Customer customer = customerOptional.get();
+        SentVerificationCode verificationCode = customer.getSentVerificationCode();
+
+        if(verificationCode == null)
+        {
+            throw new RuntimeException("verification code not found");
+        }
+
+        if(verificationCode.check(code))
+        {
+            customer.setPasswordHash(passwordEncoder.encode(newPassword));
+            customer.setSentVerificationCode(null);
+            sentVerificationCodeRepository.delete(verificationCode);
+            customerRepository.save(customer);
+        }
+        else
+        {
+            throw new RuntimeException("verification code is incorrect");
+        }
     }
 
-    public void changePassword(Authentication authentication, String oldPassword, String newPassword) {
+    public void changePassword(Authentication authentication, String oldPassword, String newPassword) throws RuntimeException {
+        Customer customer = extractCustomer(authentication);
+
+        if(passwordEncoder.matches(oldPassword, customer.getPasswordHash()))
+        {
+            customer.setPasswordHash(passwordEncoder.encode(newPassword));
+            customerRepository.save(customer);
+        }
+        else
+        {
+            throw new RuntimeException("old password is incorrect");
+        }
     }
+
+    private void handleVerificationCode(Customer customer) throws MessagingException {
+        // generate code
+        String code = generateVerificationCode(verificationCodeLength);
+        // save code with expiration
+        SentVerificationCode verificationCode = new SentVerificationCode(code, customer, verificationCodeExpirationMinutes);
+        // save to db
+        sentVerificationCodeRepository.save(verificationCode);
+        // send email
+        emailSender.sendVerificationCodeEmail(customer.getEmail(), code);
+
+    }
+    private String generateVerificationCode(int generatedCodeLength)
+    {
+        StringBuilder code = new StringBuilder(generatedCodeLength);
+
+        for(int i = 0; i < generatedCodeLength; i++)
+        {
+            code.append(CHARACTERS.charAt(RANDOM.nextInt(CHARACTERS.length())));
+        }
+
+        return code.toString();
+    }
+
 }
