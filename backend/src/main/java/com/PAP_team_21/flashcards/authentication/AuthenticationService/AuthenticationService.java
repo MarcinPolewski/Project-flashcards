@@ -1,10 +1,15 @@
 package com.PAP_team_21.flashcards.authentication.AuthenticationService;
 
+import com.PAP_team_21.flashcards.Errors.AlreadyVerifiedException;
+import com.PAP_team_21.flashcards.Errors.CodeExpiredException;
+import com.PAP_team_21.flashcards.Errors.ResourceNotFoundException;
 import com.PAP_team_21.flashcards.authentication.AuthenticationResponse;
 import com.PAP_team_21.flashcards.entities.customer.Customer;
 import com.PAP_team_21.flashcards.entities.customer.CustomerRepository;
 import com.PAP_team_21.flashcards.entities.folderAccessLevel.FolderAccessLevel;
 import com.PAP_team_21.flashcards.entities.folderAccessLevel.FolderAccessLevelRepository;
+import com.PAP_team_21.flashcards.entities.sentVerificationCodes.SentVerificationCode;
+import com.PAP_team_21.flashcards.entities.sentVerificationCodes.SentVerificationCodeRepository;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +41,7 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
     private final CustomerRepository customerRepository;
     private final FolderAccessLevelRepository folderAccessLevelRepository;
+    private final SentVerificationCodeRepository sentVerificationCodeRepository;
 
     @Value("${jwt.token-valid-time}")
     private long tokenValidTime;
@@ -131,13 +137,65 @@ public class AuthenticationService {
         }
     }
 
-    public void verifyUser(String verificationToke)
-    {
-
-    }
 
     public void sendVerificationEmail(String email)
     {
 
+    }
+
+    private Customer extractCustomer(Authentication authentication) throws ResourceNotFoundException
+    {
+        String email = authentication.getName();
+
+        Optional<Customer> customerOptional = customerRepository.findByEmail(email);
+
+        if(customerOptional.isEmpty())
+        {
+            throw new RuntimeException("customer not found");
+        }
+        return customerOptional.get();
+    }
+    public void verifyUser(Authentication authentication, String code) throws RuntimeException
+    {
+        Customer customer = extractCustomer(authentication);
+        SentVerificationCode verificationCode = customer.getSentVerificationCode();
+
+        if(verificationCode == null)
+        {
+            throw new RuntimeException("verification code not found");
+        }
+
+        if(customer.isEnabled())
+        {
+            throw new AlreadyVerifiedException("user already verified");
+        }
+
+        if(verificationCode.isExpired())
+        {
+            throw new CodeExpiredException("verification code expired");
+        }
+
+
+        if(customer.getSentVerificationCode().getCode().equals(code))
+        {
+            customer.setEnabled(true);
+            customer.setSentVerificationCode(null);
+            sentVerificationCodeRepository.delete(verificationCode);
+            customerRepository.save(customer);
+
+        }
+        else
+        {
+            throw new RuntimeException("verification code is incorrect");
+        }
+    }
+
+    public void forgotPasswordRequest(String email) {
+    }
+
+    public void forgotPassword(String email, String code, String newPassword) {
+    }
+
+    public void changePassword(Authentication authentication, String oldPassword, String newPassword) {
     }
 }

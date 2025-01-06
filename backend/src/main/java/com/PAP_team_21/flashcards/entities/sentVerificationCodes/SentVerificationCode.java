@@ -28,4 +28,8 @@ public class SentVerificationCode {
 
     @Column(name="code")
     private String code;
+
+    public boolean isExpired() {
+        return LocalDateTime.now().isAfter(expirationDate);
+    }
 }

@@ -4,6 +4,10 @@ import com.PAP_team_21.flashcards.authentication.AuthenticationRequest;
 import com.PAP_team_21.flashcards.authentication.AuthenticationResponse;
 import com.PAP_team_21.flashcards.authentication.AuthenticationService.AuthenticationService;
 import com.PAP_team_21.flashcards.authentication.RegisterRequest;
+import com.PAP_team_21.flashcards.controllers.requests.ChangePasswordRequest;
+import com.PAP_team_21.flashcards.controllers.requests.ForgotPasswordRequest;
+import com.PAP_team_21.flashcards.controllers.requests.NewPasswordAfterForgetRequest;
+import com.PAP_team_21.flashcards.controllers.requests.VerifyUserRequest;
 import com.PAP_team_21.flashcards.entities.customer.Customer;
 import com.PAP_team_21.flashcards.entities.customer.CustomerRepository;
 import com.PAP_team_21.flashcards.entities.folder.Folder;
@@ -12,6 +16,7 @@ import com.PAP_team_21.flashcards.entities.folderAccessLevel.FolderAccessLevelRe
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -80,5 +85,54 @@ public class AuthenticationController {
     }
 
 
+    @PostMapping("/verifyUser")
+    public ResponseEntity<?> verifyUser(Authentication authentication,
+                                        @RequestBody VerifyUserRequest request)
+    {
+        try {
+            authenticationService.verifyUser(authentication, request.getCode());
+            return ResponseEntity.ok("user verified successfuly");
+        } catch (Exception e)
+        {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("exception occurred: " + e.getMessage());
+        }
+
+    }
+
+    @PostMapping("/forgotPasswordRequest")
+    public ResponseEntity<?> forgotPasswordRequest(@RequestBody ForgotPasswordRequest request)
+    {
+        try {
+            authenticationService.forgotPasswordRequest(request.getEmail());
+            return ResponseEntity.ok("password reset request sent");
+        } catch (Exception e)
+        {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("exception occurred: " + e.getMessage());
+        }
+    }
+
+    @PostMapping("/forgotPassword")
+    public ResponseEntity<?> forgotPassword(@RequestBody NewPasswordAfterForgetRequest request)
+    {
+        try {
+            authenticationService.forgotPassword(request.getEmail(), request.getCode(), request.getNewPassword());
+            return ResponseEntity.ok("password reset successful");
+        } catch (Exception e)
+        {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("exception occurred: " + e.getMessage());
+        }
+    }
+
+    @PostMapping("/changePassword")
+    public ResponseEntity<?> changePassword(Authentication authentication, @RequestBody ChangePasswordRequest request)
+    {
+        try {
+            authenticationService.changePassword(authentication, request.getOldPassword(), request.getNewPassword());
+            return ResponseEntity.ok("password changed successfuly");
+        } catch (Exception e)
+        {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("exception occurred: " + e.getMessage());
+        }
+    }
 
 }
