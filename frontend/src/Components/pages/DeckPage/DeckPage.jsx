@@ -1,0 +1,94 @@
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import testDecks from '../../../assets/mockData/testDecks';
+import testFlashcards from '../../../assets/mockData/testFlashcards';
+import './DeckPage.css';
+
+import Navbar from '../../Navbar/Navbar';
+import PieChart from '../../Charts/PieChart/PieChart';
+
+const DeckPage = (props) => {
+    const { id } = useParams();
+    const [deck, setDeck] = useState(null);
+    const [flashcards, setFlashcards] = useState([]);
+
+    const handleEdit = (flashcardId) => {
+        console.log(`Editing flashcard with id ${flashcardId}`);
+    };
+
+    const handleDelete = (flashcardId) => {
+        setFlashcards(flashcards.filter(flashcard => flashcard.id !== flashcardId));
+        console.log(`Deleted flashcard with id ${flashcardId}`);
+    };
+
+    useEffect(() => {
+        const foundDeck = testDecks.find(deck => deck.id === parseInt(id));
+        if (foundDeck) {
+            setDeck(foundDeck);
+            const folderFlashcards = testFlashcards.filter(flashcard => flashcard.deckId === foundDeck.id);
+            setFlashcards(folderFlashcards);
+        }
+    }, [id]);
+
+    if (!deck) return <p>Deck not found!</p>;
+
+    return (
+        <div>
+        <Navbar details={props.details} />
+        <div className="deck-page-container">
+            {deck ? (
+                <div className="deck-page-content">
+                    <h1 className="deck-page-title">{deck.title}</h1>
+                    <div className='deck-page-statistics-container'>
+                        <div className="deck-page-left">
+                            <p>Progress: {deck.progress}%</p>
+                            <p>New Cards: {deck.newCards}</p>
+                            <p>Learning Cards: {deck.learningCards}</p>
+                            <p>Reviewing Cards: {deck.reviewingCards}</p>
+                        </div>
+
+                        <div className="deck-page-right">
+                            <PieChart data={{
+                                newCards: deck.newCards,
+                                learningCards: deck.learningCards,
+                                rememberedCards: deck.reviewingCards
+                            }} className="deck-page-pie-chart" />
+                        </div>
+                    </div>
+                    <h3 className="deck-page-subtitle">Flashcards</h3>
+                    {flashcards.length > 0 ? (
+                        <ul className="deck-page-ul">
+                            {flashcards.map(flashcard => (
+                                <li key={flashcard.id} className="deck-page-flashcard-item">
+                                    <p><strong>Front:</strong> {flashcard.front}</p>
+                                    <p><strong>Back:</strong> {flashcard.back}</p>
+                                    <div className="deck-page-flashcard-actions">
+                                        <button
+                                            onClick={() => handleEdit(flashcard.id)}
+                                            className="deck-page-edit-btn"
+                                        >
+                                            Edit
+                                        </button>
+                                        <button
+                                            onClick={() => handleDelete(flashcard.id)}
+                                            className="deck-page-delete-btn"
+                                        >
+                                            Delete
+                                        </button>
+                                    </div>
+                                </li>
+                            ))}
+                        </ul>
+                    ) : (
+                        <p>No flashcards available in this deck</p>
+                    )}
+                </div>
+            ) : (
+                <p>Deck not found!</p>
+            )}
+        </div>
+        </div>
+    );
+};
+
+export default DeckPage;
