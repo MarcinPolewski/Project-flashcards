@@ -1,15 +1,12 @@
 package com.PAP_team_21.flashcards.authentication.ResourceAccessLevelService;
 
 import com.PAP_team_21.flashcards.Errors.ResourceNotFoundException;
-import com.PAP_team_21.flashcards.authentication.ResourceAccessLevelService.DeckAccessServiceResponse;
-import com.PAP_team_21.flashcards.authentication.ResourceAccessLevelService.FlashcardAccessServiceResponse;
-import com.PAP_team_21.flashcards.authentication.ResourceAccessLevelService.FolderAccessServiceResponse;
 import com.PAP_team_21.flashcards.entities.customer.Customer;
 import com.PAP_team_21.flashcards.entities.customer.CustomerRepository;
 import com.PAP_team_21.flashcards.entities.deck.Deck;
 import com.PAP_team_21.flashcards.entities.deck.DeckRepository;
 import com.PAP_team_21.flashcards.entities.flashcard.Flashcard;
-import com.PAP_team_21.flashcards.entities.flashcard.FlashcardRepository;
+import com.PAP_team_21.flashcards.entities.flashcard.FlashcardService;
 import com.PAP_team_21.flashcards.entities.folder.Folder;
 import com.PAP_team_21.flashcards.entities.folder.FolderJpaRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +20,7 @@ import java.util.Optional;
 public class ResourceAccessService {
     private final CustomerRepository customerRepository;
     private final DeckRepository deckRepository;
-    private final FlashcardRepository flashcardRepository;
+    private final FlashcardService flashcardService;
     private final FolderJpaRepository folderJpaRepository;
 
     private Customer getCustomer(Authentication authentication) throws ResourceNotFoundException
@@ -62,7 +59,7 @@ public class ResourceAccessService {
     {
         Customer customer = getCustomer(authentication);
 
-        Optional<Flashcard> flashcard = flashcardRepository.findById(flashcardId);
+        Optional<Flashcard> flashcard = flashcardService.findById(flashcardId);
 
         if(flashcard.isEmpty())
             throw new ResourceNotFoundException("Flashcard not found");
