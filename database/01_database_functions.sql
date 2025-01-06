@@ -21,13 +21,9 @@ BEGIN
 
     WHERE d.id = deckId AND
           fp.user_id = userId AND
-          # od pierwszego odejmuje drugi
           TIMESTAMPDIFF(MINUTE,fp.next_review,  rl.when ) <= revGapMinutes AND # time between last review and next review is less than gap
           TIMESTAMPDIFF(MINUTE, fp.next_review, NOW()) <= lastReviewConstant AND # next_review scheduled around now timestampt
           TIMESTAMPDIFF(MINUTE, fp.next_review, NOW()) >= -lastReviewConstant;
-
-            # time between  now and ne
-
 END //
 
 # =============================================================================
@@ -90,7 +86,7 @@ END //
 
 # =============================================================================
 
-CREATE PROCEDURE get_due_flashcard(
+CREATE PROCEDURE get_due_flashcards(
     IN userId INT,
     IN deckId INT,
     IN howMany INT

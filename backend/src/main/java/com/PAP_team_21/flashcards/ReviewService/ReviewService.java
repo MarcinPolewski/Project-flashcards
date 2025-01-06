@@ -69,7 +69,7 @@ public class ReviewService {
 
             List<Flashcard> dueFlashcards = flashcardService.getDueFlashcards(customer.getId(),
                     deck.getId(),
-                    Pageable.unpaged());
+                    Integer.MAX_VALUE);
             result.addAll(dueFlashcards);
 
             int howManyLeftToAdd = batchSize - dueFlashcards.size();
@@ -78,8 +78,8 @@ public class ReviewService {
 
             if(howManyNewCardsCanBeIntroduced > 0)
             {
-                List<Flashcard> newFlashcards = flashcardService.getNewFlashcards(customer,
-                        deck,
+                List<Flashcard> newFlashcards = flashcardService.getNewFlashcards(customer.getId(),
+                        deck.getId(),
                         howManyNewCardsCanBeIntroduced);
                 result.addAll(newFlashcards);
             }
@@ -91,7 +91,7 @@ public class ReviewService {
                         deck.getId(),
                         review_gap_constant,
                         last_review_constant,
-                        Pageable.ofSize(howManyLeftToAdd));
+                        howManyLeftToAdd);
                 result.addAll(earlyReviewFlashcards);
             }
 
@@ -108,15 +108,15 @@ public class ReviewService {
                     deck.getId(),
                     review_gap_constant,
                     last_review_constant,
-                    Pageable.ofSize(typeAFlashcardsCnt));
+                    typeAFlashcardsCnt);
             result.addAll(dueInLearning);
             if(dueInLearning.size() <  typeAFlashcardsCnt)
             {
                 // try to introduce new flashcards
                 int howManyNewCardsCanBeIntroduced =Math.min(max_currently_learning - totalInLearningCnt,
                                                             typeAFlashcardsCnt - dueInLearning.size());
-                List<Flashcard> newFlashcards = flashcardService.getNewFlashcards(customer,
-                        deck,
+                List<Flashcard> newFlashcards = flashcardService.getNewFlashcards(customer.getId(),
+                        deck.getId(),
                         howManyNewCardsCanBeIntroduced);
                 result.addAll(newFlashcards);
             }
@@ -127,7 +127,7 @@ public class ReviewService {
                     deck.getId(),
                     review_gap_constant,
                     last_review_constant,
-                    Pageable.ofSize(howManyLeftToAdd));
+                    howManyLeftToAdd);
             result.addAll(dueToReview);
 
             // if there is still space, fill with type A or new flashcards
@@ -138,14 +138,14 @@ public class ReviewService {
                         deck.getId(),
                         review_gap_constant,
                         last_review_constant,
-                        Pageable.ofSize(howManyLeftToAdd));
+                        howManyLeftToAdd);
                 if(dueInLearning.size() <  howManyLeftToAdd)
                 {
                     // try to introduce new flashcards
                     int howManyNewCardsCanBeIntroduced =Math.min(max_currently_learning - totalInLearningCnt,
                             howManyLeftToAdd - dueInLearning.size());
-                    List<Flashcard> newFlashcards = flashcardService.getNewFlashcards(customer,
-                            deck,
+                    List<Flashcard> newFlashcards = flashcardService.getNewFlashcards(customer.getId(),
+                            deck.getId(),
                             howManyNewCardsCanBeIntroduced);
                     result.addAll(newFlashcards);
                 }
@@ -158,29 +158,4 @@ public class ReviewService {
         Collections.shuffle(result);
         return result;
     }
-//    public List<Flashcard> reviewBy(Customer customer, Deck deck, int page, int size, String sortBy, boolean ascending) {
-//        return null;
-//    }
-//
-//    public List<Flashcard> getReviewForTheDay(Customer customer, Deck deck, int packageSize) throws IllegalArgumentException {
-//        return null;
-//    }
-//
-//    public List<Flashcard> reviewBy(Customer customer, Folder folder, int page, int size, String sortBy, boolean ascending) {
-//        return null;
-//    }
-//
-//    public List<Flashcard> getReviewForTheDay(Customer customer, Folder folder, int packageSize, LocalDateTime dateTime) throws IllegalArgumentException {
-//
-//
-//        return flashcardRepository.getReviewForTheDay(customer.getId(), folder.getId(), packageSize);
-//    }
-//
-//
-//    public void flashcardReviewed(int flashcardId, UserAnswer userAnswer) {
-//        // calculate next review
-//
-//        // update next review table
-//
-//    }
 }

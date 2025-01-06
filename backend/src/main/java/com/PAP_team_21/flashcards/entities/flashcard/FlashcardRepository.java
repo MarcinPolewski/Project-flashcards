@@ -13,13 +13,57 @@ import java.util.Optional;
 
 public interface FlashcardRepository extends JpaRepository<Flashcard, Integer> {
 
-    //@Query(value = "SELECT * FROM count_current_learning(:userId, :deckId, :revGapMinutes, :lastReviewConstant)", nativeQuery = true)
     @Procedure(procedureName = "count_current_learning")
     int countCurrentlyLearning(@Param("userId")Integer customerId,
                                @Param("deckId") int deckId,
                                @Param("revGapMinutes")int reviewGapConstantMinutes,
                                @Param("lastReviewConstant")int lastReviewConstantMinutes);
 
+    @Procedure(procedureName = "count_due_in_learning")
+    int countDueInLearning(@Param("userId")Integer customerId,
+                           @Param("deckId") int deckId,
+                           @Param("revGapMinutes")int reviewGapConstantMinutes,
+                           @Param("lastReviewConstant")int lastReviewConstantMinutes);
+
+    @Procedure(procedureName = "count_due_to_review")
+    int countDueToReview(@Param("userId")Integer customerId,
+                         @Param("deckId") int deckId,
+                         @Param("revGapMinutes")int reviewGapConstantMinutes,
+                         @Param("lastReviewConstant")int lastReviewConstantMinutes);
+
+    @Procedure(procedureName = "get_due_flashcards")
+    List<Flashcard> getDueFlashcards(@Param("userId")Integer customerId,
+                                     @Param("deckId") int deckId,
+                                     @Param("howMany")int howMany);
+
+    @Procedure(procedureName = "get_new_flashcard")
+    List<Flashcard> getNewFlashcards(@Param("userId")Integer customerId,
+                                     @Param("deckId") int deckId,
+                                     @Param("howMany")int howMany);
+
+    @Procedure(procedureName = "get_early_review")
+    List<Flashcard> getEarlyReviewFlashcards(@Param("userId")Integer customerId,
+                                             @Param("deckId") int deckId,
+                                             @Param("revGapMinutes")int reviewGapConstantMinutes,
+                                             @Param("lastReviewConstant")int lastReviewConstantMinutes,
+                                             @Param("howMany")int howMany);
+
+    @Procedure(procedureName = "get_due_in_learning")
+    List<Flashcard> getDueInLearning(@Param("userId")Integer customerId,
+                                     @Param("deckId") int deckId,
+                                     @Param("revGapMinutes")int reviewGapConstantMinutes,
+                                     @Param("lastReviewConstant")int lastReviewConstantMinutes,
+                                     @Param("howMany")int howMany);
+
+    @Procedure(procedureName = "get_due_to_review")
+    List<Flashcard> getDueToReview(@Param("userId")Integer customerId,
+                                   @Param("deckId") int deckId,
+                                   @Param("revGapMinutes")int reviewGapConstantMinutes,
+                                   @Param("lastReviewConstant")int lastReviewConstantMinutes,
+                                   @Param("howMany")int howMany);
+
+//
+//
 //    int countDueInLearning(Integer id, int id1, Duration reviewGapConstant, Duration lastReviewConstant);
 //
 //    int countDueToReview(Integer id, int id1, Duration reviewGapConstant, Duration lastReviewConstant);
