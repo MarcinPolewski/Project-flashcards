@@ -52,7 +52,7 @@ public class ReviewController {
         return ResponseEntity.ok(reviewService.reviewDeck(response.getCustomer(), response.getDeck(), batchSize));
     }
 
-    @PostMapping("flashcardReviewed")
+    @PostMapping("/flashcardReviewed")
     public ResponseEntity<?> flashcardReviewed(Authentication authentication,
                                                @RequestBody FlashcardsReviewedRequest reviewResponse){
         // update information about flashcards
