@@ -208,7 +208,7 @@ This endpoint retrieves a list of customers by their username.
   ```
 ---
 
-### `POST /customer/delete`
+### `DELETE /customer/delete`
 
 This endpoint deletes a customer.
 
@@ -473,7 +473,7 @@ This endpoint retrieves a friend by their email.
   ```
 ---
 
-### `POST /customer/sentFriendshipOfferById/{id}`
+### `POST /customer/sendFriendshipOfferById/{id}`
 
 This endpoint sends FriendShip offer to the other customer.
 
@@ -516,7 +516,7 @@ This endpoint sends FriendShip offer to the other customer.
   ```
 ---
 
-### `POST /customer/sentFriendshipOfferByEmail/{email}`
+### `POST /customer/sendFriendshipOfferByEmail/{email}`
 
 This endpoint sends FriendShip offer to the other customer.
 
@@ -838,7 +838,7 @@ This class relies on the following repositories and services:
 - `AccessLevel`: Enum representing access levels (e.g., OWNER, EDITOR, VIEWER).
 
 ## Endpoints
-### 1. `@PostMapping("/create")`
+### 1. `@PostMapping("flashcard/create")`
 #### Description
 Creates a new flashcard in a specified deck.
 #### Parameters
@@ -874,7 +874,7 @@ Returns an error message if the user does not have the necessary access level or
   ```
 ---
 
-### 2. `@PostMapping("/update")`
+### 2. `@PostMapping("flashcard/update")`
 #### Description
 Updates an existing flashcard.
 #### Parameters
@@ -909,7 +909,7 @@ Returns an error message if the user does not have the necessary access level or
   ```
 ---
 
-### 3. `@DeleteMapping("/delete")`
+### 3. `@DeleteMapping("flashcard/delete")`
 #### Description
 Deletes a flashcard.
 #### Parameters
@@ -928,7 +928,7 @@ Returns a success message.
 ```
 ---
 
-### 4. `@PostMapping("/copyFlashcardToDeck")`
+### 4. `@PostMapping("flashcard/copyFlashcardToDeck")`
 #### Description
 Copies a flashcard to another deck.
 #### Parameters
@@ -955,7 +955,7 @@ for the deck or flashcard.
 ```
 ---
 
-### 5. `@PostMapping("/moveFlashcardToOtherDeck")`
+### 5. `@PostMapping("flashcard/moveFlashcardToOtherDeck")`
 #### Description
 Moves a flashcard from one deck to another.
 #### Parameters
@@ -1013,7 +1013,7 @@ This class relies on the following repositories and entities:
 - `JsonViewConfig`: Configures JSON views.
 
 ## Endpoints
-### 1. `@GetMapping("/getFlashcardProgress/{id}")`
+### 1. `@GetMapping("flashcardProgress/getFlashcardProgress/{id}")`
 #### Description
 Fetches the flashcard progress data for the given ID.
 #### Parameters
@@ -1664,7 +1664,7 @@ The `ReviewController` manages operations related to reviewing flashcards, inclu
 ### 1. **Request Review**
 Retrieve flashcards from a specific deck to be reviewed.
 
-- **URL:** `/folder/requestReview`
+- **URL:** `/review/folder/requestReview`
 - **Method:** `POST`
 - **Parameters:**
   - `Authentication authentication`
@@ -1708,7 +1708,7 @@ Retrieve flashcards from a specific deck to be reviewed.
 ### 2. **Send Back Results**
 Send review results for specific flashcards and update their review status.
 
-- **URL:** `/folder/sendBackResults`
+- **URL:** `/review/folder/sendBackResults`
 - **Method:** `POST`
 - **Parameters:**
   - `Authentication authentication`
