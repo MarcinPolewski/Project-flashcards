@@ -27,7 +27,7 @@ public class FlashcardProgress {
     @Column(name = "next_review")
     private LocalDateTime next_review;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="last_review_id")
     private ReviewLog lastReviewLog;
 
