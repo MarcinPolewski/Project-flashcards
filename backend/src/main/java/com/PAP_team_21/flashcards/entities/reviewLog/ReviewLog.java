@@ -1,5 +1,6 @@
 package com.PAP_team_21.flashcards.entities.reviewLog;
 
+import com.PAP_team_21.flashcards.UserAnswer;
 import com.PAP_team_21.flashcards.entities.customer.Customer;
 import com.PAP_team_21.flashcards.entities.flashcard.Flashcard;
 import jakarta.persistence.*;
@@ -17,17 +18,12 @@ public class ReviewLog {
     @Column(name = "id")
     private int id;
 
-    @Column(name = "flashcard_id", insertable = false, updatable = false)
-    private int flashcardId;
-
-    @Column(name = "user_id", insertable = false, updatable = false)
-    private int userId;
 
     @Column(name = "when")
     private LocalDateTime when;
 
     @Column(name = "user_answer")
-    private int userAnswer;
+    private UserAnswer userAnswer;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -39,9 +35,9 @@ public class ReviewLog {
 
     public ReviewLog() {}
 
-    public ReviewLog(int flashcardId, int userId, LocalDateTime when, int userAnswer) {
-        this.flashcardId = flashcardId;
-        this.userId = userId;
+    public ReviewLog(Flashcard flashcard, Customer customer, LocalDateTime when, UserAnswer userAnswer) {
+        this.flashcard = flashcard;
+        this.customer = customer;
         this.when = when;
         this.userAnswer = userAnswer;
     }
