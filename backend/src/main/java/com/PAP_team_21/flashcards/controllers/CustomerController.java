@@ -289,8 +289,8 @@ public class CustomerController {
         return ResponseEntity.ok(friend);
     }
 
-    @PostMapping("/sentFriendshipOfferById/{id}")
-    public ResponseEntity<?> sentFriendshipOfferById(Authentication authentication, @PathVariable int id) {
+    @PostMapping("/sendFriendshipOfferById/{id}")
+    public ResponseEntity<?> sendFriendshipOfferById(Authentication authentication, @PathVariable int id) {
         String email = authentication.getName();
         Optional<Customer> customerOpt = customerRepository.findByEmail(email);
         if (customerOpt.isEmpty())
@@ -316,8 +316,8 @@ public class CustomerController {
         return ResponseEntity.ok(friendshipResponse);
     }
 
-    @PostMapping("/sentFriendshipOfferByEmail/{email}")
-    public ResponseEntity<?> sentFriendshipOfferByEmail(Authentication authentication, @PathVariable String email) {
+    @PostMapping("/sendFriendshipOfferByEmail/{email}")
+    public ResponseEntity<?> sendFriendshipOfferByEmail(Authentication authentication, @PathVariable String email) {
         String userEmail = authentication.getName();
         Optional<Customer> customerOpt = customerRepository.findByEmail(userEmail);
         if (customerOpt.isEmpty())
