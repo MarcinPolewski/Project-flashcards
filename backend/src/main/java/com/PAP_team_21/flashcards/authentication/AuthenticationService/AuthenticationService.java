@@ -67,7 +67,12 @@ public class AuthenticationService {
         Authentication authentication = UsernamePasswordAuthenticationToken.unauthenticated(
                 email, password
         );
+
+        // this will throw an exception if the authentication fails
         authentication = authenticationManager.authenticate(authentication);
+
+        // at this point authentication is successful
+
         if(authentication != null && authentication.isAuthenticated())
         {
             SecretKey secretKey = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
@@ -111,7 +116,7 @@ public class AuthenticationService {
             Date issued = new Date(System.currentTimeMillis());
             SecretKey secretKey = Keys.hmacShaKeyFor(jwtSecret.getBytes());
 
-            String token = Jwts.builder()
+            return Jwts.builder()
                     .issuer("flashcards")
                     .subject("JWT Token")
                     .claim("email", email)
@@ -119,9 +124,6 @@ public class AuthenticationService {
                     .expiration(new Date(issued.getTime() + tokenValidTime))
                     .signWith(secretKey)
                     .compact();
-
-
-            return token;
         }
         else
         {
