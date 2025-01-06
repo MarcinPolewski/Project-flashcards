@@ -2,6 +2,7 @@ package com.PAP_team_21.flashcards.controllers;
 
 import com.PAP_team_21.flashcards.authentication.AuthenticationRequest;
 import com.PAP_team_21.flashcards.authentication.AuthenticationResponse;
+import com.PAP_team_21.flashcards.authentication.AuthenticationService.AuthenticationService;
 import com.PAP_team_21.flashcards.authentication.RegisterRequest;
 import com.PAP_team_21.flashcards.entities.customer.Customer;
 import com.PAP_team_21.flashcards.entities.customer.CustomerRepository;
@@ -17,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -33,59 +35,18 @@ import java.util.Optional;
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
 public class AuthenticationController {
-    private final PasswordEncoder passwordEncoder;
-    private final AuthenticationManager authenticationManager;
-    private final CustomerRepository customerRepository;
-    private final FolderAccessLevelRepository folderAccessLevelRepository;
 
-    @Value("${jwt.token-valid-time}")
-    private long tokenValidTime;
+    private final AuthenticationService authenticationService;
 
-    @Value("${jwt.secret-key}")
-    private String jwtSecret;
     @GetMapping("/oauth2/success")
-    public  ResponseEntity<?> oauth2Success(Authentication authentication)
-    {
+    public  ResponseEntity<?> oauth2Success(Authentication authentication) {
         // @TODO should this be verified ??
-
-        /* successful social logins will be redirected here, to obtain JWT */
-        if(authentication instanceof OAuth2AuthenticationToken)
+        try {
+            return ResponseEntity.ok(new AuthenticationResponse(authenticationService.convertOAuth2ToJWT(authentication)));
+        } catch (Exception e)
         {
-            OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
-
-            String email = oAuth2User.getAttribute("email");
-            String name = oAuth2User.getName();
-
-            Optional<Customer> userOptional = customerRepository.findByEmail(email);
-            Customer user;
-            if(userOptional.isPresent())
-            {
-                user = userOptional.get();
-            } else {
-                user = new Customer(name, email, null);
-                user.setProfileCreationDate(LocalDateTime.now());
-                user = customerRepository.save(user);
-            }
-//            Customer user = customerRepository.findOrCreate(email);
-            // String token = jwtService.generateToken(customer);
-
-            Date issued = new Date(System.currentTimeMillis());
-            SecretKey secretKey = Keys.hmacShaKeyFor(jwtSecret.getBytes());
-
-            String token = Jwts.builder()
-                    .issuer("flashcards")
-                    .subject("JWT Token")
-                    .claim("email", email)
-                    .issuedAt(issued)
-                    .expiration(new Date(issued.getTime() + tokenValidTime))
-                    .signWith(secretKey)
-                    .compact();
-
-
-            return ResponseEntity.ok(Map.of("token", token, "customer", user));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("exception occurred: " + e.getMessage());
         }
-
-        return ResponseEntity.badRequest().build();
     }
 
     // endpoints for oauth2 login are autmatically created by spring security at:
@@ -97,27 +58,9 @@ public class AuthenticationController {
             @RequestBody RegisterRequest request
     )
     {
-        try
-        {
-            String passwordHash = passwordEncoder.encode(request.getPassword());
-            String name = request.getUsername();
-            String email = request.getEmail();
-
-            Customer customer = new Customer(email, name, passwordHash);
-            customer.setProfileCreationDate(LocalDateTime.now());
-
-            FolderAccessLevel al = customer.getFolderAccessLevels().get(0);
-
-            // @TODO why customerReposiotory.save() doednt work - solution below works just fine
-
-            Optional<Customer> opt = customerRepository.findByEmail(email);
-            if(opt.isPresent())
-            {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("registration failed - user already exists");
-            }
-            folderAccessLevelRepository.save(al);
+        try{
+            authenticationService.registerUser(request.getEmail(), request.getUsername(), request.getPassword());
             return ResponseEntity.status(HttpStatus.CREATED).body("customer registered");
-
         }
         catch(Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("exception occurred: " + e.getMessage());
@@ -125,32 +68,15 @@ public class AuthenticationController {
     }
 
     @PostMapping("/usernamePasswordLogin")
-    public ResponseEntity<AuthenticationResponse> usernamePasswordLogin(
+    public ResponseEntity<?> usernamePasswordLogin(
             @RequestBody AuthenticationRequest request
     ){
-        String token =" ";
-        Authentication authentication = UsernamePasswordAuthenticationToken.unauthenticated(
-                request.getEmail(),
-                request.getPassword()
-        );
-        authentication = authenticationManager.authenticate(authentication);
-        if(authentication != null && authentication.isAuthenticated())
+        try{
+            return ResponseEntity.ok(new AuthenticationResponse(authenticationService.loginUser(request.getEmail(), request.getPassword())));
+        } catch(AuthenticationException e)
         {
-            SecretKey secretKey = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
-            Date issued = new Date(System.currentTimeMillis());
-
-            token = Jwts.builder()
-                    .issuer("flashcards")
-                    .subject("JWT Token")
-                    .claim("email", request.getEmail())
-                    .issuedAt(issued)
-                    .expiration(new Date(issued.getTime() + tokenValidTime))
-                    .signWith(secretKey)
-                    .compact();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         }
-
-        return ResponseEntity.ok(new AuthenticationResponse(token));
-
     }
 
 }
