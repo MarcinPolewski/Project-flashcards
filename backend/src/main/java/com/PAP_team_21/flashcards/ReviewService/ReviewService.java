@@ -5,7 +5,10 @@ import com.PAP_team_21.flashcards.entities.customer.Customer;
 import com.PAP_team_21.flashcards.entities.deck.Deck;
 import com.PAP_team_21.flashcards.entities.flashcard.Flashcard;
 import com.PAP_team_21.flashcards.entities.flashcard.FlashcardService;
+import com.PAP_team_21.flashcards.entities.flashcardProgress.FlashcardProgress;
+import com.PAP_team_21.flashcards.entities.flashcardProgress.FlashcardProgressRepository;
 import com.PAP_team_21.flashcards.entities.folder.Folder;
+import com.PAP_team_21.flashcards.entities.reviewLog.ReviewLog;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import java.time.temporal.TemporalUnit;
@@ -15,20 +18,18 @@ import org.springframework.stereotype.Service;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.Period;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.FormattableFlags;
-import java.util.List;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
 public class ReviewService {
 
     private final FlashcardService flashcardService;
+    private final FlashcardProgressRepository flashcardProgressRepository;
 
 
     @Transactional
-    public List<Flashcard> reviewBy(Customer customer, Deck deck, int batchSize)
+    public List<Flashcard> reviewDeck(Customer customer, Deck deck, int batchSize)
     {
         // !!! to be defined later !!!
         Duration review_gap_constant = Duration.ofMinutes(10);
@@ -157,5 +158,57 @@ public class ReviewService {
 
         Collections.shuffle(result);
         return result;
+    }
+
+    private Duration muliplyDurationWithSecondPercision(Duration duration, float multiplier)
+    {
+        return Duration.ofSeconds((long) (duration.getSeconds()*multiplier));
+    }
+
+    private  LocalDateTime getNextReview(LocalDateTime lastReview, LocalDateTime previousNextReview, UserAnswer answer)
+    {
+        // scheduled gap between previous review and next review - related to knowledge of flashcard
+        Duration knowledgeGap = Duration.between(lastReview, previousNextReview);
+        // how much after scheduled date was flashcard reviewed
+        Duration scheduledGap = Duration.between(LocalDateTime.now(), lastReview);
+        float multiplier = switch (answer) {
+            case EASY -> 2.5f;
+            case GOOD -> 1.5f;
+            case HARD -> 0.8f;
+            default -> 1.0f;
+        };
+
+        // calculate multiplier
+
+        Duration newKnowledgeGap = muliplyDurationWithSecondPercision(knowledgeGap, multiplier);
+        return LocalDateTime.now().plus(newKnowledgeGap);
+    }
+
+    public void flashcardReviewed(Customer customer, Flashcard flashcard, UserAnswer userAnswer) {
+
+        ReviewLog rl = new ReviewLog(flashcard,
+                customer,
+                LocalDateTime.now(),
+                userAnswer);
+
+        Optional<FlashcardProgress> progress = flashcardProgressRepository.findByCustomerAndFlashcard(customer, flashcard);
+        if(progress.isEmpty())
+        {
+
+            FlashcardProgress fp = new FlashcardProgress(flashcard,
+                    customer,
+                    getNextReview(progress.get().getLastReviewLog().getWhen(), progress.get().getNext_review(), userAnswer),
+                    rl);
+            flashcardProgressRepository.save(fp);
+        }
+        else
+        {
+            progress.get().setLastReviewLog(rl);
+            progress.get().setNext_review(getNextReview(progress.get().getLastReviewLog().getWhen(), progress.get().getNext_review(), userAnswer));
+            flashcardProgressRepository.save(progress.get());
+        }
+
+
+
     }
 }
