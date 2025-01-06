@@ -15,7 +15,9 @@ import lombok.RequiredArgsConstructor;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalUnit;
 
+
 import org.apache.catalina.User;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -31,15 +33,33 @@ public class ReviewService {
     private final FlashcardService flashcardService;
     private final FlashcardProgressRepository flashcardProgressRepository;
 
+    @Value("${scheduling.max_flashcard_learning}")
+    private int maxCurrentlyLearning;
 
+    @Value("${scheduling.learningRatio}")
+    private float learningRatio;
+
+    @Value("${scheduling.multiplier.easy}")
+    private float multiplierEasy;
+
+    @Value("${scheduling.multiplier.good}")
+    private float multiplierGood;
+
+    @Value("${scheduling.multiplier.hard}")
+    private float multiplierHard;
+
+    @Value("${scheduling.review_gap_const}")
+    private int reviewGapConst;
+
+    @Value("${scheduling.last_review_constant}")
+    private int lastReviewConstant;
+    
     @Transactional
     public List<Flashcard> reviewDeck(Customer customer, Deck deck, int batchSize)
     {
         // !!! to be defined later !!!
-        Duration review_gap_constant = Duration.ofMinutes(10);
-        Duration last_review_constant = Duration.ofMinutes(10);
-        int max_currently_learning = 20; // max number of flashcards that are repeated in learning phase
-        float learning_ratio = 0.7f; // ratio of flashcards that are repeated in learning phase
+        Duration review_gap_constant = Duration.ofMinutes(reviewGapConst);
+        Duration last_review_constant = Duration.ofMinutes(lastReviewConstant);
 
         // flashcards in learining, including those that are not due
         int totalInLearningCnt = flashcardService.countCurrentlyLearning(customer.getId(),
@@ -61,7 +81,7 @@ public class ReviewService {
         ArrayList<Flashcard> result = new ArrayList<>();
 
         // how many flashcards of type a we want in returned batch
-        int typeAFlashcardsCnt = (int) (learning_ratio*batchSize);
+        int typeAFlashcardsCnt = (int) (learningRatio*batchSize);
         int typeBFlashcardsCnt = batchSize - typeAFlashcardsCnt;
 
 
@@ -78,7 +98,7 @@ public class ReviewService {
             result.addAll(dueFlashcards);
 
             int howManyLeftToAdd = batchSize - dueFlashcards.size();
-            int howManyNewCardsCanBeIntroduced = Math.min(max_currently_learning - totalInLearningCnt,
+            int howManyNewCardsCanBeIntroduced = Math.min(maxCurrentlyLearning - totalInLearningCnt,
                     howManyLeftToAdd);
 
             if(howManyNewCardsCanBeIntroduced > 0)
@@ -104,8 +124,8 @@ public class ReviewService {
         else // more cards are due than batch size
         {
             // general idea:
-            // try to fill to learning_ratio with typeA
-                // if  learning_ratio was not reached, try to fill to the learning ratio with new cards
+            // try to fill to learningRatio with typeA
+                // if  learningRatio was not reached, try to fill to the learning ratio with new cards
             // try to fill the rest with typeB
             // fill the rest with remaing flashcards of typeA ( theoretically, this is possible or all the list is filled)
 
@@ -118,7 +138,7 @@ public class ReviewService {
             if(dueInLearning.size() <  typeAFlashcardsCnt)
             {
                 // try to introduce new flashcards
-                int howManyNewCardsCanBeIntroduced =Math.min(max_currently_learning - totalInLearningCnt,
+                int howManyNewCardsCanBeIntroduced =Math.min(maxCurrentlyLearning - totalInLearningCnt,
                                                             typeAFlashcardsCnt - dueInLearning.size());
                 List<Flashcard> newFlashcards = flashcardService.getNewFlashcards(customer.getId(),
                         deck.getId(),
@@ -147,7 +167,7 @@ public class ReviewService {
                 if(dueInLearning.size() <  howManyLeftToAdd)
                 {
                     // try to introduce new flashcards
-                    int howManyNewCardsCanBeIntroduced =Math.min(max_currently_learning - totalInLearningCnt,
+                    int howManyNewCardsCanBeIntroduced =Math.min(maxCurrentlyLearning - totalInLearningCnt,
                             howManyLeftToAdd - dueInLearning.size());
                     List<Flashcard> newFlashcards = flashcardService.getNewFlashcards(customer.getId(),
                             deck.getId(),
@@ -172,9 +192,9 @@ public class ReviewService {
     private float  getMultiplier(UserAnswer answer)
     {
         return switch (answer) {
-            case HARD -> 1.0f;
-            case GOOD -> 1.5f;
-            case EASY -> 2.0f;
+            case HARD -> multiplierHard;
+            case GOOD -> multiplierGood;
+            case EASY -> multiplierEasy;
             default -> 0.0f;
         };
     }
