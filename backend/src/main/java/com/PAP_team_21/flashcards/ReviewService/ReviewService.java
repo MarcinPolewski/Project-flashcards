@@ -36,7 +36,7 @@ public class ReviewService {
     @Value("${scheduling.max_flashcard_learning}")
     private int maxCurrentlyLearning;
 
-    @Value("${scheduling.learningRatio}")
+    @Value("${scheduling.learning_ratio}")
     private float learningRatio;
 
     @Value("${scheduling.multiplier.easy}")
