@@ -35,6 +35,8 @@ services:
       - spring_security_user_password
       - spring_security_user_username
       - jwt_secret_key
+      - email_email
+      - email_password
 
   database:
     build: ./database
@@ -84,7 +86,10 @@ secrets:
     file: ./secrets/spring_security_password.txt
   spring_security_user_username:
     file: ./secrets/spring_security_username.txt
-
+  email_email:
+    file: ./secrets/email_application_email.txt
+  email_password:
+    file: ./secrets/email_application_password.txt
 
 
 networks:

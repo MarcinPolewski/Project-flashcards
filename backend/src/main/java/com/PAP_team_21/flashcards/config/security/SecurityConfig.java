@@ -37,8 +37,18 @@ public class SecurityConfig{
                 .authorizeHttpRequests( auth->
                         auth.requestMatchers("/actuator/health")// Allow unauthenticated access to /actuator/health
                         .permitAll()
-                        .requestMatchers("/api/auth/**") // allow unauthenticated access to auth endpoints
+                        .requestMatchers("/api/auth/register") // allow unauthenticated access to auth endpoints
                         .permitAll()
+                        .requestMatchers("/api/auth/usernamePasswordLogin")
+                                .permitAll()
+                                .requestMatchers("/api/auth/forgotPasswordRequest")
+                                .permitAll()
+                                .requestMatchers("/api/auth/forgotPassword")
+                                .permitAll()
+                                .requestMatchers("/api/auth/verifyUser")
+                                .permitAll()
+                                .requestMatchers("/api/auth/resendVerificationCode")
+                                .permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin( Customizer.withDefaults())

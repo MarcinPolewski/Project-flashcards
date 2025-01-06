@@ -8,6 +8,7 @@ import com.PAP_team_21.flashcards.entities.folderAccessLevel.FolderAccessLevel;
 import com.PAP_team_21.flashcards.entities.friendship.Friendship;
 import com.PAP_team_21.flashcards.entities.notification.Notification;
 import com.PAP_team_21.flashcards.entities.reviewLog.ReviewLog;
+import com.PAP_team_21.flashcards.entities.sentVerificationCodes.SentVerificationCode;
 import com.PAP_team_21.flashcards.entities.userPreferences.UserPreferences;
 import com.PAP_team_21.flashcards.entities.userStatistics.UserStatistics;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -62,6 +63,9 @@ public class Customer {
 
     @Column(name = "profile_picture_path")
     private String profilePicturePath;
+
+    @OneToOne(mappedBy="customer", cascade = CascadeType.ALL)
+    private SentVerificationCode sentVerificationCode;
 
     @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL)
     private UserPreferences userPreferences;
