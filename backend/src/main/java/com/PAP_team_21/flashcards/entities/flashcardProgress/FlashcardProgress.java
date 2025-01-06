@@ -18,12 +18,6 @@ public class FlashcardProgress {
     @Column(name = "id")
     private int id;
 
-    @Column(name = "flashcard_id", insertable = false, updatable = false)
-    private int flashcard_id;
-
-    @Column(name = "user_id", insertable = false, updatable = false)
-    private int user_id;
-
     @Column(name = "next_review")
     private LocalDateTime next_review;
 
@@ -42,9 +36,9 @@ public class FlashcardProgress {
 
     public FlashcardProgress() {}
 
-    public FlashcardProgress(int flashcard_id, int user_id, LocalDateTime next_review, ReviewLog lastReviewLog) {
-        this.flashcard_id = flashcard_id;
-        this.user_id = user_id;
+    public FlashcardProgress(Flashcard flashcard, Customer customer, LocalDateTime next_review, ReviewLog lastReviewLog) {
+        this.flashcard = flashcard;
+        this.customer = customer;
         this.next_review = next_review;
         this.lastReviewLog = lastReviewLog;
     }
