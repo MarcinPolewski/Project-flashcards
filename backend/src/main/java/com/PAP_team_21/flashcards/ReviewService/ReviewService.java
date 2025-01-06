@@ -11,7 +11,11 @@ import com.PAP_team_21.flashcards.entities.folder.Folder;
 import com.PAP_team_21.flashcards.entities.reviewLog.ReviewLog;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+
+import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalUnit;
+
+import org.apache.catalina.User;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -165,23 +169,32 @@ public class ReviewService {
         return Duration.ofSeconds((long) (duration.getSeconds()*multiplier));
     }
 
+    private float  getMultiplier(UserAnswer answer)
+    {
+        return switch (answer) {
+            case HARD -> 1.0f;
+            case GOOD -> 1.5f;
+            case EASY -> 2.0f;
+            default -> 0.0f;
+        };
+    }
+
     private  LocalDateTime getNextReview(LocalDateTime lastReview, LocalDateTime previousNextReview, UserAnswer answer)
     {
         // scheduled gap between previous review and next review - related to knowledge of flashcard
         Duration knowledgeGap = Duration.between(lastReview, previousNextReview);
         // how much after scheduled date was flashcard reviewed
         Duration scheduledGap = Duration.between(LocalDateTime.now(), lastReview);
-        float multiplier = switch (answer) {
-            case EASY -> 2.5f;
-            case GOOD -> 1.5f;
-            case HARD -> 0.8f;
-            default -> 1.0f;
-        };
 
-        // calculate multiplier
+        if(answer.equals(UserAnswer.FORGOT))
+        {
+            return LocalDateTime.now().plus(Duration.ofMinutes(1));
+        }
 
-        Duration newKnowledgeGap = muliplyDurationWithSecondPercision(knowledgeGap, multiplier);
-        return LocalDateTime.now().plus(newKnowledgeGap);
+        Duration tillNextReview = muliplyDurationWithSecondPercision(knowledgeGap, getMultiplier(answer));
+        if(tillNextReview.get(ChronoUnit.YEARS) >= 1)
+            tillNextReview = Duration.of(1L, ChronoUnit.YEARS);
+        return LocalDateTime.now().plus(tillNextReview);
     }
 
     public void flashcardReviewed(Customer customer, Flashcard flashcard, UserAnswer userAnswer) {
