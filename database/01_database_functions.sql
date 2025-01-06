@@ -1,16 +1,6 @@
 use my_database;
 
-# ============================== example function ===============================================
-DELIMITER //
-
-CREATE PROCEDURE get_all_users(IN example_int INT)
-BEGIN
-    SELECT * FROM Folders;
-END //
-
-
 # =============================================================================
-
 
 CREATE PROCEDURE count_current_learning(
     IN userId INT,
