@@ -1,5 +1,7 @@
 use my_database;
 
+DELIMITER //
+
 # =============================================================================
 
 CREATE PROCEDURE count_current_learning(
