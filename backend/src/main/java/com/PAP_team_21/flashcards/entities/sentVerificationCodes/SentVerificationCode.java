@@ -44,4 +44,8 @@ public class SentVerificationCode {
     public boolean check(String code) {
         return (!isExpired()) && this.code.equals(code);
     }
+
+    public void newExpirationDate(int verificationCodeExpirationMinutes) {
+        this.expirationDate = LocalDateTime.now().plusMinutes(verificationCodeExpirationMinutes);
+    }
 }

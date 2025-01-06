@@ -4,10 +4,7 @@ import com.PAP_team_21.flashcards.authentication.AuthenticationRequest;
 import com.PAP_team_21.flashcards.authentication.AuthenticationResponse;
 import com.PAP_team_21.flashcards.authentication.AuthenticationService.AuthenticationService;
 import com.PAP_team_21.flashcards.authentication.RegisterRequest;
-import com.PAP_team_21.flashcards.controllers.requests.ChangePasswordRequest;
-import com.PAP_team_21.flashcards.controllers.requests.ForgotPasswordRequest;
-import com.PAP_team_21.flashcards.controllers.requests.NewPasswordAfterForgetRequest;
-import com.PAP_team_21.flashcards.controllers.requests.VerifyUserRequest;
+import com.PAP_team_21.flashcards.controllers.requests.*;
 import com.PAP_team_21.flashcards.entities.customer.Customer;
 import com.PAP_team_21.flashcards.entities.customer.CustomerRepository;
 import com.PAP_team_21.flashcards.entities.folder.Folder;
@@ -86,17 +83,28 @@ public class AuthenticationController {
 
 
     @PostMapping("/verifyUser")
-    public ResponseEntity<?> verifyUser(Authentication authentication,
-                                        @RequestBody VerifyUserRequest request)
+    public ResponseEntity<?> verifyUser(@RequestBody VerifyUserRequest request)
     {
         try {
-            authenticationService.verifyUser(authentication, request.getCode());
+            authenticationService.verifyUser(request.getEmail(), request.getCode());
             return ResponseEntity.ok("user verified successfuly");
         } catch (Exception e)
         {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("exception occurred: " + e.getMessage());
         }
 
+    }
+
+    @PostMapping("/resendVerificationCode")
+    public ResponseEntity<?> resendVerificationCode(@RequestBody ResendVerificationCodeRequest request)
+    {
+        try {
+            authenticationService.resendVerificationCode(request.getEmail());
+            return ResponseEntity.ok("verification code resent");
+        } catch (Exception e)
+        {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("exception occurred: " + e.getMessage());
+        }
     }
 
     @PostMapping("/forgotPasswordRequest")

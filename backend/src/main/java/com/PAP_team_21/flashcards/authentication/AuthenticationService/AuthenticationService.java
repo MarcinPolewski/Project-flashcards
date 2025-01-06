@@ -161,9 +161,13 @@ public class AuthenticationService {
         return customerOptional.get();
     }
 
-    public void verifyUser(Authentication authentication, String code) throws RuntimeException
+    public void verifyUser(String email, String code) throws RuntimeException
     {
-        Customer customer = extractCustomer(authentication);
+        Optional<Customer> customerOpt = customerRepository.findByEmail(email);
+        if(customerOpt.isEmpty())
+            throw new RuntimeException("customer not found");
+        Customer customer = customerOpt.get();
+
         SentVerificationCode verificationCode = customer.getSentVerificationCode();
 
         if(verificationCode == null)
@@ -249,10 +253,21 @@ public class AuthenticationService {
     private void handleVerificationCode(Customer customer) throws MessagingException {
         // generate code
         String code = generateVerificationCode(verificationCodeLength);
-        // save code with expiration
-        SentVerificationCode verificationCode = new SentVerificationCode(code, customer, verificationCodeExpirationMinutes);
+
+
+        SentVerificationCode verification = customer.getSentVerificationCode();
+        if(verification == null)
+        {
+            verification = new SentVerificationCode(code, customer, verificationCodeExpirationMinutes);
+        }
+        else
+        {
+            verification.setCode(code);
+            verification.newExpirationDate(verificationCodeExpirationMinutes);
+        }
+
         // save to db
-        sentVerificationCodeRepository.save(verificationCode);
+        sentVerificationCodeRepository.save(verification);
         // send email
         emailSender.sendVerificationCodeEmail(customer.getEmail(), code);
 
@@ -269,4 +284,14 @@ public class AuthenticationService {
         return code.toString();
     }
 
+    public void resendVerificationCode(String email) throws RuntimeException, MessagingException{
+        Optional<Customer> customerOptional = customerRepository.findByEmail(email);
+
+        if(customerOptional.isEmpty())
+        {
+            throw new RuntimeException("customer with this email not found");
+        }
+
+        handleVerificationCode(customerOptional.get());
+    }
 }
