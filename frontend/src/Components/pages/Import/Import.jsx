@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Navbar from "../../Navbar/Navbar";
 import './Import.css';
-import testDecks from "../../../assets/test/testDecks";
+import testDecks from "../../../assets/mockData/testDecks";
 
 const Import = (props) => {
     const [selectedExportDeck, setSelectedExportDeck] = useState("");
@@ -29,9 +29,9 @@ const Import = (props) => {
     };
 
     return (
+        <div className="main-importcontainer">
+        <Navbar details={props.details} />
         <div className="import">
-            <Navbar details={props.details} />
-
             {/* Export Section */}
             <div className="section">
                 <h3>Export Deck</h3>
@@ -80,6 +80,7 @@ const Import = (props) => {
                     </button>
                 </div>
             </div>
+        </div>
         </div>
     );
 };
