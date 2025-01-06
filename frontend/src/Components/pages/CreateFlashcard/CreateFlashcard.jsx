@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../../Navbar/Navbar";
 import './CreateFlashcard.css';
-import testDecks from "../../../assets/test/testDecks";
+import testDecks from "../../../assets/mockData/testDecks";
 
 
 const CreateFlashcard = (props) => {
