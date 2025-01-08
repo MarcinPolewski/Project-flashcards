@@ -55,14 +55,18 @@ public class NotificationController {
         }
         Customer customer = customerOpt.get();
 
-        if (request.getUserId() == customer.getId()) {
-            Notification notification = new Notification(request.getUserId(), request.isReceived(),
-                    request.getText(), request.getReceivedDate());
-                notificationRepository.save(notification);
-                return ResponseEntity.ok(notification);
+        Optional<Customer> CustomerToSendOpt = customerRepository.findById(request.getUserId());
+        if (CustomerToSendOpt.isEmpty()) {
+            return ResponseEntity.badRequest().body("No user with this id found");
         }
 
-        return ResponseEntity.badRequest().body("This notification does not belong to user");
+        if (request.getUserId() != customer.getId()) {
+            Notification notification = new Notification(request.getUserId(), request.getText());
+            notificationRepository.save(notification);
+            return ResponseEntity.ok(notification);
+        }
+
+        return ResponseEntity.badRequest().body("You cannot send notification to yourself");
     }
 
     @DeleteMapping("/delete")
