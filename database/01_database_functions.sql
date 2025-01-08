@@ -204,4 +204,19 @@ BEGIN
 END //
 
 # =============================================================================
+CREATE PROCEDURE get_last_used_decks(
+    IN userId INT,
+    IN howMany INT
+)
+BEGIN
+SELECT *
+FROM Decks d
+    join Flashcards fl on d.id = fl.deck_id
+    join Review_Logs rl on fl.id = rl.flashcard_id
+    WHERE rl.user_id = userId
+    Order by rl.when desc
+    limit howMany;
+END //
+
+# =============================================================================
 DELIMITER ;
