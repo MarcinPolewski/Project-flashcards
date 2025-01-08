@@ -34,7 +34,7 @@ const Home = (props) => {
                     <div key={idx} className="latest-review-deck">
                         <div className="deck-title">{deck.title}</div>
                         <CircularProgressbar className="react-circular-progressbar" value={deck.progress} text={`${deck.progress}%`} />
-                        <button className="continue-button" onClick={() => navigate(`/deck/study/${deck.id}`)}>Continue</button>
+                        <button className="continue-button" onClick={() => navigate(`/study/${deck.id}`)}>Continue</button>
                     </div>
                 ))}
             </div>
