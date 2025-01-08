@@ -1,4 +1,4 @@
-const spanishN5MockDeck = {
+const mockDeck = {
     id: 5,
     title: "Spanish N5",
     newCards: [
@@ -23,4 +23,4 @@ const spanishN5MockDeck = {
     lastModified: "2023-11-07",
 };
 
-export default spanishN5MockDeck;
+export default mockDeck;
