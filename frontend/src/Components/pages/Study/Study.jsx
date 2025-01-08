@@ -7,7 +7,7 @@ import testDecks from "../../../assets/mockData/testDecks";
 import mockDeck from "../../../assets/mockData/mockDeck";
 
 const Study = (props) => {
-  const { deckId } = useParams(); // Get the deckId from URL params
+  const { deckId } = useParams();
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [cards, setCards] = useState([]);
   const [currentDeck, setCurrentDeck] = useState(null);
@@ -29,18 +29,16 @@ const Study = (props) => {
     );
     setCards(updatedCards);
 
-    // Update the mock deck
     const updatedDeck = {
       ...currentDeck,
       newCards: updatedCards,
     };
     setCurrentDeck(updatedDeck);
 
-    // Move to the next card or loop back
     if (currentCardIndex < updatedCards.length - 1) {
       setCurrentCardIndex(currentCardIndex + 1);
     } else {
-      setCurrentCardIndex(0); // Reset to first card
+      setCurrentCardIndex(0);
     }
   };
 
@@ -53,7 +51,6 @@ const Study = (props) => {
   return (
     <div className="study-container">
       <Navbar details={props.details}/>
-      <h1>Study Page</h1>
       <p>You're studying deck ID: {deckId}</p>
       {currentCard ? (
         <>
@@ -66,12 +63,12 @@ const Study = (props) => {
             <button onClick={() => handleProgressUpdate("10min")}>Hard</button>
             <button onClick={() => handleProgressUpdate("1day")}>Mid</button>
             <button onClick={() => handleProgressUpdate("5day")}>Easy</button>
+            <button className="edit-button">Edit</button>
           </div>
         </>
       ) : (
         <p>No cards available in this deck.</p>
       )}
-      <button className="edit-button">Edit</button>
     </div>
   );
 };
