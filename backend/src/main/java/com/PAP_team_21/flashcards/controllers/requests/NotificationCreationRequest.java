@@ -13,7 +13,5 @@ import java.time.LocalDateTime;
 @Builder
 public class NotificationCreationRequest {
     int userId;
-    boolean received;
     String text;
-    LocalDateTime receivedDate;
 }
