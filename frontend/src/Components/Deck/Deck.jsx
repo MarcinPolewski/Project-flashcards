@@ -19,7 +19,7 @@ const Deck = (props) => {
         </div>
 
         <div className="deck-actions">
-            <button onClick={() => navigate(`/deck/study/${id}`)} className="folder-page-study-btn">
+            <button onClick={() => navigate(`/study/${id}`)} className="folder-page-study-btn">
                 Study
             </button>
             <button onClick={() => navigate(`/deck/${id}`)} className="folder-page-edit-btn">
