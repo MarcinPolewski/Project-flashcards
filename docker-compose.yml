@@ -20,9 +20,9 @@ services:
       - front-network
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8080/actuator/health" ]
-      interval: 5s
+      interval: 10s
       timeout: 10s
-      retries: 5
+      retries: 20
     ports:
       - "8080:8080" # @Kacper, sprawdź czy port odpowiada
     secrets:
@@ -52,9 +52,9 @@ services:
       - --mysql-native-password=ON
     healthcheck:
       test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot" ]
-      interval: 5s
+      interval: 10s
       timeout: 10s
-      retries: 5
+      retries: 20
     volumes:
       - db-data:/var/lib/mysql
     secrets:
