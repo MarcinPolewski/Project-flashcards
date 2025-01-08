@@ -1427,9 +1427,7 @@ Creates a new notification for a user.
   ```json
     {
       "userId": 1,
-      "text": "Hello World",
-      "received": false,
-      "receivedDate": "2025-01-04 14:23:45"
+      "text": "Hello World"
     }
   ```
 - **Response:**
@@ -1444,12 +1442,12 @@ Creates a new notification for a user.
     "receivedDate": "2025-01-04 14:23:45"
   }
   ```
-  **400 Bad Request** - User not found or the notification does not belong to the user.
+  **400 Bad Request** - User not found or user tries to send notification to himself.
   ```json
   "No user with this id found"
   ```
   ```json
-  "This notification does not belong to the user"
+  "You cannot send notification to yourself"
   ```
 ---
 
