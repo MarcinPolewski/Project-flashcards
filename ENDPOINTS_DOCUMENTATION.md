@@ -514,6 +514,11 @@ This endpoint sends FriendShip offer to the other customer.
   ```json
   "No friend with this id found"
   ```
+
+  or user tries to send friend request to himself
+  ```json
+  "You cannot send friendship request to yourself"
+  ```
 ---
 
 ### `POST /customer/sendFriendshipOfferByEmail/{email}`
@@ -550,12 +555,17 @@ This endpoint sends FriendShip offer to the other customer.
 
   If the user is not authenticated:
   ```json
-  "No user with this id found"
+  "No user with this email found"
   ```
  
   or friend is not found.
   ```json
   "No friend with this id found"
+  ```
+  
+  or user tries to send friend request to himself
+  ```json
+  "You cannot send friendship request to yourself"
   ```
 ---
 
@@ -586,6 +596,10 @@ This endpoint accepts the friendship offer.
   or friendship is not found
   ```json
   "No friendship with this id found"
+  ```
+  or user is not a receiver of the friendship offer
+  ```json
+  "You are not the receiver of the friendship, you cannot accept it."
   ```
 ---
 
