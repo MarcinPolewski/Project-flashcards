@@ -39,7 +39,7 @@ public class Customer {
     private String email;
 
     @Column(name = "password_hash")
-    @JsonView(JsonViewConfig.Internal.class)
+    @JsonView(JsonViewConfig.Secure.class)
     private String passwordHash;
 
     @Column(name = "username")
