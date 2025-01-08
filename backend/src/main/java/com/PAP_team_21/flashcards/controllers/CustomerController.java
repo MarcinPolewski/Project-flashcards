@@ -309,7 +309,7 @@ public class CustomerController {
         }
 
         String invitationText = "User with Id: " + customer.getId() + ", email: " + customer.getEmail() +
-                "username: " + customer.getUsername() + "has sent you the friend request.";
+                " username: " + customer.getUsername() + " has sent you the friend request.";
         Notification notification = new Notification(id, true, invitationText);
         Friendship friendship = new Friendship(customer.getId(), id, false);
         FriendshipResponse friendshipResponse = new FriendshipResponse(friendship, notification);
@@ -332,12 +332,16 @@ public class CustomerController {
 
         Optional<Customer> customerToAddOpt = customerRepository.findByEmail(email);
         if (customerToAddOpt.isEmpty()) {
-            return ResponseEntity.badRequest().body("No user with this id found");
+            return ResponseEntity.badRequest().body("No user with this email found");
         }
         Customer customerToAdd = customerToAddOpt.get();
 
+        if (customerToAdd.getId() == customer.getId()) {
+            return ResponseEntity.badRequest().body("You cannot send friendship request to yourself");
+        }
+
         String invitationText = "User with Id: " + customer.getId() + ", email: " + customer.getEmail() +
-                "username: " + customer.getUsername() + "has sent you the friend request.";
+                " username: " + customer.getUsername() + " has sent you the friend request.";
         Notification notification = new Notification(customerToAdd.getId(), true, invitationText);
         Friendship friendship = new Friendship(customer.getId(), customerToAdd.getId(), false);
         FriendshipResponse friendshipResponse = new FriendshipResponse(friendship, notification);
