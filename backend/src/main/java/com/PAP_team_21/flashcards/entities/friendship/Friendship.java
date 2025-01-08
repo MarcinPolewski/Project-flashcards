@@ -21,11 +21,11 @@ public class Friendship {
     @JsonView(JsonViewConfig.Public.class)
     private int id;
 
-    @Column(name = "sender_id", insertable = false, updatable = false)
+    @Column(name = "sender_id")
     @JsonView(JsonViewConfig.Public.class)
     private int senderId;
 
-    @Column(name = "receiver_id", insertable = false, updatable = false)
+    @Column(name = "receiver_id")
     @JsonView(JsonViewConfig.Public.class)
     private int receiverId;
 
@@ -34,11 +34,13 @@ public class Friendship {
     private boolean accepted;
 
     @ManyToOne
-    @JoinColumn(name = "sender_id")
+    @JoinColumn(name = "sender_id", insertable = false, updatable = false)
+    @JsonView(JsonViewConfig.Internal.class)
     private Customer sender;
 
     @ManyToOne
-    @JoinColumn(name = "receiver_id")
+    @JoinColumn(name = "receiver_id", insertable = false, updatable = false)
+    @JsonView(JsonViewConfig.Internal.class)
     private Customer receiver;
 
     @ManyToMany

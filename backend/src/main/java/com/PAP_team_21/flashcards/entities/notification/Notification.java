@@ -23,7 +23,7 @@ public class Notification {
     @JsonView(JsonViewConfig.Public.class)
     private int id;
 
-    @Column(name = "user_id", insertable = false, updatable = false)
+    @Column(name = "user_id")
     @JsonView(JsonViewConfig.Public.class)
     private int userId;
 
@@ -44,7 +44,8 @@ public class Notification {
     private LocalDateTime receivedDate;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", insertable = false, updatable = false)
+    @JsonView(JsonViewConfig.Internal.class)
     private Customer customer;
 
     @ManyToMany(mappedBy = "notifications", fetch = FetchType.LAZY,
