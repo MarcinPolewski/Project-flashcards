@@ -28,7 +28,7 @@ public class FolderAccessLevel {
     @JsonView(JsonViewConfig.Public.class)
     private Integer id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     @JoinColumn(name = "customer_id")
     @JsonView(JsonViewConfig.Public.class)
     private Customer customer;
@@ -37,7 +37,7 @@ public class FolderAccessLevel {
     @JsonView(JsonViewConfig.Public.class)
     private AccessLevel accessLevel;
 
-    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "accessLevels")
+    @ManyToMany(mappedBy = "accessLevels", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     private List<Folder> folders;
 
 
