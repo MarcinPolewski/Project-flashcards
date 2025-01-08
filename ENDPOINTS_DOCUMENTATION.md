@@ -668,6 +668,41 @@ or if the deck does not exist.
   ```
 ---
 
+### `GET /deck/getLastUsed`
+
+This endpoint allows you to retrieve the most recently used decks
+
+**Parameters:**
+- `Authentication authentication`: Contains authentication details.
+- `int howMany (default=3)`: Number of decks to be returned.
+
+**Response:**
+- 200 OK: Returns a list of last used decks.
+  ```json
+  [
+    {
+      "id": 1,
+      "name": "Deck 1"
+    },
+    {
+      "id": 2,
+      "name": "Deck 2"
+    }
+  ]
+  ```
+
+- 400 Bad Request:
+
+If the user is not found
+  ```json
+  "Customer not found"
+  ```
+or if the 'howMany' parameter is less or equal to 0.
+  ```json
+  "howMany must be greater than 0"
+  ```
+---
+
 ### `POST /deck/create`
 
 This endpoint creates a new deck in a folder.
