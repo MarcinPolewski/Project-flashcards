@@ -1,7 +1,10 @@
 import React, { useState } from "react";
-import Navbar from "../../Navbar/Navbar";
 import { useParams } from 'react-router-dom';
+
+import Navbar from "../../Navbar/Navbar";
 import './Study.css';
+import testDecks from "../../../assets/mockData/testDecks";
+import testDecks from "../../../assets/mockData/mockDeck";
 
 
 const Study = (props) => {
