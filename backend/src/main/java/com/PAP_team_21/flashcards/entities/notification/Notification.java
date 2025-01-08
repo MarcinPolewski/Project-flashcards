@@ -79,4 +79,12 @@ public class Notification {
         this.creationDate = LocalDateTime.now();
         this.receivedDate = LocalDateTime.now();
     }
+
+    public Notification(int userId, String text) {
+        this.userId = userId;
+        this.received = true;
+        this.text = text;
+        this.creationDate = LocalDateTime.now();
+        this.receivedDate = LocalDateTime.now();
+    }
 }
