@@ -304,6 +304,10 @@ public class CustomerController {
             return ResponseEntity.badRequest().body("No user with this id found");
         }
 
+        if (customerToAddOpt.get().getId() == customer.getId()) {
+            return ResponseEntity.badRequest().body("You cannot send friendship request to yourself");
+        }
+
         String invitationText = "User with Id: " + customer.getId() + ", email: " + customer.getEmail() +
                 "username: " + customer.getUsername() + "has sent you the friend request.";
         Notification notification = new Notification(id, true, invitationText);
@@ -352,12 +356,17 @@ public class CustomerController {
         {
             return ResponseEntity.badRequest().body("No user with this id found");
         }
+        Customer customer = customerOpt.get();
 
         Optional<Friendship> friendshipOpt = friendshipRepository.findById(id);
         if (friendshipOpt.isEmpty()) {
             return ResponseEntity.badRequest().body("No friendship with this id found");
         }
         Friendship friendship = friendshipOpt.get();
+
+        if (customer.getId() != friendship.getReceiverId()) {
+            return ResponseEntity.badRequest().body("You are not the receiver of the friendship, you cannot accept it.");
+        }
 
         friendship.setAccepted(true);
         friendshipRepository.save(friendship);
