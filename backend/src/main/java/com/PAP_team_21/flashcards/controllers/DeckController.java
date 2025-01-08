@@ -7,6 +7,7 @@ import com.PAP_team_21.flashcards.authentication.ResourceAccessLevelService.Fold
 import com.PAP_team_21.flashcards.authentication.ResourceAccessLevelService.ResourceAccessService;
 import com.PAP_team_21.flashcards.controllers.requests.DeckCreationRequest;
 import com.PAP_team_21.flashcards.controllers.requests.DeckUpdateRequest;
+import com.PAP_team_21.flashcards.entities.customer.Customer;
 import com.PAP_team_21.flashcards.entities.customer.CustomerRepository;
 import com.PAP_team_21.flashcards.entities.deck.Deck;
 import com.PAP_team_21.flashcards.entities.deck.DeckRepository;
@@ -16,12 +17,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/deck")
 @RequiredArgsConstructor
 public class DeckController {
     private final DeckRepository deckRepository;
     private final ResourceAccessService resourceAccessService;
+    private final CustomerRepository customerRepository;
 
     @GetMapping("/flashcards")
     public ResponseEntity<?> getFlashcards(
@@ -45,6 +49,27 @@ public class DeckController {
             return ResponseEntity.badRequest().body("You dont have access to this deck");
         }
         return ResponseEntity.ok(response.getDeck().getFlashcards( page,  size,  sortBy,  ascending));
+    }
+
+    @GetMapping("/getLastUsed")
+    public ResponseEntity<?> getLastUsed(
+            Authentication authentication,
+            @RequestParam(defaultValue = "3") int howMany
+    )
+    {
+        if(howMany<=0)
+        {
+            return ResponseEntity.badRequest().body("howMany must be greater than 0");
+        }
+
+        String email = authentication.getName();
+        Optional<Customer> cusomterOpt = customerRepository.findByEmail(email);
+        if(cusomterOpt.isEmpty())
+        {
+            return ResponseEntity.badRequest().body("Customer not found");
+        }
+
+        return ResponseEntity.ok(deckRepository.getLastUsed(cusomterOpt.get().getId(), howMany));
     }
 
     @PostMapping("/create")
