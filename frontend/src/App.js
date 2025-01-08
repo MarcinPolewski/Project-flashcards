@@ -12,7 +12,6 @@ import Statistics from './Components/pages/Statistics/Statistics';
 import Study from './Components/pages/Study/Study';
 import FolderPage from './Components/pages/FolderPage/FolderPage';
 import DeckPage from './Components/pages/DeckPage/DeckPage';
-import spanishN5MockDeck from "./assets/mockData/mockDeck";
 
 /* Avatar for testing */
 import testAvatar from './assets/test/test-avatar.png';
@@ -79,7 +78,6 @@ function App() {
       </BrowserRouter>
     </ThemeProvider>
     </OverlayProvider>
-
   );
 }
 
