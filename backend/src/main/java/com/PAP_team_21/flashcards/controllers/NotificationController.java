@@ -1,7 +1,6 @@
 package com.PAP_team_21.flashcards.controllers;
 
 import com.PAP_team_21.flashcards.controllers.requests.NotificationCreationRequest;
-import com.PAP_team_21.flashcards.controllers.requests.NotificationUpdateRequest;
 import com.PAP_team_21.flashcards.entities.JsonViewConfig;
 import com.PAP_team_21.flashcards.entities.customer.Customer;
 import com.PAP_team_21.flashcards.entities.customer.CustomerRepository;
@@ -64,31 +63,6 @@ public class NotificationController {
         }
 
         return ResponseEntity.badRequest().body("This notification does not belong to user");
-    }
-
-    @PostMapping("/update")
-    public ResponseEntity<?> updateNotification(Authentication authentication,
-                                                @RequestBody NotificationUpdateRequest request) {
-        String email = authentication.getName();
-        Optional<Customer> customerOpt = customerRepository.findByEmail(email);
-        if (customerOpt.isEmpty())
-        {
-            return ResponseEntity.badRequest().body("No user with this id found");
-        }
-
-        Optional<Notification> notificationOpt = notificationRepository.findById(request.getNotificationId());
-        if (notificationOpt.isEmpty()) {
-            return ResponseEntity.badRequest().body("No notification with this id found");
-        }
-        Notification notification = notificationOpt.get();
-
-        if (notification.getUserId() != customerOpt.get().getId()) {
-            return ResponseEntity.badRequest().body("This notification does not belong to user");
-        }
-        notification.setReceived(request.isReceived());
-
-        notificationRepository.save(notification);
-        return ResponseEntity.ok(notification);
     }
 
     @DeleteMapping("/delete")

@@ -1453,47 +1453,7 @@ Creates a new notification for a user.
   ```
 ---
 
-### 3. **Update Notification**
-Updates the status of a notification (e.g., marking it as received).
-
-- **URL:** `/update`
-- **Method:** `POST`
-- **Parameters:**
-  - `Authentication authentication`
-- **Request Body:**
-  ```json
-    {
-      "notificationId": 1,
-      "text": "Hello World",
-      "received": true,
-      "receivedDate": "2025-01-04 14:23:45"
-    }
-  ```
-- **Response:**
-
-  **200 OK** - Notification updated successfully.
-  ```json
-  {
-    "id": 1,
-    "userId": 3,
-    "received": true,
-    "text": "Hello World",
-    "receivedDate": "2025-01-04 14:23:45"
-  }
-  ```
-  **400 Bad Request** -  Notification or user not found, or the notification does not belong to the user.
-  ```json
-  "No notification with this id found"
-  ```
-  ```json
-  "No user with this id found"
-  ```
-  ```json
-  "This notification does not belong to the user"
-  ```
----
-
-### 4. **Delete Notification**
+### 3. **Delete Notification**
 Deletes a specific notification by its ID.
 
 - **URL:** `/delete`
