@@ -371,7 +371,18 @@ This endpoint retrieves the root folder of the authenticated customer.
   ```json
   {
     "id": 1,
-    "name": "MyFirstFolder"
+    "name": "MyFirstFolder",
+    "children": 
+      [
+          {
+            "id": 1,
+            "name": "folder2"
+          },
+          {
+            "id": 2,
+            "name": "folder3"
+          }
+      ]   
   }
   ```
 - 400 Bad Request: 
@@ -1741,13 +1752,12 @@ The `UserPreferencesController` manages the user preferences, including actions 
 ## Endpoints
 
 ### 1. **Get User Preferences**
-Retrieve a user's preferences by ID.
+Retrieve a user's preferences.
 
-- **URL:** `/userPreferences/getUserPreferences/{id}`
+- **URL:** `/userPreferences/getUserPreferences`
 - **Method:** `GET`
 - **Parameters:**
   - `Authentication authentication`
-  - `id` (int) - The ID of the user preferences to retrieve.
 - **Response:**
     - **200 OK** - Returns the user preferences.
     ```json
@@ -1761,12 +1771,6 @@ Retrieve a user's preferences by ID.
     - **400 Bad Request** - User not found, UserPreferences not found, User preferences do not belong to the authenticated user.
     ```json
     "No User with this id found"
-    ```
-    ```json
-    "No reviewLog with this id found"
-    ```
-    ```json 
-    "This reviewLog does not belong to the user"
     ```
 ---
 
@@ -1822,13 +1826,12 @@ The `UserStatisticsController` handles operations for managing user statistics, 
 ## Endpoints
 
 ### 1. **Get User Statistics**
-Retrieve the statistics for a specific user by ID.
+Retrieve the statistics for the user.
 
-- **URL:** `/userStatistics/getUserStatistics/{id}`
+- **URL:** `/userStatistics/getUserStatistics`
 - **Method:** `GET`
 - **Parameters:**
   - `Authentication authentication`
-  - `id` (int) - The ID of the user statistics to retrieve.
 - **Response:**
     - **200 OK** - Returns the user statistics object.
       ```json
@@ -1843,12 +1846,6 @@ Retrieve the statistics for a specific user by ID.
     - **400 Bad Request**:  User not found, User statistics not found, User statistics do not belong to the authenticated user.
       ```json
       "No User with this id found"
-      ```
-      ```json
-      "No UserStatistics with this id found"
-      ```
-      ```json 
-      "This UserStatistics do not belong to the user"
       ```
 ---
 
