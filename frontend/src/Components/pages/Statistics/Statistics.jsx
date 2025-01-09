@@ -28,10 +28,22 @@ const Statistics = (props) => {
 
     const totalCards = pieChartData.newCards + pieChartData.learningCards + pieChartData.rememberedCards;
 
+    const whatIneed = {
+        daysLearning: 15,
+        longestStreak: 15,
+        currentStreak: 15,
+        allNewCards: 57,
+        allLearningCards: 120,
+        allRememberedCards: 217,
+        loginDates: [
+            '10-12-2024', '11-12-2024', '14-12-2024'
+        ]
+    }
+
     return <div className="statistics">
         <Navbar details={props.details}/>
         <div className="statistics-container">
-        
+
             <div className="statistics-title">Statistics</div>
 
             <StatisticsSection className="streak-section" title="Streak">
