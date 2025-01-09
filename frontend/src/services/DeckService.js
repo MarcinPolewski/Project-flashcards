@@ -7,12 +7,6 @@ const DeckService = {
         });
         return response.data;
     },
-    getLastUsed: async (howMany = 3) => {
-        const response = await api.get(`/deck/getLastUsed/`, {
-            params: { howMany }
-        });
-        return response.data;
-    },
     createDeck: async (folderId, name) => {
         const response = await api.post('/deck/create', { folderId, name });
         return response.data;
