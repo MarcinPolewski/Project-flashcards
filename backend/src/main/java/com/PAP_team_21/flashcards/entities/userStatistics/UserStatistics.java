@@ -19,7 +19,7 @@ public class UserStatistics {
     @JsonView(JsonViewConfig.Public.class)
     private int id;
 
-    @Column(name = "user_id", insertable = false, updatable = false)
+    @Column(name = "user_id")
     @JsonView(JsonViewConfig.Public.class)
     private int userId;
 
@@ -36,7 +36,7 @@ public class UserStatistics {
     private LocalDateTime lastLogin;
 
     @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", insertable = false, updatable = false)
     private Customer customer;
 
     public UserStatistics() {}

@@ -18,7 +18,7 @@ public class UserPreferences {
     @JsonView(JsonViewConfig.Public.class)
     private int id;
 
-    @Column(name = "user_id", insertable = false, updatable = false)
+    @Column(name = "user_id")
     @JsonView(JsonViewConfig.Public.class)
     private int userId;
 
@@ -31,7 +31,7 @@ public class UserPreferences {
     private int language;
 
     @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", insertable = false, updatable = false)
     private Customer customer;
 
     public UserPreferences() {}
