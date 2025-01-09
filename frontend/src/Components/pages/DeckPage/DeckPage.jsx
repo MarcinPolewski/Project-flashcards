@@ -6,10 +6,13 @@ import './DeckPage.css';
 
 import Navbar from '../../Navbar/Navbar';
 import PieChart from '../../Charts/PieChart/PieChart';
+import DeckService from '../../../services/DeckService';
+import FlashcardService from '../../../services/FlashcardService';
 
 const DeckPage = (props) => {
     const { id } = useParams();
     const [deck, setDeck] = useState(null);
+    const [deckProgress, setDeckProgress] = useState(null);
     const [flashcards, setFlashcards] = useState([]);
 
     const handleEdit = (flashcardId) => {
@@ -17,17 +20,26 @@ const DeckPage = (props) => {
     };
 
     const handleDelete = (flashcardId) => {
+        const response = FlashcardService.deleteFlashcard(flashcardId)
         setFlashcards(flashcards.filter(flashcard => flashcard.id !== flashcardId));
-        console.log(`Deleted flashcard with id ${flashcardId}`);
     };
 
     useEffect(() => {
-        const foundDeck = testDecks.find(deck => deck.id === parseInt(id));
-        if (foundDeck) {
-            setDeck(foundDeck);
-            const folderFlashcards = testFlashcards.filter(flashcard => flashcard.deckId === foundDeck.id);
-            setFlashcards(folderFlashcards);
-        }
+        const fetchDeckData = async () => {
+            try {
+                const foundDeck = await DeckService.getDeck(id);
+                setDeck(foundDeck);
+    
+                const folderFlashcards = await DeckService.getFlashcards(id);
+                setFlashcards(folderFlashcards);
+    
+                const foundDeckProgress = await DeckService.getDeckProgress(id);
+                setDeckProgress(foundDeckProgress);
+            } catch (error) {
+                console.error("Error fetching deck data:", error);
+            }
+        };
+        fetchDeckData();
     }, [id]);
 
     if (!deck) return <p>Deck not found!</p>;
@@ -38,22 +50,29 @@ const DeckPage = (props) => {
         <div className="deck-page-container">
             {deck ? (
                 <div className="deck-page-content">
-                    <h1 className="deck-page-title">{deck.title}</h1>
+                    <h1 className="deck-page-title">{deck.name}</h1>
                     <div className='deck-page-statistics-container'>
-                        <div className="deck-page-left">
-                            <p>Progress: {deck.progress}%</p>
-                            <p>New Cards: {deck.newCards}</p>
-                            <p>Learning Cards: {deck.learningCards}</p>
-                            <p>Reviewing Cards: {deck.reviewingCards}</p>
-                        </div>
+                    {deckProgress ? (
+                        <div>
+                            <div className="deck-page-left">
+                                <p>Progress: {deckProgress.progress}%</p>
+                                <p>New Cards: {deckProgress.newCards}</p>
+                                <p>Learning Cards: {deckProgress.learningCards}</p>
+                                <p>Reviewing Cards: {deckProgress.reviewingCards}</p>
+                            </div>
 
-                        <div className="deck-page-right">
-                            <PieChart data={{
-                                newCards: deck.newCards,
-                                learningCards: deck.learningCards,
-                                rememberedCards: deck.reviewingCards
-                            }} className="deck-page-pie-chart" />
+                            <div className="deck-page-right">
+                                <PieChart data={{
+                                    newCards: deckProgress.newCards,
+                                    learningCards: deckProgress.learningCards,
+                                    rememberedCards: deckProgress.reviewingCards
+                                }} className="deck-page-pie-chart" />
+                            </div>
                         </div>
+                    ) : (
+                        <p>Loading progress...</p>
+                    )}
+                        
                     </div>
                     <h3 className="deck-page-subtitle">Flashcards</h3>
                     {flashcards.length > 0 ? (
