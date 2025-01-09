@@ -5,9 +5,12 @@ import com.PAP_team_21.flashcards.authentication.AuthenticationResponse;
 import com.PAP_team_21.flashcards.authentication.RegisterRequest;
 import com.PAP_team_21.flashcards.entities.customer.Customer;
 import com.PAP_team_21.flashcards.entities.customer.CustomerRepository;
-import com.PAP_team_21.flashcards.entities.folder.Folder;
 import com.PAP_team_21.flashcards.entities.folderAccessLevel.FolderAccessLevel;
 import com.PAP_team_21.flashcards.entities.folderAccessLevel.FolderAccessLevelRepository;
+import com.PAP_team_21.flashcards.entities.userPreferences.UserPreferences;
+import com.PAP_team_21.flashcards.entities.userPreferences.UserPreferencesRepository;
+import com.PAP_team_21.flashcards.entities.userStatistics.UserStatistics;
+import com.PAP_team_21.flashcards.entities.userStatistics.UserStatisticsRepository;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +40,8 @@ public class AuthenticationController {
     private final AuthenticationManager authenticationManager;
     private final CustomerRepository customerRepository;
     private final FolderAccessLevelRepository folderAccessLevelRepository;
+    private final UserPreferencesRepository userPreferencesRepository;
+    private final UserStatisticsRepository userStatisticsRepository;
 
     @Value("${jwt.token-valid-time}")
     private long tokenValidTime;
@@ -108,14 +113,22 @@ public class AuthenticationController {
 
             FolderAccessLevel al = customer.getFolderAccessLevels().get(0);
 
-            // @TODO why customerReposiotory.save() doednt work - solution below works just fine
-
             Optional<Customer> opt = customerRepository.findByEmail(email);
             if(opt.isPresent())
             {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("registration failed - user already exists");
             }
             folderAccessLevelRepository.save(al);
+            customerRepository.save(customer);
+
+            int customerId = customerRepository.findByEmail(email).get().getId();
+            System.out.println(customerId);
+            UserPreferences userPreferences = new UserPreferences(customerId, false, 1);
+            UserStatistics userStatistics = new UserStatistics(customerId, 0, 0, LocalDateTime.now());
+
+            userPreferencesRepository.save(userPreferences);
+            userStatisticsRepository.save(userStatistics);
+
             return ResponseEntity.status(HttpStatus.CREATED).body("customer registered");
 
         }
