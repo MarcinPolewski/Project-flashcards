@@ -6,6 +6,7 @@ import com.PAP_team_21.flashcards.entities.customer.Customer;
 import com.PAP_team_21.flashcards.entities.customer.CustomerRepository;
 import com.PAP_team_21.flashcards.entities.customer.CustomerService;
 import com.PAP_team_21.flashcards.entities.folder.Folder;
+import com.PAP_team_21.flashcards.entities.folder.FolderJpaRepository;
 import com.PAP_team_21.flashcards.entities.friendship.Friendship;
 import com.PAP_team_21.flashcards.entities.friendship.FriendshipRepository;
 import com.PAP_team_21.flashcards.entities.notification.Notification;
@@ -29,6 +30,7 @@ public class CustomerController {
     private final NotificationRepository notificationRepository;
     private final FriendshipRepository friendshipRepository;
     private final CustomerService customerService;
+    private final FolderJpaRepository folderJpaRepository;
 
     @GetMapping("/findById/{id}")
     @JsonView(JsonViewConfig.Public.class)
@@ -93,7 +95,7 @@ public class CustomerController {
             return ResponseEntity.badRequest().body("No user found with this id");
         }
         Customer customer = customerOpt.get();
-
+        folderJpaRepository.delete(customer.getRootFolder());
         customerRepository.delete(customer);
         return ResponseEntity.ok("Customer deleted successfully");
     }
