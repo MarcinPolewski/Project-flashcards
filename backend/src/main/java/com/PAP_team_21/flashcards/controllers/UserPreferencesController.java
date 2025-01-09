@@ -22,9 +22,9 @@ public class UserPreferencesController {
     private final UserPreferencesRepository userPreferencesRepository;
     private final CustomerRepository customerRepository;
 
-    @GetMapping("getUserPreferences/{id}")
+    @GetMapping("getUserPreferences")
     @JsonView(JsonViewConfig.Public.class)
-    public ResponseEntity<?> getUserPreferences(Authentication authentication, @PathVariable int id) {
+    public ResponseEntity<?> getUserPreferences(Authentication authentication) {
         String email = authentication.getName();
         Optional<Customer> customerOpt = customerRepository.findByEmail(email);
         if (customerOpt.isEmpty())
@@ -32,17 +32,9 @@ public class UserPreferencesController {
             return ResponseEntity.badRequest().body("No user with this id found");
         }
 
-        Optional<UserPreferences> userPreferencesOpt = userPreferencesRepository.findById(id);
-        if (userPreferencesOpt.isEmpty()) {
-            return ResponseEntity.badRequest().body("No userPreferences with this id found");
-        }
-        UserPreferences userPreferences = userPreferencesOpt.get();
+        UserPreferences userPreferences = customerOpt.get().getUserPreferences();
 
-       if (userPreferences.getUserId() != customerOpt.get().getId()) {
-           return ResponseEntity.badRequest().body("UserPreferences do not belong to user");
-       }
-
-       return ResponseEntity.ok(userPreferences);
+        return ResponseEntity.ok(userPreferences);
     }
 
     @PostMapping("/update")

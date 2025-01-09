@@ -21,9 +21,9 @@ public class UserStatisticsController {
     private final UserStatisticsRepository userStatisticsRepository;
     private final CustomerRepository customerRepository;
 
-    @GetMapping("/getUserStatistics/{id}")
+    @GetMapping("/getUserStatistics")
     @JsonView(JsonViewConfig.Public.class)
-    public ResponseEntity<?> getUserStatistics(Authentication authentication, @PathVariable int id) {
+    public ResponseEntity<?> getUserStatistics(Authentication authentication) {
         String email = authentication.getName();
         Optional<Customer> customerOpt = customerRepository.findByEmail(email);
         if (customerOpt.isEmpty())
@@ -31,15 +31,7 @@ public class UserStatisticsController {
             return ResponseEntity.badRequest().body("No user with this id found");
         }
 
-        Optional<UserStatistics> userStatisticsOpt = userStatisticsRepository.findById(id);
-        if (userStatisticsOpt.isEmpty()) {
-            return ResponseEntity.badRequest().body("No userStatistics with this id found");
-        }
-        UserStatistics userStatistics = userStatisticsOpt.get();
-
-        if (userStatistics.getUserId() != customerOpt.get().getId()) {
-            return ResponseEntity.badRequest().body("UserStatistics do not belong to the user");
-        }
+        UserStatistics userStatistics = customerOpt.get().getUserStatistics();
 
         return ResponseEntity.ok(userStatistics);
     }
