@@ -3,6 +3,7 @@ package com.PAP_team_21.flashcards.entities.friendship;
 import com.PAP_team_21.flashcards.entities.JsonViewConfig;
 import com.PAP_team_21.flashcards.entities.customer.Customer;
 import com.PAP_team_21.flashcards.entities.notification.Notification;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -35,12 +36,12 @@ public class Friendship {
 
     @ManyToOne
     @JoinColumn(name = "sender_id", insertable = false, updatable = false)
-    @JsonView(JsonViewConfig.Internal.class)
+    @JsonIgnore
     private Customer sender;
 
     @ManyToOne
     @JoinColumn(name = "receiver_id", insertable = false, updatable = false)
-    @JsonView(JsonViewConfig.Internal.class)
+    @JsonIgnore
     private Customer receiver;
 
     @ManyToMany
@@ -49,6 +50,7 @@ public class Friendship {
             joinColumns = @JoinColumn(name = "friendship_id"),
             inverseJoinColumns = @JoinColumn(name = "notification_id")
     )
+    @JsonIgnore
     private List<Notification> notifications;
 
     public Friendship() {}
