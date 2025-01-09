@@ -121,7 +121,7 @@ public class AuthenticationController {
             folderAccessLevelRepository.save(al);
 
             int customerId = customerRepository.findByEmail(email).get().getId();
-            System.out.println(customerId);
+
             UserPreferences userPreferences = new UserPreferences(customerId, false, 1);
             UserStatistics userStatistics = new UserStatistics(customerId, 0, 0, LocalDateTime.now());
 
