@@ -3,6 +3,8 @@ import React, {useContext, useState, useEffect} from "react";
 import Navbar from "../../Navbar/Navbar";
 import Overlay from "../../Overlay/Overlay";
 
+import UserPreferencesService from "../../../services/UserPreferencesService";
+
 import './Settings.css';
 import { ThemeContext } from "../../../contexts/ThemeContext/ThemeContext";
 import { useOverlay } from "../../../contexts/OverlayContext/OverlayContext";

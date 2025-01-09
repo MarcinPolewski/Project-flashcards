@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import Navbar from "../../Navbar/Navbar";
 import PieChart from "../../Charts/PieChart/PieChart";
@@ -71,7 +71,7 @@ const Statistics = (props) => {
             <div className="statistics-title">Statistics</div>
 
             <StatisticsSection className="streak-section" title="Streak">
-                <StreakChart className="streak-section-streak-chart" loginDates={loginDates}/>
+                <StreakChart className="streak-section-streak-chart" loginDates={statisticData.loginDates}/>
 
                 <div className="streak-container">
                     <div className="streak-days-learning">
