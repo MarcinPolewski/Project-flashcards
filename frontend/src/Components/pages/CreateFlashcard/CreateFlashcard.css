@@ -49,8 +49,8 @@ h2 {
     padding: 8px;
     border: 1px solid var(--section-border);
     border-radius: 4px;
-    background-color: var(--input-color-flashcard);
-    color: var(--input-flashcard-background);
+    background-color: var(--input-flashcard-background);
+    color: var(--input-color-flashcard);
 }
 
 .flashcard-inputs {

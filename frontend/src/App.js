@@ -9,6 +9,7 @@ import CreateFlashcard from './Components/pages/CreateFlashcard/CreateFlashcard'
 import Decks from './Components/pages/Decks/Decks';
 import Import from './Components/pages/Import/Import';
 import Statistics from './Components/pages/Statistics/Statistics';
+import Study from './Components/pages/Study/Study';
 import FolderPage from './Components/pages/FolderPage/FolderPage';
 import DeckPage from './Components/pages/DeckPage/DeckPage';
 
@@ -58,7 +59,6 @@ function App() {
       </BrowserRouter>
     </ThemeProvider>
     </OverlayProvider>
-
   );
 }
 
