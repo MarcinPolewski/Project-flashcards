@@ -96,7 +96,7 @@ public class Customer {
                         CascadeType.DETACH, CascadeType.REFRESH})
     private List<Authority> authorities;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name="root_folder_id")
     private Folder rootFolder;
 
