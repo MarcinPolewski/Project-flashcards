@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import AuthSection from "../../AuthSection/AuthSection";
 
 import '../../AuthSection/Auth.css';
-import { handleForgotPassword } from "../../../services/authService";
+import { handleForgotPassword } from "../../../services/AuthService";
 
 const ForgotPassword = () => {
 

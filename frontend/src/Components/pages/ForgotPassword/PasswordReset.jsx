@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import AuthSection from "../../AuthSection/AuthSection";
 import { useNavigate } from "react-router-dom";
-import { handlePasswordReset } from "../../../services/authService";
+import { handlePasswordReset } from "../../../services/AuthService";
 
 const PasswordReset = () => {
 
