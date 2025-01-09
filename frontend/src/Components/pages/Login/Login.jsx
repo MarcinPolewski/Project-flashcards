@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import '../../AuthSection/Auth.css';
 import AuthSection from "../../AuthSection/AuthSection";
 import { useNavigate } from "react-router-dom";
-import { loginUser } from "../../../api/loginUser";
+import { loginUser } from "../../../services/authService";
 
 import { handleOAuth2 } from "../../../utils/handleOAuth2";
 
@@ -35,8 +35,8 @@ const Login = () => {
           </div>
 
           <div className="auth-email-signin">
-            {error && <p style={{ color: "red" }}>{error}</p>}
             <h2>Or sign in using email</h2>
+            {error && <p style={{ color: "red" }}>{error}</p>}
             <form onSubmit={handleSubmit}>
               <div>
                 <label htmlFor="email">Email address</label>

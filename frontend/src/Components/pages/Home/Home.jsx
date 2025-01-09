@@ -2,19 +2,21 @@ import React, { useState } from "react";
 import { CircularProgressbar } from "react-circular-progressbar";
 
 import Navbar from "../../Navbar/Navbar";
-import Deck from "../../Deck/Deck";
 
 import sortDecksByDate from "../../../utils/sortDecksByDate";
 
 import './Home.css';
 import 'react-circular-progressbar/dist/styles.css';
 
-import testDecks from "../../../assets/test/testDecks";
+import testDecks from "../../../assets/mockData/testDecks";
+import Folder from "../../Folder/Folder";
+import testFolders from "../../../assets/mockData/testFolders";
+import { useNavigate } from "react-router-dom";
 
 
 const Home = (props) => {
 
-    const [myDecksClicked, setMyDecksClicked] = useState(true);
+    const navigate = useNavigate();
 
     return <div>
 
@@ -32,37 +34,30 @@ const Home = (props) => {
                     <div key={idx} className="latest-review-deck">
                         <div className="deck-title">{deck.title}</div>
                         <CircularProgressbar className="react-circular-progressbar" value={deck.progress} text={`${deck.progress}%`} />
-                        <button className="continue-button">Continue</button>
+                        <button className="continue-button" onClick={() => navigate(`/deck/study/${deck.id}`)}>Continue</button>
                     </div>
                 ))}
             </div>
 
         </div>
 
-        <div className="home-my-decks">
+        <div className="home-latest-reviews">
 
-            <div className="my-decks-buttons">
-                <div className={myDecksClicked ? "active-tab" : ""} onClick={() => {
-                    setMyDecksClicked(true);
-                }}>
-                    My Decks
-                </div>
-                <div className={!myDecksClicked ? "active-tab" : ""} onClick={() => {
-                    setMyDecksClicked(false);
-                }}>
-                    Imported Decks
-                </div>
+            <div className="latest-reviews-title">Notifications</div>
+            <div className="latest-reviews-decks">
+                <div>Hello</div>
             </div>
 
-            {/* będzie w bazie danych flaga od decków personalnych i importowanych */}
+        </div>
 
+        <div className="home-my-decks">
+
+            <div className="latest-reviews-title">Deck Folders</div>
             <div className="my-decks-container">
             {
-            testDecks
-                .filter(deck => myDecksClicked ? deck.imported === false : deck.imported === true)
-                .slice(0, 5)
-                .map((deck, idx) => (
-                    <Deck key={idx} deckState={deck}/>
+            testFolders
+                .map((folder, idx) => (
+                    <Folder key={idx} id={folder.id} title={folder.name}/>
             ))}
             </div>
 
