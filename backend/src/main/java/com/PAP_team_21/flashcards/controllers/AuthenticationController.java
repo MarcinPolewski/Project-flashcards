@@ -119,7 +119,6 @@ public class AuthenticationController {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("registration failed - user already exists");
             }
             folderAccessLevelRepository.save(al);
-            customerRepository.save(customer);
 
             int customerId = customerRepository.findByEmail(email).get().getId();
             System.out.println(customerId);
