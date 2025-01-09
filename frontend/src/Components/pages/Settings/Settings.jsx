@@ -40,20 +40,42 @@ const Settings = (props) => {
     const { toggleOverlay, closeOverlay, isOverlayOpen } = useOverlay();
     const { sysTheme, toggleTheme, setTheme } = useContext(ThemeContext);
 
-    const handleSubmit = () => {
-        if (formType === 'password') {
-            if (formData.password !== formData.confirmPassword) {
-                alert('Passwords do not match!');
-                return;
+    useEffect(() => {
+        const fetchPreferences = async () => {
+            try {
+            const preferences = await UserPreferencesService.getPreferences();
+            setSettingsState({
+                ...settingsState,
+                theme: preferences.darkMode ? "Dark" : "Light",
+                language: preferences.language,
+                reminderTime: preferences.reminderTime,
+                timezone: preferences.timezone,
+                studyReminders: preferences.studyReminders,
+            });
+            if (preferences.darkMode !== sysTheme) {
+                setTheme(preferences.darkMode ? "dark" : "light");
             }
+            } catch (error) {
+            console.error("Error fetching user preferences:", error);
+            }
+        };
 
-            if (!validatePassword(formData.password)) {
-                alert('Password is not strong enough');
-                return;
-            }
+        fetchPreferences();
+    }, [sysTheme, setTheme]);
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+          const { theme, language, studyReminders, reminderTime, timezone } = settingsState;
+          const darkMode = theme === "Dark";
+    
+          await UserPreferencesService.updatePreferences(darkMode, language, reminderTime, timezone, studyReminders);
+          alert("Preferences updated successfully!");
+          closeOverlay();
+        } catch (error) {
+          console.error("Error updating user preferences:", error);
+          alert("Failed to update preferences.");
         }
-
-        closeOverlay();
       };
 
       const validatePassword = (password) => {

@@ -54,7 +54,7 @@ const FolderPage = (props) => {
                                     <p className="folder-page-deck-card-info">Last Modified: {deck.lastModified}</p> */}
                                 </div>
                                 <div className="folder-page-deck-card-actions">
-                                <button onClick={() => navigate(`/deck/study/${deck.id}`)} className="folder-page-study-btn">
+                                <button onClick={() => navigate(`/study/${deck.id}`)} className="folder-page-study-btn">
                                     Study
                                 </button>
                                 <button onClick={() => navigate(`/deck/${deck.id}`)} className="folder-page-edit-btn">
