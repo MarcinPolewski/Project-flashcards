@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import Navbar from "../../Navbar/Navbar";
 import PieChart from "../../Charts/PieChart/PieChart";
 import StreakChart from "../../Charts/StreakChart/StreakChart";
 
 import './Statistics.css';
+import UserStatisticsService from "../../../services/UserStatisticsService";
 
 const calcPercentage = (part, total) => {
     return ((part / total) * 100).toFixed(2);
@@ -21,23 +22,46 @@ const StatisticsSection = ({title, children}) => {
 
 const Statistics = (props) => {
 
-    const {daysLearning, longestStreak, currentStreak} = props.details;
+    const [statisticData, setStatisticData] = useState(null);
 
+    useEffect(() => {
+        const fetchData = async () => {
+            //     daysLearning: 15,
+            //     longestStreak: 15,
+            //     currentStreak: 15,
+            //     allNewCards: 57,
+            //     allLearningCards: 120,
+            //     allRememberedCards: 217,
+            //     loginDates: [
+            //         '10-12-2024', '11-12-2024', '14-12-2024'
+            //     ]
+            // }
+            try {
+                const response = UserStatisticsService.getUserStatistics();
+                setStatisticData(response);
+            } catch (error) {
+                console.error("Error fetching user statistics:", error);
+            }
+        }
 
-    const pieChartData = {newCards:57, learningCards: 120, rememberedCards: 217}
+        fetchData();
+    }, []);
 
+    const { daysLearning, longestStreak, currentStreak } = statisticData || {};
+
+    const pieChartData = {
+        newCards: statisticData?.allNewCards || 0,
+        learningCards: statisticData?.allLearningCards || 0,
+        rememberedCards: statisticData?.allRememberedCards || 0,
+    };
+    
     const totalCards = pieChartData.newCards + pieChartData.learningCards + pieChartData.rememberedCards;
 
-    const whatIneed = {
-        daysLearning: 15,
-        longestStreak: 15,
-        currentStreak: 15,
-        allNewCards: 57,
-        allLearningCards: 120,
-        allRememberedCards: 217,
-        loginDates: [
-            '10-12-2024', '11-12-2024', '14-12-2024'
-        ]
+    if (!statisticData) {
+        return  <div className="statistics">
+            <Navbar details={props.details}/>
+            <div>Loading... </div>
+        </div>;
     }
 
     return <div className="statistics">
@@ -47,7 +71,7 @@ const Statistics = (props) => {
             <div className="statistics-title">Statistics</div>
 
             <StatisticsSection className="streak-section" title="Streak">
-                <StreakChart className="streak-section-streak-chart"/>
+                <StreakChart className="streak-section-streak-chart" loginDates={loginDates}/>
 
                 <div className="streak-container">
                     <div className="streak-days-learning">

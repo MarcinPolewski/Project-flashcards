@@ -1,12 +1,19 @@
 import api from "../api/api";
 
 const UserStatisticsService = {
-    getUserStatistics: async (id) => {
-        const response = await api.get(`/userStatistics/getUserStatistics/${id}`);
-        return response.data;
-    },
-    updateUserStatistics: async (userStatisticsId, totalTimeSpent, loginCount, lastLogin) => {
-        const response = await api.post('/userStatistics/update', { userStatisticsId, totalTimeSpent, loginCount, lastLogin });
+    getUserStatistics: async () => {
+        // const whatIneed = {
+        //     daysLearning: 15,
+        //     longestStreak: 15,
+        //     currentStreak: 15,
+        //     allNewCards: 57,
+        //     allLearningCards: 120,
+        //     allRememberedCards: 217,
+        //     loginDates: [
+        //         '10-12-2024', '11-12-2024', '14-12-2024'
+        //     ]
+        // }
+        const response = await api.get(`/userStatistics/getUserStatistics/`);
         return response.data;
     }
 };
