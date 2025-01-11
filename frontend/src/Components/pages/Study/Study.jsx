@@ -10,6 +10,7 @@ const Study = (props) => {
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [cards, setCards] = useState([]);
   const [currentDeck, setCurrentDeck] = useState(null); // Start with null for safety
+  const [showBack, setShowBack] = useState(false); // State to track whether to show the back of the card
 
   // Simulate updating `mockDeck`
   const updateMockDeck = (updatedDeck) => {
@@ -22,6 +23,17 @@ const Study = (props) => {
     setCurrentDeck(mockDeck); // Always use mockDeck
     setCards(mockDeck?.newCards.slice(0, 50) || []); // Limit cards during testing
   }, []); // No dependencies since we're always using mockDeck
+
+  // Add event listener for Enter key to toggle card side
+  useEffect(() => {
+    const handleKeyPress = (e) => {
+      if (e.key === "Enter") {
+        setShowBack((prev) => !prev);
+      }
+    };
+    window.addEventListener("keydown", handleKeyPress);
+    return () => window.removeEventListener("keydown", handleKeyPress); // Cleanup listener on unmount
+  }, []);
 
   const handleProgressUpdate = (interval) => {
     if (!currentDeck) return;
@@ -37,11 +49,14 @@ const Study = (props) => {
     };
     setCurrentDeck(updatedDeck);
     updateMockDeck(updatedDeck);
+
     if (currentCardIndex < updatedCards.length - 1) {
       setCurrentCardIndex(currentCardIndex + 1);
     } else {
       setCurrentCardIndex(0);
     }
+
+    setShowBack(false); // Reset to front of the card when moving to the next card
   };
 
   // Guard for missing data
@@ -58,8 +73,11 @@ const Study = (props) => {
       {currentCard.front && currentCard.back ? (
         <>
           <div className="card">
-            <div className="front">{currentCard.front}</div>
-            <div className="back">{currentCard.back}</div>
+            {showBack ? (
+              <div className="back">{currentCard.back}</div>
+            ) : (
+              <div className="front">{currentCard.front}</div>
+            )}
           </div>
           <div className="progress-buttons">
             <button onClick={() => handleProgressUpdate("1min")}>Repeat</button>
@@ -72,12 +90,12 @@ const Study = (props) => {
       ) : (
         <p>Card data is incomplete.</p>
       )}
-      
     </div>
   );
 };
 
 export default Study;
+
 
 
 {/*
