@@ -72,8 +72,8 @@ function App() {
           <Route path="/register" element={<Register/>} />
           <Route path="/forgot-password" element={<ForgotPassword/>} />
           <Route path="/password-reset" element={<PasswordReset/>} />
-          {/*<Route path="/folder/:id" element={<PrivateRoute><FolderPage details={APIdummy}/></PrivateRoute>} />
-          <Route path="/deck/:id" element={<PrivateRoute><DeckPage details={APIdummy}/> </PrivateRoute>} />*/}
+          <Route path="/folder/:id" element={<PrivateRoute><FolderPage details={APIdummy}/></PrivateRoute>} />
+          <Route path="/deck/:id" element={<PrivateRoute><DeckPage details={APIdummy}/> </PrivateRoute>} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
