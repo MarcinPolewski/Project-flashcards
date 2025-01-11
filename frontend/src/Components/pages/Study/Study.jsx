@@ -28,7 +28,8 @@ const Study = (props) => {
   useEffect(() => {
     const handleKeyPress = (e) => {
       if (e.key === "Enter") {
-        setShowBack((prev) => !prev);
+        setShowBack((prev) => !prev); // Toggle between front and back
+        e.preventDefault(); // Prevent other actions bound to Enter
       }
     };
     window.addEventListener("keydown", handleKeyPress);
@@ -95,6 +96,7 @@ const Study = (props) => {
 };
 
 export default Study;
+
 
 
 
