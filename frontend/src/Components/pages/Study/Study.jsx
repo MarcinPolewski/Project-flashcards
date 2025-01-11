@@ -68,8 +68,9 @@ const Study = (props) => {
   const currentCard = cards[currentCardIndex] || {};
 
   return (
+    <div className="study">
+    <Navbar details={props.details || {}} /> 
     <div className="study-container">
-      <Navbar details={props.details || {}} /> {/* Default to empty object */}
       <p>You're studying mockDeck</p>
       {currentCard.front && currentCard.back ? (
         <>
@@ -85,12 +86,13 @@ const Study = (props) => {
             <button onClick={() => handleProgressUpdate("10min")}>Hard</button>
             <button onClick={() => handleProgressUpdate("1day")}>Mid</button>
             <button onClick={() => handleProgressUpdate("5day")}>Easy</button>
-            <button className="edit-button">Edit</button>
           </div>
+          <button className="edit-button">Edit</button>
         </>
       ) : (
         <p>Card data is incomplete.</p>
       )}
+    </div>
     </div>
   );
 };
