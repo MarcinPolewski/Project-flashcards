@@ -3,6 +3,7 @@ package com.PAP_team_21.flashcards.entities.flashcardProgress;
 import com.PAP_team_21.flashcards.entities.JsonViewConfig;
 import com.PAP_team_21.flashcards.entities.flashcard.Flashcard;
 import com.PAP_team_21.flashcards.entities.customer.Customer;
+import com.PAP_team_21.flashcards.entities.reviewLog.ReviewLog;
 import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 import lombok.Getter;

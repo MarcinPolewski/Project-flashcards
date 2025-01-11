@@ -58,7 +58,7 @@ public class ReviewLog {
         this.userAnswer = userAnswer;
     }
 
-    public ReviewLog(int flashcardId, int userId, int userAnswer) {
+    public ReviewLog(int flashcardId, int userId, UserAnswer userAnswer) {
         this.flashcardId = flashcardId;
         this.userId = userId;
         this.when = LocalDateTime.now();
