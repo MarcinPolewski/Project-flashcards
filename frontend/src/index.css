@@ -13,12 +13,12 @@
   --deck-action-button: rgb(255, 149, 0);
   --deck-dropdown: white;
 
-  --navbar-background: salmon;
+  --navbar-background: rgb(21, 189, 198);
 
   --popup-hover: #f0f0f0;
   --popup-background: white;
 
-  --plus-button: orange;
+  --plus-button: rgb(153, 235, 242);
   --plus-button-hover: rgb(230, 186, 105);
   --plus-button-img: white;
 
@@ -37,6 +37,14 @@
   --share-background: #dadada;
   --share-btn: #4cc5e0;
   --share-btn-hover: #227c8e;
+
+  --flashcard-background: #ebebeb;
+  --flashcard-border: #e2e2e2;
+  --flashcard-buttons: #3746abc3;
+  --flashcard-buttons-hover: #243189c3;
+  --flashcard-buttons-active: rgb(28, 28, 93);
+  --flashcard-edit-button:#00ccff;
+  --flashcard-edit-button-hover: #109ec2;
 
   --filter-background: white;
 
@@ -79,7 +87,7 @@ body.dark {
   --popup-hover: #444;
   --popup-background: #2e2e2e;
 
-  --plus-button: orange;
+  --plus-button: rgb(80, 76, 109);
   --plus-button-hover: rgb(255, 175, 25);
   --plus-button-img: white;
 
@@ -98,6 +106,14 @@ body.dark {
   --share-background: #1e1e1e;
   --share-btn: #444;
   --share-btn-hover: #666;
+
+  --flashcard-background: #393939;
+  --flashcard-border: #1f1f1f;
+  --flashcard-buttons: #202024;
+  --flashcard-buttons-hover: #232339;
+  --flashcard-buttons-active: #20203a;
+  --flashcard-edit-button:  #2874a6;
+  --flashcard-edit-button-hover: #1d5981;
 
   --filter-background: #2e2e2e;
 
