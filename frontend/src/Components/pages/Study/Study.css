@@ -3,61 +3,106 @@
     flex-direction: column;
     align-items: center;
     font-family: Arial, sans-serif;
-    width: 300px;
-    margin: 0 auto;
+    max-width: 500px;
+    margin: 20px auto;
+    padding: 10px;
 }
 
 .card {
-    border: 1px solid #ccc;
+    border: 1px solid var(--flashcard-border);
     border-radius: 10px;
-    padding: 20px;
+    padding: 30px;
     text-align: center;
     margin-bottom: 20px;
     width: 100%;
-    background-color: #f9f9f9;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: var(--flashcard-background);
+    box-shadow: 0px 4px 6px rgba(120, 120, 120, 0.097);
+    font-size: 20px;
 }
 
 .front,
 .back {
-    margin: 10px 0;
-    font-size: 18px;
+    margin: 20px 0;
+    font-size: 22px;
+    font-weight: bold;
+    color: var(--text-color);
 }
 
 .progress-buttons {
     display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
+    justify-content: space-evenly;
+    margin-bottom: 10px; /* Adjust spacing */
     width: 100%;
 }
 
 button {
     border: none;
-    border-radius: 5px;
-    padding: 10px;
-    font-size: 14px;
+    border-radius: 8px;
+    padding: 15px 20px;
+    font-size: 16px;
     cursor: pointer;
-    background-color: #e0e0e0;
-    transition: background-color 0.2s;
+    color: white;
+    background-color: var(--flashcard-buttons);
+    transition: background-color 0.2s, transform 0.2s;
 }
 
 button:hover {
-    background-color: #d4d4d4;
+    background-color: var(--flashcard-buttons-hover);
+    transform: translateY(-2px);
 }
 
 button:active {
-    background-color: #c4c4c4;
+    background-color: var(--flashcard-buttons-active);
+    transform: translateY(0);
 }
 
 .edit-button {
-    background-color: #b3d9ff;
-    margin-top: 10px;
+    background-color: var(--flashcard-edit-button);
+    color: white;
+    margin-top: 15px; /* Space above Edit button */
+    width: 20%; /* Make it span full width */
+    text-align: center;
 }
 
 .edit-button:hover {
-    background-color: #99ccff;
+    background-color: var(--flashcard-edit-button-hover);
 }
 
 p {
     text-align: center;
+    font-size: 16px;
+}
+
+@media (max-width: 768px) {
+    .card {
+        padding: 20px;
+        font-size: 18px;
+    }
+
+    button {
+        padding: 12px 15px;
+        font-size: 14px;
+    }
+
+    .edit-button {
+        padding: 12px 15px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .card {
+        padding: 15px;
+        font-size: 16px;
+    }
+
+    button {
+        padding: 10px;
+        font-size: 12px;
+    }
+
+    .edit-button {
+        padding: 10px;
+        font-size: 12px;
+    }
 }
