@@ -19,7 +19,7 @@
   --popup-background: white;
 
   --plus-button: rgb(153, 235, 242);
-  --plus-button-hover: rgb(230, 186, 105);
+  --plus-button-hover: rgb(80, 240, 255);
   --plus-button-img: white;
 
   --continue-button: #007bff;
@@ -88,7 +88,7 @@ body.dark {
   --popup-background: #2e2e2e;
 
   --plus-button: rgb(80, 76, 109);
-  --plus-button-hover: rgb(255, 175, 25);
+  --plus-button-hover: rgb(90, 77, 189);
   --plus-button-img: white;
 
   --continue-button: #007bff;
