@@ -100,7 +100,7 @@ const PlusButton = () => {
                             </option>
                         ))}
                     </select>
-                    <button type="submit" onClick={handleCreateDeck}>Create Deck</button>
+                    <button type="submit" onClick={handleCreateDeck}>Create</button>
                 </div> }
                 {formType === 'folder' &&
                 <div className="plus-button-create-folder">
@@ -112,7 +112,7 @@ const PlusButton = () => {
                         onChange={(e) => setNewFolderName(e.target.value)}
                         required
                     />
-                    <button type="submit" onClick={handleCreateFolder}>Add Folder</button>
+                    <button type="submit" onClick={handleCreateFolder}>Add</button>
                 </div> }
             </Overlay>
         </div>

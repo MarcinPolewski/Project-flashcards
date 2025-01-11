@@ -3,15 +3,15 @@
 }
 
 .plus-button {
-    width: 5vh;
-    height: 5vh;
+    width: 4vh;
+    height: 4vh;
     background: var(--plus-button);
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    box-shadow: 0 4px 6px var(--box-shadow);
+    box-shadow: 0 2px 2px var(--box-shadow);
     transition: background 0.3s ease;
 }
 
@@ -21,9 +21,8 @@
 
 .plus-button-img {
     color: var(--plus-button-img);
-    font-size: 24px;
+    font-size: 26px;
     font-weight: bold;
-    padding-bottom: 5px;
 }
 
 .plus-button-popup {
@@ -63,8 +62,8 @@
     box-shadow: 0 4px 6px var(--box-shadow);
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    justify-content: space-between;
+    align-items: center; /* Change to center the content */
+    justify-content: center; /* Center the content vertically */
     max-width: 400px;
     margin: 0 auto;
     border: 1px solid var(--section-border);
@@ -72,9 +71,11 @@
 
 .plus-button-create-deck input[type="text"],
 .plus-button-create-folder input[type="text"] {
-    width: 100%;
+    background-color: var(--popup-background);
+    color: var(--text-color);
+    width: 88%;
     padding: 10px;
-    border: 1px solid var(--section-border);
+    border: 2px solid var(--section-border);
     border-radius: 15px;
     font-size: 1rem;
     margin-bottom: 15px;
@@ -90,6 +91,8 @@
 
 .plus-button-create-deck select,
 .plus-button-create-folder select {
+    background-color: var(--popup-background);
+    color: var(--text-color);
     width: 100%;
     padding: 10px;
     border: 1px solid var(--section-border);
@@ -118,7 +121,84 @@
 .plus-button-create-deck h3,
 .plus-button-create-folder h3 {
     font-size: 1.2rem;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
     color: var(--text-color);
-    text-align: center;
+    text-align: center; /* Ensuring the title is centered */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .plus-button {
+        width: 5vh;
+        height: 5vh;
+    }
+
+    .plus-button-popup {
+        left: -15vh;
+        width: 180px; /* Adjust the width for medium screens */
+    }
+
+    .plus-button-create-deck,
+    .plus-button-create-folder {
+        max-width: 90%;
+        padding: 20px 25px;
+    }
+
+    .plus-button-create-deck h3,
+    .plus-button-create-folder h3 {
+        font-size: 1rem;
+    }
+
+    .plus-button-create-deck input[type="text"],
+    .plus-button-create-folder input[type="text"] {
+        font-size: 0.9rem;
+    }
+
+    .plus-button-create-deck select,
+    .plus-button-create-folder select {
+        font-size: 0.9rem;
+    }
+
+    .plus-button-create-deck button[type="submit"],
+    .plus-button-create-folder button[type="submit"] {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .plus-button {
+        width: 6vh;
+        height: 6vh;
+    }
+
+    .plus-button-popup {
+        left: -10vh;
+        width: 150px; /* Adjust the width for small screens */
+    }
+
+    .plus-button-create-deck,
+    .plus-button-create-folder {
+        max-width: 100%;
+        padding: 15px 20px;
+    }
+
+    .plus-button-create-deck h3,
+    .plus-button-create-folder h3 {
+        font-size: 0.9rem;
+    }
+
+    .plus-button-create-deck input[type="text"],
+    .plus-button-create-folder input[type="text"] {
+        font-size: 0.8rem;
+    }
+
+    .plus-button-create-deck select,
+    .plus-button-create-folder select {
+        font-size: 0.8rem;
+    }
+
+    .plus-button-create-deck button[type="submit"],
+    .plus-button-create-folder button[type="submit"] {
+        font-size: 0.8rem;
+    }
 }
