@@ -9,7 +9,6 @@ import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import net.minidev.json.annotate.JsonIgnore;
 import org.hibernate.annotations.DynamicInsert;
 
 import java.util.*;
@@ -35,6 +34,9 @@ public class Folder {
 //            cascade = {CascadeType.PERSIST, CascadeType.MERGE,
 //                        CascadeType.DETACH, CascadeType.REFRESH})
 //    private List<FolderUser> folderUsers;
+
+    @OneToOne(mappedBy = "rootFolder", cascade = CascadeType.ALL)
+    private Customer customer;
 
     @JsonView(JsonViewConfig.BasicStructures.class)
     @ManyToMany(mappedBy = "folders", fetch = FetchType.LAZY,

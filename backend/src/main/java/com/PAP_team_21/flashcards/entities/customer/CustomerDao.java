@@ -10,11 +10,13 @@ public interface CustomerDao {
 
     Customer findUserByEmail(String email);
 
-    Customer findUserByUsername(String username);
+    List<Customer> findUserByUsername(String username);
 
     List<Customer> findAllUsers();
 
     void update(Customer customer);
 
     void deleteUserById(int id);
+
+    boolean checkIfEmailAvailable(String email);
 }
