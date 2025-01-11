@@ -10,6 +10,10 @@ import com.PAP_team_21.flashcards.entities.folderAccessLevel.FolderAccessLevel;
 import com.PAP_team_21.flashcards.entities.folderAccessLevel.FolderAccessLevelRepository;
 import com.PAP_team_21.flashcards.entities.sentVerificationCodes.SentVerificationCode;
 import com.PAP_team_21.flashcards.entities.sentVerificationCodes.SentVerificationCodeRepository;
+import com.PAP_team_21.flashcards.entities.userPreferences.UserPreferences;
+import com.PAP_team_21.flashcards.entities.userPreferences.UserPreferencesRepository;
+import com.PAP_team_21.flashcards.entities.userStatistics.UserStatistics;
+import com.PAP_team_21.flashcards.entities.userStatistics.UserStatisticsRepository;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import jakarta.mail.MessagingException;
@@ -41,6 +45,9 @@ public class AuthenticationService {
     private final FolderAccessLevelRepository folderAccessLevelRepository;
     private final SentVerificationCodeRepository sentVerificationCodeRepository;
     private final AuthenticationEmailSender emailSender;
+    private final UserPreferencesRepository userPreferencesRepository;
+    private final UserStatisticsRepository userStatisticsRepository;
+
 
     private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     private static final SecureRandom RANDOM = new SecureRandom();
@@ -75,7 +82,16 @@ public class AuthenticationService {
         {
             throw new RuntimeException("user already exists");
         }
-        folderAccessLevelRepository.save(al);
+        al = folderAccessLevelRepository.save(al);
+
+        UserPreferences userPreferences = new UserPreferences(al.getCustomer().getId(), false, 1);
+        UserStatistics userStatistics = new UserStatistics(al.getCustomer().getId(), 0, 0, LocalDateTime.now());
+
+
+        userPreferencesRepository.save(userPreferences);
+        userStatisticsRepository.save(userStatistics);
+
+
         handleVerificationCode(customer);
     }
 
