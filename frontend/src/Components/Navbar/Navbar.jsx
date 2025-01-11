@@ -11,7 +11,7 @@ const Navbar = (props) => {
 
     const navigate = useNavigate();
 
-    const {avatar, username, email} = props.details;
+    const {username, email, avatar} = props.details;
 
     return <div className="navbar">
         <div className="navbar-container">
@@ -23,7 +23,7 @@ const Navbar = (props) => {
 
             <div className="navbar-item" onClick={() => navigate("/decks")}>Decks</div>
 
-            <div className="navbar-item" onClick={() => navigate("/import")}>Import</div>
+            <div className="navbar-item" onClick={() => navigate("/import")}>Share</div>
 
             <div className="navbar-item" onClick={() => navigate("/statistics")}>Statistics</div>
         </div>

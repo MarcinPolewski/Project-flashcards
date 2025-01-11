@@ -1,10 +1,13 @@
 import React from "react";
 
 import './Deck.css';
+import { useNavigate } from "react-router-dom";
 
 const Deck = (props) => {
 
-    const {title, newCards, learningCards, reviewingCards} = props.deckState;
+    const {id, title, newCards, learningCards, reviewingCards} = props.deckState;
+
+    const navigate = useNavigate();
 
     return <div className="deck">
         <div className="card-title">{title}</div>
@@ -16,12 +19,14 @@ const Deck = (props) => {
         </div>
 
         <div className="deck-actions">
-                <button className="deck-action-button">+</button>
-                <div className="deck-dropdown">
-                    <div>Add Cards</div>
-                    <div>Remove Deck</div>
-                </div>
-            </div>
+            <button onClick={() => navigate(`/study/${id}`)} className="folder-page-study-btn">
+                Study
+            </button>
+            <button onClick={() => navigate(`/deck/${id}`)} className="folder-page-edit-btn">
+                Edit
+            </button>
+            <button className="folder-page-btn folder-page-delete-btn">Delete</button>
+        </div>
     </div>
 }
 

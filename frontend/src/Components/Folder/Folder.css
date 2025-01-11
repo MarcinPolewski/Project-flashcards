@@ -1,0 +1,62 @@
+.folder {
+    padding: 20px;
+    border: 1px solid var(--section-border);
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px var(--box-shadow);
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.folder-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.folder-title {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.folder-info {
+    color: var(--folder-info);
+    margin-top: 5px;
+}
+
+.folder-state {
+    display: flex;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.folder-state-item {
+    background: var(--folder-state-item);
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.folder-actions {
+    position: relative;
+    margin-top: 20px;
+}
+
+.folder-action-button {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--folder-action-button);
+    border: none;
+    cursor: pointer;
+}
+
+.folder-dropdown {
+    display: none;
+    position: absolute;
+    top: 40px;
+    left: 0;
+    background: var(--folder-dropdown);
+    border: 1px solid var(--section-border);
+    border-radius: 5px;
+    box-shadow: 0px 4px 6px var(--box-shadow);
+}
+

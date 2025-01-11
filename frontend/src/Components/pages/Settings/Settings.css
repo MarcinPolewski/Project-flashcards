@@ -84,5 +84,79 @@
   }
 
   .warning-text {
-    color: vaR(--faded-text);
+    color: var(--faded-text);
   }
+
+  .overlay-form {
+    background-color: var(--popup-background);
+    border: 1px solid var(--section-border);
+    border-radius: 12px;
+    box-shadow: 0 4px 10px var(--box-shadow);
+    width: 90%;
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    position: relative;
+}
+
+.overlay-form h2 {
+    font-size: 1.5rem;
+    color: var(--text-color);
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.overlay-input {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.overlay-input label {
+    font-size: 1rem;
+    color: var(--text-color);
+    margin-bottom: 5px;
+}
+
+.overlay-input input[type="text"],
+.overlay-input input[type="email"],
+.overlay-input input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--section-border);
+    border-radius: 8px;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.overlay-input input[type="text"]:focus,
+.overlay-input input[type="email"]:focus,
+.overlay-input input[type="password"]:focus {
+    border-color: var(--continue-button);
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.overlay-form button {
+    background-color: var(--continue-button);
+    color: var(--continue-button-text);
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+    width: 100%;
+}
+
+.overlay-form button:hover {
+    background-color: var(--create-deck-button);
+}
+
+.overlay-form .warning-text {
+    color: var(--text-color);
+    font-size: 1rem;
+    margin-top: 10px;
+    text-align: center;
+}

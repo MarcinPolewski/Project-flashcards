@@ -33,6 +33,10 @@
   --active-tab-text: rgb(0, 0, 0);
 
   --my-decks-background: white;
+  --share-section-background: #aaaaaa;
+  --share-background: #dadada;
+  --share-btn: #4cc5e0;
+  --share-btn-hover: #227c8e;
 
   --filter-background: white;
 
@@ -90,6 +94,10 @@ body.dark {
   --active-tab-text: white;
 
   --my-decks-background: #222;
+  --share-section-background: #2c2c2c;
+  --share-background: #1e1e1e;
+  --share-btn: #444;
+  --share-btn-hover: #666;
 
   --filter-background: #2e2e2e;
 
