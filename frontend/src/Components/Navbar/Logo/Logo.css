@@ -2,14 +2,14 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 25px;
+    gap: 17px;
     cursor: pointer;
 }
 
 .logo-image img {
-    width: 6vh;
+    width: 5.5vh;
     height: auto;
-    border-radius: 25%;
+    border-radius: 40%;
     object-fit: cover;
 }
 
@@ -31,7 +31,7 @@
     }
 
     .logo-text {
-        font-size: 20px;
+        font-size: 15px;
     }
 }
 
@@ -47,6 +47,6 @@
     }
 
     .logo-text {
-        font-size: 15px;
+        font-size: 13px;
     }
 }

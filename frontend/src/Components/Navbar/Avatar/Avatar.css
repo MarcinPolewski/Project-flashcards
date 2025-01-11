@@ -4,8 +4,8 @@
 
 .avatar img {
     border-radius: 50%;
-    width: 6vh; 
-    height: 6vh;
+    width: 5vh; 
+    height: 5vh;
     cursor: pointer;
     object-fit: cover; /* Ensures image scales properly inside the circle */
 }
