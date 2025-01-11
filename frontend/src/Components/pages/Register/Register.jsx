@@ -40,7 +40,7 @@ const Register = () => {
             {error && <p style={{ color: "red" }}>{error}</p>}
             <form onSubmit={handleSubmit}>
                 <div>
-                <label htmlFor="username">Username</label>
+                <label className="auth-email-signin-label" htmlFor="username">Username</label>
                 <input
                     type="text"
                     id="username"
@@ -51,7 +51,7 @@ const Register = () => {
                 </div>
 
                 <div>
-                <label htmlFor="email">Email address</label>
+                <label className="auth-email-signin-label" htmlFor="email">Email address</label>
                 <input
                     type="email"
                     id="email"
@@ -62,7 +62,7 @@ const Register = () => {
                 </div>
 
                 <div>
-                <label htmlFor="password">Password</label>
+                <label className="auth-email-signin-label" htmlFor="password">Password</label>
                 <input
                     type="password"
                     id="password"

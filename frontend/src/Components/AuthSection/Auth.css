@@ -75,7 +75,7 @@
 }
 
 .auth-social-signin button:nth-child(3) {
-    background-color: var(--auth-social-button-color-3); 
+    background-color: var(--auth-social-button-color-3);
 }
 
 .auth-email-signin button[type="submit"] {
@@ -115,4 +115,56 @@
 
 .auth-signup a {
     margin-left: 5px;
+}
+
+@media (max-width: 767px) {
+    .auth-container {
+        max-width: 100%;
+        width: 90%;
+        margin: 0;
+        padding: 20px;
+    }
+
+    .auth-container h2 {
+        text-align: center;
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+    }
+
+    .auth-social-signin button {
+        font-size: 14px;
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+
+    .auth-email-signin input[type="text"],
+    .auth-email-signin input[type="email"],
+    .auth-email-signin input[type="password"] {
+        font-size: 14px;
+        padding: 10px 10px;
+        margin-bottom: 15px;
+    }
+
+    .auth-sign-in-button {
+        padding: 10px;
+        font-size: 14px;
+        margin-top: 20px;
+    }
+
+    .auth-remember {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .auth-remember label {
+        font-size: 12px;
+    }
+
+    .auth-signup {
+        font-size: 12px;
+        margin-top: 10px;
+        text-align: center;
+    }
 }
