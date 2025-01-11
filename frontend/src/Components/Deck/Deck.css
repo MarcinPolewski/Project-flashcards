@@ -1,0 +1,76 @@
+.deck {
+    padding: 20px;
+    border: 1px solid var(--section-border);
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px var(--box-shadow);
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.deck-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.deck-title {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.deck-info {
+    color: var(--deck-info);
+    margin-top: 5px;
+}
+
+.deck-state {
+    display: flex;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.deck-state-item {
+    background: var(--deck-state-item);
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.deck-actions {
+    position: relative;
+    margin-top: 20px;
+}
+
+.folder-page-edit-btn,
+.folder-page-delete-btn,
+.folder-page-study-btn {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    font-size: 0.9rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.folder-page-edit-btn:hover,
+.folder-page-delete-btn:hover,
+.folder-page-study-btn:hover {
+    background-color: #0056b3;
+}
+
+.folder-page-delete-btn {
+    background-color: #dc3545;
+}
+
+.folder-page-delete-btn:hover {
+    background-color: #c82333;
+}
+
+.folder-page-study-btn {
+    background-color: #28a745;
+}
+
+.folder-page-study-btn:hover {
+    background-color: #218838;
+}

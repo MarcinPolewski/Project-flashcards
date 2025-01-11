@@ -6,12 +6,19 @@
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "axios": "^1.7.9",
+    "chart.js": "^4.4.6",
+    "jwt-decode": "^4.0.0",
     "react": "^18.3.1",
+    "react-chartjs-2": "^5.2.0",
+    "react-circular-progressbar": "^2.1.0",
     "react-dom": "^18.3.1",
-    "react-scripts": "5.0.1",
+    "react-scripts": "^5.0.1",
+    "reactjs-popup": "^2.0.6",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
+    "dev": "npm start",
     "start": "react-scripts start",
     "build": "react-scripts build && mkdir -p ../frontend/resources/static && cp -r build/* ../frontend/resources/static/",
     "test": "react-scripts test",
@@ -35,5 +42,11 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:8080"
+  "proxy": "http://localhost:8080",
+  "devDependencies": {
+    "react-router-dom": "^7.0.1",
+    "webpack": "^5.96.1",
+    "webpack-cli": "^5.1.4",
+    "@babel/plugin-proposal-private-property-in-object": "^7.18.6"
+  }
 }

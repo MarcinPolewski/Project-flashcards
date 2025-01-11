@@ -1,0 +1,63 @@
+package com.PAP_team_21.flashcards.entities.flashcard;
+
+import com.PAP_team_21.flashcards.entities.customer.Customer;
+import com.PAP_team_21.flashcards.entities.deck.Deck;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
+import java.util.Optional;
+
+@Service
+@RequiredArgsConstructor
+public class FlashcardService {
+    private final FlashcardRepository flashcardRepository;
+
+
+    public Optional<Flashcard> findById(int flashcardId) {
+        return flashcardRepository.findById(flashcardId);
+    }
+
+    public void save(Flashcard flashcard) {
+        flashcardRepository.save(flashcard);
+    }
+
+    public void delete(Flashcard flashcard) {
+    flashcardRepository.delete(flashcard);
+    }
+
+    public int countCurrentlyLearning(Integer customerId, int deckId, Duration reviewGapConstant, Duration lastReviewConstant) {
+        return flashcardRepository.countCurrentlyLearning( customerId,  deckId,  (int)reviewGapConstant.get(ChronoUnit.MINUTES),  (int)lastReviewConstant.get(ChronoUnit.MINUTES));
+    }
+
+    public int countDueInLearning(Integer customerId, int deckId, Duration reviewGapConstant, Duration lastReviewConstant) {
+        return flashcardRepository.countDueInLearning(customerId, deckId, (int)reviewGapConstant.get(ChronoUnit.MINUTES), (int)lastReviewConstant.get(ChronoUnit.MINUTES));
+    }
+
+    public int countDueToReview(Integer customerId, int deckId, Duration reviewGapConstant, Duration lastReviewConstant) {
+        return flashcardRepository.countDueToReview(customerId, deckId, (int)reviewGapConstant.get(ChronoUnit.MINUTES), (int)lastReviewConstant.get(ChronoUnit.MINUTES));
+    }
+
+    public List<Flashcard> getDueFlashcards(Integer customerId, int deckId, int howMany) {
+        return flashcardRepository.getDueFlashcards(customerId, deckId, howMany);
+    }
+
+    public List<Flashcard> getNewFlashcards(int customerId, int deckId, int howManyNewToAdd) {
+        return flashcardRepository.getNewFlashcards(customerId, deckId, howManyNewToAdd);
+    }
+
+    public List<Flashcard> getEarlyReviewFlashcards(Integer customerId, int deckId, Duration reviewGapConstant, Duration lastReviewConstant, int howMany) {
+        return flashcardRepository.getEarlyReviewFlashcards(customerId, deckId, (int)reviewGapConstant.get(ChronoUnit.MINUTES), (int)lastReviewConstant.get(ChronoUnit.MINUTES), howMany);
+    }
+
+    public List<Flashcard> getDueInLearning(Integer customerId, int deckId, Duration reviewGapConstant, Duration lastReviewConstant, int howMany) {
+        return flashcardRepository.getDueInLearning(customerId, deckId, (int)reviewGapConstant.get(ChronoUnit.MINUTES), (int)lastReviewConstant.get(ChronoUnit.MINUTES), howMany);
+    }
+
+    public List<Flashcard> getDueToReview(Integer customerId, int deckId, Duration reviewGapConstant, Duration lastReviewConstant, int howMany) {
+        return flashcardRepository.getDueToReview(customerId, deckId, (int)reviewGapConstant.get(ChronoUnit.MINUTES), (int)lastReviewConstant.get(ChronoUnit.MINUTES), howMany);
+    }
+}

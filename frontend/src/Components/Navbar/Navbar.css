@@ -1,0 +1,30 @@
+.navbar {
+    background-color: var(--navbar-background); /*debug*/
+}
+
+.navbar-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 30px;
+    padding: 10px 0;
+    gap: 80px;
+}
+
+.nav-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 80px;
+}
+
+.navbar-item {
+    cursor: pointer;
+}
+
+.nav-user-options {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+}

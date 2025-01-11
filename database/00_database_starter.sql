@@ -41,7 +41,7 @@ CREATE TABLE `Flashcards_Progresses`(
                                         `flashcard_id` INT UNSIGNED NOT NULL,
                                         `user_id` INT UNSIGNED NOT NULL,
                                         `next_review` DATETIME NOT NULL,
-                                        `valid` BOOLEAN NOT NULL
+                                        `last_review_id` INT UNSIGNED NOT NULL
 );
 CREATE TABLE `User_Preferences`(
                                    `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -61,7 +61,7 @@ CREATE TABLE `Review_Logs`(
                               `flashcard_id` INT UNSIGNED NOT NULL,
                               `user_id` INT UNSIGNED NOT NULL,
                               `when` DATETIME NOT NULL,
-                              `user_answer` INT NOT NULL
+                              `user_answer` TINYINT NOT NULL
 );
 CREATE TABLE `Folders_Decks`(
                                 `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -102,6 +102,17 @@ CREATE TABLE `Access_Levels_Folders`(
                                         `access_level_id` INT UNSIGNED NOT NULL,
                                         `folder_id` INT UNSIGNED NOT NULL
 );
+
+CREATE TABLE `Sent_Verification_Codes`(
+                                        `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                                        `customer_id` INT UNSIGNED NOT NULL,
+                                        `expiration_date` DATETIME NOT NULL,
+                                        `code` VARCHAR(255) NOT NULL
+);
+
+ALTER TABLE
+    `Sent_Verification_Codes` ADD CONSTRAINT `sent_verification_tokens_user_id_foreign` FOREIGN KEY(`customer_id`) REFERENCES `Customers`(`id`);
+
 ALTER TABLE
     `User_Preferences` ADD CONSTRAINT `user_preferences_user_id_foreign` FOREIGN KEY(`user_id`) REFERENCES `Customers`(`id`);
 ALTER TABLE
@@ -142,6 +153,9 @@ ALTER TABLE
     `Review_Logs` ADD CONSTRAINT `review_logs_user_id_foreign` FOREIGN KEY(`user_id`) REFERENCES `Customers`(`id`);
 ALTER TABLE
     `Flashcards_Progresses` ADD CONSTRAINT `flashcards_progresses_user_id_foreign` FOREIGN KEY(`user_id`) REFERENCES `Customers`(`id`);
+ALTER TABLE
+    `Flashcards_Progresses` ADD CONSTRAINT `flashcards_progresses_last_review_id_foreign` FOREIGN KEY(`last_review_id`) REFERENCES `Review_Logs`(`id`);
+
 
 -- things from old chart
 CREATE TABLE `Authorities`(

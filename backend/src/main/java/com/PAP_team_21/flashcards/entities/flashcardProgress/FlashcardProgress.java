@@ -32,9 +32,9 @@ public class FlashcardProgress {
     @JsonView(JsonViewConfig.Public.class)
     private LocalDateTime next_review;
 
-    @Column(name = "valid")
-    @JsonView(JsonViewConfig.Public.class)
-    private boolean valid;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="last_review_id")
+    private ReviewLog lastReviewLog;
 
     @ManyToOne
     @JoinColumn(name = "flashcard_id")
@@ -44,12 +44,13 @@ public class FlashcardProgress {
     @JoinColumn(name = "user_id")
     private Customer customer;
 
+
     public FlashcardProgress() {}
 
-    public FlashcardProgress(int flashcard_id, int user_id, LocalDateTime next_review, boolean valid) {
-        this.flashcard_id = flashcard_id;
-        this.user_id = user_id;
+    public FlashcardProgress(Flashcard flashcard, Customer customer, LocalDateTime next_review, ReviewLog lastReviewLog) {
+        this.flashcard = flashcard;
+        this.customer = customer;
         this.next_review = next_review;
-        this.valid = valid;
+        this.lastReviewLog = lastReviewLog;
     }
 }

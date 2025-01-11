@@ -1,0 +1,107 @@
+.create-flashcard {
+    padding: 20px;
+    min-height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; 
+    background-color: var(--body-background);
+    color: var(--text-color);
+}
+
+.flashcard-container {
+    margin-top: 20px;
+    width: 900px;
+    min-height: auto;
+    padding: 20px;
+    border: 1px solid var(--section-border);
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px var(--box-shadow);
+    background-color: var(--body-background);
+}
+
+h2 {
+    margin-bottom: 20px;
+    text-align: center;
+    color: var(--text-color);
+}
+
+.inputs-container {
+    margin-right: 20px;
+    margin-left: 20px;
+}
+
+.input-group {
+    margin-bottom: 20px;
+    width: 870px;
+}
+
+.input-group label {
+    display: block;
+    width: 100%;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: var(--text-color);
+}
+
+.input-group .dropdown {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid var(--section-border);
+    border-radius: 4px;
+    background-color: var(--input-flashcard-background);
+    color: var(--input-color-flashcard);
+}
+
+.flashcard-inputs {
+    display: flex;
+    width: 870px;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.flashcard-inputs .textarea {
+    width: 854px;
+    height: 50px;
+    padding: 8px;
+    border: 1px solid var(--section-border);
+    border-radius: 4px;
+    background-color: var(--section-background);
+    color: var(--text-color);
+    resize: none;
+}
+
+.button-group {
+    display: flex;
+    justify-content: flex-end;
+}
+
+button {
+    width: 100px;
+    padding: 8px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 20px;
+    margin-left: 15px;
+}
+
+.cancel-button {
+    background-color: #007bff;
+    color: var(--delete-button-text);
+}
+
+.cancel-button:hover {
+    background-color: #1787ff;
+}
+
+.add-button {
+    background-color: #007bff;
+    color: var(--plus-button-img);
+    margin-right: 10px;
+}
+
+.add-button:hover {
+    background-color: #1787ff;
+}

@@ -1,0 +1,49 @@
+.statistics-container {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+}
+
+.statistics-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    margin-left: 18vh;
+}
+
+.statistics-section {
+    margin: 30px 170px;
+    border: 1px solid var(--section-border);
+    padding: 20px;
+    border-radius: 8px;
+    background-color: var(--section-background);
+}
+
+.statistics-section-title {
+    font-size: 18px;
+    margin: 30px 170px;
+}
+
+.streak-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.streak-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.card-number-section-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.card-detail {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10vh;
+}
