@@ -4,6 +4,10 @@
     padding: 30px;
 }
 
+.auth-container-register {
+    height: 100%;
+}
+
 .auth-container h2 {
     text-align: left;
     font-weight: bold;

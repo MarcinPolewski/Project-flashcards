@@ -26,7 +26,7 @@ const Register = () => {
     }
 
     return <AuthSection>
-        <div className="auth-auth-container">
+        <div className="auth-container">
             <h2>Sign up</h2>
 
             <div className="auth-social-signin">
@@ -75,11 +75,12 @@ const Register = () => {
                 <div className="auth-remember">
                 <label>
                     <input type="checkbox" id="remember" name="remember" required/>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perferendis consequatur magnam est magni. Nemo at esse ratione! Dignissimos, at quibusdam.
-                </label>
+                        Do you agree to the processing of your data for account creation?
+                        By clicking <strong>'Sign Up'</strong>, you confirm your consent.
+                    </label>
                 </div>
 
-                <button className="auth-sign-in-button" type="submit">Sign up</button>
+                <button className="auth-sign-in-button" type="submit">Sign Up</button>
             </form>
             </div>
 
