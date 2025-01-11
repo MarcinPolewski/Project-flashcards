@@ -2,6 +2,7 @@
   /* here should be global variables for light mode */
   --body-background: #fff;
   --text-color: #181818;
+  --shadow-border: rgb(80, 240, 255);
 
   --section-background: #f9f9f9;
   --section-border: #ccc;
@@ -45,6 +46,7 @@
   --flashcard-buttons-active: rgb(28, 28, 93);
   --flashcard-edit-button:#00ccff;
   --flashcard-edit-button-hover: #109ec2;
+  --flashcard-input: rgb(243, 243, 243);
 
   --filter-background: white;
 
@@ -52,7 +54,7 @@
   --streak-cell-background-active: #3b7a57;
 
   --input-color-flashcard: #292929;
-  --input-flashcard-background: #e4e4e4;
+  --input-flashcard-background: #defbff;
   --auth-section-left: #3498db;
   --auth-section-left-text: white;
   --auth-input-text: black;
@@ -72,6 +74,7 @@ body.dark {
   /* and here should be global variables for dark mode */
   --body-background: #2e2e2e;
   --text-color: #e0e0e0;
+  --shadow-border: #2874a6;
 
   --section-background: #121212;
   --section-border: #444;
@@ -114,6 +117,7 @@ body.dark {
   --flashcard-buttons-active: #20203a;
   --flashcard-edit-button:  #2874a6;
   --flashcard-edit-button-hover: #1d5981;
+  --flashcard-input: rgb(61, 61, 61);
 
   --filter-background: #2e2e2e;
 
