@@ -10,7 +10,8 @@ const testDecks = [
         imported: false,
         createdAt: "2023-11-01",
         lastUsed: "2023-11-20",
-        lastModified: "2023-11-05"
+        lastModified: "2023-11-05",
+        flashcards: []
     },
     {
         id: 2,
@@ -23,7 +24,8 @@ const testDecks = [
         imported: false,
         createdAt: "2023-10-15",
         lastUsed: "2023-11-10",
-        lastModified: "2023-10-25"
+        lastModified: "2023-10-25",
+        flashcards: []
     },
     {
         id: 3,
@@ -36,7 +38,8 @@ const testDecks = [
         imported: false,
         createdAt: "2023-09-20",
         lastUsed: "2023-11-15",
-        lastModified: "2023-11-03"
+        lastModified: "2023-11-03",
+        flashcards: []
     },
     {
         id: 4,
@@ -49,7 +52,8 @@ const testDecks = [
         imported: false,
         createdAt: "2023-08-10",
         lastUsed: "2023-11-17",
-        lastModified: "2023-11-10"
+        lastModified: "2023-11-10",
+        flashcards: []
     },
     {
         id: 5,
@@ -62,7 +66,8 @@ const testDecks = [
         imported: false,
         createdAt: "2023-09-25",
         lastUsed: "2023-11-18",
-        lastModified: "2023-11-07"
+        lastModified: "2023-11-07",
+        flashcards: []
     },
     {
         id: 6,
@@ -75,7 +80,8 @@ const testDecks = [
         imported: false,
         createdAt: "2023-07-15",
         lastUsed: "2023-11-19",
-        lastModified: "2023-11-10"
+        lastModified: "2023-11-10",
+        flashcards: []
     },
     {
         id: 7,
@@ -88,7 +94,8 @@ const testDecks = [
         imported: false,
         createdAt: "2023-06-12",
         lastUsed: "2023-11-12",
-        lastModified: "2023-11-02"
+        lastModified: "2023-11-02",
+        flashcards: []
     },
     {
         id: 8,
@@ -101,7 +108,8 @@ const testDecks = [
         imported: true,
         createdAt: "2023-11-01",
         lastUsed: "2023-11-20",
-        lastModified: "2023-11-05"
+        lastModified: "2023-11-05",
+        flashcards: []
     },
     {
         id: 9,
@@ -114,7 +122,8 @@ const testDecks = [
         imported: true,
         createdAt: "2023-10-15",
         lastUsed: "2023-11-10",
-        lastModified: "2023-10-25"
+        lastModified: "2023-10-25",
+        flashcards: []
     },
     {
         id: 10,
@@ -127,7 +136,8 @@ const testDecks = [
         imported: true,
         createdAt: "2023-09-20",
         lastUsed: "2023-11-15",
-        lastModified: "2023-11-03"
+        lastModified: "2023-11-03",
+        flashcards: []
     }
 ];
 
