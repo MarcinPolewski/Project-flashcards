@@ -62,8 +62,8 @@
     box-shadow: 0 4px 6px var(--box-shadow);
     display: flex;
     flex-direction: column;
-    align-items: center; /* Change to center the content */
-    justify-content: center; /* Center the content vertically */
+    align-items: center;
+    justify-content: center;
     max-width: 400px;
     margin: 0 auto;
     border: 1px solid var(--section-border);
@@ -123,7 +123,7 @@
     font-size: 1.2rem;
     margin-bottom: 15px;
     color: var(--text-color);
-    text-align: center; /* Ensuring the title is centered */
+    text-align: center;
 }
 
 /* Responsive adjustments */
@@ -135,7 +135,7 @@
 
     .plus-button-popup {
         left: -15vh;
-        width: 180px; /* Adjust the width for medium screens */
+        width: 180px;
     }
 
     .plus-button-create-deck,
@@ -173,7 +173,7 @@
 
     .plus-button-popup {
         left: -10vh;
-        width: 150px; /* Adjust the width for small screens */
+        width: 150px;
     }
 
     .plus-button-create-deck,
