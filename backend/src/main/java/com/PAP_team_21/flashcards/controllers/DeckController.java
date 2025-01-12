@@ -31,6 +31,7 @@ public class DeckController {
     private final DeckService deckService;
 
     @GetMapping("/flashcards")
+    @JsonView(JsonViewConfig.Public.class)
     public ResponseEntity<?> getFlashcards(
             Authentication authentication,
             @RequestParam(defaultValue = "0") int page,
@@ -55,6 +56,7 @@ public class DeckController {
     }
 
     @GetMapping("/getLastUsed")
+    @JsonView(JsonViewConfig.Public.class)
     public ResponseEntity<?> getLastUsed(
             Authentication authentication,
             @RequestParam(defaultValue = "3") int howMany
@@ -98,6 +100,7 @@ public class DeckController {
     }
 
     @PutMapping("/update")
+    @JsonView(JsonViewConfig.Public.class)
     public ResponseEntity<?> updateDeck(
             Authentication authentication,
             @RequestBody DeckUpdateRequest request
@@ -121,6 +124,7 @@ public class DeckController {
     }
 
     @DeleteMapping("/delete")
+    @JsonView(JsonViewConfig.Public.class)
     public ResponseEntity<?> deleteDeck(
             Authentication authentication,
             @RequestParam() int deckId
