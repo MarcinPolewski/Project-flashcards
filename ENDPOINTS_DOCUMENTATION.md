@@ -1,7 +1,34 @@
 
 # API Documentation: AuthenticationController
 
-## 1. `POST /api/auth/register`
+## 1. `GET /api/auth/oauth2/success`
+
+**Description**: This endpoint is invoked after a successful social login (OAuth2). It retrieves or creates a user based on the email from the OAuth2 provider and generates a JWT token for the user.
+
+#### Parameters
+- `Authentication authentication`: Contains authentication details.
+
+**Request**:  
+This endpoint does not require any request body. The authentication will be handled by Spring Security automatically.
+
+**Response**:
+- `200 OK`: The OAuth2 login is successful. A JWT token and customer data are returned.
+  ```json
+  {
+    "token": "JWT token string",
+    "customer": {
+      "id": 1,
+      "name": "John Doe",
+      "email": "user@example.com",
+      "profileCreationDate": "2025-01-03T00:00:00"
+    }
+  }
+  ```
+- `400 Bad Request`: If the request is invalid or an error occurs during processing.
+
+---
+
+## 2. `POST /api/auth/register`
 
 **Description**: Registers a new user. The user’s details (email, username, password) are provided in the request body. If a user with the given email already exists, the request will fail.
 
@@ -34,7 +61,7 @@
 
 ---
 
-## 2. `POST /api/auth/usernamePasswordLogin`
+## 3. `POST /api/auth/usernamePasswordLogin`
 
 **Description**: Logs in a user using their email and password. If successful, a JWT token is returned for authentication.
 
@@ -56,37 +83,135 @@
     "token": "JWT token string"
   }
   ```
-- `401 Unauthorized`: If the login credentials are incorrect.
+- `401 Unauthorized`: If the login credentials are incorrect or user is not validated.
 
 ---
 
-## 3. `GET /api/auth/oauth2/success`
+## 4. `POST /api/auth/verifyUser`
 
-**Description**: This endpoint is invoked after a successful social login (OAuth2). It retrieves or creates a user based on the email from the OAuth2 provider and generates a JWT token for the user.
+**Description**: Verifies a user's email by validating the verification code. The request body contains the user's email and verification code. If the code matches, the user is verified successfully.
 
-#### Parameters
-- `Authentication authentication`: Contains authentication details.
-
-**Request**:  
-This endpoint does not require any request body. The authentication will be handled by Spring Security automatically.
-
+**Request Body**:
+```json
+{
+  "email": "user@example.com",
+  "code": "a1b2c3d4"
+}
+```
 **Response**:
-- `200 OK`: The OAuth2 login is successful. A JWT token and customer data are returned.
+- `200 OK`: The verification is successful.
   ```json
-  {
-    "token": "JWT token string",
-    "customer": {
-      "id": 1,
-      "name": "John Doe",
-      "email": "user@example.com",
-      "profileCreationDate": "2025-01-03T00:00:00"
-    }
-  }
+  "user verified successfully"
   ```
-- `400 Bad Request`: If the request is invalid or an error occurs during processing.
+- `400 Bad Request`: If the user is already registered.
+  ```json
+  "user already verified"
+  ```
+- `400 Bad Request`: Verification code is incorrect.
+  ```json
+  "verification code is incorrect"
+  ```
+- `404 Bad Request`: The verification code was not found.
+  ```json
+  "verification code not found"
+  ```
+- `404 Bad Request`: Customer was not found.
+  ```json
+  "customer not found"
+  ```
+---
+## 5. `POST /api/auth/resendVerificationCode`
 
+**Description**: Resends a verification code to the provided email address. This endpoint is useful when the user has not received the verification code or the previous one expired.
+
+**Request Body**:
+```json
+{
+  "email": "user@example.com"
+}
+```
+**Response**:
+- `200 OK`: The verification code was resent successfully.
+  ```json
+  "verification code resent"
+  ```
+- `404 Bad Request`: If customer with provided email does not exist.
+  ```json
+  "customer with this email not found"
+  ```
+---
+## 6. `POST /api/auth/forgotPasswordRequest`
+
+**Description**: Sends a request when password is forgotten.
+
+**Request Body**:
+```json
+{
+  "email": "user@example.com"
+}
+```
+**Response**:
+- `200 OK`: Password reset request was sent successfully.
+  ```json
+  "password reset request sent"
+  ```
+- `404 Bad Request`: If customer with provided email does not exist.
+  ```json
+  "customer with this email not found"
+  ```
+---
+## 7. `POST /api/auth/forgotPassword`
+
+**Description**: Sets new password.
+
+**Request Body**:
+```json
+{
+  "email": "user@example.com",
+  "code": "a1b2c3d4",
+  "newPassword": "newPassword"
+}
+```
+**Response**:
+- `200 OK`: Password was reseted successfully.
+  ```json
+  "password reseted successfully"
+  ```
+- `400 Bad Request`: Verification code is incorrect.
+  ```json
+  "verification code is incorrect"
+  ```
+- `404 Bad Request`: If customer with provided email does not exist.
+  ```json
+  "customer with this email not found"
+  ```
+- `404 Bad Request`: The verification code was not found.
+  ```json
+  "verification code not found"
+  ```
 ---
 
+## 8. `POST /api/auth/changePassword`
+
+**Description**: Changes the password to the new one.
+
+**Request Body**:
+```json
+{
+  "oldPassword": "oldPassword",
+  "newPassword": "newPassword"
+}
+```
+**Response**:
+- `200 OK`: Password was changed successfully.
+  ```json
+  "password changed successfully"
+  ```
+- `400 Bad Request`: Old password is incorrect.
+  ```json
+  "old password is incorrect"
+  ```
+---
 ## Error Handling
 
 In case of an error (e.g., invalid credentials, server issue), the responses may include an appropriate error message in the response body, such as:
