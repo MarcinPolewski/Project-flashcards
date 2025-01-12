@@ -132,7 +132,7 @@ public class FolderController {
 
     @GetMapping("/getDecks")
     @JsonView(JsonViewConfig.Public.class)
-    public ResponseEntity<?> getAllFolders(
+    public ResponseEntity<?> getDecks(
             Authentication authentication,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size,
