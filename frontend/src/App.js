@@ -68,7 +68,7 @@ function App() {
           <Route path="/import" element={<Import details={APIdummy} />} />
           <Route path="/study/:deckId" element={<Study details={APIdummy} />} />
           <Route path="/deck/:deckId" element={<DeckPage details={APIdummy} />} />
-          <Route path="/folder/:folderId" element={<FolderPage details={APIdummy} />} />
+          <Route path="/folder/:id" element={<FolderPage details={APIdummy} />} />
           <Route path="/create-flashcard" element={<CreateFlashcard details={APIdummy} />} />
           <Route path="/login" element={<Login/>} />
           <Route path="/register" element={<Register/>} />
