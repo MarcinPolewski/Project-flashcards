@@ -89,6 +89,28 @@
     width: 100%;
 }
 
+/* Flashcard container */
+.deck-page-flashcard {
+    display: flex;
+    gap: 30px;
+    padding-top: 20px;
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-bottom: 0px;
+}
+
+/* Flashcard front and back styling */
+.deck-page-front, .deck-page-back {
+    flex: 1;
+    padding: 15px;
+    font-size: 1.3rem;
+    font-weight: 550;
+    padding-left: 30px;
+    background-color: var(--flashcard-front-back-background);
+    border-radius: 8px;
+    box-shadow: 0 2px 5px var(--box-shadow);
+}
+
 .deck-page-flashcard-item {
     background-color: var(--flashcard-background);
     border: 1px solid var(--flashcard-border);
