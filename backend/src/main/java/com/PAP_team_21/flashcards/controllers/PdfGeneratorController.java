@@ -5,7 +5,7 @@ import com.PAP_team_21.flashcards.entities.PdfGenerator;
 import com.PAP_team_21.flashcards.entities.customer.Customer;
 import com.PAP_team_21.flashcards.entities.customer.CustomerRepository;
 import com.PAP_team_21.flashcards.entities.deck.Deck;
-import com.PAP_team_21.flashcards.entities.deck.DeckRepository;
+import com.PAP_team_21.flashcards.entities.deck.DeckService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -19,7 +19,7 @@ import java.util.Optional;
 @RestController
 @RequiredArgsConstructor
 public class PdfGeneratorController {
-    private final DeckRepository deckRepository;
+    private final DeckService deckService;
     private final CustomerRepository customerRepository;
     private final PdfGenerator pdfGenerator;
 
@@ -35,7 +35,7 @@ public class PdfGeneratorController {
         }
         Customer customer = customerOpt.get();
 
-        Optional<Deck> deckOpt = deckRepository.findById(id);
+        Optional<Deck> deckOpt = deckService.findById(id);
         if (deckOpt.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .header(HttpHeaders.CONTENT_TYPE, "text/plain")

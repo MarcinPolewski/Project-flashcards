@@ -4,7 +4,7 @@ import com.PAP_team_21.flashcards.Errors.ResourceNotFoundException;
 import com.PAP_team_21.flashcards.entities.customer.Customer;
 import com.PAP_team_21.flashcards.entities.customer.CustomerRepository;
 import com.PAP_team_21.flashcards.entities.deck.Deck;
-import com.PAP_team_21.flashcards.entities.deck.DeckRepository;
+import com.PAP_team_21.flashcards.entities.deck.DeckService;
 import com.PAP_team_21.flashcards.entities.flashcard.Flashcard;
 import com.PAP_team_21.flashcards.entities.flashcard.FlashcardService;
 import com.PAP_team_21.flashcards.entities.folder.Folder;
@@ -19,7 +19,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ResourceAccessService {
     private final CustomerRepository customerRepository;
-    private final DeckRepository deckRepository;
+    private final DeckService deckService;
     private final FlashcardService flashcardService;
     private final FolderJpaRepository folderJpaRepository;
 
@@ -48,7 +48,7 @@ public class ResourceAccessService {
     {
         Customer customer = getCustomer(authentication);
 
-        Optional<Deck> deck =  deckRepository.findById(deckId);
+        Optional<Deck> deck =  deckService.findById(deckId);
         if(deck.isEmpty())
             throw new ResourceNotFoundException("Deck not found");
 

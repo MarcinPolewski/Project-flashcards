@@ -8,7 +8,7 @@ import com.PAP_team_21.flashcards.authentication.ResourceAccessLevelService.Reso
 import com.PAP_team_21.flashcards.controllers.requests.FlashcardCreationRequest;
 import com.PAP_team_21.flashcards.controllers.requests.FlashcardUpdateRequest;
 import com.PAP_team_21.flashcards.entities.customer.CustomerRepository;
-import com.PAP_team_21.flashcards.entities.deck.DeckRepository;
+import com.PAP_team_21.flashcards.entities.deck.DeckService;
 import com.PAP_team_21.flashcards.entities.flashcard.Flashcard;
 import com.PAP_team_21.flashcards.entities.flashcard.FlashcardService;
 import com.PAP_team_21.flashcards.entities.folder.FolderJpaRepository;
@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class FlashcardController {
     private final CustomerRepository customerRepository;
-    private final DeckRepository deckRepository;
+    private final DeckService deckService;
     private final FolderJpaRepository folderRepository;
     private final FlashcardService flashcardService;
 

@@ -11,9 +11,10 @@ import com.PAP_team_21.flashcards.entities.JsonViewConfig;
 import com.PAP_team_21.flashcards.entities.customer.Customer;
 import com.PAP_team_21.flashcards.entities.customer.CustomerRepository;
 import com.PAP_team_21.flashcards.entities.deck.Deck;
-import com.PAP_team_21.flashcards.entities.deck.DeckRepository;
+import com.PAP_team_21.flashcards.entities.deck.DeckService;
 import com.PAP_team_21.flashcards.entities.folder.FolderJpaRepository;
 import com.fasterxml.jackson.annotation.JsonView;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -25,9 +26,9 @@ import java.util.Optional;
 @RequestMapping("/deck")
 @RequiredArgsConstructor
 public class DeckController {
-    private final DeckRepository deckRepository;
     private final ResourceAccessService resourceAccessService;
     private final CustomerRepository customerRepository;
+    private final DeckService deckService;
 
     @GetMapping("/flashcards")
     public ResponseEntity<?> getFlashcards(
@@ -71,7 +72,7 @@ public class DeckController {
             return ResponseEntity.badRequest().body("Customer not found");
         }
 
-        return ResponseEntity.ok(deckRepository.getLastUsed(cusomterOpt.get().getId(), howMany));
+        return ResponseEntity.ok(deckService.getLastUsedDecks(cusomterOpt.get().getId(), howMany));
     }
 
     @PostMapping("/create")
@@ -90,7 +91,7 @@ public class DeckController {
         if(al.equals(AccessLevel.OWNER) || al.equals(AccessLevel.EDITOR))
         {
             Deck deck = new Deck(request.getName(), response.getFolder());
-            deckRepository.save(deck);
+            deckService.save(deck);
             return ResponseEntity.ok(deck);
         }
         return ResponseEntity.badRequest().body("You do not have permission to create a deck here");
@@ -113,7 +114,7 @@ public class DeckController {
         if(al.equals(AccessLevel.OWNER) || al.equals(AccessLevel.EDITOR))
         {
             response.getDeck().setName(request.getName());
-            deckRepository.save(response.getDeck());
+            deckService.save(response.getDeck());
             return ResponseEntity.ok(response.getDeck());
         }
         return ResponseEntity.badRequest().body("You do not have permission to create a deck here");
@@ -135,7 +136,7 @@ public class DeckController {
 
         if(al.equals(AccessLevel.OWNER) || al.equals(AccessLevel.EDITOR))
         {
-            deckRepository.delete(response.getDeck());
+            deckService.delete(response.getDeck());
             return ResponseEntity.ok("deck deleted");
         }
         return ResponseEntity.badRequest().body("You do not have permission to delete this deck");
