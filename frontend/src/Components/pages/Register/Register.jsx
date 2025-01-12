@@ -2,9 +2,7 @@ import React, { useState } from "react";
 
 import '../../AuthSection/Auth.css';
 import AuthSection from "../../AuthSection/AuthSection";
-
-import { handleOAuth2 } from "../../../utils/handleOAuth2";
-import { registerUser } from "../../../services/AuthService";
+import AuthService from "../../../services/AuthService";
 import { useNavigate } from "react-router-dom";
 
 const Register = () => {
@@ -18,7 +16,7 @@ const Register = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await registerUser({username, email, password});
+            const response = await AuthService.registerUser({username, email, password});
             navigate("/")
         } catch (error) {
             setError(error.response ? error.response.data : "An error occurred");
@@ -30,9 +28,9 @@ const Register = () => {
             <h2>Sign up</h2>
 
             <div className="auth-social-signin">
-            <button onClick={() => handleOAuth2("google")}>Sign up with Google</button>
-            <button onClick={() => handleOAuth2("facebook")}>Sign up with Facebook</button>
-            <button onClick={() => handleOAuth2("github")}>Sign up with Github</button>
+            <button onClick={() => AuthService.handleOAuth2("google")}>Sign up with Google</button>
+            <button onClick={() => AuthService.handleOAuth2("facebook")}>Sign up with Facebook</button>
+            <button onClick={() => AuthService.handleOAuth2("github")}>Sign up with Github</button>
             </div>
 
             <div className="auth-email-signin">

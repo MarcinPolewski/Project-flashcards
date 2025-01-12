@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import AuthSection from "../../AuthSection/AuthSection";
 
 import '../../AuthSection/Auth.css';
-import { handleForgotPassword } from "../../../services/AuthService";
+import AuthService from "../../../services/AuthService";
 
 const ForgotPassword = () => {
 
@@ -13,7 +13,7 @@ const ForgotPassword = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await handleForgotPassword({ email });
+            const response = await AuthService.handleForgotPassword({ email });
             setSuccess("Check your email for password reset instructions.");
         } catch (error) {
             setError("An error occured, please try again.");
