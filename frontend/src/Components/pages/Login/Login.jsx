@@ -25,7 +25,7 @@ const Login = () => {
     }
 
     return <AuthSection>
-        <div className="auth-container">
+        <div className="auth-container auth-container-register">
           <h2>Sign in</h2>
 
           <div className="auth-social-signin">

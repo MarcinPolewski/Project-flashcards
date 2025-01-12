@@ -1,3 +1,8 @@
+.logo-container {
+    display: flex;
+    justify-content: center;
+}
+
 .logo {
     display: flex;
     align-items: center;
@@ -9,4 +14,15 @@
 .logo-image img {
     max-width: 6vh;
     border-radius: 25%;
+}
+
+@media (max-width: 768px) {
+    .logo {
+        margin-top: 10px;
+    }
+
+    .logo-image img {
+        max-width: 8vh;
+        min-height: 8vh;
+    }
 }
