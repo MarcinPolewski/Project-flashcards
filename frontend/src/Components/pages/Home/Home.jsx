@@ -41,13 +41,17 @@ const Home = (props) => {
 
         </div>
 
-        <div className="home-latest-reviews">
+        <div className="home-user-notifications-container">
 
-            <div className="latest-reviews-title">Notifications</div>
-            <div className="latest-reviews-decks">
-                <div>Hello</div>
-            </div>
-
+            <div className="home-notifications-title">Notifications</div>
+            <div className="home-user-notifcation">
+                <div className="home-user-notifcation-header">
+                    <div className="home-user-notifcation-title">New Notification</div>
+                </div>
+                <div className="home-user-notifcation-text">
+                    You have a new review available for your deck!
+                </div>
+             </div>
         </div>
 
         <div className="home-my-decks">
