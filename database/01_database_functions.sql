@@ -94,7 +94,7 @@ CREATE PROCEDURE get_due_flashcards(
 )
 BEGIN
 
-    SELECT *
+    SELECT fl.*
     FROM Flashcards fl
              JOIN Decks d ON fl.deck_id = d.id
              JOIN Flashcards_Progresses fp on fl.id = fp.flashcard_id
@@ -117,7 +117,7 @@ CREATE PROCEDURE get_new_flashcard(
     IN howMany INT
 )
 BEGIN
-    SELECT * FROM Flashcards fl
+    SELECT fl.* FROM Flashcards fl
     LEFT JOIN Review_Logs rl ON fl.id = rl.flashcard_id
     WHERE deck_id = deckId AND
         rl.user_id = userId AND
@@ -137,7 +137,7 @@ CREATE PROCEDURE get_early_review(
 BEGIN
 
 
-    SELECT *
+    SELECT fl.*
     FROM Flashcards fl
              JOIN Decks d ON fl.deck_id = d.id
              JOIN Flashcards_Progresses fp on fl.id = fp.flashcard_id
@@ -163,7 +163,7 @@ CREATE PROCEDURE get_due_in_learning(
     IN lastReviewConstant INT
 )
 BEGIN
-    SELECT *
+    SELECT fl.*
     FROM Flashcards fl
              JOIN Decks d ON fl.deck_id = d.id
              JOIN Flashcards_Progresses fp on fl.id = fp.flashcard_id
@@ -187,7 +187,7 @@ CREATE PROCEDURE get_due_to_review(
     IN lastReviewConstant INT
 )
 BEGIN
-    SELECT *
+    SELECT fl.*
     FROM Flashcards fl
              JOIN Decks d ON fl.deck_id = d.id
              JOIN Flashcards_Progresses fp on fl.id = fp.flashcard_id
@@ -209,7 +209,7 @@ CREATE PROCEDURE get_last_used_decks(
     IN howMany INT
 )
 BEGIN
-SELECT *
+SELECT d.*
 FROM Decks d
     join Flashcards fl on d.id = fl.deck_id
     join Review_Logs rl on fl.id = rl.flashcard_id
