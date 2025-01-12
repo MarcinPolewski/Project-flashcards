@@ -7,11 +7,13 @@ import com.PAP_team_21.flashcards.authentication.ResourceAccessLevelService.Flas
 import com.PAP_team_21.flashcards.authentication.ResourceAccessLevelService.ResourceAccessService;
 import com.PAP_team_21.flashcards.controllers.requests.FlashcardCreationRequest;
 import com.PAP_team_21.flashcards.controllers.requests.FlashcardUpdateRequest;
+import com.PAP_team_21.flashcards.entities.JsonViewConfig;
 import com.PAP_team_21.flashcards.entities.customer.CustomerRepository;
 import com.PAP_team_21.flashcards.entities.deck.DeckService;
 import com.PAP_team_21.flashcards.entities.flashcard.Flashcard;
 import com.PAP_team_21.flashcards.entities.flashcard.FlashcardService;
 import com.PAP_team_21.flashcards.entities.folder.FolderJpaRepository;
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -30,6 +32,7 @@ public class FlashcardController {
 
     // create flashcard
     @PostMapping("/create")
+    @JsonView(JsonViewConfig.Public.class)
     public ResponseEntity<?> createFlashcard(
             Authentication authentication,
             @RequestBody FlashcardCreationRequest request)
@@ -56,6 +59,7 @@ public class FlashcardController {
     }
     // update flashcard
     @PostMapping("/update")
+    @JsonView(JsonViewConfig.Public.class)
     public ResponseEntity<?> updateFlashcard(
             Authentication authentication,
             @RequestBody FlashcardUpdateRequest request)
@@ -85,6 +89,7 @@ public class FlashcardController {
 
     // delete
     @DeleteMapping("/delete")
+    @JsonView(JsonViewConfig.Public.class)
     public ResponseEntity<?> updateFlashcard(
             Authentication authentication,
             @RequestParam int flashcardId)
@@ -112,6 +117,7 @@ public class FlashcardController {
 
 
     @PostMapping("/copyFlashcardToDeck")
+    @JsonView(JsonViewConfig.Public.class)
     public ResponseEntity<?> addFlashcardToDeck(
             Authentication authentication,
             @RequestParam() int deckId,
@@ -154,6 +160,7 @@ public class FlashcardController {
     }
 
     @PostMapping("/moveFlashcardToOtherDeck")
+    @JsonView(JsonViewConfig.Public.class)
     public ResponseEntity<?> moveFlashcardToOtherDeck(
             Authentication authentication,
             @RequestParam() int sourceDeckId,
