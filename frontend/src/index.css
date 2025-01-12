@@ -35,15 +35,13 @@
   --active-tab-text: rgb(0, 0, 0);
 
   --my-decks-background: white;
-  --share-section-background: #aaaaaa;
-  --share-background: #dadada;
-  --share-btn: #4cc5e0;
-  --share-btn-hover: #227c8e;
+  --share-section-background: #dce7eaa5;
+  --share-background: #ffffff;
 
   --flashcard-background: #ebebeb;
   --flashcard-border: #e2e2e2;
   --flashcard-buttons: #3746abc3;
-  --flashcard-buttons-hover: #243189c3;
+  --flashcard-buttons-hover: #1c1c1cc3;
   --flashcard-buttons-active: rgb(28, 28, 93);
   --flashcard-edit-button:#00ccff;
   --flashcard-edit-button-hover: #109ec2;
@@ -109,10 +107,8 @@ body.dark {
   --active-tab-text: white;
 
   --my-decks-background: #222;
-  --share-section-background: #2c2c2c;
-  --share-background: #1e1e1e;
-  --share-btn: #444;
-  --share-btn-hover: #666;
+  --share-section-background: #24242471;
+  --share-background: #2f2f2f;
 
   --flashcard-background: #393939;
   --flashcard-border: #1f1f1f;
