@@ -1,31 +1,50 @@
 .decks-container {
-    margin: 30px 170px;
+    margin: 30px auto;
+    padding: 0 20%;
+    max-width: 80%;
 }
 
 .decks-manipulate {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
 }
 
 .decks-filter-button {
-    background-color: var(--continue-button);
+    background-color: var(--flashcard-edit-button);
     color: var(--continue-button-text);
-    font-size: 30;
+    font-size: 22px;
     font-weight: 600;
     padding: 10px 40px;
     margin-bottom: 30px;
     border-radius: 5%;
     border: 1px solid var(--section-border);
     cursor: pointer;
+    margin-left: 15px;
+    transition: background-color 0.5s ease;
+}
 
+.decks-filter-button:hover {
+    background-color: var(--flashcard-edit-button-hover);
 }
 
 .decks-input {
-    font-size: 30;
-    width: 50%;
-    min-height: 30px;
+    width: 35%;
+    min-height: 29px;
     margin-bottom: 30px;
+    font-size: 1.2rem;
+    padding: 8px;
+    border: 1px solid var(--section-border);
+    border-radius: 4px;
+    background-color: var(--input-flashcard-background);
+    color: var(--text-color);
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.decks-input:focus {
+    border-color: var(--shadow-border);
+    box-shadow: 0 0 5px var(--shadow-border);
 }
 
 .filter-item {
@@ -72,4 +91,34 @@
     box-shadow: 0 4px 6px var(--box-shadow);
     width: 400px;
     max-width: 90%;
+}
+
+@media (max-width: 768px) {
+    .decks-container {
+        padding: 0 10%;
+    }
+
+    .decks-input {
+        width: 100%;
+    }
+
+    .decks-filter-button {
+        font-size: 18px;
+        padding: 8px 30px;
+    }
+}
+
+@media (max-width: 480px) {
+    .decks-container {
+        padding: 0 5%;
+    }
+
+    .decks-input {
+        width: 100%;
+    }
+
+    .decks-filter-button {
+        font-size: 16px;
+        padding: 6px 25px;
+    }
 }

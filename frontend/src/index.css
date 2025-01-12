@@ -5,7 +5,7 @@
   --shadow-border: rgb(80, 240, 255);
 
   --section-background: #f9f9f9;
-  --section-border: #ccc;
+  --section-border: #08a5cd;
   --faded-text: #6d6d6d;
 
   --box-shadow: rgba(0, 0, 0, 0.1);
@@ -54,7 +54,7 @@
   --streak-cell-background-active: #3b7a57;
 
   --input-color-flashcard: #292929;
-  --input-flashcard-background: #defbff;
+  --input-flashcard-background: #ebfbfd;
   --auth-section-left: #3498db;
   --auth-section-left-text: white;
   --auth-input-text: black;
