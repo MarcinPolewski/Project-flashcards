@@ -23,7 +23,7 @@ const Navbar = (props) => {
 
             <div className="navbar-item" onClick={() => navigate("/decks")}>Decks</div>
 
-            <div className="navbar-item" onClick={() => navigate("/import")}>Share</div>
+            <div className="navbar-item" onClick={() => navigate("/share")}>Share</div>
 
             <div className="navbar-item" onClick={() => navigate("/statistics")}>Statistics</div>
         </div>

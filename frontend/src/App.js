@@ -7,7 +7,7 @@ import Home from './Components/pages/Home/Home';
 import Settings from './Components/pages/Settings/Settings';
 import CreateFlashcard from './Components/pages/CreateFlashcard/CreateFlashcard';
 import Decks from './Components/pages/Decks/Decks';
-import Import from './Components/pages/Import/Import';
+import Share from './Components/pages/Share/Share';
 import Statistics from './Components/pages/Statistics/Statistics';
 import Study from './Components/pages/Study/Study';
 import FolderPage from './Components/pages/FolderPage/FolderPage';
@@ -65,7 +65,7 @@ function App() {
           <Route path="/settings" element={<Settings details={APIdummy} />} />
           <Route path="/statistics" element={<Statistics details={APIdummy} />} />
           <Route path="/decks" element={<Decks details={APIdummy} />} />
-          <Route path="/import" element={<Import details={APIdummy} />} />
+          <Route path="/share" element={<Share details={APIdummy} />} />
           <Route path="/study/:deckId" element={<Study details={APIdummy} />} />
           <Route path="/deck/:deckId" element={<DeckPage details={APIdummy} />} />
           <Route path="/folder/:id" element={<FolderPage details={APIdummy} />} />
