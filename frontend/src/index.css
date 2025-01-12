@@ -5,7 +5,7 @@
 
   --section-background: #f9f9f9;
   --section-border: #ccc;
-  --faded-text: #6d6d6d;
+  --faded-text: rgba(0, 0, 0, 0.681)ae;
 
   --box-shadow: rgba(0, 0, 0, 0.1);
   --deck-info: #666;
@@ -62,7 +62,7 @@
   --auth-signin-button-text: white;
   --auth-social-button-color-1: #4285F4;
   --auth-social-button-color-2: #3b5998;
-  --auth-social-button-color-3: #333; 
+  --auth-social-button-color-3: #333;
   --auth-signin-button-submit: #4c6ef5;
   --auth-signin-button-submit-hover: #3751d2
 }
@@ -71,11 +71,11 @@
 body.dark {
   /* and here should be global variables for dark mode */
   --body-background: #2e2e2e;
-  --text-color: #e0e0e0;
+  --text-color: #e0e0e0ae;
 
   --section-background: #121212;
   --section-border: #444;
-  --faded-text: #161515;
+  --faded-text: #e0e0e0ae;
 
   --box-shadow: rgba(0, 0, 0, 0.5);
   --deck-info: #aaa;
@@ -131,7 +131,7 @@ body.dark {
   --auth-signin-button-text: white;
   --auth-social-button-color-1: #4285F4;
   --auth-social-button-color-2: #3b5998;
-  --auth-social-button-color-3: #333; 
+  --auth-social-button-color-3: #333;
   --auth-signin-button-submit: #4c6ef5;
   --auth-signin-button-submit-hover: #3751d2
  }

@@ -154,6 +154,7 @@
 @media (min-width: 769px) {
     .latest-reviews-decks {
         grid-template-columns: repeat(3, 1fr);
+        margin-left: 8vh;
     }
 
     .my-decks-container {

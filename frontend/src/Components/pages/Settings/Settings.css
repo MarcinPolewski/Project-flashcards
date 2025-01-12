@@ -48,10 +48,17 @@
 .dropdown {
   padding: 5px;
   border-radius: 5px;
+  max-width: 250px; /* Maksymalna szerokość dla select na desktopie */
+  width: 100%; /* Szerokość 100% w razie potrzeby */
+  box-sizing: border-box; /* Uwzględnienie paddingu w szerokości */
 }
 
 .switch {
   transform: scale(1.2);
+}
+
+.personal-info-plus-button {
+  color: white;
 }
 
 .edit-button,
@@ -72,9 +79,13 @@
 }
 
 .delete-button {
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
   background-color: var(--delete-button);
   color: var(--delete-button-text);
   border: none;
+  margin-left: auto;
 }
 
 .personal-info-item-container {
@@ -83,7 +94,7 @@
   gap: 20px;
 }
 
-.value {
+.personal-info-item-value {
   color: var(--faded-text);
 }
 
@@ -165,6 +176,16 @@
   text-align: center;
 }
 
+@media (min-width: 769px) {
+  .edit-button,
+  .delete-button {
+    width: 20%;
+    padding: 10px 0; /* Zwiększamy padding w pionie, aby przyciski były bardziej zbliżone w rozmiarze */
+    margin-left: 5%; /* Dodajemy odstęp między przyciskami */
+  }
+
+}
+
 @media (max-width: 768px) {
   .settings-title {
       font-size: 20px;
@@ -191,6 +212,11 @@
       height: 40vh;
   }
 
+  .dropdown {
+    width: 100%;
+    max-width: unset; /* Usuń maksymalną szerokość dla wersji mobilnej */
+  }
+
   .account-item {
     display: flex;
     justify-content: space-between;
@@ -202,10 +228,6 @@
   .account-item {
       flex-direction: column;
       align-items: flex-start;
-  }
-
-  .dropdown {
-      width: 100%;
   }
 
   .edit-button,
@@ -243,8 +265,8 @@
   }
 
   .personal-info-plus-button {
-    margin-right: 25px;
     font-size: 40px;
+    color: white;
     min-width: 10vh;
     min-height: 10vh;
   }
