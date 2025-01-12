@@ -25,7 +25,8 @@
 
   --continue-button: #007bff;
   --continue-button-text: white;
-  --delete-button: red;
+  --delete-button: #901870;
+  --delete-button-hover: #6b0f52;
   --delete-button-text: white;
   --create-deck-button: #0056b3;
 
@@ -96,7 +97,8 @@ body.dark {
 
   --continue-button: #007bff;
   --continue-button-text: white;
-  --delete-button: red;
+  --delete-button: #901870;
+  --delete-button-hover: #6b0f52;
   --delete-button-text: white;
   --create-deck-button: #0056b3;
 
