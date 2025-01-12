@@ -2,9 +2,10 @@
   /* here should be global variables for light mode */
   --body-background: #fff;
   --text-color: #181818;
+  --shadow-border: rgb(80, 240, 255);
 
   --section-background: #f9f9f9;
-  --section-border: #ccc;
+  --section-border: #08a5cd;
   --faded-text: #6d6d6d;
 
   --box-shadow: rgba(0, 0, 0, 0.1);
@@ -13,13 +14,13 @@
   --deck-action-button: rgb(255, 149, 0);
   --deck-dropdown: white;
 
-  --navbar-background: salmon;
+  --navbar-background: rgb(21, 189, 198);
 
   --popup-hover: #f0f0f0;
   --popup-background: white;
 
-  --plus-button: orange;
-  --plus-button-hover: rgb(230, 186, 105);
+  --plus-button: rgb(153, 235, 242);
+  --plus-button-hover: rgb(80, 240, 255);
   --plus-button-img: white;
 
   --continue-button: #007bff;
@@ -38,13 +39,22 @@
   --share-btn: #4cc5e0;
   --share-btn-hover: #227c8e;
 
+  --flashcard-background: #ebebeb;
+  --flashcard-border: #e2e2e2;
+  --flashcard-buttons: #3746abc3;
+  --flashcard-buttons-hover: #243189c3;
+  --flashcard-buttons-active: rgb(28, 28, 93);
+  --flashcard-edit-button:#00ccff;
+  --flashcard-edit-button-hover: #109ec2;
+  --flashcard-input: rgb(243, 243, 243);
+
   --filter-background: white;
 
   --streak-cell-background-inactive: #ddd;
   --streak-cell-background-active: #3b7a57;
 
   --input-color-flashcard: #292929;
-  --input-flashcard-background: #e4e4e4;
+  --input-flashcard-background: #ebfbfd;
   --auth-section-left: #3498db;
   --auth-section-left-text: white;
   --auth-input-text: black;
@@ -54,7 +64,7 @@
   --auth-signin-button-text: white;
   --auth-social-button-color-1: #4285F4;
   --auth-social-button-color-2: #3b5998;
-  --auth-social-button-color-3: #333; 
+  --auth-social-button-color-3: #333;
   --auth-signin-button-submit: #4c6ef5;
   --auth-signin-button-submit-hover: #3751d2
 }
@@ -64,23 +74,24 @@ body.dark {
   /* and here should be global variables for dark mode */
   --body-background: #2e2e2e;
   --text-color: #e0e0e0;
+  --shadow-border: #2874a6;
 
   --section-background: #121212;
   --section-border: #444;
-  --faded-text: #161515;
+  --faded-text: #e0e0e0ae;
 
   --box-shadow: rgba(0, 0, 0, 0.5);
   --deck-info: #aaa;
   --deck-state-item: #1e1e1e;
   --deck-action-button: rgb(255, 149, 0);
 
-  --navbar-background: #333;
+  --navbar-background: #1c1c22;
 
   --popup-hover: #444;
   --popup-background: #2e2e2e;
 
-  --plus-button: orange;
-  --plus-button-hover: rgb(255, 175, 25);
+  --plus-button: rgb(80, 76, 109);
+  --plus-button-hover: rgb(90, 77, 189);
   --plus-button-img: white;
 
   --continue-button: #007bff;
@@ -99,6 +110,15 @@ body.dark {
   --share-btn: #444;
   --share-btn-hover: #666;
 
+  --flashcard-background: #393939;
+  --flashcard-border: #1f1f1f;
+  --flashcard-buttons: #202024;
+  --flashcard-buttons-hover: #232339;
+  --flashcard-buttons-active: #20203a;
+  --flashcard-edit-button:  #2874a6;
+  --flashcard-edit-button-hover: #1d5981;
+  --flashcard-input: rgb(61, 61, 61);
+
   --filter-background: #2e2e2e;
 
   --streak-cell-background-inactive: #333;
@@ -115,7 +135,7 @@ body.dark {
   --auth-signin-button-text: white;
   --auth-social-button-color-1: #4285F4;
   --auth-social-button-color-2: #3b5998;
-  --auth-social-button-color-3: #333; 
+  --auth-social-button-color-3: #333;
   --auth-signin-button-submit: #4c6ef5;
   --auth-signin-button-submit-hover: #3751d2
  }

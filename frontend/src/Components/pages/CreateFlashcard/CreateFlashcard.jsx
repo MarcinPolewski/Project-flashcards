@@ -64,7 +64,22 @@ const CreateFlashcard = (props) => {
 
             <div className="flashcard-container">
 
-                <h2> Create Flashcard </h2>
+                    <div className="inputs-container">
+                        <div className="input-group">
+                            <label htmlFor="deck">Choose Deck</label>
+                            <select
+                                id="deck"
+                                className="dropdown"
+                                value={selectedDeck}
+                                onChange={(e) => setSelectedDeck(e.target.value)}
+                            >
+                                {testDecks.map((deck, index) => (
+                                    <option key={index} value={deck.title}>
+                                        {deck.title}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
 
                 <div className="inputs-container">
                     <div className="input-group">
@@ -128,8 +143,7 @@ const CreateFlashcard = (props) => {
 
             </div>
         </div>
-        </div>
     );
-}
+};
 
 export default CreateFlashcard;

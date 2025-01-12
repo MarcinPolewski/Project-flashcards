@@ -1,6 +1,6 @@
 .auth-section {
     display: flex;
-    height: 100vh;
+    height: 100%;
 }
 
 .auth-section-left {
@@ -27,4 +27,16 @@
 .auth-section-right-form {
     width: 80%;
     max-width: 400px;
+}
+
+@media (max-width: 767px) {
+    .auth-section {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .auth-section-right-form {
+        width: 100%;
+    }
+
 }

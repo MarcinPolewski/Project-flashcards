@@ -43,12 +43,12 @@ function App() {
     <ThemeProvider>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Home details={userData}/>} />
-          <Route path="/settings" element={<Settings details={userData} />} />
-          <Route path="/statistics" element={<Statistics details={userData} />} />
-          <Route path="/decks" element={<Decks details={userData} />} />
-          <Route path="/import" element={<Import details={userData} />} />
-          <Route path="/create-flashcard" element={<CreateFlashcard details={userData} />} />
+          <Route path="/" element={<PrivateRoute><Home details={userData}/> </PrivateRoute>} />
+          <Route path="/settings" element={<PrivateRoute><Settings details={userData}/> </PrivateRoute>} />
+          <Route path="/statistics" element={<PrivateRoute><Statistics details={userData}/> </PrivateRoute>} />
+          <Route path="/decks" element={<PrivateRoute><Decks details={userData}/> </PrivateRoute>} />
+          <Route path="/import" element={<PrivateRoute><Import details={userData}/> </PrivateRoute>} />
+          <Route path="/create-flashcard" element={<PrivateRoute><CreateFlashcard details={userData}/> </PrivateRoute>} />
           <Route path="/folder/:id" element={<PrivateRoute><FolderPage details={userData}/></PrivateRoute>} />
           <Route path="/deck/:id" element={<PrivateRoute><DeckPage details={userData}/> </PrivateRoute>} />
           <Route path="/login" element={<Login/>} />
