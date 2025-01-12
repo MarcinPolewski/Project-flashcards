@@ -14,7 +14,7 @@
 .deck-page-content {
     width: 90%;
     max-width: 1200px;
-    background-color: var(--section-background);
+    background-color: var(--deck-page-background);
     border: 1px solid var(--section-border);
     border-radius: 12px;
     padding: 30px;
@@ -54,7 +54,7 @@
 .deck-page-right {
     flex: 1;
     padding: 20px;
-    background-color: var(--section-background);
+    background-color: var(--deck-page-background);
     border: 1px solid var(--section-border);
     border-radius: 8px;
     box-shadow: 0 4px 10px var(--box-shadow);
@@ -112,8 +112,8 @@
 }
 
 .deck-page-flashcard-item {
-    background-color: var(--flashcard-background);
-    border: 1px solid var(--flashcard-border);
+    background-color: var(--deck-page-background);
+    border: 1px solid var(--section-border);
     border-radius: 8px;
     padding: 20px;
     margin-bottom: 15px;

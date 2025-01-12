@@ -49,9 +49,11 @@
   --flashcard-edit-button-hover: #109ec2;
   --flashcard-input: rgb(243, 243, 243);
 
+  --deck-page-background: #fff;
+
   --filter-background: white;
 
-  --streak-cell-background-inactive: #ddd;
+  --streak-cell-background-inactive: #3c3c3c;
   --streak-cell-background-active: #3b7a57;
 
   --input-color-flashcard: #292929;
@@ -120,6 +122,8 @@ body.dark {
   --flashcard-edit-button:  #2874a6;
   --flashcard-edit-button-hover: #1d5981;
   --flashcard-input: rgb(61, 61, 61);
+
+  --deck-page-background: #292929;
 
   --filter-background: #2e2e2e;
 
