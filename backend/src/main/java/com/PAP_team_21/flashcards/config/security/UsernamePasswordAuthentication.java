@@ -21,6 +21,8 @@ public class UsernamePasswordAuthentication implements AuthenticationProvider {
         String username = authentication.getName();
         String password = authentication.getCredentials().toString();
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+        if(!userDetails.isEnabled())
+            throw new BadCredentialsException("user is not validated");
         if (passwordEncoder.matches(password, userDetails.getPassword())) {
             return new UsernamePasswordAuthenticationToken(userDetails, password, userDetails.getAuthorities());
         }

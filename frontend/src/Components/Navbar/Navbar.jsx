@@ -11,7 +11,7 @@ const Navbar = (props) => {
     const [menuOpen, setMenuOpen] = useState(false);
     const [isDesktop, setIsDesktop] = useState(window.innerWidth > 768);
 
-    const { avatar, username, email } = props.details;
+    const {username, email, avatar} = props.details;
 
     useEffect(() => {
         const handleResize = () => {

@@ -1,7 +1,10 @@
 package com.PAP_team_21.flashcards.entities.friendship;
 
+import com.PAP_team_21.flashcards.entities.JsonViewConfig;
 import com.PAP_team_21.flashcards.entities.customer.Customer;
 import com.PAP_team_21.flashcards.entities.notification.Notification;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,23 +19,29 @@ public class Friendship {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
+    @JsonView(JsonViewConfig.Public.class)
     private int id;
 
-    @Column(name = "sender_id", insertable = false, updatable = false)
+    @Column(name = "sender_id")
+    @JsonView(JsonViewConfig.Public.class)
     private int senderId;
 
-    @Column(name = "receiver_id", insertable = false, updatable = false)
+    @Column(name = "receiver_id")
+    @JsonView(JsonViewConfig.Public.class)
     private int receiverId;
 
     @Column(name = "accepted")
+    @JsonView(JsonViewConfig.Public.class)
     private boolean accepted;
 
     @ManyToOne
-    @JoinColumn(name = "sender_id")
+    @JoinColumn(name = "sender_id", insertable = false, updatable = false)
+    @JsonIgnore
     private Customer sender;
 
     @ManyToOne
-    @JoinColumn(name = "receiver_id")
+    @JoinColumn(name = "receiver_id", insertable = false, updatable = false)
+    @JsonIgnore
     private Customer receiver;
 
     @ManyToMany
@@ -41,6 +50,7 @@ public class Friendship {
             joinColumns = @JoinColumn(name = "friendship_id"),
             inverseJoinColumns = @JoinColumn(name = "notification_id")
     )
+    @JsonIgnore
     private List<Notification> notifications;
 
     public Friendship() {}
@@ -49,5 +59,11 @@ public class Friendship {
         this.senderId = senderId;
         this.receiverId = receiverId;
         this.accepted = accepted;
+    }
+
+    public Friendship(int senderId, int receiverId) {
+        this.senderId = senderId;
+        this.receiverId = receiverId;
+        this.accepted = false;
     }
 }
