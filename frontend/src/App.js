@@ -67,13 +67,14 @@ function App() {
           <Route path="/decks" element={<Decks details={APIdummy} />} />
           <Route path="/import" element={<Import details={APIdummy} />} />
           <Route path="/study/:deckId" element={<Study details={APIdummy} />} />
+          <Route path="/deck/:deckId" element={<DeckPage details={APIdummy} />} />
           <Route path="/create-flashcard" element={<CreateFlashcard details={APIdummy} />} />
           <Route path="/login" element={<Login/>} />
           <Route path="/register" element={<Register/>} />
           <Route path="/forgot-password" element={<ForgotPassword/>} />
           <Route path="/password-reset" element={<PasswordReset/>} />
-          <Route path="/folder/:id" element={<PrivateRoute><FolderPage details={APIdummy}/></PrivateRoute>} />
-          <Route path="/deck/:id" element={<PrivateRoute><DeckPage details={APIdummy}/> </PrivateRoute>} />
+          {/*<Route path="/folder/:id" element={<PrivateRoute><FolderPage details={APIdummy}/></PrivateRoute>} />
+          <Route path="/deck/:id" element={<PrivateRoute><DeckPage details={APIdummy}/> </PrivateRoute>} />*/}
         </Routes>
       </BrowserRouter>
     </ThemeProvider>

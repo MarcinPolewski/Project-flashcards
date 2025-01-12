@@ -9,4 +9,19 @@
     justify-content: center;
     align-items: center;
     z-index: 1000;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .overlay {
+        padding: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .overlay {
+        padding: 10px;
+    }
 }

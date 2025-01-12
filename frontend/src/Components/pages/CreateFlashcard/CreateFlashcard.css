@@ -33,7 +33,7 @@ h2 {
 
 .input-group {
     margin-bottom: 20px;
-    width: 870px;
+    width: 100%; /* Adjust to parent container width */
 }
 
 .input-group label {
@@ -55,20 +55,28 @@ h2 {
 
 .flashcard-inputs {
     display: flex;
-    width: 870px;
+    width: 98%; /* Adjust to parent container width */
     flex-direction: column;
     gap: 10px;
 }
 
 .flashcard-inputs .textarea {
-    width: 854px;
+    width: 100%; /* Adjust to parent container width */
     height: 50px;
     padding: 8px;
-    border: 1px solid var(--section-border);
+    border: 1px solid var(--input-flashcard-background);
     border-radius: 4px;
-    background-color: var(--section-background);
+    font-size: 17px;
+    background-color: var(--flashcard-input);
     color: var(--text-color);
     resize: none;
+    outline: none; /* Remove default border on focus */
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.flashcard-inputs .textarea:focus {
+    border-color: var(--shadow-border);
+    box-shadow: 0 0 5px var(--shadow-border);
 }
 
 .button-group {
@@ -87,21 +95,54 @@ button {
     margin-left: 15px;
 }
 
-.cancel-button {
-    background-color: #007bff;
-    color: var(--delete-button-text);
+.cancel-button, .add-button {
+    background-color: var(--flashcard-edit-button);
+    color:white;
 }
 
-.cancel-button:hover {
-    background-color: #1787ff;
+.cancel-button:hover, .add-button:hover {
+    background-color: var(--flashcard-edit-button-hover);
 }
 
 .add-button {
-    background-color: #007bff;
-    color: var(--plus-button-img);
     margin-right: 10px;
 }
 
-.add-button:hover {
-    background-color: #1787ff;
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .flashcard-container {
+        width: 100%; /* Full width for medium screens */
+        padding: 15px;
+    }
+
+    .flashcard-inputs .textarea {
+        height: 40px;
+        font-size: 15px;
+    }
+
+    button {
+        width: 80px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .flashcard-container {
+        width: 100%; /* Full width for small screens */
+        padding: 10px;
+    }
+
+    .input-group {
+        margin-bottom: 15px;
+    }
+
+    .flashcard-inputs .textarea {
+        height: 35px;
+        font-size: 14px;
+    }
+
+    button {
+        width: 70px;
+        font-size: 12px;
+    }
 }
