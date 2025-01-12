@@ -7,11 +7,13 @@ import com.PAP_team_21.flashcards.authentication.ResourceAccessLevelService.Fold
 import com.PAP_team_21.flashcards.authentication.ResourceAccessLevelService.ResourceAccessService;
 import com.PAP_team_21.flashcards.controllers.requests.DeckCreationRequest;
 import com.PAP_team_21.flashcards.controllers.requests.DeckUpdateRequest;
+import com.PAP_team_21.flashcards.entities.JsonViewConfig;
 import com.PAP_team_21.flashcards.entities.customer.Customer;
 import com.PAP_team_21.flashcards.entities.customer.CustomerRepository;
 import com.PAP_team_21.flashcards.entities.deck.Deck;
 import com.PAP_team_21.flashcards.entities.deck.DeckRepository;
 import com.PAP_team_21.flashcards.entities.folder.FolderJpaRepository;
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -73,6 +75,7 @@ public class DeckController {
     }
 
     @PostMapping("/create")
+    @JsonView(JsonViewConfig.Public.class)
     public ResponseEntity<?> createDeck(
             Authentication authentication,
             @RequestBody DeckCreationRequest request)
