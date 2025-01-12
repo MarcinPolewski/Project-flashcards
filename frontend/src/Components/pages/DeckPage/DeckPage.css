@@ -59,7 +59,17 @@
     border-radius: 8px;
     box-shadow: 0 4px 10px var(--box-shadow);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    justify-content: center;
+    align-content: center;
 }
+
+.deck-page-pie-chart {
+    max-width: 250px;
+    width: 100%;
+    height: auto;
+    margin: auto;
+}
+
 
 .deck-page-left:hover,
 .deck-page-right:hover {
@@ -163,6 +173,13 @@
     transform: scale(1.05);
 }
 
+/* General Box-sizing rule */
+*,
+*::before,
+*::after {
+    box-sizing: border-box; /* Prevents elements from overflowing their container */
+}
+
 /* Responsive styling */
 @media (max-width: 768px) {
     .deck-page-statistics-container {
@@ -170,11 +187,75 @@
         gap: 20px;
     }
 
+    .deck-page-left, .deck-page-right {
+        flex: none;
+        width: 100%;
+        padding: 15px;
+        box-sizing: border-box;
+    }
+
     .deck-page-content {
-        padding: 20px;
+        padding: 15px;
+        width: 100%;
     }
 
     .deck-page-pie-chart {
         max-width: 200px;
     }
+
+    /* Flashcard container */
+    .deck-page-flashcard {
+        flex-direction: column;
+        gap: 20px;
+        padding: 0 16px 20px 16px;
+        box-sizing: border-box;
+    }
+
+    /* Flashcard front and back styling */
+    .deck-page-front, .deck-page-back {
+        padding: 15px;
+        font-size: 1.1rem;
+        padding-left: 20px;
+        background-color: var(--flashcard-front-back-background);
+        border-radius: 8px;
+        box-shadow: 0 2px 5px var(--box-shadow);
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .deck-page-flashcard-item {
+        padding: 15px;
+        margin-bottom: 20px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .deck-page-flashcard-actions {
+        gap: 15px;
+    }
+
+    .deck-page-edit-btn, .deck-page-delete-btn {
+        padding: 12px 18px;
+        font-size: 0.9rem;
+    }
 }
+
+@media (max-width: 480px) {
+    .deck-page-title {
+        font-size: 2rem;
+    }
+
+    .deck-page-subtitle {
+        font-size: 1.5rem;
+    }
+
+    .deck-page-front, .deck-page-back {
+        font-size: 1rem;
+    }
+
+    .deck-page-edit-btn, .deck-page-delete-btn {
+        font-size: 0.9rem;
+        padding: 10px 15px;
+    }
+}
+

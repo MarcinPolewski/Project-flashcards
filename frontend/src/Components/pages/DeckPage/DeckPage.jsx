@@ -48,7 +48,7 @@ const DeckPage = (props) => {
                 <div className="deck-page-content">
                     <h1 className="deck-page-title">{deck.title}</h1>
                     <div className="deck-page-statistics-container">
-                    <div className="deck-page-right">
+                        <div className="deck-page-right">
                             <PieChart
                                 data={{
                                     newCards: deck.newCards,
