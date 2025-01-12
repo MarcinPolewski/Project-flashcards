@@ -1,76 +1,131 @@
+/* Deck Component */
 .deck {
-    padding: 20px;
+    padding: 35px; /* Keep original padding */
     border: 1px solid var(--section-border);
     border-radius: 10px;
     box-shadow: 0px 4px 6px var(--box-shadow);
     position: relative;
     margin-bottom: 20px;
+    width: 90%; /* Ensure it scales properly */
+    max-width: 1200px; /* Prevent it from growing too large */
 }
 
+/* Deck Header */
 .deck-header {
     display: flex;
     align-items: center;
     gap: 10px;
+    flex-wrap: wrap; /* Allow wrapping for smaller screens */
 }
 
+/* Deck Title */
 .deck-title {
-    font-size: 1.2em;
+    font-size: 1.5em; /* Keep original font size */
     font-weight: bold;
 }
 
+/* Deck Info */
 .deck-info {
     color: var(--deck-info);
     margin-top: 5px;
 }
 
+/* Deck State */
 .deck-state {
     display: flex;
-    gap: 15px;
+    gap: 20px;
     margin-top: 15px;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
 }
 
-.deck-state-item {
-    background: var(--deck-state-item);
-    padding: 5px 10px;
-    border-radius: 5px;
+/* Card Items */
+.card-new {
+    color: #00ac11; /* Original color preserved */
 }
 
+.card-learning {
+    color: #dc0000; /* Original color preserved */
+}
+
+.card-reviewing {
+    color: #008df9; /* Original color preserved */
+}
+
+/* Deck Actions */
 .deck-actions {
-    position: relative;
-    margin-top: 20px;
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap; /* Allow buttons to wrap on smaller screens */
 }
 
-.folder-page-edit-btn,
-.folder-page-delete-btn,
-.folder-page-study-btn {
-    background-color: #007BFF;
+/* Buttons */
+.decks-page-edit-btn,
+.decks-page-delete-btn,
+.decks-page-study-btn {
+    background-color: var(--flashcard-edit-button);
     color: white;
     border: none;
     padding: 8px 15px;
-    font-size: 0.9rem;
+    font-size: 1rem;
+    font-weight: 500;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
 }
 
-.folder-page-edit-btn:hover,
-.folder-page-delete-btn:hover,
-.folder-page-study-btn:hover {
-    background-color: #0056b3;
+.decks-page-edit-btn:hover,
+.decks-page-study-btn:hover {
+    background-color: var(--flashcard-edit-button-hover);
 }
 
-.folder-page-delete-btn {
-    background-color: #dc3545;
+.decks-page-delete-btn {
+    background-color: #901870;
 }
 
-.folder-page-delete-btn:hover {
-    background-color: #c82333;
+.decks-page-delete-btn:hover {
+    background-color: #6b0f52;
 }
 
-.folder-page-study-btn {
-    background-color: #28a745;
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .deck {
+        padding: 25px; /* Slightly reduce padding */
+    }
+
+    .deck-title {
+        font-size: 1.3em; /* Minor adjustment for smaller screens */
+    }
+
+    .deck-state {
+        gap: 10px; /* Reduce gap between items */
+    }
+
+    .deck-actions button {
+        padding: 6px 12px; /* Slightly smaller buttons */
+    }
 }
 
-.folder-page-study-btn:hover {
-    background-color: #218838;
+@media (max-width: 480px) {
+    .deck {
+        padding: 20px; /* Reduce padding further for mobile */
+    }
+
+    .deck-title {
+        font-size: 1.2em; /* Adjust title font size */
+    }
+
+    .deck-state {
+        flex-direction: column; /* Stack items vertically */
+        gap: 8px; /* Reduce gap further */
+    }
+
+    .deck-actions {
+        flex-direction: column; /* Stack buttons vertically */
+        gap: 8px; /* Reduce gap */
+    }
+
+    .deck-actions button {
+        width: 90%; /* Make buttons full width on small screens */
+    }
 }
