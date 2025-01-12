@@ -58,89 +58,90 @@ const CreateFlashcard = (props) => {
 
     return (
         <div>
+            <Navbar details={props.details} />
+            <div className="create-flashcard">
 
-        <Navbar details={props.details} />
-        <div className="create-flashcard">
+                <div className="flashcard-container">
 
-            <div className="flashcard-container">
+                        <div className="inputs-container">
+                            <div className="input-group">
+                                <label htmlFor="deck">Choose Deck</label>
+                                <select
+                                    id="deck"
+                                    className="dropdown"
+                                    value={pickedDeck}
+                                    onChange={(e) => setPickedDeck(e.target.value)}
+                                >
+                                    {decks.map((deck) => (
+                                        <option key={deck.id} value={deck.name}>
+                                            {deck.name}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                        </div>
 
                     <div className="inputs-container">
                         <div className="input-group">
-                            <label htmlFor="deck">Choose Deck</label>
+                            <label htmlFor="deck"> Choose Folder </label>
                             <select
                                 id="deck"
                                 className="dropdown"
-                                value={selectedDeck}
-                                onChange={(e) => setSelectedDeck(e.target.value)}
+                                onChange={(e) => handleFolderChange(e.target.value)}
+                                value={pickedFolder || ''}
                             >
-                                {testDecks.map((deck, index) => (
-                                    <option key={index} value={deck.title}>
-                                        {deck.title}
+                                <option value="" disabled>Select a folder</option>
+                                {folders.map((folder) => (
+                                    <option key={folder.id} value={folder.id}>
+                                        {folder.name}
+                                    </option>
+                                ))}
+                            </select>
+                            <label htmlFor="deck"> Choose Deck </label>
+                            <select
+                                id="deck"
+                                className="dropdown"
+                                onChange={(e) => handleDeckChange(e.target.value)}
+                                value={pickedDeck || ''}
+                                disabled={!pickedFolder}
+                            >
+                                <option value="" disabled>Select a deck</option>
+                                {decks.map((deck) => (
+                                    <option key={deck.id} value={deck.id}>
+                                        {deck.name}
                                     </option>
                                 ))}
                             </select>
                         </div>
 
-                <div className="inputs-container">
-                    <div className="input-group">
-                        <label htmlFor="deck"> Choose Folder </label>
-                        <select
-                            id="deck"
-                            className="dropdown"
-                            onChange={(e) => handleFolderChange(e.target.value)}
-                            value={pickedFolder || ''}
-                        >
-                            <option value="" disabled>Select a folder</option>
-                            {folders.map((folder) => (
-                                <option key={folder.id} value={folder.id}>
-                                    {folder.name}
-                                </option>
-                            ))}
-                        </select>
-                        <label htmlFor="deck"> Choose Deck </label>
-                        <select
-                            id="deck"
-                            className="dropdown"
-                            onChange={(e) => handleDeckChange(e.target.value)}
-                            value={pickedDeck || ''}
-                            disabled={!pickedFolder}
-                        >
-                            <option value="" disabled>Select a deck</option>
-                            {decks.map((deck) => (
-                                <option key={deck.id} value={deck.id}>
-                                    {deck.name}
-                                </option>
-                            ))}
-                        </select>
+                        <div className="flashcard-inputs">
+                            <textarea
+                                placeholder="Front"
+                                className="textarea"
+                                value={front}
+                                onChange={(e) => setFront(e.target.value)}
+                            />
+                            <textarea
+                                placeholder="Back"
+                                className="textarea"
+                                value={back}
+                                onChange={(e) => setBack(e.target.value)}
+                            />
+                        </div>
                     </div>
 
-                    <div className="flashcard-inputs">
-                        <textarea
-                            placeholder="Front"
-                            className="textarea"
-                            value={front}
-                            onChange={(e) => setFront(e.target.value)}
-                        />
-                        <textarea
-                            placeholder="Back"
-                            className="textarea"
-                            value={back}
-                            onChange={(e) => setBack(e.target.value)}
-                        />
+                    <div className="button-group">
+                        <button className="cancel-button" onClick={() => navigate("/")}> Cancel </button>
+                        <button
+                            className="add-button"
+                            onClick={handleAddFlashcard}
+                            disabled={!pickedDeck || !front.trim() || !back.trim()}
+                        >
+                            Add
+                        </button>
                     </div>
-                </div>
 
-                <div className="button-group">
-                    <button className="cancel-button" onClick={() => navigate("/")}> Cancel </button>
-                    <button
-                        className="add-button"
-                        onClick={handleAddFlashcard}
-                        disabled={!pickedDeck || !front.trim() || !back.trim()}
-                    >
-                        Add
-                    </button>
                 </div>
-
             </div>
         </div>
     );
