@@ -25,7 +25,7 @@ const Login = () => {
     }
 
     return <AuthSection>
-        <div className="auth-container">
+        <div className="auth-container auth-container-register">
           <h2>Sign in</h2>
 
           <div className="auth-social-signin">
@@ -39,7 +39,7 @@ const Login = () => {
             {error && <p style={{ color: "red" }}>{error}</p>}
             <form onSubmit={handleSubmit}>
               <div>
-                <label htmlFor="email">Email address</label>
+                <label className="auth-email-signin-label" htmlFor="email">Email address</label>
                 <input
                   type="email"
                   id="email"
@@ -50,7 +50,7 @@ const Login = () => {
               </div>
 
               <div>
-                <label htmlFor="password">Password</label>
+                <label className="auth-email-signin-label" htmlFor="password">Password</label>
                 <input
                   type="password"
                   id="password"
@@ -76,7 +76,7 @@ const Login = () => {
                 </div>
               </div>
 
-              <button className="auth-sign-in-button" type="submit">Sign in</button>
+              <button className="auth-sign-in-button" type="submit">Sign In</button>
             </form>
           </div>
 
