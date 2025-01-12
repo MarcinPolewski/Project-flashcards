@@ -111,4 +111,17 @@ body {
     .btn {
         font-size: 0.9rem;
     }
+
+    /* Adjust the layout for smaller screens */
+    .import {
+        padding: 10px;
+    }
+
+    .field-container {
+        gap: 8px;
+    }
+
+    .section h3 {
+        font-size: 1.2rem;
+    }
 }
