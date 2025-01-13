@@ -8,7 +8,8 @@ services:
     ports:
       - "80:80" # @Kacper, sprawdź czy port odpowiada
     networks:
-      - front-network
+      front-network:
+        ipv4_address: 172.19.0.12
 
   backend-service:
     build: ./backend
@@ -16,8 +17,10 @@ services:
       database:
         condition: service_healthy
     networks:
-      - back-network
-      - front-network
+      back-network:
+        ipv4_address: 172.18.0.10
+      front-network:
+        ipv4_address: 172.19.0.10
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8080/actuator/health" ]
       interval: 10s
@@ -42,7 +45,8 @@ services:
     build: ./database
     hostname: mysql_database
     networks:
-      - back-network
+      back-network:
+        ipv4_address: 172.18.0.11
     environment:
       MYSQL_ROOT_PASSWORD_FILE: /run/secrets/db_root_password
       MYSQL_USER_FILE: /run/secrets/db_user_login
@@ -94,4 +98,12 @@ secrets:
 
 networks:
   back-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.18.0.0/16
   front-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.19.0.0/16

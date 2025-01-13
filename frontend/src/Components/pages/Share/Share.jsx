@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import Navbar from "../../Navbar/Navbar";
-import './Import.css';
+import './Share.css';
 import testDecks from "../../../assets/mockData/testDecks";
 
-const Import = (props) => {
+const Share = () => {
     const [selectedExportDeck, setSelectedExportDeck] = useState("");
     const [selectedImportDeck, setSelectedImportDeck] = useState("");
     const [importFile, setImportFile] = useState(null);
@@ -30,7 +30,7 @@ const Import = (props) => {
 
     return (
         <div className="main-importcontainer">
-        <Navbar details={props.details} />
+        <Navbar />
         <div className="import">
             {/* Export Section */}
             <div className="section">
@@ -85,4 +85,4 @@ const Import = (props) => {
     );
 };
 
-export default Import;
+export default Share;

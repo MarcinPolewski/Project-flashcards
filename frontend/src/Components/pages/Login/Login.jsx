@@ -3,9 +3,7 @@ import React, { useState } from "react";
 import '../../AuthSection/Auth.css';
 import AuthSection from "../../AuthSection/AuthSection";
 import { useNavigate } from "react-router-dom";
-import { loginUser } from "../../../services/AuthService";
-
-import { handleOAuth2 } from "../../../utils/handleOAuth2";
+import AuthService from "../../../services/AuthService";
 
 const Login = () => {
     const [email, setEmail] = useState("");
@@ -17,7 +15,7 @@ const Login = () => {
     const handleSubmit = async (e) => {
       e.preventDefault();
       try {
-        await loginUser({ email, password }, rememberMe);
+        await AuthService.loginUser({ email, password }, rememberMe);
         navigate("/");
       } catch (error) {
         setError("Invalid email or password.");
@@ -29,9 +27,9 @@ const Login = () => {
           <h2>Sign in</h2>
 
           <div className="auth-social-signin">
-            <button onClick={() => handleOAuth2("google")}>Sign in with Google</button>
-            <button onClick={() => handleOAuth2("facebook")}>Sign in with Facebook</button>
-            <button onClick={() => handleOAuth2("github")}>Sign in with Github</button>
+            <button onClick={() => AuthService.handleOAuth2("google")}>Sign in with Google</button>
+            <button onClick={() => AuthService.handleOAuth2("facebook")}>Sign in with Facebook</button>
+            <button onClick={() => AuthService.handleOAuth2("github")}>Sign in with Github</button>
           </div>
 
           <div className="auth-email-signin">

@@ -7,7 +7,7 @@ import Home from './Components/pages/Home/Home';
 import Settings from './Components/pages/Settings/Settings';
 import CreateFlashcard from './Components/pages/CreateFlashcard/CreateFlashcard';
 import Decks from './Components/pages/Decks/Decks';
-import Import from './Components/pages/Import/Import';
+import Share from './Components/pages/Share/Share';
 import Statistics from './Components/pages/Statistics/Statistics';
 import Study from './Components/pages/Study/Study';
 import FolderPage from './Components/pages/FolderPage/FolderPage';
@@ -20,6 +20,7 @@ import PasswordReset from './Components/pages/ForgotPassword/PasswordReset';
 import PrivateRoute from './Components/PrivateRoute/PrivateRoute';
 import { useEffect, useState } from 'react';
 import CustomerService from './services/CustomerService';
+import VerificationSuccess from './Components/pages/VerificationSuccess/VerificationSuccess';
 
 function App() {
 
@@ -43,18 +44,20 @@ function App() {
     <ThemeProvider>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Home details={userData}/>} />
-          <Route path="/settings" element={<Settings details={userData} />} />
-          <Route path="/statistics" element={<Statistics details={userData} />} />
-          <Route path="/decks" element={<Decks details={userData} />} />
-          <Route path="/import" element={<Import details={userData} />} />
-          <Route path="/create-flashcard" element={<CreateFlashcard details={userData} />} />
-          <Route path="/folder/:id" element={<PrivateRoute><FolderPage details={userData}/></PrivateRoute>} />
-          <Route path="/deck/:id" element={<PrivateRoute><DeckPage details={userData}/> </PrivateRoute>} />
+          <Route path="/" element={<PrivateRoute><Home/></PrivateRoute>} />
+          <Route path="/settings" element={<PrivateRoute><Settings /></PrivateRoute>} />
+          <Route path="/statistics" element={<PrivateRoute><Statistics /></PrivateRoute>} />
+          <Route path="/decks" element={<PrivateRoute><Decks details={userData} /></PrivateRoute>} />
+          <Route path="/share" element={<PrivateRoute><Share details={userData} /></PrivateRoute>} />
+          <Route path="/study/:deckId" element={<PrivateRoute><Study details={userData} /></PrivateRoute>} />
+          <Route path="/deck/:deckId" element={<PrivateRoute><DeckPage details={userData} /></PrivateRoute>} />
+          <Route path="/folder/:id" element={<PrivateRoute><FolderPage details={userData} /></PrivateRoute>} />
+          <Route path="/create-flashcard" element={<PrivateRoute><CreateFlashcard details={userData} /></PrivateRoute>} />
           <Route path="/login" element={<Login/>} />
           <Route path="/register" element={<Register/>} />
           <Route path="/forgot-password" element={<ForgotPassword/>} />
           <Route path="/password-reset" element={<PasswordReset/>} />
+          <Route path="/verify-email/:token" element={<VerificationSuccess/>} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>

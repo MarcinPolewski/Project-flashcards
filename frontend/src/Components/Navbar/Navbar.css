@@ -1,5 +1,9 @@
 .navbar {
-    background-color: var(--navbar-background); /*debug*/
+    background-color: var(--navbar-background);
+    position: sticky;
+    top: 0;
+    left: 0;
+    z-index: 1000;
 }
 
 .navbar-container {
@@ -15,16 +19,76 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 80px;
+    gap: 120px;
 }
 
 .navbar-item {
     cursor: pointer;
+    color: white;
+    font-size: 1.2rem;
 }
 
 .nav-user-options {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 40px;
+    gap: 20px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+    .navbar-container {
+        gap: 50px;
+    }
+
+    .nav-buttons {
+        gap: 50px;
+    }
+
+    .navbar-item {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .navbar-container {
+        margin: 0 15px;
+        gap: 20px;
+    }
+
+    .nav-buttons {
+        gap: 20px;
+    }
+
+    .navbar-item {
+        font-size: 1rem;
+    }
+
+    .nav-user-options {
+        gap: 10px;
+    }
+}
+
+@media (max-width: 530px) {
+    .navbar-container {
+        flex-direction: column;
+        align-items: center;
+        margin: 0 10px;
+        gap: 20px;
+    }
+
+    .nav-buttons {
+        flex-direction: column;
+        gap: 20px;
+        align-items: center;
+    }
+
+    .navbar-item {
+        font-size: 0.9rem;
+    }
+
+    .nav-user-options {
+        flex-direction: column;
+        gap: 10px;
+    }
 }
