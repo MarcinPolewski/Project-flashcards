@@ -50,17 +50,26 @@ const Home = () => {
 
             <div className="latest-reviews-title">My Latest Reviews</div>
             <div className="latest-reviews-decks">
-                {latestDecks ? latestDecks
-                    .map((deck) => (
-                    <div key={deck.id} className="latest-review-deck">
-                        <div className="deck-title">{deck.name}</div>
-                        <CircularProgressbar className="react-circular-progressbar" value={deck.progress} text={`${deck.progress}%`} />
-                        <button className="continue-button" onClick={() => navigate(`/study/${deck.id}`)}>Continue</button>
-                    </div>
-                ))
-                :
-                <div>No last decks recorded</div>
-            }
+                {Array.isArray(latestDecks) && latestDecks.length > 0 ? (
+                    latestDecks.map((deck) => (
+                        <div key={deck.id} className="latest-review-deck">
+                            <div className="deck-title">{deck.name}</div>
+                            <CircularProgressbar
+                                className="react-circular-progressbar"
+                                value={deck.progress}
+                                text={`${deck.progress}%`}
+                            />
+                            <button
+                                className="continue-button"
+                                onClick={() => navigate(`/study/${deck.id}`)}
+                            >
+                                Continue
+                            </button>
+                        </div>
+                    ))
+                ) : (
+                    <div>No last decks recorded</div>
+                )}
             </div>
 
         </div>
@@ -70,7 +79,7 @@ const Home = () => {
             <div className="home-user-notifications-container">
 
                 <div className="home-notifications-title">Notifications</div>
-                {notifications ? notifications.map((notif) => (
+                {Array.isArray(notifications) && notifications.length > 0 ? notifications.map((notif) => (
                     <div key={notif.id} className="home-user-notifcation">
                         <div className="home-user-notifcation-header">
                             <div className="home-user-notifcation-title">New Notification</div>
@@ -99,7 +108,7 @@ const Home = () => {
             <div className="latest-reviews-title">Deck Folders</div>
             <div className="my-decks-container">
             {
-            folders ? folders
+            Array.isArray(folders) && folders.length > 0 ? folders
                 .map((folder) => {
                     const { folderId, folderName } = folder;
                     return <Folder key={folderId} id={folderId} title={folderName}/>
