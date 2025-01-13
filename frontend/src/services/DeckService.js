@@ -7,6 +7,12 @@ const DeckService = {
         });
         return response.data;
     },
+
+    getLastUsed: async () => {
+        const response = await api.get('/deck/getLastUsed');
+        return response.data;
+    },
+
     getFlashcards: async (deckId, page = 0, size = 5, sortBy = 'id', ascending = true) => {
         const response = await api.get('/deck/flashcards', {
             params: { deckId, page, size, sortBy, ascending }

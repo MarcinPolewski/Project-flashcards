@@ -13,7 +13,7 @@ import FolderService from "../../../services/FolderService";
 import NotificationService from "../../../services/NotificationService";
 
 
-const Home = (props) => {
+const Home = () => {
 
     const [latestDecks, setLatestDecks] = useState([]);
     const [notifications, setNotifications] = useState([]);
@@ -50,14 +50,17 @@ const Home = (props) => {
 
             <div className="latest-reviews-title">My Latest Reviews</div>
             <div className="latest-reviews-decks">
-                {latestDecks
+                {latestDecks ? latestDecks
                     .map((deck) => (
                     <div key={deck.id} className="latest-review-deck">
                         <div className="deck-title">{deck.name}</div>
                         <CircularProgressbar className="react-circular-progressbar" value={deck.progress} text={`${deck.progress}%`} />
                         <button className="continue-button" onClick={() => navigate(`/study/${deck.id}`)}>Continue</button>
                     </div>
-                ))}
+                ))
+                :
+                <div>No last decks recorded</div>
+            }
             </div>
 
         </div>
@@ -67,7 +70,7 @@ const Home = (props) => {
             <div className="home-user-notifications-container">
 
                 <div className="home-notifications-title">Notifications</div>
-                {notifications.map((notif) => (
+                {notifications ? notifications.map((notif) => (
                     <div key={notif.id} className="home-user-notifcation">
                         <div className="home-user-notifcation-header">
                             <div className="home-user-notifcation-title">New Notification</div>
@@ -77,7 +80,16 @@ const Home = (props) => {
                         </div>
 
                     </div>
-                ))}
+                )) :
+                    <div className="home-user-notifcation">
+                        <div className="home-user-notifcation-header">
+                            <div className="home-user-notifcation-title">No notifications</div>
+                        </div>
+                        <div className="home-user-notifcation-text">
+                        </div>
+
+                    </div>
+                }
             </div>
 
         </div>
@@ -87,11 +99,14 @@ const Home = (props) => {
             <div className="latest-reviews-title">Deck Folders</div>
             <div className="my-decks-container">
             {
-            folders
+            folders ? folders
                 .map((folder) => {
                     const { folderId, folderName } = folder;
                     return <Folder key={folderId} id={folderId} title={folderName}/>
-            })}
+            })
+            :
+            <div>No folders available</div>
+            }
             </div>
 
         </div>
