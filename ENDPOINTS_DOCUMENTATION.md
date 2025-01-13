@@ -483,11 +483,11 @@ This endpoint retrieves a list of notifications for the authenticated customer.
   "No user with this id found"
   ```
 ---
+### `GET /customer/getRootFolder`
 
 **Parameters:**
 - `Authentication authentication`: Contains authentication details.
 
-### `GET /customer/getRootFolder`
 
 This endpoint retrieves the root folder of the authenticated customer.
 
@@ -517,11 +517,10 @@ This endpoint retrieves the root folder of the authenticated customer.
   "No user with this id found"
   ```
 ---
+### `GET /customer/getFriends`
 
 **Parameters:**
 - `Authentication authentication`: Contains authentication details.
-
-### `GET /customer/getFriends`
 
 This endpoint retrieves a list of the authenticated customer's friends.
 
