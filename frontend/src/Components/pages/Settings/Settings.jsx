@@ -299,8 +299,8 @@ const Settings = (props) => {
             </SettingsSection>
 
             <SettingsSection title="Account and privacy">
-                <div className="account-item">
-                    <div className="label">Change your password</div>
+                <div className="account-item account-item-edit">
+                    <div className="label account-item-edit-label">Change your password</div>
                     <button className="edit-button" onClick={() => handleEditClick('password')}>Edit</button>
                 </div>
                 <hr />
