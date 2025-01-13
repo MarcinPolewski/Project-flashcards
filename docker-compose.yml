@@ -26,8 +26,6 @@ services:
       interval: 10s
       timeout: 10s
       retries: 20
-    ports:
-      - "8080:8080" # @Kacper, sprawdź czy port odpowiada
     secrets:
       - db_user_login
       - db_user_password
