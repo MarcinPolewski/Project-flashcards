@@ -16,9 +16,11 @@ const Register = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
+            console.log(`Passing to the backend: ${{username, email, password}}`);
             const response = await AuthService.registerUser({username, email, password});
             navigate("/")
         } catch (error) {
+            console.log(error.response);
             setError(error.response ? error.response.data : "An error occurred");
         }
     }

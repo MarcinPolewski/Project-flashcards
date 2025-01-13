@@ -7,7 +7,7 @@ import './CreateFlashcard.css';
 import FlashcardService from '../../../services/FlashcardService';
 import FolderService from "../../../services/FolderService";
 
-const CreateFlashcard = (props) => {
+const CreateFlashcard = () => {
 
     const [deckId, setDeckId] = useState(null);
     const [front, setFront] = useState("");
@@ -26,7 +26,7 @@ const CreateFlashcard = (props) => {
             alert("Both 'Front' and 'Back' fields must be filled.");
             return;
         }
-        
+
         try {
             await FlashcardService.createFlashcard(deckId, front, back);
             navigate("/");
@@ -58,7 +58,7 @@ const CreateFlashcard = (props) => {
 
     return (
         <div>
-            <Navbar details={props.details} />
+            <Navbar />
             <div className="create-flashcard">
 
                 <div className="flashcard-container">

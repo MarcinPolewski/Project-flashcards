@@ -18,7 +18,7 @@ const StatisticsSection = ({ title, children, className }) => {
     );
 };
 
-const Statistics = (props) => {
+const Statistics = () => {
 
     const [statisticData, setStatisticData] = useState(null);
 
@@ -57,13 +57,13 @@ const Statistics = (props) => {
 
     if (!statisticData) {
         return  <div className="statistics">
-            <Navbar details={props.details}/>
+            <Navbar/>
             <div>Loading... </div>
         </div>;
     }
 
     return <div className="statistics">
-        <Navbar details={props.details}/>
+        <Navbar/>
         <div className="statistics-container">
 
             <div className="statistics-title">Statistics</div>

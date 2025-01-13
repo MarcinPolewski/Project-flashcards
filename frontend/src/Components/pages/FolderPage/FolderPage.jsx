@@ -6,7 +6,7 @@ import './FolderPage.css';
 
 import Navbar from "../../Navbar/Navbar";
 
-const FolderPage = (props) => {
+const FolderPage = () => {
     const { id } = useParams();
     const [folder, setFolder] = useState(null);
     const [decks, setDecks] = useState([]);
@@ -15,11 +15,11 @@ const FolderPage = (props) => {
     useEffect(() => {
         // Find the folder based on the ID from the URL params
         const foundFolder = testFolders.find(fold => fold.id === parseInt(id));
-        
+
         // If folder is found, fetch the decks
         if (foundFolder) {
             console.log("Found folder:", foundFolder); // Debugging: Check if folder is found
-            
+
             setFolder(foundFolder);
             // Map deckIds and only include decks that exist in testDecks
             const folderDecks = foundFolder.deckIds
@@ -42,7 +42,7 @@ const FolderPage = (props) => {
 
     return (
         <div>
-            <Navbar details={props.details} />
+            <Navbar />
             <div className="folder-page">
                 {folder ? (
                     <div className="folder-page-content">
@@ -57,7 +57,7 @@ const FolderPage = (props) => {
                                         <div className="folder-page-deck-title">
                                             {deck.title}
                                         </div>
-                                        
+
                                         <p className="folder-page-deck-info">{deck.info}</p>
 
                                         <div className="folder-page-deck-state">
@@ -71,7 +71,7 @@ const FolderPage = (props) => {
                                                 {deck.reviewingCards} reviewing
                                             </p>
                                         </div>
-                                        
+
                                         <div className="folder-page-deck-actions">
                                             <button onClick={() => navigate(`/study/${deck.id}`)} className="folder-page-study-btn">
                                                 Study

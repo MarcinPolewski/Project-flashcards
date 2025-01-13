@@ -9,7 +9,7 @@ import PieChart from '../../Charts/PieChart/PieChart';
 import DeckService from '../../../services/DeckService';
 import FlashcardService from '../../../services/FlashcardService';
 
-const DeckPage = (props) => {
+const DeckPage = () => {
     const { deckId } = useParams();
     const [deck, setDeck] = useState(null);
     const [deckProgress, setDeckProgress] = useState(null);
@@ -45,29 +45,29 @@ const DeckPage = (props) => {
     useEffect(() => {
         const fetchDeckData = async () => {
             try {
-                const foundDeck = await DeckService.getDeck(id);
+                const foundDeck = await DeckService.getDeck(deckId);
                 setDeck(foundDeck);
-    
-                const folderFlashcards = await DeckService.getFlashcards(id);
+
+                const folderFlashcards = await DeckService.getFlashcards(deckId);
                 setFlashcards(folderFlashcards);
-    
-                const foundDeckProgress = await DeckService.getDeckProgress(id);
+
+                const foundDeckProgress = await DeckService.getDeckProgress(deckId);
                 setDeckProgress(foundDeckProgress);
             } catch (error) {
                 console.error("Error fetching deck data:", error);
             }
         };
         fetchDeckData();
-    }, [id]);
+    }, [deckId]);
 
     if (!deck) return <p>Deck not found!</p>;
 
     return (
         <div>
-            <Navbar details={props.details} />
+            <Navbar />
             <div className="deck-page-container">
                 <div className="deck-page-content">
-                    <h1 className="deck-page-title">{deck.title}</h1>
+                    <h1 className="deck-page-title">{deck.name}</h1>
                     <div className="deck-page-statistics-container">
                         <div className="deck-page-right">
                             <PieChart
