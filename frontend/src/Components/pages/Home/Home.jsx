@@ -3,15 +3,10 @@ import { CircularProgressbar } from "react-circular-progressbar";
 
 import Navbar from "../../Navbar/Navbar";
 
-import sortDecksByDate from "../../../utils/sortDecksByDate";
-
 import './Home.css';
 import 'react-circular-progressbar/dist/styles.css';
 
-import testDecks from "../../../assets/mockData/testDecks";
 import Folder from "../../Folder/Folder";
-import Notification from "../../Notification/Notification";
-import testFolders from "../../../assets/mockData/testFolders";
 import { useNavigate } from "react-router-dom";
 import DeckService from "../../../services/DeckService";
 import FolderService from "../../../services/FolderService";
@@ -69,18 +64,20 @@ const Home = (props) => {
 
         <div className="home-latest-reviews">
 
-            <div className="latest-reviews-title">Notifications</div>
-            <div className="latest-reviews-decks">
-                {
-                    notifications.map(notif => (
-                        <div className="home-notification">
-                            <Notification key={notif.id} data={{
-                                text: notif.text,
-                                receivedDate: notif.receivedDate
-                            }} />
+            <div className="home-user-notifications-container">
+
+                <div className="home-notifications-title">Notifications</div>
+                {notifications.map((notif) => (
+                    <div key={notif.id} className="home-user-notifcation">
+                        <div className="home-user-notifcation-header">
+                            <div className="home-user-notifcation-title">New Notification</div>
                         </div>
-                    ))
-                }
+                        <div className="home-user-notifcation-text">
+                            {notif.text}
+                        </div>
+
+                    </div>
+                ))}
             </div>
 
         </div>
