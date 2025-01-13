@@ -1,7 +1,34 @@
 
 # API Documentation: AuthenticationController
 
-## 1. `POST /api/auth/register`
+## 1. `GET /api/auth/oauth2/success`
+
+**Description**: This endpoint is invoked after a successful social login (OAuth2). It retrieves or creates a user based on the email from the OAuth2 provider and generates a JWT token for the user.
+
+#### Parameters
+- `Authentication authentication`: Contains authentication details.
+
+**Request**:  
+This endpoint does not require any request body. The authentication will be handled by Spring Security automatically.
+
+**Response**:
+- `200 OK`: The OAuth2 login is successful. A JWT token and customer data are returned.
+  ```json
+  {
+    "token": "JWT token string",
+    "customer": {
+      "id": 1,
+      "name": "John Doe",
+      "email": "user@example.com",
+      "profileCreationDate": "2025-01-03T00:00:00"
+    }
+  }
+  ```
+- `400 Bad Request`: If the request is invalid or an error occurs during processing.
+
+---
+
+## 2. `POST /api/auth/register`
 
 **Description**: Registers a new user. The user’s details (email, username, password) are provided in the request body. If a user with the given email already exists, the request will fail.
 
@@ -34,7 +61,7 @@
 
 ---
 
-## 2. `POST /api/auth/usernamePasswordLogin`
+## 3. `POST /api/auth/usernamePasswordLogin`
 
 **Description**: Logs in a user using their email and password. If successful, a JWT token is returned for authentication.
 
@@ -56,37 +83,135 @@
     "token": "JWT token string"
   }
   ```
-- `401 Unauthorized`: If the login credentials are incorrect.
+- `401 Unauthorized`: If the login credentials are incorrect or user is not validated.
 
 ---
 
-## 3. `GET /api/auth/oauth2/success`
+## 4. `POST /api/auth/verifyUser`
 
-**Description**: This endpoint is invoked after a successful social login (OAuth2). It retrieves or creates a user based on the email from the OAuth2 provider and generates a JWT token for the user.
+**Description**: Verifies a user's email by validating the verification code. The request body contains the user's email and verification code. If the code matches, the user is verified successfully.
 
-#### Parameters
-- `Authentication authentication`: Contains authentication details.
-
-**Request**:  
-This endpoint does not require any request body. The authentication will be handled by Spring Security automatically.
-
+**Request Body**:
+```json
+{
+  "email": "user@example.com",
+  "code": "a1b2c3d4"
+}
+```
 **Response**:
-- `200 OK`: The OAuth2 login is successful. A JWT token and customer data are returned.
+- `200 OK`: The verification is successful.
   ```json
-  {
-    "token": "JWT token string",
-    "customer": {
-      "id": 1,
-      "name": "John Doe",
-      "email": "user@example.com",
-      "profileCreationDate": "2025-01-03T00:00:00"
-    }
-  }
+  "user verified successfully"
   ```
-- `400 Bad Request`: If the request is invalid or an error occurs during processing.
+- `400 Bad Request`: If the user is already registered.
+  ```json
+  "user already verified"
+  ```
+- `400 Bad Request`: Verification code is incorrect.
+  ```json
+  "verification code is incorrect"
+  ```
+- `404 Bad Request`: The verification code was not found.
+  ```json
+  "verification code not found"
+  ```
+- `404 Bad Request`: Customer was not found.
+  ```json
+  "customer not found"
+  ```
+---
+## 5. `POST /api/auth/resendVerificationCode`
 
+**Description**: Resends a verification code to the provided email address. This endpoint is useful when the user has not received the verification code or the previous one expired.
+
+**Request Body**:
+```json
+{
+  "email": "user@example.com"
+}
+```
+**Response**:
+- `200 OK`: The verification code was resent successfully.
+  ```json
+  "verification code resent"
+  ```
+- `404 Bad Request`: If customer with provided email does not exist.
+  ```json
+  "customer with this email not found"
+  ```
+---
+## 6. `POST /api/auth/forgotPasswordRequest`
+
+**Description**: Sends a request when password is forgotten.
+
+**Request Body**:
+```json
+{
+  "email": "user@example.com"
+}
+```
+**Response**:
+- `200 OK`: Password reset request was sent successfully.
+  ```json
+  "password reset request sent"
+  ```
+- `404 Bad Request`: If customer with provided email does not exist.
+  ```json
+  "customer with this email not found"
+  ```
+---
+## 7. `POST /api/auth/forgotPassword`
+
+**Description**: Sets new password.
+
+**Request Body**:
+```json
+{
+  "email": "user@example.com",
+  "code": "a1b2c3d4",
+  "newPassword": "newPassword"
+}
+```
+**Response**:
+- `200 OK`: Password was reseted successfully.
+  ```json
+  "password reseted successfully"
+  ```
+- `400 Bad Request`: Verification code is incorrect.
+  ```json
+  "verification code is incorrect"
+  ```
+- `404 Bad Request`: If customer with provided email does not exist.
+  ```json
+  "customer with this email not found"
+  ```
+- `404 Bad Request`: The verification code was not found.
+  ```json
+  "verification code not found"
+  ```
 ---
 
+## 8. `POST /api/auth/changePassword`
+
+**Description**: Changes the password to the new one.
+
+**Request Body**:
+```json
+{
+  "oldPassword": "oldPassword",
+  "newPassword": "newPassword"
+}
+```
+**Response**:
+- `200 OK`: Password was changed successfully.
+  ```json
+  "password changed successfully"
+  ```
+- `400 Bad Request`: Old password is incorrect.
+  ```json
+  "old password is incorrect"
+  ```
+---
 ## Error Handling
 
 In case of an error (e.g., invalid credentials, server issue), the responses may include an appropriate error message in the response body, such as:
@@ -134,7 +259,7 @@ This endpoint retrieves a customer by their ID.
   ```json
   "No user with this id found"
   ```
- 
+
   or the customer is not found.
   ```json
   "Customer not found"
@@ -249,7 +374,7 @@ This endpoint retrieves the authenticated customer's data.
         "profilePicturePath": "/profilePicture.png"
     }
     ```
-- 400 Bad Request: 
+- 400 Bad Request:
 
   If the user is not authenticated.
   ```json
@@ -282,7 +407,7 @@ This endpoint retrieves a list of received friendships for the authenticated cus
       }
     ]
     ```
-- 400 Bad Request: 
+- 400 Bad Request:
 
   If the user is not authenticated.
   ```json
@@ -316,7 +441,7 @@ This endpoint retrieves a list of sent friendships for the authenticated custome
       }
     ]
     ```
-- 400 Bad Request: 
+- 400 Bad Request:
 
   If the user is not authenticated.
   ```json
@@ -351,7 +476,7 @@ This endpoint retrieves a list of notifications for the authenticated customer.
       }
     ]
     ```
-- 400 Bad Request: 
+- 400 Bad Request:
 
   If the user is not authenticated.
   ```json
@@ -385,7 +510,7 @@ This endpoint retrieves the root folder of the authenticated customer.
       ]   
   }
   ```
-- 400 Bad Request: 
+- 400 Bad Request:
 
   If the user is not authenticated.
   ```json
@@ -416,7 +541,7 @@ This endpoint retrieves a list of the authenticated customer's friends.
     }
   ]
   ```
-- 400 Bad Request: 
+- 400 Bad Request:
 
   If the user is not authenticated.
   ```json
@@ -568,12 +693,12 @@ This endpoint sends FriendShip offer to the other customer.
   ```json
   "No user with this email found"
   ```
- 
+
   or friend is not found.
   ```json
   "No friend with this id found"
   ```
-  
+
   or user tries to send friend request to himself
   ```json
   "You cannot send friendship request to yourself"
@@ -664,8 +789,8 @@ This endpoint retrieves flashcards from a specified deck.
     }
   ]
   ```
-  
-- 400 Bad Request: 
+
+- 400 Bad Request:
 
 If the user does not have access to the deck
   ```json
@@ -724,9 +849,9 @@ This endpoint creates a new deck in a folder.
 **Request Body:**
   ```json
     {
-      "folderId": 1,
-      "name": "fruits"
-    }
+  "folderId": 1,
+  "name": "fruits"
+}
   ```
 ---
 
@@ -766,9 +891,9 @@ This endpoint updates the name of an existing deck.
 **Request Body:**
   ```json
     {
-      "deckId": 1,
-      "name": "vegetables"
-    }
+  "deckId": 1,
+  "name": "vegetables"
+}
   ```
 
 **Response:**
@@ -789,7 +914,7 @@ This endpoint updates the name of an existing deck.
     }
   ]
   ```
-400 Bad Request: 
+400 Bad Request:
 
 If the user is not authenticated.
   ```json
@@ -822,7 +947,7 @@ Confirmation message that the deck was deleted.
 ```json
   "deck deleted"
   ```
-- 400 Bad Request: 
+- 400 Bad Request:
 
 If the user does not have permission to delete the deck
   ```json
@@ -874,7 +999,7 @@ This endpoint demonstrates a secured route where the user's email is extracted f
 - The request requires authentication (either via UsernamePasswordAuthenticationToken or OAuth2AuthenticationToken).
 
 **Response:**
-- 200 OK: 
+- 200 OK:
 
 Returns a message with the authenticated user's email.
 ```json
@@ -903,30 +1028,30 @@ This class relies on the following repositories and services:
 Creates a new flashcard in a specified deck.
 #### Parameters
 - `Authentication authentication`: Contains authentication details.
-  
+
 **Request Body:**
   ```json
     {
-      "deckId": 1,
-      "front": "vegetables",
-      "back": "warzywa"
-    }
+  "deckId": 1,
+  "front": "vegetables",
+  "back": "warzywa"
+}
   ```
 
 #### Response
-- 200 OK: 
+- 200 OK:
 
 Returns the created flashcard.
 
   ```json
     {
-      "id": 1,
-      "deckId": 1,
-      "front": "vegetables",
-      "back": "warzywa"
-    }
+  "id": 1,
+  "deckId": 1,
+  "front": "vegetables",
+  "back": "warzywa"
+}
   ```
-- 400 Bad Request: 
+- 400 Bad Request:
 
 Returns an error message if the user does not have the necessary access level or the deck is not found.
   ```json
@@ -939,27 +1064,27 @@ Returns an error message if the user does not have the necessary access level or
 Updates an existing flashcard.
 #### Parameters
 - `Authentication authentication`: Contains authentication details.
-  
+
 **Request Body:**
   ```json
     {
-      "flashcardId": 1,
-      "front": "vegetables",
-      "back": "warzywa"
-    }
+  "flashcardId": 1,
+  "front": "vegetables",
+  "back": "warzywa"
+}
   ```
 #### Response
-- 200 OK: 
+- 200 OK:
 
 Returns the updated flashcard.
 
 ```json
   {
-    "id": 1,
-    "deckId": 1,
-    "front": "vegetables",
-    "back": "warzywa"
-  }
+  "id": 1,
+  "deckId": 1,
+  "front": "vegetables",
+  "back": "warzywa"
+}
 ```
 - 400 Bad Request:
 
@@ -996,15 +1121,15 @@ Copies a flashcard to another deck.
 - `@RequestParam int deckId`: ID of the destination deck.
 - `@RequestParam int flashcardId`: ID of the flashcard to copy.
 #### Response
-- 200 OK: 
+- 200 OK:
 
 Returns a success message.
 ```json
 "copied successfully"
 ```
-- 400 Bad Request: 
+- 400 Bad Request:
 
-Returns an error message if the user does not have the necessary access level 
+Returns an error message if the user does not have the necessary access level
 for the deck or flashcard.
 ```json
 "You do not have permission to add to this deck"
@@ -1024,7 +1149,7 @@ Moves a flashcard from one deck to another.
 - `@RequestParam int destinationDeckId`: ID of the destination deck.
 - `@RequestParam int flashcardId`: ID of the flashcard to move.
 #### Response
-- 200 OK: 
+- 200 OK:
 
 Returns a success message.
 ```json
@@ -1033,7 +1158,7 @@ Returns a success message.
 
 - 400 Bad Request:
 
-Returns an error message if the user does not have the necessary access 
+Returns an error message if the user does not have the necessary access
 level for the decks or flashcard, or if the flashcard is not in the source deck.
 ```json
 "You do not have permission to edit this deck"
@@ -1080,20 +1205,20 @@ Fetches the flashcard progress data for the given ID.
 - `Authentication authentication`: Contains authentication details.
 - `@PathVariable int id`: ID of the flashcard progress to retrieve.
 #### Response
-- 200 OK: 
+- 200 OK:
 
 Returns the flashcard progress data.
 ```json
   {
-    "id": 1,
-    "flashcardId": 1,
-    "nextReview": "2025-01-04 14:23:45",
-    "valid": true
-  }
+  "id": 1,
+  "flashcardId": 1,
+  "nextReview": "2025-01-04 14:23:45",
+  "valid": true
+}
 ```
 - 400 Bad Request:
 
-Returns an error message if the user or flashcard progress is not found or 
+Returns an error message if the user or flashcard progress is not found or
 if the user does not have access.
 ```json
 "No user with this id found"
@@ -1134,14 +1259,14 @@ Retrieves the folder structure of the authenticated user.
 - **Method:** `GET`
 - **JSON View:** `JsonViewConfig.Public`
 - **Parameters:**
-    - `Authentication authentication`
-    - `page` (int, optional, default: `0`) - The page number for pagination.
-    - `size` (int, optional, default: `5`) - The size of each page.
-    - `sortBy` (String, optional, default: `id`) - The field to sort by.
-    - `ascending` (boolean, optional, default: `true`) - Sorting order.
+  - `Authentication authentication`
+  - `page` (int, optional, default: `0`) - The page number for pagination.
+  - `size` (int, optional, default: `5`) - The size of each page.
+  - `sortBy` (String, optional, default: `id`) - The field to sort by.
+  - `ascending` (boolean, optional, default: `true`) - Sorting order.
 - **Response:**
-  
-  **200 OK:** 
+
+  **200 OK:**
   The root folder structure of the authenticated user.
   ```json
   {
@@ -1162,7 +1287,7 @@ Creates a new folder for the authenticated user under a specified parent folder.
 - **Method:** `POST`
 - **Parameters:**
   - `Authentication authentication`
-  
+
   **Request Body:**
   ```json
     {
@@ -1190,7 +1315,7 @@ Updates an existing folder.
 - **Method:** `POST`
 - **Parameters:**
   - `Authentication authentication`
-  
+
   **Request Body:**
   ```json
     {
@@ -1217,8 +1342,8 @@ Deletes a folder by ID.
 - **URL:** `/delete`
 - **Method:** `DELETE`
 - **Parameters:**
-    - `Authentication authentication`
-    - `folderId` (int) - The ID of the folder to delete.
+  - `Authentication authentication`
+  - `folderId` (int) - The ID of the folder to delete.
 - **Response:**
 
   **200 OK:**
@@ -1242,12 +1367,12 @@ Retrieves all decks in a specified folder.
 - **Method:** `GET`
 - **JSON View:** `JsonViewConfig.Public`
 - **Parameters:**
-    - `Authentication authentication`
-    - `page` (int, optional, default: `0`) - The page number for pagination.
-    - `size` (int, optional, default: `5`) - The size of each page.
-    - `sortBy` (String, optional, default: `id`) - The field to sort by.
-    - `ascending` (boolean, optional, default: `true`) - Sorting order.
-    - `folderId` (int) - The ID of the folder.
+  - `Authentication authentication`
+  - `page` (int, optional, default: `0`) - The page number for pagination.
+  - `size` (int, optional, default: `5`) - The size of each page.
+  - `sortBy` (String, optional, default: `id`) - The field to sort by.
+  - `ascending` (boolean, optional, default: `true`) - Sorting order.
+  - `folderId` (int) - The ID of the folder.
 - **Response:**
 
   **200 OK** - List of decks in the folder.
@@ -1282,8 +1407,8 @@ Retrieves all child folders of a specified folder.
 - **Method:** `GET`
 - **JSON View:** `JsonViewConfig.Public`
 - **Parameters:**
-    - `Authentication authentication`
-    - `folderId` (int) - The ID of the folder.
+  - `Authentication authentication`
+  - `folderId` (int) - The ID of the folder.
 - **Response:**
 
   **200 OK** - List of child folders.
@@ -1319,8 +1444,8 @@ Retrieves access levels for a specified folder.
 - **Method:** `GET`
 - **JSON View:** `JsonViewConfig.Public`
 - **Parameters:**
-    - `Authentication authentication`
-    - `folderId` (int) - The ID of the folder.
+  - `Authentication authentication`
+  - `folderId` (int) - The ID of the folder.
 - **Response:**
 
   **200 OK** - Access levels for the folder.
@@ -1375,8 +1500,8 @@ Retrieves details of a specific friendship by its ID.
 - **Method:** `GET`
 - **JSON View:** `JsonViewConfig.Public`
 - **Parameters:**
-    - `Authentication authentication`
-    - `id` (int) - The ID of the friendship to retrieve.
+  - `Authentication authentication`
+  - `id` (int) - The ID of the friendship to retrieve.
 - **Response:**
 
   **200 OK** - Details of the friendship.
@@ -1562,8 +1687,8 @@ Generates a PDF document for a specific deck by its ID.
   **200 OK** - Returns a byte array containing the PDF file. Includes headers for file download.
   - `Content-Disposition`: `attachment; filename={deckName}.pdf`
   - `Content-Type`: `application/pdf`
-  
-  **400 Bad Request** - User with the specified ID was not found. 
+
+  **400 Bad Request** - User with the specified ID was not found.
   ```json
   "No user with this id found"
   ```
@@ -1580,8 +1705,8 @@ Generates a PDF document for a specific deck by its ID.
 ## Implementation Details
 - The endpoint uses the `PdfGenerator` service to generate a PDF based on the data contained in the specified `Deck`.
 - HTTP headers are set to:
-    - Trigger a file download with the name `{deckName}.pdf`.
-    - Indicate the file type as a PDF.
+  - Trigger a file download with the name `{deckName}.pdf`.
+  - Indicate the file type as a PDF.
 - If the deck with the given ID does not exist, a `404 Not Found` status is returned.
 
 ---
@@ -1605,8 +1730,8 @@ Retrieve flashcards from a specific deck to be reviewed.
 - **Request Body:**
 ```json
 {
-    "deckId": 123,
-    "packageSize": 10
+  "deckId": 123,
+  "packageSize": 10
 }
 ```
 - **Response:**
@@ -1696,7 +1821,7 @@ Retrieve a review log by its ID.
   - `Authentication authentication`
   - `id` (int) - The ID of the review log to retrieve.
 - **Response:**
-    - **200 OK** - Returns the review log.
+  - **200 OK** - Returns the review log.
     ```json
     {
       "id": 1,
@@ -1706,7 +1831,7 @@ Retrieve a review log by its ID.
      "userAnswer": 1
     }
     ```
-    - **400 Bad Request** - User not found or Review log not found or access denied to the flashcard.
+  - **400 Bad Request** - User not found or Review log not found or access denied to the flashcard.
     ```json
     "No User with this id found"
     ```
@@ -1727,20 +1852,20 @@ Delete a review log by its ID.
   - `Authentication authentication`
   - `reviewLogId` (int) - ID of the review log to delete.
 - **Response:**
-    - **200 OK** - Confirms successful deletion.
-      ```json
-      "ReviewLog deleted successfully"
-      ```
-    - **400 Bad Request** - User not found or Review log not found or access denied to the flashcard.
-      ```json
-      "No User with this id found"
-      ```
-      ```json
-      "No reviewLog with this id found"
-      ```
-      ```json
-      "This reviewLog does not belong to the user"
-      ```
+  - **200 OK** - Confirms successful deletion.
+    ```json
+    "ReviewLog deleted successfully"
+    ```
+  - **400 Bad Request** - User not found or Review log not found or access denied to the flashcard.
+    ```json
+    "No User with this id found"
+    ```
+    ```json
+    "No reviewLog with this id found"
+    ```
+    ```json
+    "This reviewLog does not belong to the user"
+    ```
 ---
 
 # API Documentation: UserPreferencesController
@@ -1759,7 +1884,7 @@ Retrieve a user's preferences.
 - **Parameters:**
   - `Authentication authentication`
 - **Response:**
-    - **200 OK** - Returns the user preferences.
+  - **200 OK** - Returns the user preferences.
     ```json
     {
       "id": 1,
@@ -1768,7 +1893,7 @@ Retrieve a user's preferences.
       "language": 2
     }
     ```
-    - **400 Bad Request** - User not found, UserPreferences not found, User preferences do not belong to the authenticated user.
+  - **400 Bad Request** - User not found, UserPreferences not found, User preferences do not belong to the authenticated user.
     ```json
     "No User with this id found"
     ```
@@ -1784,13 +1909,13 @@ Update an existing user's preferences.
 - **Request Body:**
 ```json
 {
-    "userPreferencesId": 1,
-    "darkMode": false,
-    "language": 1
+  "userPreferencesId": 1,
+  "darkMode": false,
+  "language": 1
 }
 ```
 - **Response:**
-    - **200 OK** - Returns the updated user preferences.
+  - **200 OK** - Returns the updated user preferences.
     ```json
     {
       "id": 1,
@@ -1799,7 +1924,7 @@ Update an existing user's preferences.
       "language": 2
     }
     ```
-    - **400 Bad Request** - User not found, UserPreferences not found, User preferences do not belong to the authenticated user.
+  - **400 Bad Request** - User not found, UserPreferences not found, User preferences do not belong to the authenticated user.
     ```json
     "No User with this id found"
     ```
@@ -1833,20 +1958,20 @@ Retrieve the statistics for the user.
 - **Parameters:**
   - `Authentication authentication`
 - **Response:**
-    - **200 OK** - Returns the user statistics object.
-      ```json
-      {
-        "id": 1,
-        "userId": 3,
-        "totalTimeSpent": 100,
-        "loginCount": 2,
-        "lastLogin": "2025-01-04 14:23:45"
-      }
-      ```
-    - **400 Bad Request**:  User not found, User statistics not found, User statistics do not belong to the authenticated user.
-      ```json
-      "No User with this id found"
-      ```
+  - **200 OK** - Returns the user statistics object.
+    ```json
+    {
+      "id": 1,
+      "userId": 3,
+      "totalTimeSpent": 100,
+      "loginCount": 2,
+      "lastLogin": "2025-01-04 14:23:45"
+    }
+    ```
+  - **400 Bad Request**:  User not found, User statistics not found, User statistics do not belong to the authenticated user.
+    ```json
+    "No User with this id found"
+    ```
 ---
 
 ### 2. **Update User Statistics**
@@ -1867,15 +1992,15 @@ Update an existing user statistics record.
   ```
 
 - **Response:**
-    - **200 OK**:  Returns the updated user statistics object.
-    - **400 Bad Request**: User not found, User statistics not found, User statistics do not belong to the authenticated user.
-      ```json
-      "No User with this id found"
-      ```
-      ```json
-      "No UserStatistics with this id found"
-      ```
-      ```json 
-      "This UserStatistics do not belong to the user"
-      ```
+  - **200 OK**:  Returns the updated user statistics object.
+  - **400 Bad Request**: User not found, User statistics not found, User statistics do not belong to the authenticated user.
+    ```json
+    "No User with this id found"
+    ```
+    ```json
+    "No UserStatistics with this id found"
+    ```
+    ```json 
+    "This UserStatistics do not belong to the user"
+    ```
 ---
