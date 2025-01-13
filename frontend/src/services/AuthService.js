@@ -29,6 +29,16 @@ const AuthService = {
         }
     },
 
+    verifyEmail: async (verificationRequest) => {
+        try {
+            const response = await api.post('/verifyUser', verificationRequest);
+            return response.data;
+        } catch(error) {
+            console.error('Error during registration: ', error.response?.data || error.message);
+            throw error;
+        }
+    },
+
     logout: () => {
         localStorage.removeItem('jwtToken');
     },
