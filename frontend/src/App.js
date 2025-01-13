@@ -20,6 +20,7 @@ import PasswordReset from './Components/pages/ForgotPassword/PasswordReset';
 import PrivateRoute from './Components/PrivateRoute/PrivateRoute';
 import { useEffect, useState } from 'react';
 import CustomerService from './services/CustomerService';
+import VerificationSuccess from './Components/pages/VerificationSuccess/VerificationSuccess';
 
 function App() {
 
@@ -44,7 +45,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<PrivateRoute><Home/></PrivateRoute>} />
-          <Route path="/settings" element={<PrivateRoute><Settings details={userData} /></PrivateRoute>} />
+          <Route path="/settings" element={<PrivateRoute><Settings /></PrivateRoute>} />
           <Route path="/statistics" element={<PrivateRoute><Statistics /></PrivateRoute>} />
           <Route path="/decks" element={<PrivateRoute><Decks details={userData} /></PrivateRoute>} />
           <Route path="/share" element={<PrivateRoute><Share details={userData} /></PrivateRoute>} />
@@ -56,6 +57,7 @@ function App() {
           <Route path="/register" element={<Register/>} />
           <Route path="/forgot-password" element={<ForgotPassword/>} />
           <Route path="/password-reset" element={<PasswordReset/>} />
+          <Route path="/verify-email/:token" element={<VerificationSuccess/>} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>

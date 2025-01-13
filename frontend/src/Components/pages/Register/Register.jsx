@@ -18,7 +18,8 @@ const Register = () => {
         try {
             console.log(`Passing to the backend: ${{username, email, password}}`);
             const response = await AuthService.registerUser({username, email, password});
-            navigate("/")
+            alert("Click verification link sent to your email to create an account");
+            navigate("/login");
         } catch (error) {
             console.log(error.response);
             setError(error.response ? error.response.data : "An error occurred");
