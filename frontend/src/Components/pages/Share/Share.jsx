@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Navbar from "../../Navbar/Navbar";
-import './Import.css';
+import './Share.css';
 import testDecks from "../../../assets/mockData/testDecks";
 
 const Import = (props) => {

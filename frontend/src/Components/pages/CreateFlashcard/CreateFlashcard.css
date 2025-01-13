@@ -55,7 +55,7 @@ h2 {
 
 .flashcard-inputs {
     display: flex;
-    width: 98%; /* Adjust to parent container width */
+    width: 100%; /* Adjust to parent container width */
     flex-direction: column;
     gap: 10px;
 }

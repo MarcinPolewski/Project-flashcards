@@ -9,19 +9,20 @@
 
 .latest-reviews-title {
     font-size: 1.5em;
+    margin-bottom: 15px;
 }
 
 .latest-reviews-decks {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin: 10px 100px;
     gap: 20px;
-    margin: 10px 0;
 }
 
 .latest-review-deck {
-    flex: 1 1 300px;
-    max-width: 300px;
-    border: 1px solid var(--section-border);
+    flex: 1;
+    border: 1px solid #ccc;
     border-radius: 10px;
     padding: 20px;
     text-align: center;
@@ -48,15 +49,7 @@
 }
 
 .home-my-decks {
-    margin-top: 50px;
-    display: flex;
-    flex-direction: column;
-}
-
-.my-decks-container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
+    margin-top: 20px;
 }
 
 .my-decks-buttons {
@@ -88,76 +81,4 @@
     width: 100px;
     height: 100px;
     margin: 0 auto;
-}
-
-/* Powiadomienia */
-.home-user-notifications-container {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-.home-notifications-title {
-    font-size: 1.5em;
-}
-
-.home-user-notifcations {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-/* Wygląd powiadomienia */
-.home-user-notifcation {
-    padding: 20px;
-    border: 1px solid var(--section-border);
-    border-radius: 10px;
-    box-shadow: 0px 4px 6px var(--box-shadow);
-    position: relative;
-}
-
-.home-user-notifcation-header {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.home-user-notifcation-text {
-    font-size: 16px;
-    color: var(--text-color);
-    margin-top: 5px;
-}
-
-@media (max-width: 768px) {
-    .latest-reviews-decks {
-        grid-template-columns: 1fr;
-        gap: 10px;
-    }
-
-    .my-decks-container {
-        grid-template-columns: 1fr;
-    }
-
-    .home-notifications-title, .latest-reviews-title {
-        font-size: 20px;
-    }
-
-    .home-user-notifcations div {
-        font-size: 14px;
-    }
-
-    .continue-button {
-        max-width: 100%;
-    }
-}
-
-@media (min-width: 769px) {
-    .latest-reviews-decks {
-        grid-template-columns: repeat(3, 1fr);
-        margin-left: 8vh;
-    }
-
-    .my-decks-container {
-        grid-template-columns: repeat(3, 1fr);
-    }
 }

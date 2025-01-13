@@ -99,12 +99,3 @@
         font-size: 14px;
     }
 }
-
-
-@media (max-width: 768px) {
-    .avatar img {
-
-        max-width: 8vh;
-        min-height: 8vh;
-    }
-}

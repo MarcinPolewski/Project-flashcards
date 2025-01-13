@@ -1,62 +1,99 @@
 .folder {
-    padding: 20px;
+    padding: 30px;
     border: 1px solid var(--section-border);
     border-radius: 10px;
     box-shadow: 0px 4px 6px var(--box-shadow);
     position: relative;
     margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    background-color: var(--folder-background);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.folder:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 8px 16px var(--box-shadow);
 }
 
 .folder-header {
     display: flex;
-    align-items: center;
-    gap: 10px;
+    justify-content: space-between;
+    width: 100%;
 }
 
 .folder-title {
-    font-size: 1.2em;
+    font-size: 1.5rem;
     font-weight: bold;
-}
-
-.folder-info {
-    color: var(--folder-info);
-    margin-top: 5px;
-}
-
-.folder-state {
-    display: flex;
-    gap: 15px;
-    margin-top: 15px;
-}
-
-.folder-state-item {
-    background: var(--folder-state-item);
-    padding: 5px 10px;
-    border-radius: 5px;
+    color: var(--text-color);
 }
 
 .folder-actions {
-    position: relative;
-    margin-top: 20px;
+    display: flex;
+    gap: 15px;
+    margin-top: 15px;
+    width: 100%;
 }
 
-.folder-action-button {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    background: var(--folder-action-button);
+.folder-page-btn {
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: 5px;
     border: none;
     cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
-.folder-dropdown {
-    display: none;
-    position: absolute;
-    top: 40px;
-    left: 0;
-    background: var(--folder-dropdown);
-    border: 1px solid var(--section-border);
-    border-radius: 5px;
-    box-shadow: 0px 4px 6px var(--box-shadow);
+.folder-page-study-btn {
+    background-color: var(--primary-button-bg);
+    color: var(--primary-button-text);
+}
+
+.folder-page-study-btn:hover {
+    background-color: var(--primary-button-bg-hover);
+}
+
+.folder-page-edit-btn {
+    background-color: var(--edit-button-bg);
+    color: var(--edit-button-text);
+}
+
+.folder-page-edit-btn:hover {
+    background-color: var(--edit-button-bg-hover);
+}
+
+.folder-page-delete-btn {
+    background-color: var(--delete-button-bg);
+    color: var(--delete-button-text);
+}
+
+.folder-page-delete-btn:hover {
+    background-color: var(--delete-button-bg-hover);
+}
+
+@media (max-width: 480px) {
+    .folder {
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+
+    .folder-title {
+        font-size: 1.2rem;
+    }
+
+    .folder-actions {
+        flex-direction: column;
+        gap: 6px; /* Decrease gap for very small screens */
+    }
+
+    .folder-page-btn {
+        width: 100%;
+        padding: 10px 0; /* Adjust padding for touch interaction */
+        font-size: 1rem; /* Adjust font size for readability */
+        font-size: 0.9rem; /* Smaller font for very small screens */
+        padding: 8px 0; /* Smaller padding */
+    }
 }
 

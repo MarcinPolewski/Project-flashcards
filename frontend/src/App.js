@@ -7,7 +7,7 @@ import Home from './Components/pages/Home/Home';
 import Settings from './Components/pages/Settings/Settings';
 import CreateFlashcard from './Components/pages/CreateFlashcard/CreateFlashcard';
 import Decks from './Components/pages/Decks/Decks';
-import Import from './Components/pages/Import/Import';
+import Share from './Components/pages/Share/Share';
 import Statistics from './Components/pages/Statistics/Statistics';
 import Study from './Components/pages/Study/Study';
 import FolderPage from './Components/pages/FolderPage/FolderPage';
@@ -43,14 +43,16 @@ function App() {
     <ThemeProvider>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<PrivateRoute><Home details={userData}/> </PrivateRoute>} />
-          <Route path="/settings" element={<PrivateRoute><Settings details={userData}/> </PrivateRoute>} />
-          <Route path="/statistics" element={<PrivateRoute><Statistics details={userData}/> </PrivateRoute>} />
-          <Route path="/decks" element={<PrivateRoute><Decks details={userData}/> </PrivateRoute>} />
-          <Route path="/import" element={<PrivateRoute><Import details={userData}/> </PrivateRoute>} />
-          <Route path="/create-flashcard" element={<PrivateRoute><CreateFlashcard details={userData}/> </PrivateRoute>} />
-          <Route path="/folder/:id" element={<PrivateRoute><FolderPage details={userData}/></PrivateRoute>} />
-          <Route path="/deck/:id" element={<PrivateRoute><DeckPage details={userData}/> </PrivateRoute>} />
+          {/*<Route path="/" element={<Home details={APIdummy}/>} />*/}
+          <Route path="/" element={<Home details={APIdummy}/>} />
+          <Route path="/settings" element={<Settings details={APIdummy} />} />
+          <Route path="/statistics" element={<Statistics details={APIdummy} />} />
+          <Route path="/decks" element={<Decks details={APIdummy} />} />
+          <Route path="/share" element={<Share details={APIdummy} />} />
+          <Route path="/study/:deckId" element={<Study details={APIdummy} />} />
+          <Route path="/deck/:deckId" element={<DeckPage details={APIdummy} />} />
+          <Route path="/folder/:id" element={<FolderPage details={APIdummy} />} />
+          <Route path="/create-flashcard" element={<CreateFlashcard details={APIdummy} />} />
           <Route path="/login" element={<Login/>} />
           <Route path="/register" element={<Register/>} />
           <Route path="/forgot-password" element={<ForgotPassword/>} />

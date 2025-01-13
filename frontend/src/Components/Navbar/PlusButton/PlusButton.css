@@ -73,7 +73,7 @@
 .plus-button-create-folder input[type="text"] {
     background-color: var(--popup-background);
     color: var(--text-color);
-    width: 88%;
+    width: 100%;
     padding: 10px;
     border: 2px solid var(--section-border);
     border-radius: 15px;
