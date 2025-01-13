@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 public class JsonViewConfig {
     public static class Public {}
     public static class Internal extends Public {}
+    public static class Secure extends Internal {}
 
     public static class BasicStructures extends Internal {}
 

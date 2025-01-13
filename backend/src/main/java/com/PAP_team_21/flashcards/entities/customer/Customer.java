@@ -8,6 +8,7 @@ import com.PAP_team_21.flashcards.entities.folderAccessLevel.FolderAccessLevel;
 import com.PAP_team_21.flashcards.entities.friendship.Friendship;
 import com.PAP_team_21.flashcards.entities.notification.Notification;
 import com.PAP_team_21.flashcards.entities.reviewLog.ReviewLog;
+import com.PAP_team_21.flashcards.entities.sentVerificationCodes.SentVerificationCode;
 import com.PAP_team_21.flashcards.entities.userPreferences.UserPreferences;
 import com.PAP_team_21.flashcards.entities.userStatistics.UserStatistics;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -39,6 +40,7 @@ public class Customer {
     private String email;
 
     @Column(name = "password_hash")
+    @JsonView(JsonViewConfig.Secure.class)
     private String passwordHash;
 
     @Column(name = "username")
@@ -46,22 +48,31 @@ public class Customer {
     private String username;
 
     @Column(name = "account_expired")
+    @JsonView(JsonViewConfig.Internal.class)
     private boolean accountExpired;
 
     @Column(name = "account_locked")
+    @JsonView(JsonViewConfig.Internal.class)
     private boolean accountLocked;
 
     @Column(name = "credentials_expired")
+    @JsonView(JsonViewConfig.Internal.class)
     private boolean credentialsExpired;
 
     @Column(name = "enabled")
+    @JsonView(JsonViewConfig.Internal.class)
     private boolean enabled;
 
     @Column(name = "profile_creation_date")
+    @JsonView(JsonViewConfig.Internal.class)
     private LocalDateTime profileCreationDate;
 
     @Column(name = "profile_picture_path")
+    @JsonView(JsonViewConfig.Internal.class)
     private String profilePicturePath;
+
+    @OneToOne(mappedBy="customer", cascade = CascadeType.ALL)
+    private SentVerificationCode sentVerificationCode;
 
     @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL)
     private UserPreferences userPreferences;
@@ -89,7 +100,7 @@ public class Customer {
                         CascadeType.DETACH, CascadeType.REFRESH})
     private List<Authority> authorities;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name="root_folder_id")
     private Folder rootFolder;
 
@@ -102,6 +113,22 @@ public class Customer {
         this.passwordHash = passwordHash;
         this.profileCreationDate = LocalDateTime.now();
         this.rootFolder = new Folder("ROOT", this);
+        this.profilePicturePath = null;
+
+        if(folderAccessLevels == null) {
+            folderAccessLevels = new ArrayList<>();
+        }
+
+        this.folderAccessLevels.add(this.rootFolder.getAccessLevels().get(0));
+    }
+
+    public Customer(String email, String username, String passwordHash, String profilePicturePath) {
+        this.email = email;
+        this.username = username;
+        this.passwordHash = passwordHash;
+        this.profileCreationDate = LocalDateTime.now();
+        this.rootFolder = new Folder("ROOT", this);
+        this.profilePicturePath = profilePicturePath;
 
         if(folderAccessLevels == null) {
             folderAccessLevels = new ArrayList<>();

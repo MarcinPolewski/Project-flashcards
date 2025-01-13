@@ -11,7 +11,7 @@ const Navbar = (props) => {
 
     const navigate = useNavigate();
 
-    const {avatar, username, email} = props.details;
+    const {username, email, avatar} = props.details;
 
     return <div className="navbar">
         <div className="navbar-container">

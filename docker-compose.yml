@@ -8,7 +8,8 @@ services:
     ports:
       - "80:80" # @Kacper, sprawdź czy port odpowiada
     networks:
-      - front-network
+      front-network:
+        ipv4_address: 172.19.0.12
 
   backend-service:
     build: ./backend
@@ -16,13 +17,15 @@ services:
       database:
         condition: service_healthy
     networks:
-      - back-network
-      - front-network
+      back-network:
+        ipv4_address: 172.18.0.10
+      front-network:
+        ipv4_address: 172.19.0.10
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8080/actuator/health" ]
-      interval: 5s
+      interval: 10s
       timeout: 10s
-      retries: 5
+      retries: 20
     ports:
       - "8080:8080" # @Kacper, sprawdź czy port odpowiada
     secrets:
@@ -35,12 +38,15 @@ services:
       - spring_security_user_password
       - spring_security_user_username
       - jwt_secret_key
+      - email_email
+      - email_password
 
   database:
     build: ./database
     hostname: mysql_database
     networks:
-      - back-network
+      back-network:
+        ipv4_address: 172.18.0.11
     environment:
       MYSQL_ROOT_PASSWORD_FILE: /run/secrets/db_root_password
       MYSQL_USER_FILE: /run/secrets/db_user_login
@@ -50,9 +56,9 @@ services:
       - --mysql-native-password=ON
     healthcheck:
       test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot" ]
-      interval: 5s
+      interval: 10s
       timeout: 10s
-      retries: 5
+      retries: 20
     volumes:
       - db-data:/var/lib/mysql
     secrets:
@@ -84,9 +90,20 @@ secrets:
     file: ./secrets/spring_security_password.txt
   spring_security_user_username:
     file: ./secrets/spring_security_username.txt
-
+  email_email:
+    file: ./secrets/email_application_email.txt
+  email_password:
+    file: ./secrets/email_application_password.txt
 
 
 networks:
   back-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.18.0.0/16
   front-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.19.0.0/16

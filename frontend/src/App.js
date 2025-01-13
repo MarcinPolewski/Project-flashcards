@@ -13,29 +13,13 @@ import Study from './Components/pages/Study/Study';
 import FolderPage from './Components/pages/FolderPage/FolderPage';
 import DeckPage from './Components/pages/DeckPage/DeckPage';
 
-/* Avatar for testing */
-import testAvatar from './assets/test/test-avatar.png';
 import Login from './Components/pages/Login/Login';
 import Register from './Components/pages/Register/Register';
 import ForgotPassword from './Components/pages/ForgotPassword/ForgotPassword';
 import PasswordReset from './Components/pages/ForgotPassword/PasswordReset';
 import PrivateRoute from './Components/PrivateRoute/PrivateRoute';
 import { useEffect, useState } from 'react';
-import { getUserData } from './services/userService';
-
-const APIdummy =
-
-  /* debug */
-
-  {
-    avatar: testAvatar,
-    username: "Kacper",
-    email: "kacper@polska.pl",
-    daysLearning: 212, longestStreak: 20, currentStreak: 2
-  }
-
-  /* this will be fetched from API*/
-
+import CustomerService from './services/CustomerService';
 
 function App() {
 
@@ -44,18 +28,17 @@ function App() {
   useEffect(() => {
       const fetchUserData = async () => {
         try {
-          const data = await getUserData();
+          const data = await CustomerService.getSelf();
           setUserData(data);
+          /* mock avatar */
         } catch (error) {
           console.error("Error fetching user data", error);
         }
-      }
-  },)
+      };
+      fetchUserData();
+  },[])
 
   return (
-
-    /* ATM no sections and no routing */
-
     <OverlayProvider>
     <ThemeProvider>
       <BrowserRouter>
@@ -74,8 +57,6 @@ function App() {
           <Route path="/register" element={<Register/>} />
           <Route path="/forgot-password" element={<ForgotPassword/>} />
           <Route path="/password-reset" element={<PasswordReset/>} />
-          {/*<Route path="/folder/:id" element={<PrivateRoute><FolderPage details={APIdummy}/></PrivateRoute>} />
-          <Route path="/deck/:id" element={<PrivateRoute><DeckPage details={APIdummy}/> </PrivateRoute>} />*/}
         </Routes>
       </BrowserRouter>
     </ThemeProvider>

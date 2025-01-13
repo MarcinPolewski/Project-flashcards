@@ -6,10 +6,13 @@ import './DeckPage.css';
 
 import Navbar from '../../Navbar/Navbar';
 import PieChart from '../../Charts/PieChart/PieChart';
+import DeckService from '../../../services/DeckService';
+import FlashcardService from '../../../services/FlashcardService';
 
 const DeckPage = (props) => {
     const { deckId } = useParams();
     const [deck, setDeck] = useState(null);
+    const [deckProgress, setDeckProgress] = useState(null);
     const [flashcards, setFlashcards] = useState([]);
 
     useEffect(() => {
@@ -35,9 +38,27 @@ const DeckPage = (props) => {
     };
 
     const handleDelete = (flashcardId) => {
+        const response = FlashcardService.deleteFlashcard(flashcardId)
         setFlashcards(flashcards.filter(flashcard => flashcard.id !== flashcardId));
-        console.log(`Deleted flashcard with id ${flashcardId}`);
     };
+
+    useEffect(() => {
+        const fetchDeckData = async () => {
+            try {
+                const foundDeck = await DeckService.getDeck(id);
+                setDeck(foundDeck);
+    
+                const folderFlashcards = await DeckService.getFlashcards(id);
+                setFlashcards(folderFlashcards);
+    
+                const foundDeckProgress = await DeckService.getDeckProgress(id);
+                setDeckProgress(foundDeckProgress);
+            } catch (error) {
+                console.error("Error fetching deck data:", error);
+            }
+        };
+        fetchDeckData();
+    }, [id]);
 
     if (!deck) return <p>Deck not found!</p>;
 

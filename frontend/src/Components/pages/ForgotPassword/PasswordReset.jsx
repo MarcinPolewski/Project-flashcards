@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import AuthSection from "../../AuthSection/AuthSection";
 import { useNavigate } from "react-router-dom";
-import { handlePasswordReset } from "../../../services/authService";
+import AuthService from "../../../services/AuthService";
 
 const PasswordReset = () => {
 
@@ -54,7 +54,7 @@ const PasswordReset = () => {
         }
 
         try {
-            await handlePasswordReset(state.password);
+            await AuthService.handlePasswordReset(state.password);
             alert("Password reset successfully!");
             navigate("/login");
         } catch (error) {

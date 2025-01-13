@@ -1,64 +1,114 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../../Navbar/Navbar";
 import './CreateFlashcard.css';
-import testDecks from "../../../assets/mockData/testDecks";
+
+
+import FlashcardService from '../../../services/FlashcardService';
+import FolderService from "../../../services/FolderService";
 
 const CreateFlashcard = (props) => {
+
+    const [deckId, setDeckId] = useState(null);
+    const [front, setFront] = useState("");
+    const [back, setBack] = useState("");
+
+    const [folders, setFolders] = useState([]);
+    const [decks, setDecks] = useState([]);
+
+    const [pickedFolder, setPickedFolder] = useState(null);
+    const [pickedDeck, setPickedDeck] = useState(null);
+
     const navigate = useNavigate();
 
-    // State for the selected deck and flashcard input
-    const [selectedDeck, setSelectedDeck] = useState(testDecks[0]?.title || "");
-    const [frontText, setFrontText] = useState("");
-    const [backText, setBackText] = useState("");
-
-    // Function to handle adding a flashcard
-    const handleAddFlashcard = () => {
-        if (!frontText.trim() || !backText.trim()) {
-            alert("Both front and back fields are required!");
+    const handleAddFlashcard = async () => {
+        if (!front.trim() || !back.trim()) {
+            alert("Both 'Front' and 'Back' fields must be filled.");
             return;
         }
-
-        // Find the deck to update
-        const updatedDecks = testDecks.map((deck) => {
-            if (deck.title === selectedDeck) {
-                return {
-                    ...deck,
-                    flashcards: [
-                        ...(deck.flashcards || []), // Add to existing flashcards
-                        { front: frontText, back: backText }, // New flashcard
-                    ],
-                };
-            }
-            return deck;
-        });
-
-        console.log("Updated Decks:", updatedDecks);
-
-        // Clear the input fields
-        setFrontText("");
-        setBackText("");
+        
+        try {
+            await FlashcardService.createFlashcard(deckId, front, back);
+            navigate("/");
+        } catch (error) {
+            console.error("Error creating flashcard:", error);
+        }
     };
 
+    const handleFolderChange = async (folderId) => {
+        setPickedFolder(folderId);
+        setPickedDeck(null);
+        setDeckId(null);
+        const newDecks = await FolderService.getDecksInFolder(folderId);
+        setDecks(newDecks);
+    }
+
+    const handleDeckChange = (deckId) => {
+        setPickedDeck(deckId);
+        setDeckId(deckId);
+    }
+
+    useEffect(() => {
+        const fetchFolders = async () => {
+            const folderStructure = await FolderService.getFolderStructure();
+            setFolders(folderStructure);
+        };
+        fetchFolders();
+    }, []);
+
     return (
-        <div className="main-container">
+        <div>
             <Navbar details={props.details} />
             <div className="create-flashcard">
+
                 <div className="flashcard-container">
-                    <h2>Create Flashcard</h2>
+
+                        <div className="inputs-container">
+                            <div className="input-group">
+                                <label htmlFor="deck">Choose Deck</label>
+                                <select
+                                    id="deck"
+                                    className="dropdown"
+                                    value={pickedDeck}
+                                    onChange={(e) => setPickedDeck(e.target.value)}
+                                >
+                                    {decks.map((deck) => (
+                                        <option key={deck.id} value={deck.name}>
+                                            {deck.name}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                        </div>
 
                     <div className="inputs-container">
                         <div className="input-group">
-                            <label htmlFor="deck">Choose Deck</label>
+                            <label htmlFor="deck"> Choose Folder </label>
                             <select
                                 id="deck"
                                 className="dropdown"
-                                value={selectedDeck}
-                                onChange={(e) => setSelectedDeck(e.target.value)}
+                                onChange={(e) => handleFolderChange(e.target.value)}
+                                value={pickedFolder || ''}
                             >
-                                {testDecks.map((deck, index) => (
-                                    <option key={index} value={deck.title}>
-                                        {deck.title}
+                                <option value="" disabled>Select a folder</option>
+                                {folders.map((folder) => (
+                                    <option key={folder.id} value={folder.id}>
+                                        {folder.name}
+                                    </option>
+                                ))}
+                            </select>
+                            <label htmlFor="deck"> Choose Deck </label>
+                            <select
+                                id="deck"
+                                className="dropdown"
+                                onChange={(e) => handleDeckChange(e.target.value)}
+                                value={pickedDeck || ''}
+                                disabled={!pickedFolder}
+                            >
+                                <option value="" disabled>Select a deck</option>
+                                {decks.map((deck) => (
+                                    <option key={deck.id} value={deck.id}>
+                                        {deck.name}
                                     </option>
                                 ))}
                             </select>
@@ -68,26 +118,29 @@ const CreateFlashcard = (props) => {
                             <textarea
                                 placeholder="Front"
                                 className="textarea"
-                                value={frontText}
-                                onChange={(e) => setFrontText(e.target.value)}
+                                value={front}
+                                onChange={(e) => setFront(e.target.value)}
                             />
                             <textarea
                                 placeholder="Back"
                                 className="textarea"
-                                value={backText}
-                                onChange={(e) => setBackText(e.target.value)}
+                                value={back}
+                                onChange={(e) => setBack(e.target.value)}
                             />
                         </div>
                     </div>
 
                     <div className="button-group">
-                        <button className="cancel-button" onClick={() => navigate("/")}>
-                            Cancel
-                        </button>
-                        <button className="add-button" onClick={handleAddFlashcard}>
+                        <button className="cancel-button" onClick={() => navigate("/")}> Cancel </button>
+                        <button
+                            className="add-button"
+                            onClick={handleAddFlashcard}
+                            disabled={!pickedDeck || !front.trim() || !back.trim()}
+                        >
                             Add
                         </button>
                     </div>
+
                 </div>
             </div>
         </div>

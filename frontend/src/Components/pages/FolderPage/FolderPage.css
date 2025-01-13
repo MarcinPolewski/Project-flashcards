@@ -221,5 +221,47 @@
 .folder-page-edit-btn,
 .folder-page-delete-btn,
 .folder-page-study-btn {
-    margin-left: 0;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    font-size: 0.9rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.folder-page-edit-btn:hover,
+.folder-page-delete-btn:hover,
+.folder-page-study-btn:hover {
+    background-color: #0056b3;
+}
+
+.folder-page-delete-btn {
+    background-color: #dc3545;
+}
+
+.folder-page-delete-btn:hover {
+    background-color: #c82333;
+}
+
+.folder-page-study-btn {
+    background-color: #28a745;
+}
+
+.folder-page-study-btn:hover {
+    background-color: #218838;
+}
+
+
+@media (max-width: 1024px) {
+    .folder-page-deck-list {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .folder-page-deck-list {
+        grid-template-columns: 1fr;
+    }
 }

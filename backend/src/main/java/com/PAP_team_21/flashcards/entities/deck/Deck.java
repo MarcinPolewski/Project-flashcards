@@ -1,12 +1,15 @@
 package com.PAP_team_21.flashcards.entities.deck;
 
 import com.PAP_team_21.flashcards.AccessLevel;
+import com.PAP_team_21.flashcards.entities.JsonViewConfig;
 import com.PAP_team_21.flashcards.entities.customer.Customer;
 import com.PAP_team_21.flashcards.entities.folder.Folder;
 import com.PAP_team_21.flashcards.entities.flashcard.Flashcard;
+import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -21,12 +24,15 @@ public class Deck {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
+    @JsonView(JsonViewConfig.Public.class)
     private int id;
 
     @Column(name = "name")
+    @JsonView(JsonViewConfig.Public.class)
     private String name;
 
     @OneToMany(mappedBy = "deck", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonView(JsonViewConfig.BasicStructures.class)
     private List<Flashcard> flashcards;
 
     @ManyToMany
@@ -35,6 +41,7 @@ public class Deck {
             joinColumns = @JoinColumn(name = "deck_id"),
             inverseJoinColumns = @JoinColumn(name = "folder_id")
     )
+    @JsonView(JsonViewConfig.Internal.class)
     private List<Folder> folders;
 
     public static Comparator<Deck> comparatorBy(String fieldName, boolean ascending) throws IllegalArgumentException
