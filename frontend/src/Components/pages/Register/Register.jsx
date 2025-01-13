@@ -24,7 +24,7 @@ const Register = () => {
     }
 
     return <AuthSection>
-        <div className="auth-auth-container">
+        <div className="auth-container">
             <h2>Sign up</h2>
 
             <div className="auth-social-signin">
@@ -38,7 +38,7 @@ const Register = () => {
             {error && <p style={{ color: "red" }}>{error}</p>}
             <form onSubmit={handleSubmit}>
                 <div>
-                <label htmlFor="username">Username</label>
+                <label htmlFor="username" className="auth-email-signin-label">Username</label>
                 <input
                     type="text"
                     id="username"
@@ -49,7 +49,7 @@ const Register = () => {
                 </div>
 
                 <div>
-                <label htmlFor="email">Email address</label>
+                <label htmlFor="email" className="auth-email-signin-label">Email address</label>
                 <input
                     type="email"
                     id="email"
@@ -60,7 +60,7 @@ const Register = () => {
                 </div>
 
                 <div>
-                <label htmlFor="password">Password</label>
+                <label htmlFor="password" className="auth-email-signin-label">Password</label>
                 <input
                     type="password"
                     id="password"
@@ -73,11 +73,12 @@ const Register = () => {
                 <div className="auth-remember">
                 <label>
                     <input type="checkbox" id="remember" name="remember" required/>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perferendis consequatur magnam est magni. Nemo at esse ratione! Dignissimos, at quibusdam.
+                    Do you agree to the processing of your data for account creation?
+                    By clicking <strong>'Sign Up'</strong>, you confirm your consent.
                 </label>
                 </div>
 
-                <button className="auth-sign-in-button" type="submit">Sign up</button>
+                <button className="auth-sign-in-button" type="submit">Sign Up</button>
             </form>
             </div>
 
