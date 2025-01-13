@@ -3,7 +3,7 @@ import Navbar from "../../Navbar/Navbar";
 import './Share.css';
 import testDecks from "../../../assets/mockData/testDecks";
 
-const Import = (props) => {
+const Share = (props) => {
     const [selectedExportDeck, setSelectedExportDeck] = useState("");
     const [selectedImportDeck, setSelectedImportDeck] = useState("");
     const [importFile, setImportFile] = useState(null);
@@ -85,4 +85,4 @@ const Import = (props) => {
     );
 };
 
-export default Import;
+export default Share;

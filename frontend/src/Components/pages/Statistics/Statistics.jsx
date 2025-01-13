@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "../../Navbar/Navbar";
 import PieChart from "../../Charts/PieChart/PieChart";
 import StreakChart from "../../Charts/StreakChart/StreakChart";
@@ -52,7 +52,7 @@ const Statistics = (props) => {
         learningCards: statisticData?.allLearningCards || 0,
         rememberedCards: statisticData?.allRememberedCards || 0,
     };
-    
+
     const totalCards = pieChartData.newCards + pieChartData.learningCards + pieChartData.rememberedCards;
 
     if (!statisticData) {
@@ -111,10 +111,10 @@ const Statistics = (props) => {
                             </div>
                         </div>
                     </StatisticsSection>
-                </div>
+
+                </StatisticsSection>
             </div>
         </div>
-    );
 };
 
 export default Statistics;

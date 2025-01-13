@@ -43,16 +43,15 @@ function App() {
     <ThemeProvider>
       <BrowserRouter>
         <Routes>
-          {/*<Route path="/" element={<Home details={APIdummy}/>} />*/}
-          <Route path="/" element={<Home details={APIdummy}/>} />
-          <Route path="/settings" element={<Settings details={APIdummy} />} />
-          <Route path="/statistics" element={<Statistics details={APIdummy} />} />
-          <Route path="/decks" element={<Decks details={APIdummy} />} />
-          <Route path="/share" element={<Share details={APIdummy} />} />
-          <Route path="/study/:deckId" element={<Study details={APIdummy} />} />
-          <Route path="/deck/:deckId" element={<DeckPage details={APIdummy} />} />
-          <Route path="/folder/:id" element={<FolderPage details={APIdummy} />} />
-          <Route path="/create-flashcard" element={<CreateFlashcard details={APIdummy} />} />
+          <Route path="/" element={<PrivateRoute><Home details={userData}/></PrivateRoute>} />
+          <Route path="/settings" element={<PrivateRoute><Settings details={userData} /></PrivateRoute>} />
+          <Route path="/statistics" element={<PrivateRoute><Statistics details={userData} /></PrivateRoute>} />
+          <Route path="/decks" element={<PrivateRoute><Decks details={userData} /></PrivateRoute>} />
+          <Route path="/share" element={<PrivateRoute><Share details={userData} /></PrivateRoute>} />
+          <Route path="/study/:deckId" element={<PrivateRoute><Study details={userData} /></PrivateRoute>} />
+          <Route path="/deck/:deckId" element={<PrivateRoute><DeckPage details={userData} /></PrivateRoute>} />
+          <Route path="/folder/:id" element={<PrivateRoute><FolderPage details={userData} /></PrivateRoute>} />
+          <Route path="/create-flashcard" element={<PrivateRoute><CreateFlashcard details={userData} /></PrivateRoute>} />
           <Route path="/login" element={<Login/>} />
           <Route path="/register" element={<Register/>} />
           <Route path="/forgot-password" element={<ForgotPassword/>} />
