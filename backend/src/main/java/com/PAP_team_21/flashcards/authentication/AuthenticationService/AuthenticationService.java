@@ -1,7 +1,6 @@
 package com.PAP_team_21.flashcards.authentication.AuthenticationService;
 
 import com.PAP_team_21.flashcards.Errors.AlreadyVerifiedException;
-import com.PAP_team_21.flashcards.Errors.CodeExpiredException;
 import com.PAP_team_21.flashcards.Errors.ResourceNotFoundException;
 import com.PAP_team_21.flashcards.authentication.AuthenticationEmailSender.AuthenticationEmailSender;
 import com.PAP_team_21.flashcards.entities.customer.Customer;
@@ -92,7 +91,7 @@ public class AuthenticationService {
         userStatisticsRepository.save(userStatistics);
 
 
-        handleVerificationCode(customer);
+        handleVerificationLink(customer);
     }
 
     public String loginUser(String email, String password) throws AuthenticationException {
@@ -266,7 +265,8 @@ public class AuthenticationService {
         }
     }
 
-    private void handleVerificationCode(Customer customer) throws MessagingException {
+    private void handleVerificationCode(Customer customer) throws  MessagingException
+    {
         // generate code
         String code = generateVerificationCode(verificationCodeLength);
 
@@ -286,6 +286,28 @@ public class AuthenticationService {
         sentVerificationCodeRepository.save(verification);
         // send email
         emailSender.sendVerificationCodeEmail(customer.getEmail(), code);
+    }
+
+    private void handleVerificationLink(Customer customer) throws MessagingException {
+        // generate code
+        String code = generateVerificationCode(verificationCodeLength);
+
+
+        SentVerificationCode verification = customer.getSentVerificationCode();
+        if(verification == null)
+        {
+            verification = new SentVerificationCode(code, customer, verificationCodeExpirationMinutes);
+        }
+        else
+        {
+            verification.setCode(code);
+            verification.newExpirationDate(verificationCodeExpirationMinutes);
+        }
+
+        // save to db
+        sentVerificationCodeRepository.save(verification);
+        // send email
+        emailSender.sendVerificationLink(customer.getEmail(), code);
 
     }
     private String generateVerificationCode(int generatedCodeLength)
@@ -309,5 +331,16 @@ public class AuthenticationService {
         }
 
         handleVerificationCode(customerOptional.get());
+    }
+
+    public void resendVerificationLink(String email) throws RuntimeException, MessagingException{
+        Optional<Customer> customerOptional = customerRepository.findByEmail(email);
+
+        if(customerOptional.isEmpty())
+        {
+            throw new RuntimeException("customer with this email not found");
+        }
+
+        handleVerificationLink(customerOptional.get());
     }
 }
