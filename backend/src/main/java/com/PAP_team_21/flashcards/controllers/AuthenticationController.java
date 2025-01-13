@@ -110,6 +110,18 @@ public class AuthenticationController {
         }
     }
 
+    @PostMapping("/resendVerificationLink")
+    public ResponseEntity<?> resendVerificationLink(@RequestBody ResendVerificationCodeRequest request)
+    {
+        try {
+            authenticationService.resendVerificationLink(request.getEmail());
+            return ResponseEntity.ok("verification link resent");
+        } catch (Exception e)
+        {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("exception occurred: " + e.getMessage());
+        }
+    }
+
     @PostMapping("/forgotPasswordRequest")
     public ResponseEntity<?> forgotPasswordRequest(@RequestBody ForgotPasswordRequest request)
     {
