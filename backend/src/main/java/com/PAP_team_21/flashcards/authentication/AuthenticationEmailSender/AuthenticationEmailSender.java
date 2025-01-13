@@ -16,6 +16,18 @@ public class AuthenticationEmailSender {
     @Value("${links.verify-user}")
     private String verifyUserLink;
 
+    public void sendVerificationLink(String email, String verificationCode) throws MessagingException
+    {
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+        helper.setTo(email);
+        helper.setSubject("Flashcards - Verification code");
+        helper.setText("Click this link to verify your account: " + verifyUserLink + email + "/" + verificationCode);
+
+        mailSender.send(message);
+    }
+
     public void sendVerificationCodeEmail(String email, String verificationCode) throws MessagingException
     {
         MimeMessage message = mailSender.createMimeMessage();
@@ -23,7 +35,7 @@ public class AuthenticationEmailSender {
 
         helper.setTo(email);
         helper.setSubject("Flashcards - Verification code");
-        helper.setText("Click this link to verify your account: " + verifyUserLink + verificationCode);
+        helper.setText("Your verification code is: " + verificationCode);
 
         mailSender.send(message);
     }
