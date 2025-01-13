@@ -39,6 +39,8 @@ const Settings = (props) => {
 
     const [formType, setFormType] = useState(null);
 
+    const [newAvatar, setNewAvatar] = useState(null);
+
     const { toggleOverlay, closeOverlay, isOverlayOpen } = useOverlay();
     const { sysTheme, toggleTheme, setTheme } = useContext(ThemeContext);
 
@@ -70,7 +72,7 @@ const Settings = (props) => {
         try {
           const { theme, language, studyReminders, reminderTime, timezone } = settingsState;
           const darkMode = theme === "Dark";
-    
+
           await UserPreferencesService.updatePreferences(darkMode, language, reminderTime, timezone, studyReminders);
           alert("Preferences updated successfully!");
           closeOverlay();
@@ -108,6 +110,17 @@ const Settings = (props) => {
             setTheme(value);
           }
     };
+
+    const handleAvatarChange = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            setNewAvatar(reader.result);
+          };
+          reader.readAsDataURL(file);
+        }
+      };
 
     useEffect(() => {
         const savedSettings = localStorage.getItem("userSettings");
@@ -182,8 +195,18 @@ const Settings = (props) => {
             <SettingsSection title="Personal information">
                 <div className="personal-info">
                     <div className="personal-info-avatar">
-                        <img className="avatar-personal" src={avatar || "default-avatar.png"} alt="Avatar" />
-                        <button className="plus-button">+</button>
+
+                        <img className="avatar-personal" src={newAvatar || avatar || "default-avatar.png"} alt="Avatar" />
+                        <label htmlFor="file-upload" className="plus-button personal-info-plus-button">
+                            +
+                        </label>
+                        <input
+                        type="file"
+                        id="file-upload"
+                        style={{ display: "none" }}
+                        accept="image/*"
+                        onChange={handleAvatarChange}
+                        />
                     </div>
                     <hr />
                     <div className="personal-info-item">
