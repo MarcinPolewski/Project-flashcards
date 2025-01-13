@@ -10,7 +10,7 @@ import './Decks.css';
 import sortDecks from "../../../utils/sortDecks";
 import { useOverlay } from "../../../contexts/OverlayContext/OverlayContext";
 
-const Decks = (props) => {
+const Decks = () => {
 
     const { isOverlayOpen, toggleOverlay, closeOverlay } = useOverlay();
 
@@ -62,7 +62,7 @@ const Decks = (props) => {
     );
 
     return <div className="decks">
-        <Navbar details={props.details}/>
+        <Navbar />
         <div className="decks-container">
 
             <div className="decks-manipulate">

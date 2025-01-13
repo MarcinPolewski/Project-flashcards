@@ -43,9 +43,9 @@ function App() {
     <ThemeProvider>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<PrivateRoute><Home details={userData}/></PrivateRoute>} />
+          <Route path="/" element={<PrivateRoute><Home/></PrivateRoute>} />
           <Route path="/settings" element={<PrivateRoute><Settings details={userData} /></PrivateRoute>} />
-          <Route path="/statistics" element={<PrivateRoute><Statistics details={userData} /></PrivateRoute>} />
+          <Route path="/statistics" element={<PrivateRoute><Statistics /></PrivateRoute>} />
           <Route path="/decks" element={<PrivateRoute><Decks details={userData} /></PrivateRoute>} />
           <Route path="/share" element={<PrivateRoute><Share details={userData} /></PrivateRoute>} />
           <Route path="/study/:deckId" element={<PrivateRoute><Study details={userData} /></PrivateRoute>} />

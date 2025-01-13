@@ -5,7 +5,7 @@ import Navbar from "../../Navbar/Navbar";
 import "./Study.css";
 import testDecks from "../../../assets/mockData/testDecks";
 
-const Study = (props) => {
+const Study = () => {
   const { deckId } = useParams(); // Use deckId to identify the deck
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [cards, setCards] = useState([]);
@@ -66,7 +66,7 @@ const Study = (props) => {
 
   return (
     <div className="study">
-      <Navbar details={props.details || {}} />
+      <Navbar />
       <div className="study-container">
       <p>You're studying: {currentDeck?.title || "Unknown Deck"}</p>
         {currentCard.front && currentCard.back ? (
@@ -169,7 +169,7 @@ const Study = (props) => {
 
   return (
     <div className="study">
-    <Navbar details={props.details || {}} /> 
+    <Navbar details={props.details || {}} />
     <div className="study-container">
       <p>You're studying mockDeck</p>
       {currentCard.front && currentCard.back ? (

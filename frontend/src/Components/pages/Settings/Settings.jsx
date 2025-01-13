@@ -4,11 +4,13 @@ import Navbar from "../../Navbar/Navbar";
 import Overlay from "../../Overlay/Overlay";
 
 import UserPreferencesService from "../../../services/UserPreferencesService";
+import testAvatar from "../../../assets/test/test-avatar.png";
 
 import './Settings.css';
 import { ThemeContext } from "../../../contexts/ThemeContext/ThemeContext";
 import { useOverlay } from "../../../contexts/OverlayContext/OverlayContext";
 import { settingsPreferences } from "../../../utils/settingsPrefferences";
+import CustomerService from "../../../services/CustomerService";
 
 const SettingsSection = ({ title, children }) => (
     <div>
@@ -20,7 +22,11 @@ const SettingsSection = ({ title, children }) => (
   );
 
 const Settings = (props) => {
-    const { avatar, username, email } = props.details;
+    const [userData, setUserData] = useState({
+        username: '',
+        email: '',
+        avatar: testAvatar
+    });
 
     const [formData, setFormData] = useState({
         email: '',
@@ -42,8 +48,10 @@ const Settings = (props) => {
     const { toggleOverlay, closeOverlay, isOverlayOpen } = useOverlay();
     const { sysTheme, toggleTheme, setTheme } = useContext(ThemeContext);
 
+    const { username, email, avatar } = userData;
+
     useEffect(() => {
-        const fetchPreferences = async () => {
+        const fetchPreferencesData = async () => {
             try {
             const preferences = await UserPreferencesService.getPreferences();
             setSettingsState({
@@ -57,12 +65,27 @@ const Settings = (props) => {
             if (preferences.darkMode !== sysTheme) {
                 setTheme(preferences.darkMode ? "dark" : "light");
             }
+
             } catch (error) {
             console.error("Error fetching user preferences:", error);
             }
         };
 
-        fetchPreferences();
+        const fetchUserData = async () => {
+            try {
+                const user = await CustomerService.getSelf();
+                setUserData({
+                    username: user.username || '',
+                    email: user.email || '',
+                    avatar: user.avatar || testAvatar,
+                });
+            } catch (error) {
+                console.error("Error fetching user data:", error);
+            }
+        };
+
+        fetchPreferencesData();
+        fetchUserData();
     }, [sysTheme, setTheme]);
 
     const handleSubmit = async (e) => {
@@ -70,7 +93,7 @@ const Settings = (props) => {
         try {
           const { theme, language, studyReminders, reminderTime, timezone } = settingsState;
           const darkMode = theme === "Dark";
-    
+
           await UserPreferencesService.updatePreferences(darkMode, language, reminderTime, timezone, studyReminders);
           alert("Preferences updated successfully!");
           closeOverlay();
@@ -174,7 +197,7 @@ const Settings = (props) => {
     return (
         <div>
 
-        <Navbar details={props.details} />
+        <Navbar />
 
         <div className="settings">
             <h1 className="settings-title">Settings</h1>

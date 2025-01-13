@@ -9,7 +9,7 @@ import PieChart from '../../Charts/PieChart/PieChart';
 import DeckService from '../../../services/DeckService';
 import FlashcardService from '../../../services/FlashcardService';
 
-const DeckPage = (props) => {
+const DeckPage = () => {
     const { deckId } = useParams();
     const [deck, setDeck] = useState(null);
     const [deckProgress, setDeckProgress] = useState(null);
@@ -64,7 +64,7 @@ const DeckPage = (props) => {
 
     return (
         <div>
-            <Navbar details={props.details} />
+            <Navbar />
             <div className="deck-page-container">
                 <div className="deck-page-content">
                     <h1 className="deck-page-title">{deck.name}</h1>
