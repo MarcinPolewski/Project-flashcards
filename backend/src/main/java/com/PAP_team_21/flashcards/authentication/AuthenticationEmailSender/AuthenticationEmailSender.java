@@ -3,6 +3,7 @@ package com.PAP_team_21.flashcards.authentication.AuthenticationEmailSender;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,9 @@ import org.springframework.stereotype.Service;
 public class AuthenticationEmailSender {
     private final JavaMailSender mailSender;
 
+    @Value("${links.verify-user}")
+    private String verifyUserLink;
+
     public void sendVerificationCodeEmail(String email, String verificationCode) throws MessagingException
     {
         MimeMessage message = mailSender.createMimeMessage();
@@ -19,7 +23,7 @@ public class AuthenticationEmailSender {
 
         helper.setTo(email);
         helper.setSubject("Flashcards - Verification code");
-        helper.setText("Your verification code is: " + verificationCode);
+        helper.setText("Click this link to verify your account: " + verifyUserLink + verificationCode);
 
         mailSender.send(message);
     }
