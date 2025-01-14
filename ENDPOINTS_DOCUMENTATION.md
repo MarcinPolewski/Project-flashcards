@@ -881,7 +881,7 @@ or if the folder does not exist.
   ```
 ---
 
-### `PUT /deck/update`
+### `POST /deck/update`
 
 This endpoint updates the name of an existing deck.
 
