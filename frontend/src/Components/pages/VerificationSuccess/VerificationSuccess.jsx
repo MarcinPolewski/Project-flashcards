@@ -4,7 +4,7 @@ import AuthService from "../../../services/AuthService";
 import AuthSection from "../../AuthSection/AuthSection";
 
 const VerificationSuccess = () => {
-    const { token } = useParams();
+    const { email, code } = useParams();
     const navigate = useNavigate();
     const [status, setStatus] = useState(null);
     const [message, setMessage] = useState("");
@@ -12,7 +12,7 @@ const VerificationSuccess = () => {
     useEffect(() => {
         const verifyEmail = async () => {
             try {
-                const response = await AuthService.verifyEmail(token);
+                const response = await AuthService.verifyEmail({ email, code });
                 setStatus('success');
                 setMessage("Your account has been successfully verified! You can now log in.");
             } catch (error) {
@@ -22,7 +22,7 @@ const VerificationSuccess = () => {
         };
 
         verifyEmail();
-    }, [token]);
+    }, [email, code]);
 
     return (
         <AuthSection>

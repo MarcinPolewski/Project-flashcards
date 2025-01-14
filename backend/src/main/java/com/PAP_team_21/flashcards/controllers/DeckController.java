@@ -5,6 +5,7 @@ import com.PAP_team_21.flashcards.Errors.ResourceNotFoundException;
 import com.PAP_team_21.flashcards.authentication.ResourceAccessLevelService.DeckAccessServiceResponse;
 import com.PAP_team_21.flashcards.authentication.ResourceAccessLevelService.FolderAccessServiceResponse;
 import com.PAP_team_21.flashcards.authentication.ResourceAccessLevelService.ResourceAccessService;
+import com.PAP_team_21.flashcards.controllers.DTOMappers.DeckMapper;
 import com.PAP_team_21.flashcards.controllers.requests.DeckCreationRequest;
 import com.PAP_team_21.flashcards.controllers.requests.DeckUpdateRequest;
 import com.PAP_team_21.flashcards.entities.JsonViewConfig;
@@ -20,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -29,6 +31,7 @@ public class DeckController {
     private final ResourceAccessService resourceAccessService;
     private final CustomerRepository customerRepository;
     private final DeckService deckService;
+    private final DeckMapper deckMapper;
 
     @GetMapping("/flashcards")
     @JsonView(JsonViewConfig.Public.class)
@@ -74,7 +77,8 @@ public class DeckController {
             return ResponseEntity.badRequest().body("Customer not found");
         }
 
-        return ResponseEntity.ok(deckService.getLastUsedDecks(cusomterOpt.get().getId(), howMany));
+        List<Deck> decks = deckService.getLastUsedDecks(cusomterOpt.get().getId(), howMany);
+        return ResponseEntity.ok(deckMapper.toDTO(cusomterOpt.get(), decks));
     }
 
     @PostMapping("/create")
@@ -94,7 +98,7 @@ public class DeckController {
         {
             Deck deck = new Deck(request.getName(), response.getFolder());
             deckService.save(deck);
-            return ResponseEntity.ok(deck);
+            return ResponseEntity.ok(deckMapper.toDTO(response.getCustomer(), deck));
         }
         return ResponseEntity.badRequest().body("You do not have permission to create a deck here");
     }
@@ -118,7 +122,7 @@ public class DeckController {
         {
             response.getDeck().setName(request.getName());
             deckService.save(response.getDeck());
-            return ResponseEntity.ok(response.getDeck());
+            return ResponseEntity.ok(deckMapper.toDTO(response.getCustomer(), response.getDeck()));
         }
         return ResponseEntity.badRequest().body("You do not have permission to create a deck here");
     }

@@ -57,7 +57,7 @@ function App() {
           <Route path="/register" element={<Register/>} />
           <Route path="/forgot-password" element={<ForgotPassword/>} />
           <Route path="/password-reset" element={<PasswordReset/>} />
-          <Route path="/verify-email/:token" element={<VerificationSuccess/>} />
+          <Route path="/verify-email/:email/:code" element={<VerificationSuccess/>} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
