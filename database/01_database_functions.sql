@@ -218,5 +218,37 @@ FROM Decks d
     limit howMany;
 END //
 
+
+# =============================================================================
+
+CREATE PROCEDURE get_deck_progress( IN userId INT,
+    IN deckId INT,
+    OUT progress FLOAT
+)
+BEGIN
+    DECLARE total_flashcards INT;
+    DECLARE learned_flashcards INT;
+
+    SELECT count(*) INTO total_flashcards
+                    FROM Flashcards fl
+                    where deck_id = deckId;
+
+    SELECT count(*) INTO learned_flashcards
+        from Flashcards fl
+        join Flashcards_Progresses fp on fl.id = fp.flashcard_id
+        join Review_Logs rl on fp.last_review_id = rl.id
+        where fl.deck_id = deckId and fp.user_id = userId
+          and fp.next_review is not null
+          and DATEDIFF(fp.next_review, rl.`when`) > 30;
+
+    IF total_flashcards = 0
+    THEN
+        SET progress = 0;
+    ELSE
+        SET progress = learned_flashcards / total_flashcards;
+    END IF;
+
+END //
+
 # =============================================================================
 DELIMITER ;
