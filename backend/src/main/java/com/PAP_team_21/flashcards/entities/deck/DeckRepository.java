@@ -15,4 +15,7 @@ interface DeckRepository extends JpaRepository<Deck, Integer> {
 
     @Procedure(procedureName = "get_last_used_decks")
     List<Deck> getLastUsed(@Param("userId") int userId, @Param("howMany") int howMany);
+
+    @Procedure(procedureName = "get_deck_progress")
+    float getDeckProgress(@Param("userId")int customerId,@Param("deckId") int deckId);
 }

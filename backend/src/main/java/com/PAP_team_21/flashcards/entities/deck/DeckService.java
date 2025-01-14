@@ -31,4 +31,8 @@ public class DeckService {
     public void delete(Deck deck) {
         deckRepository.delete(deck);
     }
+
+    public float getDeckProgress(int customerId, int deckId) {
+        return deckRepository.getDeckProgress(customerId, deckId);
+    }
 }
