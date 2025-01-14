@@ -359,4 +359,12 @@ public class AuthenticationService {
             throw new RuntimeException("email is incorrect");
         }
     }
+
+    public void changeEmail(Authentication authentication, String newEmail) throws Exception
+    {
+        verifyEmailCorrectness(newEmail);
+        Customer customer = extractCustomer(authentication);
+        customer.setEmail(newEmail);
+        customerRepository.save(customer);
+    }
 }
