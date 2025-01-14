@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -31,6 +32,15 @@ public class BeanConfiguration {
     @Value("${spring.mail.port}")
     private int emailPort;
 
+    @Value("${thread.queue.capacity}")
+    private int threadQueueCapacity;
+
+    @Value("${thread.core.pool.size}")
+    private int coreThreadPoolSize;
+
+    @Value("${thread.max.pool.size}")
+    private int maxThreadPoolSize;
+
     @Bean
     public JavaMailSender javaMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
@@ -48,5 +58,17 @@ public class BeanConfiguration {
 
 
         return mailSender;
+    }
+
+    @Bean
+    public ThreadPoolTaskExecutor threadPoolTaskExecutor()
+    {
+        ThreadPoolTaskExecutor e = new ThreadPoolTaskExecutor();
+        e.setQueueCapacity(threadQueueCapacity);
+        e.setThreadNamePrefix("async-thread-");
+        e.setCorePoolSize(coreThreadPoolSize);
+        e.setMaxPoolSize(maxThreadPoolSize);
+        e.initialize();
+        return e;
     }
 }
