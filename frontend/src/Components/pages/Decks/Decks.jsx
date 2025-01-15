@@ -3,9 +3,6 @@ import React, { useEffect, useState } from "react";
 import Navbar from "../../Navbar/Navbar";
 import Deck from "../../Deck/Deck";
 import Overlay from "../../Overlay/Overlay";
-
-import testDecks from "../../../assets/mockData/testDecks";
-
 import './Decks.css';
 import sortDecks from "../../../utils/sortDecks";
 import { useOverlay } from "../../../contexts/OverlayContext/OverlayContext";

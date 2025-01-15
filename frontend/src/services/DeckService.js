@@ -30,12 +30,16 @@ const DeckService = {
     },
 
     getFlashcards: async (deckId, page = 0, size = 5, sortBy = 'id', ascending = true) => {
+        if (isDevelopment) { console.log("getting mocked flashcards"); return mockData.deckGetFlashcards};
+
+        console.log("its getting backend flashcardS?!");
         const response = await api.get('/deck/flashcards', {
             params: { deckId, page, size, sortBy, ascending }
         });
         return response.data;
     },
     getDeckProgress: async (deckId) => {
+        if (isDevelopment) return mockData.deckGetDeckProgress;
         const response = await api.get('/deck/getDeckProgress', {
             params: { deckId }
         });

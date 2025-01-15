@@ -7,6 +7,81 @@ const mockData = {
         { id: 3, name: 'Deck 3', progress: 75 },
     ],
 
+    deckGetFlashcards: [
+        {
+            id: 1,
+            deckId: 1,
+            front: "こんにちは",
+            back: "Hello"
+        },
+        {
+            id: 2,
+            deckId: 1,
+            front: "ありがとう",
+            back: "Thank you"
+        },
+        {
+            id: 3,
+            deckId: 2,
+            front: "Jabłko",
+            back: "Apple"
+        },
+        {
+            id: 4,
+            deckId: 2,
+            front: "Banan",
+            back: "Banana"
+        },
+        {
+            id: 5,
+            deckId: 3,
+            front: "Pomidor",
+            back: "Tomato"
+        },
+        {
+            id: 6,
+            deckId: 3,
+            front: "Marchewka",
+            back: "Carrot"
+        },
+        {
+            id: 7,
+            deckId: 4,
+            front: "Present Continuous",
+            back: "I am doing"
+        },
+        {
+            id: 8,
+            deckId: 4,
+            front: "Present Perfect",
+            back: "I have done"
+        },
+        {
+            id: 9,
+            deckId: 5,
+            front: "Hola",
+            back: "Hello"
+        },
+        {
+            id: 10,
+            deckId: 5,
+            front: "Gracias",
+            back: "Thank you"
+        },
+        {
+            id: 11,
+            deckId: 6,
+            front: "日 (にち)",
+            back: "Day"
+        },
+        {
+            id: 12,
+            deckId: 6,
+            front: "月 (げつ)",
+            back: "Month"
+        }
+    ],
+
     deckGetAllDecks: [
         {
             id: 1,
@@ -167,6 +242,15 @@ const mockData = {
             lastModified: "2023-11-03",
         }
     ],
+
+    deckGetDeckProgress: {
+        id: 1,
+        name: "Japanese N5",
+        newCards: 50,
+        learningCards: 25,
+        reviewingCards: 200,
+        progress: 70
+    },
 
     folderGetFolderStructure: [
         { id: 1, name: 'Folder 1' },

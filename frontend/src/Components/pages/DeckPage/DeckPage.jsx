@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import testDecks from '../../../assets/mockData/testDecks';
-import testFlashcards from '../../../assets/mockData/testFlashcards';
 import './DeckPage.css';
 
 import Navbar from '../../Navbar/Navbar';
@@ -11,79 +9,79 @@ import FlashcardService from '../../../services/FlashcardService';
 
 const DeckPage = () => {
     const { deckId } = useParams();
-    const [deck, setDeck] = useState(null);
     const [deckProgress, setDeckProgress] = useState(null);
     const [flashcards, setFlashcards] = useState([]);
 
-    useEffect(() => {
-        console.log("URL Parameter deckId:", deckId);
+    const handleEdit = async (flashcardId) => {
+        try {
 
-        // Find the deck
-        const foundDeck = testDecks.find(deck => deck.id === Number(deckId));
-        console.log("Found Deck:", foundDeck);
-
-        if (foundDeck) {
-            setDeck(foundDeck);
-
-            // Filter flashcards belonging to this deck
-            const folderFlashcards = testFlashcards.filter(flashcard => flashcard.deckId === Number(deckId));
-            console.log("Filtered Flashcards:", folderFlashcards);
-
-            setFlashcards(folderFlashcards);
+        } catch (error) {
+            alert("Error occured while editing flashcard!");
+        } finally {
+            // closeOverlay();
         }
-    }, [deckId]);
-
-    const handleEdit = (flashcardId) => {
-        console.log(`Editing flashcard with id ${flashcardId}`);
     };
 
-    const handleDelete = (flashcardId) => {
-        const response = FlashcardService.deleteFlashcard(flashcardId)
-        setFlashcards(flashcards.filter(flashcard => flashcard.id !== flashcardId));
+    const handleDelete = async (flashcardId) => {
+        try {
+            const response = await FlashcardService.deleteFlashcard(flashcardId)
+            setFlashcards(flashcards.filter(flashcard => flashcard.id !== flashcardId));
+            alert("Flashcard deleted successfully!");
+        } catch(error) {
+            alert("Error occured while deleting flashcard!");
+        } finally {
+            // closeOverlay();
+        }
     };
 
     useEffect(() => {
-        const fetchDeckData = async () => {
+        const fetchDeckProgress = async () => {
             try {
-                const foundDeck = await DeckService.getDeck(deckId);
-                setDeck(foundDeck);
-
-                const folderFlashcards = await DeckService.getFlashcards(deckId);
-                setFlashcards(folderFlashcards);
-
                 const foundDeckProgress = await DeckService.getDeckProgress(deckId);
                 setDeckProgress(foundDeckProgress);
             } catch (error) {
                 console.error("Error fetching deck data:", error);
             }
         };
-        fetchDeckData();
-    }, [deckId]);
 
-    if (!deck) return <p>Deck not found!</p>;
+        const fetchDeckFlashcards = async () => {
+            try {
+                const deckFlashcards = await DeckService.getFlashcards(deckId);
+                setFlashcards(deckFlashcards);
+                console.log("flashcards: ", deckFlashcards);
+            } catch (error) {
+                console.error("Error fetching flashcards data:", error);
+            }
+        };
+
+        fetchDeckProgress();
+        fetchDeckFlashcards();
+    }, []);
+
+    if (!deckProgress) return <p>Deck not found!</p>;
 
     return (
         <div>
             <Navbar />
             <div className="deck-page-container">
                 <div className="deck-page-content">
-                    <h1 className="deck-page-title">{deck.name}</h1>
+                    <h1 className="deck-page-title">{deckProgress.name}</h1>
                     <div className="deck-page-statistics-container">
                         <div className="deck-page-right">
                             <PieChart
                                 data={{
-                                    newCards: deck.newCards,
-                                    learningCards: deck.learningCards,
-                                    rememberedCards: deck.reviewingCards,
+                                    newCards: deckProgress.newCards,
+                                    learningCards: deckProgress.learningCards,
+                                    rememberedCards: deckProgress.reviewingCards,
                                 }}
                                 className="deck-page-pie-chart"
                             />
                         </div>
                         <div className="deck-page-left">
-                            <p>Progress: {deck.progress}%</p>
-                            <p>New Cards: {deck.newCards}</p>
-                            <p>Learning Cards: {deck.learningCards}</p>
-                            <p>Reviewing Cards: {deck.reviewingCards}</p>
+                            <p>Progress: {deckProgress.progress}%</p>
+                            <p>New Cards: {deckProgress.newCards}</p>
+                            <p>Learning Cards: {deckProgress.learningCards}</p>
+                            <p>Reviewing Cards: {deckProgress.reviewingCards}</p>
                         </div>
                     </div>
                     <h3 className="deck-page-subtitle">Flashcards</h3>
