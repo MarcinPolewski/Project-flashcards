@@ -1,29 +1,13 @@
 import React, { useState } from "react";
 import './Folder.css';
 import { useNavigate } from "react-router-dom";
-import Overlay from "../Overlay/Overlay";
-import { EditFolder, DeleteFolder } from "../EditFolder/EditFolder";
-import { useOverlay } from "../../contexts/OverlayContext/OverlayContext";
 
-const Folder = ({ id, title }) => {
+const Folder = ({ id, title, onEdit, onDelete }) => {
     const navigate = useNavigate();
-
-    const { isOverlayOpen, toggleOverlay, closeOverlay } = useOverlay();
-    const [formType, setFormType] = useState("");
 
     const handleClick = () => {
         navigate(`/folder/${id}`);
     }
-
-    const handleEditClick = () => {
-        setFormType('edit');
-        toggleOverlay();
-    }
-
-    const handleDeleteClick = () => {
-        setFormType('delete');
-        toggleOverlay();
-    };
 
     return (
         <div className="folder">
@@ -33,18 +17,9 @@ const Folder = ({ id, title }) => {
 
             <div className="folder-actions">
                 <button className="folder-page-btn folder-page-study-btn" onClick={handleClick}>Open</button>
-                <button className="folder-page-btn folder-page-edit-btn" onClick={handleEditClick}>Edit</button>
-                <button className="folder-page-btn folder-page-delete-btn" onClick={handleDeleteClick}>Delete</button>
+                <button className="folder-page-btn folder-page-edit-btn" onClick={() => onEdit(id, title)}>Edit</button>
+                <button className="folder-page-btn folder-page-delete-btn" onClick={() => onDelete(id, title)}>Delete</button>
             </div>
-
-            <Overlay isOpen={isOverlayOpen} closeOverlay={closeOverlay}>
-                {formType === 'edit' &&
-                    <EditFolder id={id} title={title} closeOverlay={closeOverlay}/>
-                }
-                {formType === 'delete' &&
-                    <DeleteFolder id={id} title={title} closeOverlay={closeOverlay}/>
-                }
-            </Overlay>
         </div>
     );
 }
