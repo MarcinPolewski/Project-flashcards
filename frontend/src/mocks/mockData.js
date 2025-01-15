@@ -7,6 +7,49 @@ const mockData = {
         { id: 3, name: 'Deck 3', progress: 75 },
     ],
 
+    deckGetAllDecks: [
+        {
+            id: 1,
+            name: "Japanese N5",
+        },
+        {
+            id: 2,
+            name: "Owoce",
+        },
+        {
+            id: 3,
+            name: "Warzywa",
+        },
+        {
+            id: 4,
+            name: "English Grammar",
+        },
+        {
+            id: 5,
+            name: "Spanish N5",
+        },
+        {
+            id: 6,
+            name: "Kanji Level 1",
+        },
+        {
+            id: 7,
+            name: "French A2",
+        },
+        {
+            id: 8,
+            name: "Imported Japanese N5",
+        },
+        {
+            id: 9,
+            name: "Imported Owoce",
+        },
+        {
+            id: 10,
+            name: "Imported Warzywa",
+        }
+    ],
+
     folderGetFolderStructure: [
         { id: 1, name: 'Folder 1' },
         { id: 2, name: 'Folder 2' },
