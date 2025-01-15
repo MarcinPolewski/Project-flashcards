@@ -23,6 +23,12 @@ const DeckService = {
         return response.data;
     },
 
+    getAllDecksInfo: async () => {
+        if (isDevelopment) return mockData.deckGetAllDecksInfo;
+        const response = await api.get('/deck/getAllDecksInfo');
+        return response.data;
+    },
+
     getFlashcards: async (deckId, page = 0, size = 5, sortBy = 'id', ascending = true) => {
         const response = await api.get('/deck/flashcards', {
             params: { deckId, page, size, sortBy, ascending }

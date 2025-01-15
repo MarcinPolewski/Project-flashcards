@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import Navbar from "../../Navbar/Navbar";
 import Deck from "../../Deck/Deck";
@@ -9,8 +9,11 @@ import testDecks from "../../../assets/mockData/testDecks";
 import './Decks.css';
 import sortDecks from "../../../utils/sortDecks";
 import { useOverlay } from "../../../contexts/OverlayContext/OverlayContext";
+import DeckService from "../../../services/DeckService";
 
 const Decks = () => {
+
+    const [decks, setDecks] = useState([]);
 
     const { isOverlayOpen, toggleOverlay, closeOverlay } = useOverlay();
 
@@ -57,9 +60,23 @@ const Decks = () => {
         setSearchTerm(e.target.value);
     }
 
-    const filteredDecks = testDecks.filter((deck) =>
-        deck.title && deck.title.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    useEffect(() => {
+        const fetchDecks = async () => {
+            try {
+                const response = await DeckService.getAllDecksInfo();
+                setDecks(response);
+            } catch (error) {
+                console.error("Error while fetching decks: ", error);
+            }
+        };
+
+        fetchDecks();
+    }, []);
+
+    const filterDecks = (decksToFilter) => (
+        decksToFilter.filter((deck) =>
+            deck.title && deck.title.toLowerCase().includes(searchTerm.toLowerCase())
+    ));
 
     return <div className="decks">
         <Navbar />
@@ -108,7 +125,7 @@ const Decks = () => {
             </Overlay>
 
             <div className="decks-list">
-                {sortDecks(filteredDecks, sortOptions)
+                {sortDecks(filterDecks(decks), sortOptions)
                     .map((deck, idx) => (
                         <Deck key={idx} deckState={deck}/>
                 ))}
