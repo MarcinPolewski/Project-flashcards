@@ -1,17 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import testDecks from "../../../assets/mockData/testDecks";
-import testFolders from "../../../assets/mockData/testFolders";
 import './FolderPage.css';
 
 import Navbar from "../../Navbar/Navbar";
+import Overlay from "../../Overlay/Overlay";
 import FolderService from "../../../services/FolderService";
+import DeckService from "../../../services/DeckService";
+import { useOverlay } from "../../../contexts/OverlayContext/OverlayContext";
 
 const FolderPage = () => {
     const { id } = useParams();
     const [folder, setFolder] = useState(null);
     const [decks, setDecks] = useState([]);
     const navigate = useNavigate();
+
+    const [deckIdToDelete, setDeckIdToDelete] = useState(null);
+
+    const { isOverlayOpen, toggleOverlay, closeOverlay } = useOverlay();
 
     useEffect(() => {
         const fetchFolder = async () => {
@@ -36,10 +41,43 @@ const FolderPage = () => {
         fetchDecksInFolder();
     }, []);
 
+    const handleDeleteYes = async () => {
+        try {
+            if (deckIdToDelete !== null) {
+                await DeckService.deleteDeck(deckIdToDelete);
+                setDecks((prevDecks) => prevDecks.filter((deck) => deck.id !== deckIdToDelete));
+                alert("Deck deleted successfully.");
+            }
+        } catch (error) {
+            console.error("Error while deleting deck: ", error);
+            alert("Error occurred while deleting deck.");
+        } finally {
+            closeOverlay();
+            setDeckIdToDelete(null);
+        }
+    }
+
+    const handleDeleteNo = () => {
+        closeOverlay();
+    }
+
+    const handleDeleteButton = (id) => {
+        setDeckIdToDelete(id);
+        toggleOverlay();
+    }
+
     return (
         <div>
             <Navbar />
             <div className="folder-page">
+            <Overlay isOpen={isOverlayOpen} closeOverlay={closeOverlay}>
+                <div className="filter-options">
+                    <div>Do you really want to delete this deck along side with all its contents?</div>
+                    <button onClick={handleDeleteYes}>Yes</button>
+                    <button onClick={handleDeleteNo}>No</button>
+                </div>
+            </Overlay>
+
                 {folder ? (
                     <div className="folder-page-content">
                         <h1 className="folder-page-h1">{folder.name}</h1>
@@ -47,7 +85,6 @@ const FolderPage = () => {
                             <div className="folder-page-deck-list">
                                 {decks.map(deck => (
                                     <div key={deck.id} className="folder-page-deck-card">
-                                        {/* Progress in Upper Right Corner */}
                                         <div className="folder-page-progress">Progress: <strong>{deck.progress}%</strong></div>
 
                                         <div className="folder-page-deck-title">
@@ -75,7 +112,9 @@ const FolderPage = () => {
                                             <button onClick={() => navigate(`/deck/${deck.id}`)} className="folder-page-edit-btn">
                                                 Edit
                                             </button>
-                                            <button className="folder-page-delete-btn">Delete</button>
+                                            <button className="folder-page-delete-btn" onClick={
+                                                () => handleDeleteButton(deck.id)
+                                            }>Delete</button>
                                         </div>
                                     </div>
                                 ))}
