@@ -184,6 +184,41 @@ const mockData = {
         { id: 2, name: 'Folder 2' },
     ],
 
+    folderGetDecksInfo: [
+        {
+            id: 1,
+            name: "Japanese N5",
+            newCards: 50,
+            learningCards: 25,
+            reviewingCards: 200,
+            progress: 70
+        },
+        {
+            id: 2,
+            name: "Chinese",
+            newCards: 50,
+            learningCards: 25,
+            reviewingCards: 200,
+            progress: 70
+        },
+        {
+            id: 3,
+            name: "Javascript",
+            newCards: 50,
+            learningCards: 25,
+            reviewingCards: 200,
+            progress: 70
+        },
+        {
+            id: 4,
+            name: "Operating Systems",
+            newCards: 50,
+            learningCards: 25,
+            reviewingCards: 200,
+            progress: 70
+        },
+    ],
+
     customerGetSelf: {
         username: "Kacper",
         email: "kerciuuu@gmail.com",

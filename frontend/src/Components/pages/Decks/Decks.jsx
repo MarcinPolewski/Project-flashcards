@@ -104,7 +104,7 @@ const Decks = () => {
 
     const filterDecks = (decksToFilter) => (
         decksToFilter.filter((deck) =>
-            deck.title && deck.title.toLowerCase().includes(searchTerm.toLowerCase())
+            deck.name && deck.name.toLowerCase().includes(searchTerm.toLowerCase())
     ));
 
     return <div className="decks">

@@ -5,6 +5,7 @@ import testFolders from "../../../assets/mockData/testFolders";
 import './FolderPage.css';
 
 import Navbar from "../../Navbar/Navbar";
+import FolderService from "../../../services/FolderService";
 
 const FolderPage = () => {
     const { id } = useParams();
@@ -13,32 +14,27 @@ const FolderPage = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        // Find the folder based on the ID from the URL params
-        const foundFolder = testFolders.find(fold => fold.id === parseInt(id));
-
-        // If folder is found, fetch the decks
-        if (foundFolder) {
-            console.log("Found folder:", foundFolder); // Debugging: Check if folder is found
-
-            setFolder(foundFolder);
-            // Map deckIds and only include decks that exist in testDecks
-            const folderDecks = foundFolder.deckIds
-                .map(deckId => {
-                    const deck = testDecks.find(deck => deck.id === deckId);
-                    if (deck) {
-                        return deck; // Return deck if found
-                    }
-                    console.log(`Deck with ID ${deckId} not found in testDecks`); // Debugging: Log missing decks
-                    return null; // Return null if deck not found
-                })
-                .filter(deck => deck !== null); // Remove null values (decks that weren't found)
-
-            setDecks(folderDecks);
-        } else {
-            setFolder(null); // Folder not found
-            console.log(`Folder with ID ${id} not found.`); // Debugging: Log when folder is not found
+        const fetchFolder = async () => {
+            try {
+                const response = await FolderService.getFolder(id);
+                setFolder(response);
+            } catch (error) {
+                console.error("Error while fetching folder: ", error);
+            }
         }
-    }, [id]); // Run effect when the 'id' parameter changes
+
+        const fetchDecksInFolder = async () => {
+            try {
+                const response = await FolderService.getDecksInfo(id);
+                setDecks(response);
+            } catch (error) {
+                console.error("Error while fetching decks: ", error);
+            }
+        }
+
+        fetchFolder();
+        fetchDecksInFolder();
+    }, []);
 
     return (
         <div>
@@ -55,10 +51,10 @@ const FolderPage = () => {
                                         <div className="folder-page-progress">Progress: <strong>{deck.progress}%</strong></div>
 
                                         <div className="folder-page-deck-title">
-                                            {deck.title}
+                                            {deck.name}
                                         </div>
 
-                                        <p className="folder-page-deck-info">{deck.info}</p>
+                                        <p className="folder-page-deck-info"></p>
 
                                         <div className="folder-page-deck-state">
                                             <p className="folder-page-card-new">
