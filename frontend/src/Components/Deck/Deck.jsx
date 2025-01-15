@@ -5,12 +5,12 @@ import { useNavigate } from "react-router-dom";
 
 const Deck = ({ deckState, handleDeleteButton }) => {
 
-    const {id, title, newCards, learningCards, reviewingCards} = deckState;
+    const {id, name, newCards, learningCards, reviewingCards} = deckState;
 
     const navigate = useNavigate();
 
     return <div className="deck">
-        <div className="deck-title">{title}</div>
+        <div className="deck-title">{name}</div>
 
         <div className="deck-state">
             <div className="card-new">{newCards} new</div>
