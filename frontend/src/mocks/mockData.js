@@ -252,8 +252,48 @@ const mockData = {
     customerGetNotifications: [
         { id: 1, text: 'Hello this is your mocked data' },
         { id: 2, text: 'Spanish or vanish' },
-    ]
+    ],
 
+    reviewRequest:   {
+        flashcards: [
+            {
+                "id": 1,
+                "deckId": 2,
+                "front": "apple",
+                "back": "jabłko"
+            },
+            {
+                "id": 2,
+                "deckId": 2,
+                "front": "banana",
+                "back": "banan"
+            },
+            {
+                "id": 3,
+                "deckId": 2,
+                "front": "tomato",
+                "back": "pomidor"
+            },
+            {
+                "id": 4,
+                "deckId": 2,
+                "front": "peach",
+                "back": "brzoskwinia"
+            },
+            {
+                "id": 5,
+                "deckId": 2,
+                "front": "cucumber",
+                "back": "ogorek"
+            },
+            {
+                "id": 6,
+                "deckId": 2,
+                "front": "pomegranate",
+                "back": "granat"
+            },
+        ]
+    }
 }
 
 export default mockData;
