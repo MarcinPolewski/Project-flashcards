@@ -65,6 +65,7 @@ public class AuthenticationService {
     private int verificationCodeExpirationMinutes;
 
     public void registerUser(String email, String name,  String password) throws RuntimeException, MessagingException{
+        verifyEmailCorrectness(email);
         String passwordHash = passwordEncoder.encode(password);
 
 
@@ -95,6 +96,7 @@ public class AuthenticationService {
     }
 
     public String loginUser(String email, String password) throws AuthenticationException {
+        verifyEmailCorrectness(email);
         String token =" ";
         Authentication authentication = UsernamePasswordAuthenticationToken.unauthenticated(
                 email, password
@@ -178,6 +180,7 @@ public class AuthenticationService {
 
     public void verifyUser(String email, String code) throws RuntimeException
     {
+        verifyEmailCorrectness(email);
         Optional<Customer> customerOpt = customerRepository.findByEmail(email);
         if(customerOpt.isEmpty())
             throw new RuntimeException("customer not found");
@@ -211,6 +214,7 @@ public class AuthenticationService {
 
     public void forgotPasswordRequest(String email) throws RuntimeException, MessagingException
     {
+        verifyEmailCorrectness(email);
         Optional<Customer> customerOptional = customerRepository.findByEmail(email);
 
         if(customerOptional.isEmpty())
@@ -223,6 +227,7 @@ public class AuthenticationService {
 
     public void forgotPassword(String email, String code, String newPassword) throws RuntimeException
     {
+        verifyEmailCorrectness(email);
         Optional<Customer> customerOptional = customerRepository.findByEmail(email);
 
         if(customerOptional.isEmpty())
@@ -323,6 +328,7 @@ public class AuthenticationService {
     }
 
     public void resendVerificationCode(String email) throws RuntimeException, MessagingException{
+        verifyEmailCorrectness(email);
         Optional<Customer> customerOptional = customerRepository.findByEmail(email);
 
         if(customerOptional.isEmpty())
@@ -334,6 +340,7 @@ public class AuthenticationService {
     }
 
     public void resendVerificationLink(String email) throws RuntimeException, MessagingException{
+        verifyEmailCorrectness(email);
         Optional<Customer> customerOptional = customerRepository.findByEmail(email);
 
         if(customerOptional.isEmpty())
@@ -342,5 +349,22 @@ public class AuthenticationService {
         }
 
         handleVerificationLink(customerOptional.get());
+    }
+
+    public void verifyEmailCorrectness(String email) throws RuntimeException
+    {
+        if(!email.matches("^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@"
+                + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$"))
+        {
+            throw new RuntimeException("email is incorrect");
+        }
+    }
+
+    public void changeEmail(Authentication authentication, String newEmail) throws Exception
+    {
+        verifyEmailCorrectness(newEmail);
+        Customer customer = extractCustomer(authentication);
+        customer.setEmail(newEmail);
+        customerRepository.save(customer);
     }
 }
