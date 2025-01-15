@@ -54,6 +54,7 @@ const Statistics = () => {
 
     const totalCards = pieChartData.newCards + pieChartData.learningCards + pieChartData.rememberedCards;
 
+
     if (!statisticData) {
         return  <div className="statistics">
             <Navbar/>

@@ -21,7 +21,7 @@ const SettingsSection = ({ title, children }) => (
     </div>
   );
 
-const Settings = (props) => {
+const Settings = () => {
     const [userData, setUserData] = useState({
         username: '',
         email: '',

@@ -17,6 +17,9 @@ const Decks = () => {
 
     const { isOverlayOpen, toggleOverlay, closeOverlay } = useOverlay();
 
+    const [formType, setFormType] = useState("");
+    const [deckIdToDelete, setDeckIdToDelete] = useState(null);
+
     const [sortOptions, setSortOptions] = useState({
         alphabet: false,
         recentUsage: false,
@@ -60,6 +63,32 @@ const Decks = () => {
         setSearchTerm(e.target.value);
     }
 
+    const handleDeleteYes = async () => {
+        try {
+            if (deckIdToDelete !== null) {
+                await DeckService.deleteDeck(deckIdToDelete);
+                setDecks((prevDecks) => prevDecks.filter((deck) => deck.id !== deckIdToDelete));
+                alert("Deck deleted successfully.");
+            }
+        } catch (error) {
+            console.error("Error while deleting deck: ", error);
+            alert("Error occurred while deleting deck.");
+        } finally {
+            closeOverlay();
+            setDeckIdToDelete(null);
+        }
+    }
+
+    const handleDeleteNo = () => {
+        closeOverlay();
+    }
+
+    const handleDeleteButton = (id) => {
+        setDeckIdToDelete(id);
+        toggleOverlay();
+        setFormType('delete');
+    }
+
     useEffect(() => {
         const fetchDecks = async () => {
             try {
@@ -85,12 +114,13 @@ const Decks = () => {
             <div className="decks-manipulate">
 
                 <input className="decks-input" type="text" placeholder="Search decks.." value={searchTerm} onChange={handleSearchChange}/>
-                <div className="decks-filter-button" onClick={toggleOverlay}>Sort</div>
+                <div className="decks-filter-button" onClick={() => {toggleOverlay(); setFormType('sort')}}>Sort</div>
 
             </div>
 
             <Overlay isOpen={isOverlayOpen} closeOverlay={closeOverlay}>
-                <div
+                {formType === 'sort' &&
+                    <div
                     className="filter-options"
                     onClick={(e) => e.stopPropagation()}
                 >
@@ -122,12 +152,20 @@ const Decks = () => {
                     <label htmlFor="reverse">Reversed</label>
                 </div>
                 </div>
+                }
+                {formType === 'delete' &&
+                    <div className="filter-options">
+                        <div>Do you really want to delete this deck along side with all its contents?</div>
+                        <button onClick={handleDeleteYes}>Yes</button>
+                        <button onClick={handleDeleteNo}>No</button>
+                    </div>
+                }
             </Overlay>
 
             <div className="decks-list">
                 {sortDecks(filterDecks(decks), sortOptions)
                     .map((deck, idx) => (
-                        <Deck key={idx} deckState={deck}/>
+                        <Deck key={idx} deckState={deck} handleDeleteButton={() => handleDeleteButton(deck.id)}/>
                 ))}
             </div>
 
