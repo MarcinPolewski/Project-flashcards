@@ -19,6 +19,7 @@ import ForgotPassword from './Components/pages/ForgotPassword/ForgotPassword';
 import PasswordReset from './Components/pages/ForgotPassword/PasswordReset';
 import PrivateRoute from './Components/PrivateRoute/PrivateRoute';
 import VerificationSuccess from './Components/pages/VerificationSuccess/VerificationSuccess';
+import UserProfile from './Components/pages/UserProfile/UserProfile';
 
 function App() {
 
@@ -36,6 +37,7 @@ function App() {
           <Route path="/deck/:deckId" element={<DeckPage />} />
           <Route path="/folder/:id" element={<FolderPage />} />
           <Route path="/create-flashcard" element={<CreateFlashcard />} />
+          <Route path="/user/:userId" element={<UserProfile />} />
 
           {/* <Route path="/" element={<PrivateRoute><Home/></PrivateRoute>} />
           <Route path="/settings" element={<PrivateRoute><Settings /></PrivateRoute>} />
@@ -46,6 +48,7 @@ function App() {
           <Route path="/deck/:deckId" element={<PrivateRoute><DeckPage /></PrivateRoute>} />
           <Route path="/folder/:id" element={<PrivateRoute><FolderPage /></PrivateRoute>} />
           <Route path="/create-flashcard" element={<PrivateRoute><CreateFlashcard /></PrivateRoute>} />
+          <Route path="/user/:userId" element={<PrivateRoute><UserProfile /> </PrivateRoute>} />
           <Route path="/login" element={<Login/>} />
           <Route path="/register" element={<Register/>} />
           <Route path="/forgot-password" element={<ForgotPassword/>} />
