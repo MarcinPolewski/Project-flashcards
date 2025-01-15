@@ -68,7 +68,7 @@ const Statistics = () => {
                             />
                         </div>
                     </StatisticsSection>
-    
+
                     {/* Streak Statistics */}
                     <StatisticsSection className="streak-statistics-box">
                         <div className="streak-statistics">
@@ -86,7 +86,7 @@ const Statistics = () => {
                             </div>
                         </div>
                     </StatisticsSection>
-    
+
                     {/* Pie Chart */}
                     <StatisticsSection className="pie-chart-box">
                         <div className="pie-chart-container">
@@ -100,7 +100,7 @@ const Statistics = () => {
                             />
                         </div>
                     </StatisticsSection>
-    
+
                     {/* Card Numbers */}
                     <StatisticsSection title="Card Numbers" className="card-number-box">
                         <div className="card-number-statistics">

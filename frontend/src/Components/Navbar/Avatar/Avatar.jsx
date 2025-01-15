@@ -22,6 +22,10 @@ const Avatar = (props) => {
         }
     }
 
+    const handleUserProfileRedirect = () => {
+        navigate(`/user/${props.id}`)
+    }
+
     useEffect(() => {
         document.addEventListener('click', handleClickOutside)
         return () => {
@@ -34,7 +38,7 @@ const Avatar = (props) => {
         { isPopupOpen &&
             <div className="avatar-popup">
                 <div className="avatar-popup-info">
-                    <img className="avatar-img" src={props.avatar} alt="User Avatar" />
+                    <img className="avatar-img" src={props.avatar} alt="User Avatar" onClick={handleUserProfileRedirect}/>
                     <div className="avatar-popup-details">
                         <div>{props.username}</div>
                         <div>{props.email}</div>

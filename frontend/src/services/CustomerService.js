@@ -17,7 +17,13 @@ const CustomerService = {
       const response = await api.get('/customer/getSelf');
       return response.data;
   },
+  getSelfProfile: async () => {
+    if (isDevelopment) return mockData.customerGetSelfProfile;
+    const response = await api.get('/customer/getSelfProfile');
+    return response.data;
+  },
   getFriends: async () => {
+      if (isDevelopment) return mockData.friendsGetFriends;
       const response = await api.get('/customer/getFriends');
       return response.data;
   },

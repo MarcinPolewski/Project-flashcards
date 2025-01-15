@@ -293,10 +293,35 @@ const mockData = {
     ],
 
     customerGetSelf: {
+        id: 1,
         username: "Kacper",
         email: "kerciuuu@gmail.com",
         avatar: testAvatar
     },
+
+    customerGetSelfProfile: {
+        id: 1,
+        username: "Kacper",
+        email: "kerciuuu@gmail.com",
+        biography: "I am Kacper and I eat a lot of protein",
+        avatar: testAvatar,
+    },
+
+    friendsGetFriends: [
+        {
+          id: 1,
+          username: "john_doe",
+          email: "john.doe@example.com",
+          avatar: testAvatar,
+
+        },
+        {
+          id: 2,
+          username: "jane_doe",
+          email: "jane.doe@example.com",
+          avatar: testAvatar,
+        }
+    ],
 
     userStatisticsGetUserStatistics: {
         daysLearning: 15,
