@@ -18,32 +18,25 @@ import Register from './Components/pages/Register/Register';
 import ForgotPassword from './Components/pages/ForgotPassword/ForgotPassword';
 import PasswordReset from './Components/pages/ForgotPassword/PasswordReset';
 import PrivateRoute from './Components/PrivateRoute/PrivateRoute';
-import { useEffect, useState } from 'react';
-import CustomerService from './services/CustomerService';
 import VerificationSuccess from './Components/pages/VerificationSuccess/VerificationSuccess';
 
 function App() {
-
-  const [userData, setUserData] = useState(null);
-
-  useEffect(() => {
-      const fetchUserData = async () => {
-        try {
-          const data = await CustomerService.getSelf();
-          setUserData(data);
-          /* mock avatar */
-        } catch (error) {
-          console.error("Error fetching user data", error);
-        }
-      };
-      fetchUserData();
-  },[])
 
   return (
     <OverlayProvider>
     <ThemeProvider>
       <BrowserRouter>
         <Routes>
+          <Route path="/" element={<Home/>} />
+          <Route path="/settings" element={<Settings />} />
+          <Route path="/statistics" element={<Statistics />} />
+          <Route path="/decks" element={<Decks />} />
+          <Route path="/share" element={<Share />} />
+          <Route path="/study/:deckId" element={<Study />} />
+          <Route path="/deck/:deckId" element={<DeckPage />} />
+          <Route path="/folder/:id" element={<FolderPage />} />
+          <Route path="/create-flashcard" element={<CreateFlashcard />} />
+
           {/* <Route path="/" element={<PrivateRoute><Home/></PrivateRoute>} />
           <Route path="/settings" element={<PrivateRoute><Settings /></PrivateRoute>} />
           <Route path="/statistics" element={<PrivateRoute><Statistics /></PrivateRoute>} />
@@ -58,9 +51,6 @@ function App() {
           <Route path="/forgot-password" element={<ForgotPassword/>} />
           <Route path="/password-reset" element={<PasswordReset/>} />
           <Route path="/verify-email/:email/:code" element={<VerificationSuccess/>} /> */}
-
-
-          <Route path="/" element={<Home/>} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>

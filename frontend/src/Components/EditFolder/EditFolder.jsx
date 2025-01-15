@@ -32,7 +32,7 @@ export const EditFolder = ( { id, title, closeOverlay } ) => {
     </div>
 }
 
-export const DeleteFolder = ( { id, title } ) => {
+export const DeleteFolder = ( { id, title, closeOverlay } ) => {
 
     const handleDelete = () => {
         try {
