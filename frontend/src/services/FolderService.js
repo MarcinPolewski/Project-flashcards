@@ -1,7 +1,13 @@
 import api from "../api/api";
+import mockData from "../mocks/mockData";
+
+const isDevelopment = process.env.NODE_ENV === 'development';
 
 const FolderService = {
     getFolderStructure: async () => {
+        if (isDevelopment) {
+            return mockData.folderGetFolderStructure;
+        }
         const response = await api.get('/folder/getFolderStructure');
         return response.data;
     },

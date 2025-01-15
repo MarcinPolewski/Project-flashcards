@@ -35,7 +35,8 @@ const Statistics = () => {
             //     ]
             // }
             try {
-                const response = UserStatisticsService.getUserStatistics();
+                const response = await UserStatisticsService.getUserStatistics();
+                console.log(response);
                 setStatisticData(response);
             } catch (error) {
                 console.error("Error fetching user statistics:", error);
@@ -45,12 +46,10 @@ const Statistics = () => {
         fetchData();
     }, []);
 
-    const { daysLearning, longestStreak, currentStreak } = statisticData || {};
-
     const pieChartData = {
-        newCards: statisticData?.allNewCards || 0,
-        learningCards: statisticData?.allLearningCards || 0,
-        rememberedCards: statisticData?.allRememberedCards || 0,
+        newCards: statisticData.allNewCards || 0,
+        learningCards: statisticData.allLearningCards || 0,
+        rememberedCards: statisticData.allRememberedCards || 0,
     };
 
     const totalCards = pieChartData.newCards + pieChartData.learningCards + pieChartData.rememberedCards;
@@ -69,21 +68,21 @@ const Statistics = () => {
             <div className="statistics-title">Statistics</div>
 
             <StatisticsSection className="streak-section" title="Streak">
-                <StreakChart className="streak-section-streak-chart" loginDates={statisticData.loginDates}/>
+                <StreakChart className="streak-section-streak-chart" loginDates={Array.isArray(statisticData.loginDates) ? statisticData.loginDates : []}/>
 
                     <StatisticsSection className="streak-statistics-box">
                         <div className="streak-statistics">
                             <div className="streak-item">
                                 <h3>Days Learning</h3>
-                                <div>{daysLearning} days</div>
+                                <div>{statisticData.daysLearning} days</div>
                             </div>
                             <div className="streak-item">
                                 <h3>Longest Streak</h3>
-                                <div>{longestStreak} days</div>
+                                <div>{statisticData.longestStreak} days</div>
                             </div>
                             <div className="streak-item">
                                 <h3>Current Streak</h3>
-                                <div>{currentStreak} days</div>
+                                <div>{statisticData.currentStreak} days</div>
                             </div>
                         </div>
                     </StatisticsSection>
@@ -91,7 +90,11 @@ const Statistics = () => {
                     {/* Pie Chart and Card Numbers */}
                     <StatisticsSection className="pie-chart-box">
                         <div className="pie-chart-container">
-                            <PieChart className="card-number-pie-chart" data={pieChartData} />
+                        <PieChart className="card-number-pie-chart" data={{
+                            newCards: statisticData.allNewCards,
+                            learningCards: statisticData.allLearningCards,
+                            rememberedCards: statisticData.allRememberedCards,
+                        }} />
                         </div>
                     </StatisticsSection>
 
@@ -99,15 +102,15 @@ const Statistics = () => {
                         <div className="card-number-statistics">
                             <div className="card-detail">
                                 <span>New </span>
-                                <span>{pieChartData.newCards} - {calcPercentage(pieChartData.newCards, totalCards)}%</span>
+                                <span>{pieChartData.newCards} - {calcPercentage(statisticData.allNewCards, totalCards)}%</span>
                             </div>
                             <div className="card-detail">
                                 <span>Learning</span>
-                                <span>{pieChartData.learningCards} - {calcPercentage(pieChartData.learningCards, totalCards)}%</span>
+                                <span>{pieChartData.learningCards} - {calcPercentage(statisticData.allLearningCards, totalCards)}%</span>
                             </div>
                             <div className="card-detail">
                                 <span>Learnt</span>
-                                <span>{pieChartData.rememberedCards} - {calcPercentage(pieChartData.rememberedCards, totalCards)}%</span>
+                                <span>{pieChartData.rememberedCards} - {calcPercentage(statisticData.allRememberedCards, totalCards)}%</span>
                             </div>
                         </div>
                     </StatisticsSection>

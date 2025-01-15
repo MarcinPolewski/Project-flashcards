@@ -1,4 +1,7 @@
 import api from "../api/api";
+import mockData from "../mocks/mockData";
+
+const isDevelopment = process.env.NODE_ENV === 'development';
 
 const DeckService = {
     getDeck: async (deckId) => {
@@ -9,6 +12,7 @@ const DeckService = {
     },
 
     getLastUsed: async () => {
+        if (isDevelopment) return mockData.deckGetLastUsed;
         const response = await api.get('/deck/getLastUsed');
         return response.data;
     },
