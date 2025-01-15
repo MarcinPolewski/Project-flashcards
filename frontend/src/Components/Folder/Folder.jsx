@@ -16,9 +16,9 @@ const Folder = ({ id, title, onEdit, onDelete }) => {
             </div>
 
             <div className="folder-actions">
-                <button className="folder-page-btn folder-page-study-btn" onClick={handleClick}>Open</button>
-                <button className="folder-page-btn folder-page-edit-btn" onClick={() => onEdit(id, title)}>Edit</button>
-                <button className="folder-page-btn folder-page-delete-btn" onClick={() => onDelete(id, title)}>Delete</button>
+                <button className="folder-btn folder-study-btn" onClick={handleClick}>Open</button>
+                <button className="folder-btn folder-edit-btn" onClick={() => onEdit(id, title)}>Edit</button>
+                <button className="folder-btn folder-delete-btn" onClick={() => onDelete(id, title)}>Delete</button>
             </div>
         </div>
     );
