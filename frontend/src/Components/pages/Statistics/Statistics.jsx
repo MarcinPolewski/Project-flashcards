@@ -24,16 +24,6 @@ const Statistics = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            //     daysLearning: 15,
-            //     longestStreak: 15,
-            //     currentStreak: 15,
-            //     allNewCards: 57,
-            //     allLearningCards: 120,
-            //     allRememberedCards: 217,
-            //     loginDates: [
-            //         '10-12-2024', '11-12-2024', '14-12-2024'
-            //     ]
-            // }
             try {
                 const response = await UserStatisticsService.getUserStatistics();
                 console.log(response);
@@ -46,6 +36,15 @@ const Statistics = () => {
         fetchData();
     }, []);
 
+    if (!statisticData) {
+        return (
+            <div className="statistics">
+                <Navbar />
+                <div>Loading...</div>
+            </div>
+        );
+    }
+
     const pieChartData = {
         newCards: statisticData.allNewCards || 0,
         learningCards: statisticData.allLearningCards || 0,
@@ -54,22 +53,14 @@ const Statistics = () => {
 
     const totalCards = pieChartData.newCards + pieChartData.learningCards + pieChartData.rememberedCards;
 
+    return (
+        <div className="statistics">
+            <Navbar />
+            <div className="statistics-container">
+                <div className="statistics-title">Statistics</div>
 
-    if (!statisticData) {
-        return  <div className="statistics">
-            <Navbar/>
-            <div>Loading... </div>
-        </div>;
-    }
-
-    return <div className="statistics">
-        <Navbar/>
-        <div className="statistics-container">
-
-            <div className="statistics-title">Statistics</div>
-
-            <StatisticsSection className="streak-section" title="Streak">
-                <StreakChart className="streak-section-streak-chart" loginDates={Array.isArray(statisticData.loginDates) ? statisticData.loginDates : []}/>
+                <StatisticsSection className="streak-section" title="Streak">
+                    <StreakChart className="streak-section-streak-chart" loginDates={Array.isArray(statisticData.loginDates) ? statisticData.loginDates : []} />
 
                     <StatisticsSection className="streak-statistics-box">
                         <div className="streak-statistics">
@@ -91,11 +82,11 @@ const Statistics = () => {
                     {/* Pie Chart and Card Numbers */}
                     <StatisticsSection className="pie-chart-box">
                         <div className="pie-chart-container">
-                        <PieChart className="card-number-pie-chart" data={{
-                            newCards: statisticData.allNewCards,
-                            learningCards: statisticData.allLearningCards,
-                            rememberedCards: statisticData.allRememberedCards,
-                        }} />
+                            <PieChart className="card-number-pie-chart" data={{
+                                newCards: statisticData.allNewCards,
+                                learningCards: statisticData.allLearningCards,
+                                rememberedCards: statisticData.allRememberedCards,
+                            }} />
                         </div>
                     </StatisticsSection>
 
@@ -115,10 +106,10 @@ const Statistics = () => {
                             </div>
                         </div>
                     </StatisticsSection>
-
                 </StatisticsSection>
             </div>
         </div>
+    );
 };
 
 export default Statistics;
