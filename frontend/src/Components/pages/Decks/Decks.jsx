@@ -93,6 +93,7 @@ const Decks = () => {
         const fetchDecks = async () => {
             try {
                 const response = await DeckService.getAllDecksInfo();
+                console.log(response);
                 setDecks(response);
             } catch (error) {
                 console.error("Error while fetching decks: ", error);
