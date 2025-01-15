@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { useOverlay } from '../../../contexts/OverlayContext/OverlayContext';
 import './DeckPage.css';
 
+import Overlay from '../../Overlay/Overlay';
 import Navbar from '../../Navbar/Navbar';
 import PieChart from '../../Charts/PieChart/PieChart';
 import DeckService from '../../../services/DeckService';
@@ -12,17 +14,34 @@ const DeckPage = () => {
     const [deckProgress, setDeckProgress] = useState(null);
     const [flashcards, setFlashcards] = useState([]);
 
-    const handleEdit = async (flashcardId) => {
-        try {
+    const {isOverlayOpen, toggleOverlay, closeOverlay} = useOverlay();
+    const [formType, setFormType] = useState("");
 
+    const [editedCardId, setEditedCardId] = useState(null);
+    const [editedCardFront, setEditedCardFront] = useState("");
+    const [editedCardBack, setEditedCardBack] = useState("");
+
+    const handleEditFlashcard = async (flashcardId) => {
+        if (editedCardFront.length < 1 || editedCardBack.length < 1) {
+            alert ("Flashcards front and back must not be empty!");
+            return;
+        }
+        try {
+            const response = await FlashcardService.updateFlashcard(flashcardId, editedCardFront, editedCardBack);
+            setFlashcards(flashcards.map(flashcard =>
+                flashcard.id === editedCardId
+                    ? { ...flashcard, front: editedCardFront, back: editedCardBack }
+                    : flashcard
+            ));
+            alert("Flashcard edited successfully!");
         } catch (error) {
             alert("Error occured while editing flashcard!");
         } finally {
-            // closeOverlay();
+            closeOverlay();
         }
     };
 
-    const handleDelete = async (flashcardId) => {
+    const handleDeleteYes = async (flashcardId) => {
         try {
             const response = await FlashcardService.deleteFlashcard(flashcardId)
             setFlashcards(flashcards.filter(flashcard => flashcard.id !== flashcardId));
@@ -30,9 +49,13 @@ const DeckPage = () => {
         } catch(error) {
             alert("Error occured while deleting flashcard!");
         } finally {
-            // closeOverlay();
+            closeOverlay();
         }
     };
+
+    const handleDeleteNo = () => {
+        closeOverlay();
+    }
 
     useEffect(() => {
         const fetchDeckProgress = async () => {
@@ -64,6 +87,40 @@ const DeckPage = () => {
         <div>
             <Navbar />
             <div className="deck-page-container">
+
+                <Overlay isOpen={isOverlayOpen} closeOverlay={closeOverlay}>
+                    {formType === 'edit' &&
+                        <div className="plus-button-create-deck">
+                        <h3>Edit Flashcard</h3>
+
+                        <input
+                            type="text"
+                            placeholder="Front.."
+                            value={editedCardFront}
+                            onChange={(e) => setEditedCardFront(e.target.value)}
+                            required
+                        />
+
+                        <input
+                            type="text"
+                            placeholder="Back.."
+                            value={editedCardBack}
+                            onChange={(e) => setEditedCardBack(e.target.value)}
+                            required
+                        />
+
+                        <button type="button" onClick={handleEditFlashcard}>Save</button>
+                    </div>
+                    }
+                    {formType === 'delete' &&
+                        <div className="filter-options">
+                            <div>Do you really want to delete this flashcard?</div>
+                            <button onClick={handleDeleteYes}>Yes</button>
+                            <button onClick={handleDeleteNo}>No</button>
+                        </div>
+                    }
+                </Overlay>
+
                 <div className="deck-page-content">
                     <h1 className="deck-page-title">{deckProgress.name}</h1>
                     <div className="deck-page-statistics-container">
@@ -95,13 +152,23 @@ const DeckPage = () => {
                                     </div>
                                     <div className="deck-page-flashcard-actions">
                                         <button
-                                            onClick={() => handleEdit(flashcard.id)}
+                                            onClick={() => {
+                                                setFormType('edit');
+                                                setEditedCardId(flashcard.id);
+                                                setEditedCardFront(flashcard.front);
+                                                setEditedCardBack(flashcard.back);
+                                                toggleOverlay();
+                                            }}
                                             className="deck-page-edit-btn"
                                         >
                                             Edit
                                         </button>
                                         <button
-                                            onClick={() => handleDelete(flashcard.id)}
+                                            onClick={() => {
+                                                setFormType('delete');
+                                                setEditedCardId(flashcard.id);
+                                                toggleOverlay();
+                                            }}
                                             className="deck-page-delete-btn"
                                         >
                                             Delete
