@@ -41,8 +41,9 @@
     margin-bottom: 15px;
 }
 
-.edit-folder-popup-edit button[type="submit"] {
-    background-color: var(--continue-button);
+.edit-folder-popup-edit button {
+    background-color: var(--flashcard-edit-button);
+    margin: auto;
     color: white;
     padding: 10px 20px;
     border: none;
@@ -52,9 +53,10 @@
     transition: background-color 0.3s ease;
 }
 
-.edit-folder-popup-edit button[type="submit"]:hover {
-    background-color: var(--create-deck-button);
+.edit-folder-popup-edit button:hover {
+    background-color: var(--flashcard-edit-button-hover);
 }
+
 
 .edit-folder-popup-edit h3 {
     font-size: 1.2rem;
