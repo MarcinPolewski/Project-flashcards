@@ -114,17 +114,23 @@ const PlusButton = () => {
                         ))}
                     </select>
 
-                    <button type="button" onClick={handleCreateDeck}>Create Deck</button>
+                    <button type="button" onClick={handleCreateDeck}>Create</button>
                 </div> }
                 {formType === 'folder' &&
                 <div className="plus-button-create-folder">
                     <h3>Create Folder</h3>
-                    <option value="" disabled>Select parent folder</option>
-                        {folders.map((folder) => (
-                            <option key={folder.id} value={folder.id}>
+                    <p>Select parent folder:</p>
+                    <select
+                        value={selectedFolder}
+                        onChange={(e) => setSelectedFolder(e.target.value)}
+                        required
+                    >
+                        {folders.map((folder, index) => (
+                            <option key={index} value={folder.name}>
                                 {folder.name}
                             </option>
-                    ))}
+                        ))}
+                    </select>
                     <input
                         type="text"
                         placeholder="Folder name..."
@@ -132,7 +138,7 @@ const PlusButton = () => {
                         onChange={(e) => setNewFolderName(e.target.value)}
                         required
                     />
-                    <button type="button" onClick={handleCreateFolder}>Add Folder</button>
+                    <button type="button" onClick={handleCreateFolder}>Create</button>
                 </div> }
             </Overlay>
         </div>
