@@ -5,6 +5,7 @@ const isDevelopment = process.env.NODE_ENV === 'development';
 
 const DeckService = {
     getDeck: async (deckId) => {
+        if (isDevelopment) return { id: 1, name: "Fruits!!" };
         const response = await api.get('/deck/getDeck', {
             params: { deckId }
         });

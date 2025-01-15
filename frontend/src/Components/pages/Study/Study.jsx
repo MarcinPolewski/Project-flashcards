@@ -7,12 +7,16 @@ import ReviewService from "../../../services/ReviewService";
 import FlashcardService from "../../../services/FlashcardService";
 import Overlay from "../../Overlay/Overlay";
 import { useOverlay } from "../../../contexts/OverlayContext/OverlayContext";
+import DeckService from "../../../services/DeckService";
 
 const Study = () => {
   const { deckId } = useParams();
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [cards, setCards] = useState([]);
   const [showBack, setShowBack] = useState(false);
+
+  const [deckInfo, setDeckInfo] = useState(null);
+  const [flashcardCount, setFlashcardCount] = useState(null);
 
   const [currentCardFront, setCurrentCardFront] = useState("");
   const [currentCardBack, setCurrentCardBack] = useState("");
@@ -31,10 +35,22 @@ const Study = () => {
         console.error("Error while requesting review: ", error);
       }
     };
+
+    const fetchDeckInfo = async () => {
+      try {
+        const response = await DeckService.getDeck(deckId);
+        setDeckInfo(response);
+      } catch (error) {
+        console.error("Error while fetching detch: ", error);
+      }
+    }
+
     requestReview();
+    fetchDeckInfo();
   }, [deckId]);
 
   useEffect(() => {
+    setFlashcardCount(cards.length);
     if (cards.length > 0 && currentCardIndex >= 0) {
       const currentCard = cards[currentCardIndex];
       setCurrentCardFront(currentCard.front);
@@ -159,7 +175,8 @@ const Study = () => {
           </div>
         </Overlay>
 
-        <p>You're studying deck: {deckId}</p>
+        <p>You're studying deck: {deckInfo.name}</p>
+        <p>Flashcards remaining: {flashcardCount}</p>
         {currentCard && currentCard.front && currentCard.back ? (
           <>
             <div className="card">
