@@ -45,6 +45,15 @@ const Home = () => {
         toggleOverlay();
     };
 
+    const handleFolderEdit = (updatedFolderId, newTitle) => {
+        setFolders(folders.map((folder) =>
+            folder.id === updatedFolderId ? { ...folder, name: newTitle } : folder
+        ));
+    };
+
+    const handleFolderDelete = (deletedFolderId) => {
+        setFolders(folders.filter((folder) => folder.id !== deletedFolderId));
+    };
 
     useEffect(() => {
         const fetchDecks = async () => {
@@ -91,10 +100,10 @@ const Home = () => {
 
             <Overlay isOpen={isOverlayOpen} closeOverlay={closeOverlay}>
                 {formType === 'edit' &&
-                    <EditFolder id={selectedId} title={selectedTitle} closeOverlay={closeOverlay}/>
+                    <EditFolder id={selectedId} title={selectedTitle} closeOverlay={closeOverlay} onFolderEdit={handleFolderEdit}/>
                 }
                 {formType === 'delete' &&
-                    <DeleteFolder id={selectedId} title={selectedTitle} closeOverlay={closeOverlay}/>
+                    <DeleteFolder id={selectedId} title={selectedTitle} closeOverlay={closeOverlay} onFolderDelete={handleFolderDelete}/>
                 }
             </Overlay>
 

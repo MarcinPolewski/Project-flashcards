@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import FolderService from "../../services/FolderService";
 
-export const EditFolder = ( { id, title, closeOverlay } ) => {
+export const EditFolder = ( { id, title, closeOverlay, onFolderEdit } ) => {
     const [newFolderName, setNewFolderName] = useState(title);
 
     const handleSave = async () => {
@@ -13,6 +13,9 @@ export const EditFolder = ( { id, title, closeOverlay } ) => {
         try {
             const response = await FolderService.updateFolder(id, newFolderName);
             alert("Successfully updated folder");
+            if (onFolderEdit) {
+                onFolderEdit(id, newFolderName);
+            }
         } catch (error) {
             console.log("Error while editing folders", error);
             alert("Error occured when updating folder");
@@ -34,12 +37,15 @@ export const EditFolder = ( { id, title, closeOverlay } ) => {
     </div>
 }
 
-export const DeleteFolder = ( { id, title, closeOverlay } ) => {
+export const DeleteFolder = ( { id, title, closeOverlay, onFolderDelete } ) => {
 
     const handleDelete = async () => {
         try {
             const response = await FolderService.deleteFolder(id);
             alert("Successfully updated folder");
+            if (onFolderDelete) {
+                onFolderDelete(id);
+            }
         } catch (error) {
             console.log("Error while deleting folder", error);
             alert("Error occured while deleting folder");
