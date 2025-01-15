@@ -58,10 +58,18 @@ const Statistics = () => {
             <Navbar />
             <div className="statistics-container">
                 <div className="statistics-title">Statistics</div>
-
-                <StatisticsSection className="streak-section" title="Streak">
-                    <StreakChart className="streak-section-streak-chart" loginDates={Array.isArray(statisticData.loginDates) ? statisticData.loginDates : []} />
-
+                <div className="statistics-grid">
+                    {/* Streak Box */}
+                    <StatisticsSection title="Streak" className="streak-box">
+                        <div className="streak-container">
+                            <StreakChart
+                                className="streak-section-streak-chart"
+                                loginDates={Array.isArray(statisticData.loginDates) ? statisticData.loginDates : []}
+                            />
+                        </div>
+                    </StatisticsSection>
+    
+                    {/* Streak Statistics */}
                     <StatisticsSection className="streak-statistics-box">
                         <div className="streak-statistics">
                             <div className="streak-item">
@@ -78,35 +86,45 @@ const Statistics = () => {
                             </div>
                         </div>
                     </StatisticsSection>
-
-                    {/* Pie Chart and Card Numbers */}
+    
+                    {/* Pie Chart */}
                     <StatisticsSection className="pie-chart-box">
                         <div className="pie-chart-container">
-                            <PieChart className="card-number-pie-chart" data={{
-                                newCards: statisticData.allNewCards,
-                                learningCards: statisticData.allLearningCards,
-                                rememberedCards: statisticData.allRememberedCards,
-                            }} />
+                            <PieChart
+                                className="card-number-pie-chart"
+                                data={{
+                                    newCards: statisticData.allNewCards,
+                                    learningCards: statisticData.allLearningCards,
+                                    rememberedCards: statisticData.allRememberedCards,
+                                }}
+                            />
                         </div>
                     </StatisticsSection>
-
+    
+                    {/* Card Numbers */}
                     <StatisticsSection title="Card Numbers" className="card-number-box">
                         <div className="card-number-statistics">
                             <div className="card-detail">
                                 <span>New </span>
-                                <span>{pieChartData.newCards} - {calcPercentage(statisticData.allNewCards, totalCards)}%</span>
+                                <span>
+                                    {pieChartData.newCards} - {calcPercentage(statisticData.allNewCards, totalCards)}%
+                                </span>
                             </div>
                             <div className="card-detail">
                                 <span>Learning</span>
-                                <span>{pieChartData.learningCards} - {calcPercentage(statisticData.allLearningCards, totalCards)}%</span>
+                                <span>
+                                    {pieChartData.learningCards} - {calcPercentage(statisticData.allLearningCards, totalCards)}%
+                                </span>
                             </div>
                             <div className="card-detail">
                                 <span>Learnt</span>
-                                <span>{pieChartData.rememberedCards} - {calcPercentage(statisticData.allRememberedCards, totalCards)}%</span>
+                                <span>
+                                    {pieChartData.rememberedCards} - {calcPercentage(statisticData.allRememberedCards, totalCards)}%
+                                </span>
                             </div>
                         </div>
                     </StatisticsSection>
-                </StatisticsSection>
+                </div>
             </div>
         </div>
     );
