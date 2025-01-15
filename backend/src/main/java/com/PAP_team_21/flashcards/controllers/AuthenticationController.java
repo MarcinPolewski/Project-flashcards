@@ -158,4 +158,16 @@ public class AuthenticationController {
         }
     }
 
+    @PostMapping("/changeEmail")
+    public ResponseEntity<?> changeEmail(Authentication authentication, @RequestBody ChangeEmailRequest request)
+    {
+        try {
+            authenticationService.changeEmail(authentication, request.getNewEmail());
+            return ResponseEntity.ok("email changed successfuly");
+        } catch (Exception e)
+        {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("exception occurred: " + e.getMessage());
+        }
+    }
+
 }
