@@ -69,7 +69,6 @@ public class SecurityConfig{
                                 .permitAll()
                         .anyRequest().authenticated()
                 )
-                .formLogin( Customizer.withDefaults())
                 .oauth2Login( oauth -> oauth
                         .defaultSuccessUrl("/api/auth/oauth2/success", true)
                 )
