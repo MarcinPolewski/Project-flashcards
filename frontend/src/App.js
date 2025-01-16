@@ -20,6 +20,7 @@ import PasswordReset from './Components/pages/ForgotPassword/PasswordReset';
 import PrivateRoute from './Components/PrivateRoute/PrivateRoute';
 import VerificationSuccess from './Components/pages/VerificationSuccess/VerificationSuccess';
 import UserProfile from './Components/pages/UserProfile/UserProfile';
+import {UserProvider} from "../src/contexts/UserContext/UserContext";
 
 function App() {
 
@@ -27,34 +28,33 @@ function App() {
     <OverlayProvider>
     <ThemeProvider>
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home/>} />
-          <Route path="/settings" element={<Settings />} />
-          <Route path="/statistics" element={<Statistics />} />
-          <Route path="/decks" element={<Decks />} />
-          <Route path="/share" element={<Share />} />
-          <Route path="/study/:deckId" element={<Study />} />
-          <Route path="/deck/:deckId" element={<DeckPage />} />
-          <Route path="/folder/:id" element={<FolderPage />} />
-          <Route path="/create-flashcard" element={<CreateFlashcard />} />
-          <Route path="/user/:userId" element={<UserProfile />} />
+      <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/password-reset" element={<PasswordReset />} />
+            <Route path="/verify-email/:email/:code" element={<VerificationSuccess />} />
 
-          {/* <Route path="/" element={<PrivateRoute><Home/></PrivateRoute>} />
-          <Route path="/settings" element={<PrivateRoute><Settings /></PrivateRoute>} />
-          <Route path="/statistics" element={<PrivateRoute><Statistics /></PrivateRoute>} />
-          <Route path="/decks" element={<PrivateRoute><Decks /></PrivateRoute>} />
-          <Route path="/share" element={<PrivateRoute><Share /></PrivateRoute>} />
-          <Route path="/study/:deckId" element={<PrivateRoute><Study /></PrivateRoute>} />
-          <Route path="/deck/:deckId" element={<PrivateRoute><DeckPage /></PrivateRoute>} />
-          <Route path="/folder/:id" element={<PrivateRoute><FolderPage /></PrivateRoute>} />
-          <Route path="/create-flashcard" element={<PrivateRoute><CreateFlashcard /></PrivateRoute>} />
-          <Route path="/user/:userId" element={<PrivateRoute><UserProfile /> </PrivateRoute>} />
-          <Route path="/login" element={<Login/>} />
-          <Route path="/register" element={<Register/>} />
-          <Route path="/forgot-password" element={<ForgotPassword/>} />
-          <Route path="/password-reset" element={<PasswordReset/>} />
-          <Route path="/verify-email/:email/:code" element={<VerificationSuccess/>} /> */}
-        </Routes>
+            <Route
+              path="/*"
+              element={
+                <UserProvider>
+                  <Routes>
+                    <Route path="/" element={<PrivateRoute><Home /></PrivateRoute>} />
+                    <Route path="/settings" element={<PrivateRoute><Settings /></PrivateRoute>} />
+                    <Route path="/statistics" element={<PrivateRoute><Statistics /></PrivateRoute>} />
+                    <Route path="/decks" element={<PrivateRoute><Decks /></PrivateRoute>} />
+                    <Route path="/share" element={<PrivateRoute><Share /></PrivateRoute>} />
+                    <Route path="/study/:deckId" element={<PrivateRoute><Study /></PrivateRoute>} />
+                    <Route path="/deck/:deckId" element={<PrivateRoute><DeckPage /></PrivateRoute>} />
+                    <Route path="/folder/:id" element={<PrivateRoute><FolderPage /></PrivateRoute>} />
+                    <Route path="/create-flashcard" element={<PrivateRoute><CreateFlashcard /></PrivateRoute>} />
+                    <Route path="/user/:userId" element={<PrivateRoute><UserProfile /></PrivateRoute>} />
+                  </Routes>
+                </UserProvider>
+              }
+            />
+          </Routes>
       </BrowserRouter>
     </ThemeProvider>
     </OverlayProvider>

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { ThemeContext } from "../../../contexts/ThemeContext/ThemeContext";
 
 import './Avatar.css';
+import AuthService from "../../../services/AuthService";
 
 const Avatar = (props) => {
 
@@ -33,6 +34,11 @@ const Avatar = (props) => {
         };
     }, []);
 
+    const handleLogout = () => {
+        AuthService.logout();
+        navigate("/login");
+    }
+
     return <div className="avatar" onClick={handleTogglePopup}>
         <img src={props.avatar} alt="User Avatar" />
         { isPopupOpen &&
@@ -47,7 +53,7 @@ const Avatar = (props) => {
                 <ul>
                     <li onClick={() => navigate("/settings")}>Settings</li>
                     <li onClick={toggleTheme}>{theme === 'dark' ? "Light" : "Dark"} Mode</li>
-                    <li>Logout</li>
+                    <li onClick={handleLogout}>Logout</li>
                 </ul>
             </div>
         }

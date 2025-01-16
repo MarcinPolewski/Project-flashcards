@@ -11,6 +11,7 @@ import { ThemeContext } from "../../../contexts/ThemeContext/ThemeContext";
 import { useOverlay } from "../../../contexts/OverlayContext/OverlayContext";
 import { settingsPreferences } from "../../../utils/settingsPrefferences";
 import CustomerService from "../../../services/CustomerService";
+import { useUser } from "../../../contexts/UserContext/UserContext";
 
 const SettingsSection = ({ title, children }) => (
     <div>
@@ -22,11 +23,7 @@ const SettingsSection = ({ title, children }) => (
   );
 
 const Settings = () => {
-    const [userData, setUserData] = useState({
-        username: '',
-        email: '',
-        avatar: testAvatar
-    });
+    const { userData, isLoading } = useUser();
 
     const [formData, setFormData] = useState({
         email: '',
@@ -73,21 +70,7 @@ const Settings = () => {
             }
         };
 
-        const fetchUserData = async () => {
-            try {
-                const user = await CustomerService.getSelf();
-                setUserData({
-                    username: user.username || '',
-                    email: user.email || '',
-                    avatar: user.avatar || testAvatar,
-                });
-            } catch (error) {
-                console.error("Error fetching user data:", error);
-            }
-        };
-
         fetchPreferencesData();
-        fetchUserData();
     }, [sysTheme, setTheme]);
 
     const handleSubmit = async (e) => {
