@@ -205,4 +205,25 @@ public class FolderController {
 
         return ResponseEntity.badRequest().body("You do not have permission to view to view access levels of this folder");
     }
+
+    @GetMapping("/getFolder")
+    @JsonView(JsonViewConfig.Public.class)
+    public ResponseEntity<?> getFolder(Authentication authentication, @RequestParam int folderId) {
+        FolderAccessServiceResponse response;
+        try {
+            response = resourceAccessService.getFolderAccessLevel(authentication, folderId);
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+
+        Folder folder = response.getFolder();
+        AccessLevel al = response.getAccessLevel();
+
+        if(al != null)
+        {
+            return ResponseEntity.ok(folder);
+        }
+
+        return ResponseEntity.badRequest().body("You do not have permission to view this folder");
+    }
 }
