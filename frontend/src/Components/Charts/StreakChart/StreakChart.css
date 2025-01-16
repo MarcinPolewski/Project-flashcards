@@ -1,18 +1,49 @@
 .streak-chart {
-    display: grid;
-    grid-template-columns: repeat(calc(365 / 7), 1fr);
-    gap: 2px;
+    display: flex;
+    gap: 4px;
     width: 100%;
-    max-width: 850px;
+    max-width: 400px;
+    justify-content: center; /* Center the chart for smaller screens */
+}
+
+.streak-column {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
 }
 
 .streak-cell {
-    width: 14px;
-    height: 14px;
+    width: 12px;
+    height: 12px;
     background-color: var(--streak-cell-background-inactive);
     border-radius: 2px;
 }
 
 .streak-cell.active {
     background-color: var(--streak-cell-background-active);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .streak-chart {
+        gap: 2px; /* Reduce gap between columns */
+        max-width: 300px; /* Adjust max width for smaller screens */
+    }
+
+    .streak-cell {
+        width: 10px; /* Reduce width */
+        height: 10px;  /* Reduce height */
+    }
+}
+
+@media (max-width: 480px) {
+    .streak-chart {
+        gap: 1px; /* Minimize gap further */
+        max-width: 250px; /* Adjust max width for very small screens */
+    }
+
+    .streak-cell {
+        width: 7px;  /* Further reduce width */
+        height: 7px; /* Further reduce height */
+    }
 }

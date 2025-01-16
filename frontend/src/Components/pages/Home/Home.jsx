@@ -11,6 +11,9 @@ import { useNavigate } from "react-router-dom";
 import DeckService from "../../../services/DeckService";
 import FolderService from "../../../services/FolderService";
 import NotificationService from "../../../services/NotificationService";
+import { useOverlay } from "../../../contexts/OverlayContext/OverlayContext";
+import Overlay from "../../Overlay/Overlay";
+import { EditFolder, DeleteFolder } from "../../EditFolder/EditFolder";
 
 
 const Home = () => {
@@ -19,25 +22,72 @@ const Home = () => {
     const [notifications, setNotifications] = useState([]);
     const [folders, setFolders] = useState([]);
 
+    const [formType, setFormType] = useState(null);
+    const [selectedId, setSelectedId] = useState(null);
+    const [selectedTitle, setSelectedTitle] = useState(null);
+
+
+    const { isOverlayOpen, toggleOverlay, closeOverlay } = useOverlay();
+
     const navigate = useNavigate();
+
+    const handleEditClick = (id, title) => {
+        setSelectedId(id);
+        setSelectedTitle(title);
+        setFormType('edit');
+        toggleOverlay();
+    };
+
+    const handleDeleteClick = (id, title) => {
+        setSelectedId(id);
+        setSelectedTitle(title);
+        setFormType('delete');
+        toggleOverlay();
+    };
+
+    const handleFolderEdit = (updatedFolderId, newTitle) => {
+        setFolders(folders.map((folder) =>
+            folder.id === updatedFolderId ? { ...folder, name: newTitle } : folder
+        ));
+    };
+
+    const handleFolderDelete = (deletedFolderId) => {
+        setFolders(folders.filter((folder) => folder.id !== deletedFolderId));
+    };
 
     useEffect(() => {
         const fetchDecks = async () => {
             try {
-            const lastUsedDecks = await DeckService.getLastUsed();
-            const folderStructure = await FolderService.getFolderStructure();
-            const notificationsSet = await NotificationService.getAllNotifications();
-            setLatestDecks(lastUsedDecks);
-            setFolders(folderStructure);
-            setNotifications(notificationsSet);
+                const lastUsedDecks = await DeckService.getLastUsed();
+                console.log("Latest decks fetched: ", lastUsedDecks);
+                setLatestDecks(lastUsedDecks);
             } catch (error) {
                 console.error("Error fetching last used decks:", error);
                 setLatestDecks(null);
-                setNotifications(null);
+            }
+        }
+        const fetchFolders = async () => {
+            try {
+                const folderStructure = await FolderService.getFolderStructure();
+                setFolders(folderStructure);
+            } catch (error) {
+                console.error("Error while fetching folders: ", error);
                 setFolders(null);
             }
         }
+
+        const fetchNotifications = async () => {
+            try {
+                const notificationsSet = await NotificationService.getAllNotifications();
+                setNotifications(notificationsSet);
+            } catch (error) {
+                console.error("Error while fetching notifications: ", error);
+                setNotifications(null);
+            }
+        }
         fetchDecks();
+        fetchFolders();
+        fetchNotifications();
     }, [])
 
     return <div>
@@ -47,6 +97,15 @@ const Home = () => {
     <div className="home">
 
         <div className="home-latest-reviews">
+
+            <Overlay isOpen={isOverlayOpen} closeOverlay={closeOverlay}>
+                {formType === 'edit' &&
+                    <EditFolder id={selectedId} title={selectedTitle} closeOverlay={closeOverlay} onFolderEdit={handleFolderEdit}/>
+                }
+                {formType === 'delete' &&
+                    <DeleteFolder id={selectedId} title={selectedTitle} closeOverlay={closeOverlay} onFolderDelete={handleFolderDelete}/>
+                }
+            </Overlay>
 
             <div className="latest-reviews-title">My Latest Reviews</div>
             <div className="latest-reviews-decks">
@@ -110,8 +169,10 @@ const Home = () => {
             {
             Array.isArray(folders) && folders.length > 0 ? folders
                 .map((folder) => {
-                    const { folderId, folderName } = folder;
-                    return <Folder key={folderId} id={folderId} title={folderName}/>
+                    return <Folder key={folder.id} id={folder.id} title={folder.name}
+                            onEdit={handleEditClick}
+                            onDelete={handleDeleteClick}
+                    />
             })
             :
             <div>No folders available</div>

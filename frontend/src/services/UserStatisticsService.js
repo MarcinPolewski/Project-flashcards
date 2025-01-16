@@ -1,7 +1,11 @@
 import api from "../api/api";
+import mockData from "../mocks/mockData";
+
+const isDevelopment = process.env.NODE_ENV === 'development';
 
 const UserStatisticsService = {
     getUserStatistics: async () => {
+        if (isDevelopment) return mockData.userStatisticsGetUserStatistics;
         // const whatIneed = {
         //     daysLearning: 15,
         //     longestStreak: 15,

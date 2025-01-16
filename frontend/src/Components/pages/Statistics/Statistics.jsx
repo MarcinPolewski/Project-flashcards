@@ -24,18 +24,9 @@ const Statistics = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            //     daysLearning: 15,
-            //     longestStreak: 15,
-            //     currentStreak: 15,
-            //     allNewCards: 57,
-            //     allLearningCards: 120,
-            //     allRememberedCards: 217,
-            //     loginDates: [
-            //         '10-12-2024', '11-12-2024', '14-12-2024'
-            //     ]
-            // }
             try {
-                const response = UserStatisticsService.getUserStatistics();
+                const response = await UserStatisticsService.getUserStatistics();
+                console.log(response);
                 setStatisticData(response);
             } catch (error) {
                 console.error("Error fetching user statistics:", error);
@@ -45,76 +36,98 @@ const Statistics = () => {
         fetchData();
     }, []);
 
-    const { daysLearning, longestStreak, currentStreak } = statisticData || {};
+    if (!statisticData) {
+        return (
+            <div className="statistics">
+                <Navbar />
+                <div>Loading...</div>
+            </div>
+        );
+    }
 
     const pieChartData = {
-        newCards: statisticData?.allNewCards || 0,
-        learningCards: statisticData?.allLearningCards || 0,
-        rememberedCards: statisticData?.allRememberedCards || 0,
+        newCards: statisticData.allNewCards || 0,
+        learningCards: statisticData.allLearningCards || 0,
+        rememberedCards: statisticData.allRememberedCards || 0,
     };
 
     const totalCards = pieChartData.newCards + pieChartData.learningCards + pieChartData.rememberedCards;
 
-    if (!statisticData) {
-        return  <div className="statistics">
-            <Navbar/>
-            <div>Loading... </div>
-        </div>;
-    }
+    return (
+        <div className="statistics">
+            <Navbar />
+            <div className="statistics-container">
+                <div className="statistics-title">Statistics</div>
+                <div className="statistics-grid">
+                    {/* Streak Box */}
+                    <StatisticsSection title="Streak" className="streak-box">
+                        <div className="streak-container">
+                            <StreakChart
+                                className="streak-section-streak-chart"
+                                loginDates={Array.isArray(statisticData.loginDates) ? statisticData.loginDates : []}
+                            />
+                        </div>
+                    </StatisticsSection>
 
-    return <div className="statistics">
-        <Navbar/>
-        <div className="statistics-container">
-
-            <div className="statistics-title">Statistics</div>
-
-            <StatisticsSection className="streak-section" title="Streak">
-                <StreakChart className="streak-section-streak-chart" loginDates={statisticData.loginDates}/>
-
+                    {/* Streak Statistics */}
                     <StatisticsSection className="streak-statistics-box">
                         <div className="streak-statistics">
                             <div className="streak-item">
                                 <h3>Days Learning</h3>
-                                <div>{daysLearning} days</div>
+                                <div>{statisticData.daysLearning} days</div>
                             </div>
                             <div className="streak-item">
                                 <h3>Longest Streak</h3>
-                                <div>{longestStreak} days</div>
+                                <div>{statisticData.longestStreak} days</div>
                             </div>
                             <div className="streak-item">
                                 <h3>Current Streak</h3>
-                                <div>{currentStreak} days</div>
+                                <div>{statisticData.currentStreak} days</div>
                             </div>
                         </div>
                     </StatisticsSection>
 
-                    {/* Pie Chart and Card Numbers */}
+                    {/* Pie Chart */}
                     <StatisticsSection className="pie-chart-box">
                         <div className="pie-chart-container">
-                            <PieChart className="card-number-pie-chart" data={pieChartData} />
+                            <PieChart
+                                className="card-number-pie-chart"
+                                data={{
+                                    newCards: statisticData.allNewCards,
+                                    learningCards: statisticData.allLearningCards,
+                                    rememberedCards: statisticData.allRememberedCards,
+                                }}
+                            />
                         </div>
                     </StatisticsSection>
 
+                    {/* Card Numbers */}
                     <StatisticsSection title="Card Numbers" className="card-number-box">
                         <div className="card-number-statistics">
                             <div className="card-detail">
                                 <span>New </span>
-                                <span>{pieChartData.newCards} - {calcPercentage(pieChartData.newCards, totalCards)}%</span>
+                                <span>
+                                    {pieChartData.newCards} - {calcPercentage(statisticData.allNewCards, totalCards)}%
+                                </span>
                             </div>
                             <div className="card-detail">
                                 <span>Learning</span>
-                                <span>{pieChartData.learningCards} - {calcPercentage(pieChartData.learningCards, totalCards)}%</span>
+                                <span>
+                                    {pieChartData.learningCards} - {calcPercentage(statisticData.allLearningCards, totalCards)}%
+                                </span>
                             </div>
                             <div className="card-detail">
                                 <span>Learnt</span>
-                                <span>{pieChartData.rememberedCards} - {calcPercentage(pieChartData.rememberedCards, totalCards)}%</span>
+                                <span>
+                                    {pieChartData.rememberedCards} - {calcPercentage(statisticData.allRememberedCards, totalCards)}%
+                                </span>
                             </div>
                         </div>
                     </StatisticsSection>
-
-                </StatisticsSection>
+                </div>
             </div>
         </div>
+    );
 };
 
 export default Statistics;
