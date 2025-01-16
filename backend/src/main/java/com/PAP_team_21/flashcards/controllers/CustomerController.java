@@ -1,5 +1,6 @@
 package com.PAP_team_21.flashcards.controllers;
 
+import com.PAP_team_21.flashcards.controllers.requests.UpdateUsernameRequest;
 import com.PAP_team_21.flashcards.entities.FriendshipResponse;
 import com.PAP_team_21.flashcards.entities.JsonViewConfig;
 import com.PAP_team_21.flashcards.entities.customer.Customer;
@@ -67,6 +68,28 @@ public class CustomerController {
         }
         return ResponseEntity.badRequest().body("Customer not found");
     }
+
+    @PostMapping("/updateUsername")
+    public ResponseEntity<?> updateUsername(Authentication authentication, @RequestBody UpdateUsernameRequest request) {
+        String email = authentication.getName();
+        Optional<Customer> customerOpt= customerRepository.findByEmail(email);
+        if(customerOpt.isEmpty())
+        {
+            return ResponseEntity.badRequest().body("No user with this id found");
+        }
+
+        String newUsername = request.getNewUsername();
+        if(newUsername.trim().isEmpty())
+        {
+            return ResponseEntity.badRequest().body("Username cannot be empty");
+        }
+
+        Customer customer = customerOpt.get();
+        customer.setUsername(newUsername);
+        customerRepository.save(customer);
+        return ResponseEntity.ok("Username updated successfully");
+    }
+
 
     @GetMapping("/findByUsername/{username}")
     @JsonView(JsonViewConfig.Public.class)
