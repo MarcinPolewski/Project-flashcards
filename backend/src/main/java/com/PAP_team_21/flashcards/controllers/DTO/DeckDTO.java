@@ -14,4 +14,8 @@ public class DeckDTO {
     private int id;
     private String name;
     private float progress;
+    private int newCards;
+    private int toReview;
+    private int totalCards;
+    private  int learnedCards;
 }
