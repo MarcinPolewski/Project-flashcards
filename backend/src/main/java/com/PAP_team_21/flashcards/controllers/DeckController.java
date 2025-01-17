@@ -13,6 +13,7 @@ import com.PAP_team_21.flashcards.entities.customer.Customer;
 import com.PAP_team_21.flashcards.entities.customer.CustomerRepository;
 import com.PAP_team_21.flashcards.entities.deck.Deck;
 import com.PAP_team_21.flashcards.entities.deck.DeckService;
+import com.PAP_team_21.flashcards.entities.folder.Folder;
 import com.PAP_team_21.flashcards.entities.folder.FolderJpaRepository;
 import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.transaction.Transactional;
@@ -21,6 +22,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,6 +34,7 @@ public class DeckController {
     private final CustomerRepository customerRepository;
     private final DeckService deckService;
     private final DeckMapper deckMapper;
+    private final FolderJpaRepository folderRepository;
 
     @GetMapping("/flashcards")
     @JsonView(JsonViewConfig.Public.class)
@@ -79,6 +82,49 @@ public class DeckController {
 
         List<Deck> decks = deckService.getLastUsedDecks(cusomterOpt.get().getId(), howMany);
         return ResponseEntity.ok(deckMapper.toDTO(cusomterOpt.get(), decks));
+    }
+
+    @GetMapping("/getAllDecks")
+    @JsonView(JsonViewConfig.Public.class)
+    public ResponseEntity<?> getAllDecks(Authentication authentication)
+    {
+        String email = authentication.getName();
+        Optional<Customer> customerOpt = customerRepository.findByEmail(email);
+        if(customerOpt.isEmpty())
+        {
+            return ResponseEntity.badRequest().body("Customer not found");
+        }
+
+        List<Deck> result = new ArrayList<>();
+        List< Folder > folders = folderRepository.findAllUserFolders(customerOpt.get().getId());
+
+        for(Folder f: folders)
+        {
+            result.addAll(f.getDecks());
+        }
+
+        return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/getAllDecksInfo")
+    public ResponseEntity<?> getAllDecksInfo(Authentication authentication)
+    {
+        String email = authentication.getName();
+        Optional<Customer> customerOpt = customerRepository.findByEmail(email);
+        if(customerOpt.isEmpty())
+        {
+            return ResponseEntity.badRequest().body("Customer not found");
+        }
+
+        List<Deck> result = new ArrayList<>();
+        List< Folder > folders = folderRepository.findAllUserFolders(customerOpt.get().getId());
+
+        for(Folder f: folders)
+        {
+            result.addAll(f.getDecks());
+        }
+
+        return ResponseEntity.ok(deckMapper.toDTO(customerOpt.get(), result));
     }
 
     @PostMapping("/create")
