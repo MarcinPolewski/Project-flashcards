@@ -1,6 +1,7 @@
 package com.PAP_team_21.flashcards.controllers;
 
 import com.PAP_team_21.flashcards.controllers.requests.UpdateAvatarRequest;
+import com.PAP_team_21.flashcards.controllers.requests.UpdateBioRequest;
 import com.PAP_team_21.flashcards.controllers.requests.UpdateUsernameRequest;
 import com.PAP_team_21.flashcards.entities.CustomerWithAvatar;
 import com.PAP_team_21.flashcards.entities.FriendshipResponse;
@@ -97,6 +98,27 @@ public class CustomerController {
         customer.setUsername(newUsername);
         customerRepository.save(customer);
         return ResponseEntity.ok("Username updated successfully");
+    }
+
+    @PostMapping("/updateBio")
+    public ResponseEntity<?> updateBio(Authentication authentication, @RequestBody UpdateBioRequest request) {
+        String email = authentication.getName();
+        Optional<Customer> customerOpt= customerRepository.findByEmail(email);
+        if(customerOpt.isEmpty())
+        {
+            return ResponseEntity.badRequest().body("No user with this id found");
+        }
+
+        String newBio = request.getBio();
+        if(newBio.trim().isEmpty())
+        {
+            return ResponseEntity.badRequest().body("Bio cannot be empty");
+        }
+
+        Customer customer = customerOpt.get();
+        customer.setBio(newBio);
+        customerRepository.save(customer);
+        return ResponseEntity.ok("Biography updated successfully");
     }
 
     @PostMapping("/updateAvatar")
