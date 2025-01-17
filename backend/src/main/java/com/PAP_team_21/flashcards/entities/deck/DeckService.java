@@ -35,4 +35,18 @@ public class DeckService {
     public float getDeckProgress(int customerId, int deckId) {
         return deckRepository.getDeckProgress(customerId, deckId);
     }
+
+    public int countTotalCards(Integer customerId, int deckId) {
+        return deckRepository.countAllCards(customerId, deckId);
+    }
+
+
+    public int countDeckNewCards(Integer customerId, int deckId) {
+        return deckRepository.countNewCards(customerId, deckId);
+    }
+
+    public int countDeckCardsToReview(Integer customerId, int deckId) {
+        return deckRepository.countCardsToReview(customerId, deckId);
+    }
+
 }
