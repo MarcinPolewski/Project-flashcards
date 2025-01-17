@@ -251,4 +251,34 @@ BEGIN
 END //
 
 # =============================================================================
+
+CREATE PROCEDURE count_new_cards(
+    IN userId INT,
+    IN deckId INT,
+    OUT newCardCount INT
+)
+BEGIN
+    SELECT COUNT(*)
+    INTO newCardCount
+    FROM Flashcards fl
+    LEFT JOIN Flashcards_Progresses fp ON fl.id = fp.flashcard_id
+    WHERE fl.deck_id = deckId
+    AND fp.flashcard_id IS NULL;
+END //
+
+# =============================================================================
+
+CREATE PROCEDURE count_all_cards(
+    IN userId INT,
+    IN deckId INT,
+    OUT totalCardCount INT
+)
+BEGIN
+    SELECT COUNT(*)
+    INTO totalCardCount
+    FROM Flashcards fl
+    WHERE fl.deck_id = deckId;
+END //
+
+# =============================================================================
 DELIMITER ;
