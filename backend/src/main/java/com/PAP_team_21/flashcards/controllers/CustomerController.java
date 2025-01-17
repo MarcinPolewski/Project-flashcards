@@ -1,6 +1,8 @@
 package com.PAP_team_21.flashcards.controllers;
 
+import com.PAP_team_21.flashcards.controllers.requests.UpdateAvatarRequest;
 import com.PAP_team_21.flashcards.controllers.requests.UpdateUsernameRequest;
+import com.PAP_team_21.flashcards.entities.CustomerWithAvatar;
 import com.PAP_team_21.flashcards.entities.FriendshipResponse;
 import com.PAP_team_21.flashcards.entities.JsonViewConfig;
 import com.PAP_team_21.flashcards.entities.customer.Customer;
@@ -14,13 +16,20 @@ import com.PAP_team_21.flashcards.entities.notification.Notification;
 import com.PAP_team_21.flashcards.entities.notification.NotificationRepository;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/customer")
@@ -90,6 +99,37 @@ public class CustomerController {
         return ResponseEntity.ok("Username updated successfully");
     }
 
+    @PostMapping("/updateAvatar")
+    public ResponseEntity<?> updateAvatar(Authentication authentication, @RequestBody UpdateAvatarRequest request) {
+        final String avatarsFolder = "/app/avatars";
+        String email = authentication.getName();
+        Optional<Customer> customerOpt= customerRepository.findByEmail(email);
+        if(customerOpt.isEmpty())
+        {
+            return ResponseEntity.badRequest().body("No user with this id found");
+        }
+
+        MultipartFile newAvatar = request.getAvatar();
+        File uploadDirectory = new File(avatarsFolder);
+        if (!uploadDirectory.exists()) {
+            uploadDirectory.mkdirs();
+        }
+
+        String newAvatarPath = UUID.randomUUID() + "_" + newAvatar.getOriginalFilename();
+        File avatarFile = new File(avatarsFolder, newAvatarPath);
+        try {
+            newAvatar.transferTo(avatarFile);
+        }
+        catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Failed to upload avatar");
+        }
+
+        Customer customer = customerOpt.get();
+        customer.setProfilePicturePath(newAvatarPath);
+        customerRepository.save(customer);
+        return ResponseEntity.ok("Profile picture updated successfully");
+    }
 
     @GetMapping("/findByUsername/{username}")
     @JsonView(JsonViewConfig.Public.class)
@@ -127,14 +167,27 @@ public class CustomerController {
     @JsonView(JsonViewConfig.Internal.class)
     public ResponseEntity<?> getSelf(Authentication authentication) {
         String email = authentication.getName();
-        Optional<Customer> customerOpt= customerRepository.findByEmail(email);
-        if(customerOpt.isEmpty())
-        {
+        Optional<Customer> customerOpt = customerRepository.findByEmail(email);
+
+        if (customerOpt.isEmpty()) {
             return ResponseEntity.badRequest().body("No user with this id found");
         }
 
         Customer customer = customerOpt.get();
-        return ResponseEntity.ok(customer);
+
+        String avatarPath = customer.getProfilePicturePath();
+
+        try {
+            Path avatarFilePath = Paths.get("/app/avatars", avatarPath);
+            File avatar = avatarFilePath.toFile();
+
+            CustomerWithAvatar customerWithAvatar = new CustomerWithAvatar(customer, avatar);
+
+            return ResponseEntity.ok(customerWithAvatar);
+        }
+        catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error fetching avatar");
+        }
     }
 
     @GetMapping("/getReceivedFriendships")
@@ -208,23 +261,49 @@ public class CustomerController {
         }
         Customer customer = customerOpt.get();
 
-        List<Customer> friends = new ArrayList<Customer>();
+        List<CustomerWithAvatar> friendsWithAvatars = new ArrayList<CustomerWithAvatar>();
 
         List<Friendship> possibleFriendships = customer.getSentFriendships();
+
         for (Friendship friendship : possibleFriendships) {
             if (friendship.isAccepted()) {
-                friends.add(friendship.getReceiver());
+                Customer friend = friendship.getReceiver();
+
+                String avatarPath = friend.getProfilePicturePath();
+
+                try {
+                    Path avatarFilePath = Paths.get("/app/avatars", avatarPath);
+                    File avatar = avatarFilePath.toFile();
+
+                    CustomerWithAvatar friendWithAvatar = new CustomerWithAvatar(friend, avatar);
+                    friendsWithAvatars.add(friendWithAvatar);
+                }
+                catch (Exception e) {
+                    return ResponseEntity.badRequest().body("Error fetching avatar");
+                }
             }
         }
 
         possibleFriendships = customer.getReceivedFriendships();
         for (Friendship friendship : possibleFriendships) {
             if (friendship.isAccepted()) {
-                friends.add(friendship.getSender());
+                Customer friend = friendship.getSender();
+                String avatarPath = friend.getProfilePicturePath();
+
+                try {
+                    Path avatarFilePath = Paths.get("/app/avatars", avatarPath);
+                    File avatar = avatarFilePath.toFile();
+
+                    CustomerWithAvatar friendWithAvatar = new CustomerWithAvatar(friend, avatar);
+                    friendsWithAvatars.add(friendWithAvatar);
+                }
+                catch (Exception e) {
+                    return ResponseEntity.badRequest().body("Error fetching avatar");
+                }
             }
         }
 
-        return ResponseEntity.ok(friends);
+        return ResponseEntity.ok(friendsWithAvatars);
     }
 
     @GetMapping("/getFriendById/{id}")
@@ -267,7 +346,18 @@ public class CustomerController {
         if (friend == null) {
             return ResponseEntity.badRequest().body("No friend with this id found");
         }
-        return ResponseEntity.ok(friend);
+        String avatarPath = friend.getProfilePicturePath();
+
+        try {
+            Path avatarFilePath = Paths.get("/app/avatars", avatarPath);
+            File avatar = avatarFilePath.toFile();
+
+            CustomerWithAvatar friendWithAvatar = new CustomerWithAvatar(friend, avatar);
+            return ResponseEntity.ok(friendWithAvatar);
+        }
+        catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error fetching avatar");
+        }
     }
 
     @GetMapping("/getFriendByEmail/{email}")
@@ -311,7 +401,19 @@ public class CustomerController {
         if (friend == null) {
             return ResponseEntity.badRequest().body("No friend with this id found");
         }
-        return ResponseEntity.ok(friend);
+
+        String avatarPath = friend.getProfilePicturePath();
+
+        try {
+            Path avatarFilePath = Paths.get("/app/avatars", avatarPath);
+            File avatar = avatarFilePath.toFile();
+
+            CustomerWithAvatar friendWithAvatar = new CustomerWithAvatar(friend, avatar);
+            return ResponseEntity.ok(friendWithAvatar);
+        }
+        catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error fetching avatar");
+        }
     }
 
     @PostMapping("/sendFriendshipOfferById/{id}")
