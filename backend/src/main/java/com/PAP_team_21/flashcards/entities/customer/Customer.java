@@ -47,6 +47,10 @@ public class Customer {
     @JsonView(JsonViewConfig.Public.class)
     private String username;
 
+    @Column(name = "biography")
+    @JsonView(JsonViewConfig.Public.class)
+    private String biography;
+
     @Column(name = "account_expired")
     @JsonView(JsonViewConfig.Internal.class)
     private boolean accountExpired;
@@ -68,7 +72,7 @@ public class Customer {
     private LocalDateTime profileCreationDate;
 
     @Column(name = "profile_picture_path")
-    @JsonView(JsonViewConfig.Internal.class)
+    @JsonView(JsonViewConfig.Public.class)
     private String profilePicturePath;
 
     @OneToOne(mappedBy="customer", cascade = CascadeType.ALL)
@@ -110,6 +114,7 @@ public class Customer {
     public Customer(String email, String username, String passwordHash) {
         this.email = email;
         this.username = username;
+        this.biography = "";
         this.passwordHash = passwordHash;
         this.profileCreationDate = LocalDateTime.now();
         this.rootFolder = new Folder("ROOT", this);
@@ -125,6 +130,7 @@ public class Customer {
     public Customer(String email, String username, String passwordHash, String profilePicturePath) {
         this.email = email;
         this.username = username;
+        this.biography = "";
         this.passwordHash = passwordHash;
         this.profileCreationDate = LocalDateTime.now();
         this.rootFolder = new Folder("ROOT", this);
@@ -138,12 +144,13 @@ public class Customer {
     }
 
 
-    public Customer(String email, String passwordHash, String username, boolean accountExpired,
-                    boolean accountLocked, boolean credentialsExpired, boolean enabled,
-                    LocalDateTime profileCreationDate, String profilePicturePath) {
+    public Customer(String email, String passwordHash, String username, String biography,
+                    boolean accountExpired,  boolean accountLocked, boolean credentialsExpired,
+                    boolean enabled, LocalDateTime profileCreationDate, String profilePicturePath) {
         this.email = email;
         this.passwordHash = passwordHash;
         this.username = username;
+        this.biography = biography;
         this.accountExpired = accountExpired;
         this.accountLocked = accountLocked;
         this.credentialsExpired = credentialsExpired;
