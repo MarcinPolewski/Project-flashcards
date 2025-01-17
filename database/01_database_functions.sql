@@ -251,4 +251,46 @@ BEGIN
 END //
 
 # =============================================================================
+
+CREATE PROCEDURE count_new_cards(
+    IN userId INT,
+    IN deckId INT,
+    OUT newCardCount INT
+)
+BEGIN
+    SELECT COUNT(*)
+    INTO newCardCount
+    FROM Flashcards fl
+    LEFT JOIN Flashcards_Progresses fp ON fl.id = fp.flashcard_id
+    WHERE fl.deck_id = deckId
+    AND fp.flashcard_id IS NULL;
+END //
+
+# =============================================================================
+
+CREATE PROCEDURE count_all_cards(
+    IN userId INT,
+    IN deckId INT,
+    OUT totalCardCount INT
+)
+BEGIN
+    SELECT COUNT(*)
+    INTO totalCardCount
+    FROM Flashcards fl
+    WHERE fl.deck_id = deckId;
+END //
+
+# =============================================================================
+CREATE PROCEDURE get_all_user_folders(
+    IN userId INT
+)
+BEGIN
+    SELECT f.*
+    FROM Folders f
+    JOIN Access_Levels_Folders alf ON f.id = alf.folder_id
+    JOIN Folder_Access_Level fal ON alf.access_level_id = fal.id
+    WHERE fal.customer_id = userId;
+END //
+
+# =============================================================================
 DELIMITER ;

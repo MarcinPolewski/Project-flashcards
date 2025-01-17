@@ -74,9 +74,11 @@ public class Customer {
     @Column(name = "profile_picture_path")
     @JsonView(JsonViewConfig.Public.class)
     private String profilePicturePath;
-
     @OneToOne(mappedBy="customer", cascade = CascadeType.ALL)
     private SentVerificationCode sentVerificationCode;
+
+    @Column(name = "bio")
+    private String bio;
 
     @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL)
     private UserPreferences userPreferences;

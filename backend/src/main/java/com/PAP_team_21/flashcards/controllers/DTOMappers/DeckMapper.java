@@ -17,7 +17,14 @@ public class DeckMapper {
 
 
     public DeckDTO toDTO(Customer customer, Deck deck) {
-        return new DeckDTO(deck.getId(), deck.getName(), deckService.getDeckProgress(customer.getId(), deck.getId()));
+        int totalCards = deckService.countTotalCards(customer.getId(), deck.getId());
+        int newCards = deckService.countDeckNewCards(customer.getId(), deck.getId());
+        int toReview = deckService.countDeckCardsToReview(customer.getId(), deck.getId());
+        int learnedCards = totalCards - newCards - toReview;
+
+        float progress = (float)learnedCards / (float) totalCards;
+
+        return new DeckDTO(deck.getId(), deck.getName(), progress, newCards, toReview, totalCards, learnedCards);
     }
 
     public List<DeckDTO> toDTO(Customer customer, List<Deck> decks) {
