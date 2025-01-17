@@ -18,7 +18,8 @@ CREATE TABLE `Customers`(
                             `enabled` BOOLEAN NOT NULL DEFAULT '1',
                             `profile_creation_date` DATETIME NOT NULL,
                             `profile_picture_path` VARCHAR(255) NULL DEFAULT '/static/profile_pictures/default.jpg',
-                            `root_folder_id` INT UNSIGNED NOT NULL
+                            `root_folder_id` INT UNSIGNED NOT NULL,
+                            `bio` VARCHAR(255) NULL DEFAULT 'Hi! This is my bio, I am using Flashcards app!'
 );
 ALTER TABLE
     `Customers` ADD UNIQUE `customers_email_unique`(`email`);
