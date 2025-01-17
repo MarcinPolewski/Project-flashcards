@@ -84,6 +84,12 @@ public class AuthenticationController {
         }
     }
 
+    @GetMapping("/validateToken")
+    public ResponseEntity<?> validate(Authentication authentication)
+    {
+        return ResponseEntity.ok("token is valid");
+    }
+
 
     @PostMapping("/verifyUser")
     public ResponseEntity<?> verifyUser(@RequestBody VerifyUserRequest request)

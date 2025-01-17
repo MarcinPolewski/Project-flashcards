@@ -196,5 +196,44 @@ public class DeckController {
         return ResponseEntity.badRequest().body("You do not have permission to delete this deck");
     }
 
+    @GetMapping("/getDeck")
+    @JsonView(JsonViewConfig.Public.class)
+    public ResponseEntity<?> getDeckById(Authentication authentication, @RequestParam int deckId)
+    {
+        DeckAccessServiceResponse response;
+        try{
+            response = resourceAccessService.getDeckAccessLevel(authentication,deckId);
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+        AccessLevel al = response.getAccessLevel();
+
+        if(al != null)
+        {
+            // deckService.delete(response.getDeck());
+            return ResponseEntity.ok(response.getDeck());
+        }
+        return ResponseEntity.badRequest().body("You do not have permission to get this deck");
+    }
+
+    @GetMapping("/getDeckInfo")
+    @JsonView(JsonViewConfig.Public.class)
+    public ResponseEntity<?> getDeckInfoById(Authentication authentication, @RequestParam int deckId)
+    {
+        DeckAccessServiceResponse response;
+        try{
+            response = resourceAccessService.getDeckAccessLevel(authentication,deckId);
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+        AccessLevel al = response.getAccessLevel();
+
+        if(al != null)
+        {
+            // deckService.delete(response.getDeck());
+            return ResponseEntity.ok(deckMapper.toDTO(response.getCustomer(), response.getDeck()));
+        }
+        return ResponseEntity.badRequest().body("You do not have permission to get this deck");
+    }
 
 }
