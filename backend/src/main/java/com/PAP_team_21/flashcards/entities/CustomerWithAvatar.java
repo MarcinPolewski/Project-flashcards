@@ -1,6 +1,7 @@
 package com.PAP_team_21.flashcards.entities;
 
 import com.PAP_team_21.flashcards.entities.customer.Customer;
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,6 +14,8 @@ import java.io.File;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CustomerWithAvatar {
+    @JsonView(JsonViewConfig.Public.class)
     private Customer customer;
+    @JsonView(JsonViewConfig.Public.class)
     private File avatar;
 }
