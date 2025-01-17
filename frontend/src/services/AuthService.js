@@ -40,7 +40,13 @@ const AuthService = {
     },
 
     logout: () => {
-        localStorage.removeItem('jwtToken');
+        console.log("logging out !!");
+        localStorage.removeItem("jwtToken");
+        sessionStorage.removeItem("jwtToken");
+
+        window.location.reload(true);
+
+        window.location.href = "/login";
     },
 
     handleForgotPassword: async (email) => {

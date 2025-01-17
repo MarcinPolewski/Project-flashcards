@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import '../../AuthSection/Auth.css';
 import AuthSection from "../../AuthSection/AuthSection";
 import { useNavigate } from "react-router-dom";
 import AuthService from "../../../services/AuthService";
+import { useAuth } from "../../../contexts/AuthContext/AuthContext";
 
 const Login = () => {
     const [email, setEmail] = useState("");
@@ -12,11 +13,20 @@ const Login = () => {
     const [error, setError] = useState("");
     const navigate = useNavigate();
 
+    const { setToken } = useAuth();
+
     const handleSubmit = async (e) => {
       e.preventDefault();
       try {
-        await AuthService.loginUser({ email, password }, rememberMe);
-        navigate("/");
+        console.log("Passing email and password: ", email, password);
+        const response = await AuthService.loginUser({ email, password }, rememberMe);
+
+        console.log("loginUser response from backend: ", response);
+
+        localStorage.setItem("jwtToken", response);
+        setToken(response);
+        console.log("Setting local storage and useAuth token to: ", response);
+        navigate("/", { replace: true });
       } catch (error) {
         setError("Invalid email or password.");
       }

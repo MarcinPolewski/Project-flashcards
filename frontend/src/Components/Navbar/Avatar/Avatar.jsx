@@ -4,10 +4,12 @@ import { ThemeContext } from "../../../contexts/ThemeContext/ThemeContext";
 
 import './Avatar.css';
 import AuthService from "../../../services/AuthService";
+import { useAuth } from "../../../contexts/AuthContext/AuthContext";
 
 const Avatar = (props) => {
 
     const { theme, toggleTheme } = useContext(ThemeContext);
+    const { setToken } = useAuth();
 
     const navigate = useNavigate();
 
@@ -35,9 +37,9 @@ const Avatar = (props) => {
     }, []);
 
     const handleLogout = () => {
-        AuthService.logout();
-        navigate("/login");
-    }
+        setToken();
+        navigate("/login", { replace: true });
+    };
 
     return <div className="avatar" onClick={handleTogglePopup}>
         <img src={props.avatar} alt="User Avatar" />

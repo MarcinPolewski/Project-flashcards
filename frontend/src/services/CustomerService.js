@@ -1,5 +1,6 @@
 import api from "../api/api";
 import mockData from "../mocks/mockData";
+import axios from "axios";
 
 const isDevelopment = process.env.NODE_ENV === 'development';
 
@@ -14,7 +15,9 @@ const CustomerService = {
   },
   getSelf: async () => {
     if (isDevelopment) return mockData.customerGetSelf;
+    console.log("JWT request: ", axios.defaults.headers.common['Authorization']);
       const response = await api.get('/customer/getSelf');
+      console.log("Response from backend: ", response);
       return response.data;
   },
   getSelfProfile: async () => {

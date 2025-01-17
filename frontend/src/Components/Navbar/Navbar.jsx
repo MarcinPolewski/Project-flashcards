@@ -17,6 +17,8 @@ const Navbar = () => {
 
     const { userData, isLoading } = useUser();
 
+    if (isLoading) return <div>Loading...</div>
+
     return <div className="navbar">
         <div className="navbar-container">
 
