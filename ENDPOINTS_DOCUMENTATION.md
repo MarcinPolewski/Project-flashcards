@@ -1802,6 +1802,95 @@ Generates a PDF document for a specific deck by its ID.
   ```
 ---
 
+# API Documentation TxtGeneratorController
+
+The `TxtGeneratorController` handles the generation of TXT files for decks. It provides an endpoint to generate and download a TXT containing information about a specified deck.
+
+## Endpoints
+
+### 1. **Generate TXT**
+Generates a TXT document for a specific deck by its ID.
+
+- **URL:** `/generateTxt/{id}`
+- **Method:** `GET`
+- **Parameters:**
+  - `Authentication authentication`
+  - `id` (int) - The ID of the deck for which the TXT will be generated.
+- **Response:**
+
+  **200 OK** - Returns a byte array containing the TXT file. Includes headers for file download.
+  - `Content-Disposition`: `attachment; filename={deckName}.txt`
+  - `Content-Type`: `application/txt`
+
+  **400 Bad Request** - User with the specified ID was not found.
+  ```json
+  "No user with this id found"
+  ```
+  **403 Forbidden** - User with the specified ID was not found.
+  ```json
+  "You do not have access to this deck"
+  ```
+  **404 Not Found** - Deck with the specified ID was not found.
+  ```json
+  "No deck with this id found"
+  ```
+---
+
+# API Documentation TxtLoaderController
+
+The `TxtLoaderController` handles the loading of deck data from a specified TXT file. It provides an endpoint for uploading a TXT file, validating the data, and loading it into a specific folder associated with the authenticated user.
+
+## Endpoints
+
+### 1. **Load Deck from TXT**
+
+Loads deck data from a specified TXT file and associates it with a folder.
+
+- **URL:** `/loadDeckTxt`
+- **Method:** `POST`
+- **Request Body:**
+  ```json
+  {
+    "filePath": "string", 
+    "folderId": "int"      
+  }
+  ```
+- **Parameters:**
+  - `Authentication authentication`
+- **Response:**
+
+  **200 OK** - Returns deck object. 
+  ```json
+  [
+    {
+      "id": 1,
+      "deckId": 2,
+      "front": "apple",
+      "back": "jabłko"
+    },
+    {
+      "id": 2,
+      "deckId": 2,
+      "front": "banana",
+      "back": "banan"
+    }
+  ]
+  ```
+
+  **400 Bad Request** - User with the specified ID was not found.
+  ```json
+  "No user with this id found"
+  ```
+  **403 Forbidden** - User has no access the folder.
+  ```json
+  "You do not have access to this deck"
+  ```
+  **404 Not Found** - Folder with the specified ID was not found.
+  ```json
+  "No folder with this id found"
+  ```
+---
+
 ## Implementation Details
 - The endpoint uses the `PdfGenerator` service to generate a PDF based on the data contained in the specified `Deck`.
 - HTTP headers are set to:
