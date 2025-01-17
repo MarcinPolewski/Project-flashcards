@@ -326,7 +326,38 @@ This endpoint allows an authenticated user to update their username.
   ```json
   "Username cannot be empty"
   ```
+---
 
+### `POST /updateBio`
+
+This endpoint allows an authenticated user to update their biography.
+
+**Parameters:**
+- `Authentication authentication`: Contains authentication details for the current user.
+- `UpdateBioRequest request`: Contains the new biography to be set.
+
+**Request Body Example:**
+```json
+{
+  "bio": "hello"
+}
+```
+**Response:**
+- 200 OK: Returns a success message when the username is successfully updated.
+  ```json
+  "Biography updated successfully"
+  ```
+- 400 Bad Request:
+
+  If the user is not authenticated:
+  ```json
+  "No user with this id found"
+  ```
+  If username is empty
+  ```json
+  "Biography cannot be empty"
+  ```
+---
 ### `POST /updateAvatar`
 
 This endpoint allows an authenticated user to update their profile picture (avatar).
