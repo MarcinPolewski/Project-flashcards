@@ -48,7 +48,8 @@ public class JtwFilter extends OncePerRequestFilter {
             }
         } catch (Exception e)
         {
-            throw new BadCredentialsException("Invalid token");
+            ((HttpServletResponse) response).setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+//            throw new BadCredentialsException("Invalid token");
         }
         filterChain.doFilter(request, response);
     }
