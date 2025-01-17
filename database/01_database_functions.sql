@@ -281,4 +281,16 @@ BEGIN
 END //
 
 # =============================================================================
+CREATE PROCEDURE get_all_user_folders(
+    IN userId INT
+)
+BEGIN
+    SELECT f.*
+    FROM Folders f
+    JOIN Access_Levels_Folders alf ON f.id = alf.folder_id
+    JOIN Folder_Access_Level fal ON alf.access_level_id = fal.id
+    WHERE fal.customer_id = userId;
+END //
+
+# =============================================================================
 DELIMITER ;
