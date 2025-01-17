@@ -68,12 +68,13 @@ public class Customer {
     private LocalDateTime profileCreationDate;
 
     @Column(name = "profile_picture_path")
-    @JsonView(JsonViewConfig.Public.class)
+    @JsonView(JsonViewConfig.Internal.class)
     private String profilePicturePath;
     @OneToOne(mappedBy="customer", cascade = CascadeType.ALL)
     private SentVerificationCode sentVerificationCode;
 
     @Column(name = "bio")
+    @JsonView(JsonViewConfig.Public.class)
     private String bio;
 
     @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL)
