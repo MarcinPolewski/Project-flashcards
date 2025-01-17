@@ -4,6 +4,7 @@ import com.PAP_team_21.flashcards.AccessLevel;
 import com.PAP_team_21.flashcards.Errors.ResourceNotFoundException;
 import com.PAP_team_21.flashcards.authentication.ResourceAccessLevelService.FolderAccessServiceResponse;
 import com.PAP_team_21.flashcards.authentication.ResourceAccessLevelService.ResourceAccessService;
+import com.PAP_team_21.flashcards.controllers.DTOMappers.DeckMapper;
 import com.PAP_team_21.flashcards.controllers.requests.FolderCreationRequest;
 import com.PAP_team_21.flashcards.controllers.requests.FolderUpdateRequest;
 import com.PAP_team_21.flashcards.entities.JsonViewConfig;
@@ -38,6 +39,7 @@ public class FolderController {
     private final FolderService folderService;
     private final CustomerRepository customerRepository;
     private final ResourceAccessService resourceAccessService;
+    private final DeckMapper deckMapper;
 
     @GetMapping("/getFolderStructure")
     @JsonView(JsonViewConfig.Public.class)
@@ -155,6 +157,38 @@ public class FolderController {
             try{
                 List<Deck> decks = folder.getDecks(page, size, sortBy, ascending);
                 return ResponseEntity.ok(decks);
+            } catch(IllegalArgumentException e)
+            {
+                return ResponseEntity.badRequest().body("Invalid sort field, cannot sort by: "  + sortBy);
+            }
+        }
+        return ResponseEntity.badRequest().body("You do not have permission to view this folder");
+    }
+
+    @GetMapping("/getDecksInfo")
+    public ResponseEntity<?> getDecksInfo(
+            Authentication authentication,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "true") boolean ascending,
+            @RequestParam int folderId
+    )
+    {
+        FolderAccessServiceResponse response;
+        try {
+            response = resourceAccessService.getFolderAccessLevel(authentication, folderId);
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+        AccessLevel al = response.getAccessLevel();
+        Folder folder = response.getFolder();
+
+        if(al.equals(AccessLevel.EDITOR) || al.equals(AccessLevel.OWNER))
+        {
+            try{
+                List<Deck> decks = folder.getDecks(page, size, sortBy, ascending);
+                return ResponseEntity.ok(deckMapper.toDTO(response.getCustomer(), decks));
             } catch(IllegalArgumentException e)
             {
                 return ResponseEntity.badRequest().body("Invalid sort field, cannot sort by: "  + sortBy);
