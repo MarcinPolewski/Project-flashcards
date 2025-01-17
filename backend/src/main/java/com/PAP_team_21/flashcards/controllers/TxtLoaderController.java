@@ -10,7 +10,6 @@ import com.PAP_team_21.flashcards.entities.deck.DeckService;
 import com.PAP_team_21.flashcards.entities.folder.Folder;
 import com.PAP_team_21.flashcards.entities.folder.FolderJpaRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.security.core.Authentication;
 
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Optional;
@@ -55,14 +53,14 @@ public class TxtLoaderController {
         if (al == null)
         {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                                .body("You don't have access to this deck");
+                                .body("You don't have access to this folder");
         }
 
         try {
             byte[] txtData = Files.readAllBytes(Paths.get(filePath));
             Deck deck = txtLoader.loadDeckFromTxt(txtData, folder);
             deckService.save(deck);
-            return ResponseEntity.ok("Deck successfully loaded and saved.");
+            return ResponseEntity.ok(deck);
         }
         catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid TXT format:");
