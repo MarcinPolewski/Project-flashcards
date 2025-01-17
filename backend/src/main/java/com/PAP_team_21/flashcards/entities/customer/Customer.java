@@ -47,10 +47,6 @@ public class Customer {
     @JsonView(JsonViewConfig.Public.class)
     private String username;
 
-    @Column(name = "biography")
-    @JsonView(JsonViewConfig.Public.class)
-    private String biography;
-
     @Column(name = "account_expired")
     @JsonView(JsonViewConfig.Internal.class)
     private boolean accountExpired;
@@ -116,7 +112,7 @@ public class Customer {
     public Customer(String email, String username, String passwordHash) {
         this.email = email;
         this.username = username;
-        this.biography = "";
+        this.bio = "";
         this.passwordHash = passwordHash;
         this.profileCreationDate = LocalDateTime.now();
         this.rootFolder = new Folder("ROOT", this);
@@ -132,7 +128,7 @@ public class Customer {
     public Customer(String email, String username, String passwordHash, String profilePicturePath) {
         this.email = email;
         this.username = username;
-        this.biography = "";
+        this.bio = "";
         this.passwordHash = passwordHash;
         this.profileCreationDate = LocalDateTime.now();
         this.rootFolder = new Folder("ROOT", this);
@@ -152,7 +148,7 @@ public class Customer {
         this.email = email;
         this.passwordHash = passwordHash;
         this.username = username;
-        this.biography = biography;
+        this.bio = biography;
         this.accountExpired = accountExpired;
         this.accountLocked = accountLocked;
         this.credentialsExpired = credentialsExpired;
