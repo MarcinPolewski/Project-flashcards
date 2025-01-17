@@ -296,6 +296,71 @@ This endpoint retrieves a customer by their email.
   ```
 ---
 
+
+### `POST /updateUsername`
+
+This endpoint allows an authenticated user to update their username.
+
+**Parameters:**
+- `Authentication authentication`: Contains authentication details for the current user.
+- `UpdateUsernameRequest request`: Contains the new username to be set.
+
+**Request Body Example:**
+```json
+{
+  "newUsername": "newUsername123"
+}
+```
+**Response:**
+- 200 OK: Returns a success message when the username is successfully updated.
+  ```json
+  "Username updated successfully"
+  ```
+- 400 Bad Request:
+
+  If the user is not authenticated:
+  ```json
+  "No user with this id found"
+  ```
+  If username is empty
+  ```json
+  "Username cannot be empty"
+  ```
+
+### `POST /updateAvatar`
+
+This endpoint allows an authenticated user to update their profile picture (avatar).
+
+**Parameters:**
+- `Authentication authentication`: Contains authentication details for the current user.
+- `UpdateAvatarRequest request`: Contains the new avatar file to be uploaded.
+
+**Request Body Example:**
+```json
+{
+    "avatar": "<MultipartFile>"
+}
+```
+**Response:**
+- 200 OK: Returns a success message when the profile picture is successfully updated.
+  ```json
+  "Profile picture updated successfully"
+  ```
+- 400 Bad Request:
+
+  If the user is not authenticated:
+  ```json
+  "No user with this id found"
+  ```
+
+- 500 Internal server error:
+
+  If the file upload fails due to an IO error:
+  ```json
+  "Failed to upload avatar"
+  ```
+---
+
 ### `GET /customer/findByUsername/{username}`
 
 This endpoint retrieves a list of customers by their username.
@@ -371,7 +436,8 @@ This endpoint retrieves the authenticated customer's data.
         "accountLocked": false,
         "credentialsExpired": false,
         "enabled": false,
-        "profilePicturePath": "/profilePicture.png"
+        "profilePicturePath": "/profilePicture.png",
+        "avatar": "<avatar_file>"
     }
     ```
 - 400 Bad Request:
@@ -532,12 +598,14 @@ This endpoint retrieves a list of the authenticated customer's friends.
     {
       "id": 1,
       "username": "john_doe",
-      "email": "john.doe@example.com"
+      "email": "john.doe@example.com",
+      "avatar": "<avatar_file>"
     },
     {
       "id": 2,
       "username": "jane_doe",
-      "email": "jane.doe@example.com"
+      "email": "jane.doe@example.com",
+      "avatar": "<avatar_file>"
     }
   ]
   ```
@@ -563,7 +631,8 @@ This endpoint retrieves a friend by their ID.
   {
     "id": 1,
     "username": "john_doe",
-    "email": "john.doe@example.com"
+    "email": "john.doe@example.com",
+    "avatar": "<avatar_file>"
   }
   ```
 - 400 Bad Request:
@@ -593,7 +662,8 @@ This endpoint retrieves a friend by their email.
   {
     "id": 1,
     "username": "john_doe",
-    "email": "john.doe@example.com"
+    "email": "john.doe@example.com",
+    "avatar": "<avatar_file>"
   }
   ```
 - 400 Bad Request:
@@ -1475,7 +1545,37 @@ Retrieves access levels for a specified folder.
   "You do not have permission to view this folder"
   ```
 ---
+### `GET /getFolder`
 
+This endpoint retrieves a folder based on the provided `folderId`, provided the user has the necessary access permissions.
+
+**Parameters:**
+- `Authentication authentication`: Contains authentication details for the current user.
+- `int folderId`: The ID of the folder to retrieve.
+
+**Response:**
+- 200 OK: Returns the folder data if the user has permission to view it.
+  ```json
+  {
+    "id": 1,
+    "name": "Documents",
+    "owner": "user@example.com",
+    "createdDate": "2025-01-01T00:00:00",
+    "updatedDate": "2025-01-01T12:00:00"
+  }
+  ```
+  **400 Bad Request** - Folder or user not found, or insufficient permissions
+  "Folder not found"
+  ```json
+  "Folder not found"
+  ```
+  ```json
+  "User not found"
+  ```
+  ```json
+  "You do not have permission to view this folder"
+  ```
+  
 ## Notes
 - Access level checks ensure that only authorized users can perform actions on folders.
 - Pagination and sorting options are supported for fetching folders and decks.
@@ -1719,77 +1819,40 @@ The `ReviewController` manages operations related to reviewing flashcards, inclu
 
 ## Endpoints
 
-### 1. **Request Review**
-Retrieve flashcards from a specific deck to be reviewed.
+### `GET /reviewDeck`
 
-- **URL:** `/review/folder/requestReview`
-- **Method:** `POST`
-- **Parameters:**
-  - `Authentication authentication`
+This endpoint retrieves a batch of flashcards from a deck and allows the user to review them. The user must have the necessary access to the deck.
 
-- **Request Body:**
-```json
-{
-  "deckId": 123,
-  "packageSize": 10
-}
-```
-- **Response:**
-  - **200 OK**: Returns a `FlashcardsToReviewResponse` containing the list of flashcards to review.
+**Parameters:**
+- `Authentication authentication`: Contains authentication details for the current user.
+- `int deckId`: The ID of the deck to review.
+- `int batchSize`: The number of flashcards to retrieve in the batch (default value is 10).
 
-  ```json
-    {
-        "flashcards": [
-            {
-                "id": 1,
-                "deckId": 2,
-                "front": "apple",
-                "back": "jabłko"
-            },
-            {
-                "id": 2,
-                "deckId": 2,
-                "front": "banana",
-                "back": "banan"
-            }
-        ]
-    }
-    ```
-  - **400 Bad Request**: User does not have access to the specified flashcard.
-  ```json
-    {
-        "error": "You do not have access to this deck"
-    }
-  ```
----
-
-### 2. **Send Back Results**
-Send review results for specific flashcards and update their review status.
-
-- **URL:** `/review/folder/sendBackResults`
-- **Method:** `POST`
-- **Parameters:**
-  - `Authentication authentication`
-    **Request Body:**
+**Response:**
+- 200 OK: Returns the flashcards in the deck for the user to review.
   ```json
   {
-      "flashcardId": 1,
-      "userAnswer": "A programming language."
+    "flashcards": [
+      {
+        "flashcardId": 101,
+        "front": "apple",
+        "back": "jablko"
+      },
+      {
+        "flashcardId": 102,
+        "front": "banana",
+        "back": "banan"
+      }
+    ]
   }
-  ``` 
-- **Response:**
-  - **200 OK**: Confirms that the flashcard review was successfully processed.
-  ```json
-  "Flashcard Reviewed"
   ```
-  - **400 Bad Request** - User does not have access to the specified flashcard or deck.
+- 400 Bad Request: If the batch size is less than 10, or if the user does not have permission to access the deck.
   ```json
-  "You do not have access to this flashcard"
+  "Batch size must be at least 10"
   ```
   ```json
   "You do not have access to this deck"
   ```
----
 
 ## Security Considerations
 - **Authentication:** Required for all endpoints.
@@ -1803,6 +1866,32 @@ Send review results for specific flashcards and update their review status.
 - Responses include error messages for unauthorized or invalid access attempts, promoting secure use of the API.
 
 ---
+### `POST /flashcardReviewed`
+
+This endpoint allows the authenticated user to mark a flashcard as reviewed and update the information about it based on the user's answer.
+
+**Parameters:**
+- `Authentication authentication`: Contains authentication details of the currently logged-in user.
+- `FlashcardsReviewedRequest reviewResponse`: Contains the `flashcardId` of the flashcard being reviewed and the user's answer (`userAnswer`).
+
+**Request Body:**
+```json
+{
+  "flashcardId": 123,
+  "userAnswer": "<user_answer_enum>"
+}
+```
+- 200 OK: Flashcard has been successfully reviewed.
+  ```json
+  "Flashcard reviewed."
+  ```
+- 400 Bad Request: If the batch size is less than 10, or if the user does not have permission to access the deck.
+  ```json
+  "Batch size must be at least 10"
+  ```
+  ```json
+  "You do not have access to this flashcard"
+  ```
 
 # API Documentation: ReviewLogController
 
