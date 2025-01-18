@@ -1,5 +1,6 @@
 import api from "../api/api";
 import mockData from "../mocks/mockData";
+import generateJwtHeader from "../utils/generateJwtHeader";
 
 const isDevelopment = process.env.NODE_ENV === 'development';
 
@@ -14,7 +15,7 @@ const DeckService = {
 
     getLastUsed: async () => {
         if (isDevelopment) return mockData.deckGetLastUsed;
-        const response = await api.get('/deck/getLastUsed');
+        const response = await api.get('/deck/getLastUsed', generateJwtHeader());
         return response.data;
     },
 

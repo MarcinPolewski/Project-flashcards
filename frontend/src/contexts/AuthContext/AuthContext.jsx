@@ -13,9 +13,7 @@ const AuthProvider = ({ children }) => {
   useEffect(() => {
     const token = localStorage.getItem("jwtToken");
     if (token) {
-        axios.defaults.headers.common["Authorization"] = "Bearer " + token;
-    } else {
-        delete axios.defaults.headers.common["Authorization"];
+      console.log("Token ustawiany w AuthProvider: ", token);
     }
   }, [token]);
 

@@ -39,6 +39,7 @@ public class JtwFilter extends OncePerRequestFilter {
             if(token != null)
             {
                 token = token.substring(7);
+                System.out.println("Debug: check token: " + token);
                 SecretKey secretKey = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
 
                 Claims claims = Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload();
@@ -48,7 +49,7 @@ public class JtwFilter extends OncePerRequestFilter {
             }
         } catch (Exception e)
         {
-            throw new BadCredentialsException("Invalid token");
+            ((HttpServletResponse) response).setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         }
         filterChain.doFilter(request, response);
     }

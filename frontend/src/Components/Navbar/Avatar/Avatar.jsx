@@ -37,8 +37,8 @@ const Avatar = (props) => {
     }, []);
 
     const handleLogout = () => {
-        setToken();
-        navigate("/login", { replace: true });
+        setToken(null);
+        AuthService.logout();
     };
 
     return <div className="avatar" onClick={handleTogglePopup}>
