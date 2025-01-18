@@ -40,7 +40,7 @@ const Share = () => {
         const fetchDecksToChoose = async () => {
             try {
                 const fetchedDecks = await DeckService.getAllDecks();
-                setDecksToChoose(fetchedDecks);
+                setDecksToChoose(fetchedDecks || []);
             } catch (error) {
                 console.log("Error while fetching decks: ", error);
             }
@@ -63,11 +63,15 @@ const Share = () => {
                         onChange={(e) => setSelectedExportDeck(e.target.value)}
                     >
                         <option value="">Select a deck to export</option>
-                        {decksToChoose.map((deck, index) => (
-                            <option key={index} value={deck.name}>
-                                {deck.name}
-                            </option>
-                        ))}
+                        {Array.isArray(decksToChoose) ? (
+                            decksToChoose.map((deck, index) => (
+                                <option key={index} value={deck.name}>
+                                    {deck.name}
+                                </option>
+                            ))
+                        ) : (
+                            <option value="">No decks available</option>
+                        )}
                     </select>
                     <button className="btn" onClick={handleExport}>
                         Export

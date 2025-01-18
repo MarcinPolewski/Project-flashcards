@@ -53,7 +53,7 @@ const AuthService = {
 
     handleForgotPassword: async (email) => {
         try {
-            const response = await api.post(API_AUTH + '/forgot-password', {email});
+            const response = await api.post(API_AUTH + '/forgotPasswordRequest', { email });
             return response.data;
         } catch(error) {
             console.error('Error during password reminding: ', error.response?.data || error.message);
@@ -78,12 +78,36 @@ const AuthService = {
 
     handlePasswordReset: async (password) => {
         try {
-            const response = await api.post(API_AUTH + '/password-reset', password);
+            const response = await api.post(API_AUTH + '/forgotPassword', { password });
             return response.data;
         } catch(error) {
             console.error('Error during password reset: ', error.response?.data || error.message);
             throw error;
         }
+    },
+
+    changePassword: async (oldPassword, newPassword) => {
+        try {
+            const response = await api.post(API_AUTH + '/changePassword', { oldPassword, newPassword });
+            return response.data;
+        } catch(error) {
+            console.error('Error during password change: ', error.response?.data || error.message);
+            throw error;
+        }
+    },
+
+    changeEmail: async (newEmail) => {
+        try {
+            const response = await api.post(API_AUTH + '/changeEmail', { newEmail });
+            return response.data;
+        } catch(error) {
+            console.error('Error during email change: ', error.response?.data || error.message);
+            throw error;
+        }
+    },
+
+    handleOAuth2: (provider) => {
+        window.location.href = `http://localhost:8080/oauth2/authorization/${provider}`;
     }
 }
 

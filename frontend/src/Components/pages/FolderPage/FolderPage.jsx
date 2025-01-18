@@ -6,11 +6,13 @@ import Navbar from "../../Navbar/Navbar";
 import Overlay from "../../Overlay/Overlay";
 import FolderService from "../../../services/FolderService";
 import DeckService from "../../../services/DeckService";
+import Folder from "../../Folder/Folder";
 import { useOverlay } from "../../../contexts/OverlayContext/OverlayContext";
 
 const FolderPage = () => {
     const { id } = useParams();
     const [folder, setFolder] = useState(null);
+    const [folderChildren, setFolderChildren] = useState([]);
     const [decks, setDecks] = useState([]);
     const navigate = useNavigate();
 
@@ -37,8 +39,18 @@ const FolderPage = () => {
             }
         }
 
+        const fetchFolderChildren = async () => {
+            try {
+                const response = await FolderService.getFolderChildren(id);
+                setFolderChildren(response || folderChildren);
+            } catch (error) {
+                console.error("Error while fetching child folders: ", error);
+            }
+        }
+
         fetchFolder();
         fetchDecksInFolder();
+        fetchFolderChildren();
     }, []);
 
     const handleDeleteYes = async () => {
@@ -126,6 +138,24 @@ const FolderPage = () => {
                 ) : (
                     <p className="folder-page-not-found">No folder found with this ID</p>
                 )}
+            <div className="home-my-decks">
+
+            <div className="latest-reviews-title">Deck Folders</div>
+                <div className="my-decks-container">
+                {
+                Array.isArray(folderChildren) && folderChildren.length > 0 ? folderChildren
+                    .map((child) => {
+                        return <Folder key={child.id} id={child.id} title={child.name}
+                                onEdit={handleEditClick}
+                                onDelete={handleDeleteClick}
+                        />
+                })
+                :
+                <div>No folders available</div>
+                }
+                </div>
+
+            </div>
             </div>
         </div>
     );

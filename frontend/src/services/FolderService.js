@@ -11,6 +11,12 @@ const FolderService = {
         });
         return response.data;
     },
+    getAllFolders: async () => {
+        const response = await api.get('/folder/getAllFolders', {
+            params: {folderId}
+        });
+        return response.data;
+    },
     getFolderStructure: async () => {
         if (isDevelopment) {
             return mockData.folderGetFolderStructure;

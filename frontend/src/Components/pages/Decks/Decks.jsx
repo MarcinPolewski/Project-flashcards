@@ -91,7 +91,7 @@ const Decks = () => {
             try {
                 const response = await DeckService.getAllDecksInfo();
                 console.log(response);
-                setDecks(response);
+                setDecks(response || []);
             } catch (error) {
                 console.error("Error while fetching decks: ", error);
             }
@@ -100,10 +100,14 @@ const Decks = () => {
         fetchDecks();
     }, []);
 
-    const filterDecks = (decksToFilter) => (
-        decksToFilter.filter((deck) =>
-            deck.name && deck.name.toLowerCase().includes(searchTerm.toLowerCase())
-    ));
+    const filterDecks = (decksToFilter) => {
+        if (!Array.isArray(decksToFilter)) {
+            console.error("filterDecks: decksToFilter is not an array", decksToFilter);
+            return [];
+        }
+        return decksToFilter.filter((deck) =>
+            deck?.name?.toLowerCase().includes(searchTerm.toLowerCase())
+    )};
 
     return <div className="decks">
         <Navbar />
@@ -161,7 +165,7 @@ const Decks = () => {
             </Overlay>
 
             <div className="decks-list">
-                {sortDecks(filterDecks(decks), sortOptions)
+                {sortDecks(Array.isArray(decks) ? filterDecks(decks) : [], sortOptions)
                     .map((deck, idx) => (
                         <Deck key={idx} deckState={deck} handleDeleteButton={() => handleDeleteButton(deck.id)}/>
                 ))}

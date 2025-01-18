@@ -60,7 +60,7 @@ const Home = () => {
             try {
                 const lastUsedDecks = await DeckService.getLastUsed();
                 console.log("Latest decks fetched: ", lastUsedDecks);
-                setLatestDecks(lastUsedDecks);
+                setLatestDecks(lastUsedDecks || []);
             } catch (error) {
                 console.error("Error fetching last used decks:", error);
                 setLatestDecks(null);
@@ -69,7 +69,7 @@ const Home = () => {
         const fetchFolders = async () => {
             try {
                 const folderStructure = await FolderService.getFolderStructure();
-                setFolders(folderStructure);
+                setFolders(folderStructure.children || []);
             } catch (error) {
                 console.error("Error while fetching folders: ", error);
                 setFolders(null);
@@ -79,7 +79,7 @@ const Home = () => {
         const fetchNotifications = async () => {
             try {
                 const notificationsSet = await NotificationService.getAllNotifications();
-                setNotifications(notificationsSet);
+                setNotifications(notificationsSet || []);
             } catch (error) {
                 console.error("Error while fetching notifications: ", error);
                 setNotifications(null);
@@ -164,7 +164,7 @@ const Home = () => {
 
         <div className="home-my-decks">
 
-            <div className="latest-reviews-title">Deck Folders</div>
+            <div className="latest-reviews-title">Root Folder Children</div>
             <div className="my-decks-container">
             {
             Array.isArray(folders) && folders.length > 0 ? folders
