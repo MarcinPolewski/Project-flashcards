@@ -68,25 +68,6 @@ const CreateFlashcard = () => {
             <div className="create-flashcard">
 
                 <div className="flashcard-container">
-
-                        <div className="inputs-container">
-                            <div className="input-group">
-                                <label htmlFor="deck">Choose Deck</label>
-                                <select
-                                    id="deck"
-                                    className="dropdown"
-                                    value={pickedDeck}
-                                    onChange={(e) => setPickedDeck(e.target.value)}
-                                >
-                                    {decks.map((deck) => (
-                                        <option key={deck.id} value={deck.name}>
-                                            {deck.name}
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
-                        </div>
-
                     <div className="inputs-container">
                         <div className="input-group">
                             <label htmlFor="deck"> Choose Folder </label>
@@ -97,11 +78,14 @@ const CreateFlashcard = () => {
                                 value={pickedFolder || ''}
                             >
                                 <option value="" disabled>Select a folder</option>
-                                {folders.map((folder) => (
+                                {Array.isArray(folders) ? (folders.map((folder) => (
                                     <option key={folder.id} value={folder.id}>
                                         {folder.name}
                                     </option>
-                                ))}
+                                )))
+                                : (
+                                    <option value="">No decks available</option>
+                                )}
                             </select>
                             <label htmlFor="deck"> Choose Deck </label>
                             <select
@@ -112,11 +96,15 @@ const CreateFlashcard = () => {
                                 disabled={!pickedFolder}
                             >
                                 <option value="" disabled>Select a deck</option>
-                                {decks.map((deck) => (
-                                    <option key={deck.id} value={deck.id}>
-                                        {deck.name}
-                                    </option>
-                                ))}
+                                {Array.isArray(decks) ? (
+                                        decks.map((deck) => (
+                                            <option key={deck.id} value={deck.name}>
+                                                {deck.name}
+                                            </option>
+                                        ))
+                                    ) : (
+                                        <option value="">No decks available</option>
+                                )}
                             </select>
                         </div>
 

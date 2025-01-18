@@ -111,11 +111,15 @@ const PlusButton = () => {
                         required
                     >
                         <option value="" disabled>Select parent folder</option>
-                        {filterRootFolder(folders).map((folder) => (
-                            <option key={folder.id} value={folder.id}>
-                                {folder.name}
-                            </option>
-                        ))}
+                        {Array.isArray(folders) ? (
+                            filterRootFolder(folders).map((folder) => (
+                                <option key={folder.id} value={folder.id}>
+                                    {folder.name}
+                                </option>
+                            ))
+                        ) : (
+                            <option value="">No folders available</option>
+                        )}
                     </select>
 
                     <button type="button" onClick={handleCreateDeck}>Create</button>
@@ -129,11 +133,14 @@ const PlusButton = () => {
                         onChange={(e) => setSelectedFolder(e.target.value)}
                         required
                     >
-                        {folders.map((folder, index) => (
+                        {Array.isArray(folders) ? (folders.map((folder, index) => (
                             <option key={index} value={folder.name}>
                                 {folder.name}
                             </option>
-                        ))}
+                        ))
+                        ) : (
+                            <option value="">No folders available</option>
+                        )}
                     </select>
                     <input
                         type="text"

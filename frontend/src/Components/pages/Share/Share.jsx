@@ -89,11 +89,15 @@ const Share = () => {
                         onChange={(e) => setSelectedImportDeck(e.target.value)}
                     >
                         <option value="">Select a deck to import into</option>
-                        {decksToChoose.map((deck, index) => (
-                            <option key={index} value={deck.name}>
-                                {deck.name}
-                            </option>
-                        ))}
+                        {Array.isArray(decksToChoose) ? (
+                            decksToChoose.map((deck, index) => (
+                                <option key={index} value={deck.name}>
+                                    {deck.name}
+                                </option>
+                            ))
+                        ) : (
+                            <option value="">No decks available</option>
+                        )}
                     </select>
                     <input
                         type="file"
