@@ -268,6 +268,23 @@ END //
 
 # =============================================================================
 
+CREATE PROCEDURE count_all_due_cards(
+    IN userId INT,
+    IN deckId INT,
+    OUT dueCardCount INT
+)
+BEGIN
+    SELECT COUNT(*)
+    INTO dueCardCount
+    FROM Flashcards fl
+    JOIN Flashcards_Progresses fp ON fl.id = fp.flashcard_id
+    WHERE fl.deck_id = deckId
+    AND fp.user_id = userId
+    AND fp.next_review <= NOW();
+END //
+
+# =============================================================================
+
 CREATE PROCEDURE count_all_cards(
     IN userId INT,
     IN deckId INT,

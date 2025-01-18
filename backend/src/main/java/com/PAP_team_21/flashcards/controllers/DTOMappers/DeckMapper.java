@@ -19,7 +19,7 @@ public class DeckMapper {
     public DeckDTO toDTO(Customer customer, Deck deck) {
         int totalCards = deckService.countTotalCards(customer.getId(), deck.getId());
         int newCards = deckService.countDeckNewCards(customer.getId(), deck.getId());
-        int toReview = deckService.countDeckCardsToReview(customer.getId(), deck.getId());
+        int toReview = deckService.countAllDueCards(customer.getId(), deck.getId());
         int learnedCards = totalCards - newCards - toReview;
 
         float progress = (float)learnedCards / (float) totalCards;
