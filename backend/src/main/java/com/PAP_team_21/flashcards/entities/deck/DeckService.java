@@ -45,8 +45,8 @@ public class DeckService {
         return deckRepository.countNewCards(customerId, deckId);
     }
 
-    public int countDeckCardsToReview(Integer customerId, int deckId) {
-        return deckRepository.countCardsToReview(customerId, deckId);
+    public int countAllDueCards(Integer customerId, int deckId) {
+        return deckRepository.countAllDueCards(customerId, deckId);
     }
 
 }
