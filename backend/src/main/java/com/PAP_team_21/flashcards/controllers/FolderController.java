@@ -66,6 +66,29 @@ public class FolderController {
         return ResponseEntity.badRequest().body("No user with this id found");
     }
 
+    @GetMapping("/getAllFolders")
+    @JsonView(JsonViewConfig.Public.class)
+    public ResponseEntity<?> getAllFolders(
+            Authentication authentication
+//            @RequestParam(defaultValue = "0") int page,
+//            @RequestParam(defaultValue = "5") int size,
+//            @RequestParam(defaultValue = "id") String sortBy,
+//            @RequestParam(defaultValue = "true") boolean ascending
+    )
+    {
+//        Sort sort = ascending ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+//        Pageable pageable = PageRequest.of(page, size, sort);
+
+        String email = authentication.getName();
+        Optional<Customer> customer = customerRepository.findByEmail(email);
+        if(customer.isEmpty())
+        {
+            return ResponseEntity.badRequest().body("No user with this id found");
+        }
+
+        return ResponseEntity.ok(folderService.findAllUserFolders(customer.get().getId()));
+    }
+
     @PostMapping("/create")
     public ResponseEntity<?> createFolder(Authentication authentication,
                                           @RequestBody FolderCreationRequest request

@@ -7,14 +7,15 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class FolderService {
     private final FolderJpaRepository folderRepository;
-    private final FolderDao  folderDao;
 
     public boolean hasFolder(Folder folder)
     {
@@ -31,7 +32,6 @@ public class FolderService {
         return folderRepository.findById(id);
 
     }
-
     public void delete(int folderId)
     {
         folderRepository.deleteById(folderId);
@@ -39,6 +39,15 @@ public class FolderService {
 
     public Folder save(Folder folder) {
         return folderRepository.save(folder);
+    }
+
+    @Transactional
+    public List<Folder> findAllUserFolders(int userId) {
+        return folderRepository.findAllUserFolders(userId);
+    }
+
+    public List<Folder> findAllUserFolders(int userId, Pageable pageable) {
+        return folderRepository.findAllUserFolders(userId, pageable);
     }
 }
 
