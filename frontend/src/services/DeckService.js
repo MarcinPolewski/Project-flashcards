@@ -12,6 +12,12 @@ const DeckService = {
         });
         return response.data;
     },
+    getDeckInfo: async (deckId) => {
+        const response = await api.get('/deck/getDeckInfo', {
+            params: { deckId }
+        });
+        return response.data;
+    },
 
     getLastUsed: async () => {
         if (isDevelopment) return mockData.deckGetLastUsed;

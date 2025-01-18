@@ -1,5 +1,6 @@
 .plus-button-container {
     position: relative;
+    z-index: 10;
 }
 
 .plus-button {
@@ -34,7 +35,7 @@
     border-radius: 8px;
     box-shadow: 0 4px 10px var(--box-shadow);
     padding: 10px;
-    z-index: 1000;
+    z-index: 20;
     width: 150px;
 }
 
@@ -67,6 +68,7 @@
     max-width: 400px;
     margin: 0 auto;
     border: 1px solid var(--section-border);
+    z-index: 30;
 }
 
 .plus-button-create-deck input[type="text"],

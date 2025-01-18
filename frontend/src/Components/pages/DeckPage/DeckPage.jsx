@@ -60,8 +60,9 @@ const DeckPage = () => {
     useEffect(() => {
         const fetchDeckProgress = async () => {
             try {
-                const foundDeckProgress = await DeckService.getDeckProgress(deckId);
+                const foundDeckProgress = await DeckService.getDeckInfo(deckId);
                 setDeckProgress(foundDeckProgress);
+                console.log("deck page deck: ", foundDeckProgress);
             } catch (error) {
                 console.error("Error fetching deck data:", error);
             }
@@ -128,8 +129,8 @@ const DeckPage = () => {
                             <PieChart
                                 data={{
                                     newCards: deckProgress.newCards,
-                                    learningCards: deckProgress.learningCards,
-                                    rememberedCards: deckProgress.reviewingCards,
+                                    toReview: deckProgress.toReview,
+                                    learnedCards: deckProgress.learnedCards,
                                 }}
                                 className="deck-page-pie-chart"
                             />
@@ -137,14 +138,14 @@ const DeckPage = () => {
                         <div className="deck-page-left">
                             <p>Progress: {deckProgress.progress}%</p>
                             <p>New Cards: {deckProgress.newCards}</p>
-                            <p>Learning Cards: {deckProgress.learningCards}</p>
-                            <p>Reviewing Cards: {deckProgress.reviewingCards}</p>
+                            <p>To Review Cards: {deckProgress.toReview}</p>
+                            <p>Learned Cards: {deckProgress.learnedCards}</p>
                         </div>
                     </div>
                     <h3 className="deck-page-subtitle">Flashcards</h3>
                     {flashcards.length > 0 ? (
                         <ul className="deck-page-ul">
-                            {flashcards.map(flashcard => (
+                            {Array.isArray(flashcards) && flashcards ? (flashcards.map(flashcard => (
                                 <li key={flashcard.id} className="deck-page-flashcard-item">
                                     <div className="deck-page-flashcard">
                                         <div className="deck-page-front">{flashcard.front}</div>
@@ -175,7 +176,11 @@ const DeckPage = () => {
                                         </button>
                                     </div>
                                 </li>
-                            ))}
+                            )))
+                            :
+                            <p>No flashcards available in this deck</p>
+                            }
+
                         </ul>
                     ) : (
                         <p>No flashcards available in this deck</p>
