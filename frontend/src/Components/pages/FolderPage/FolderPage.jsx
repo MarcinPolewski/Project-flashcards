@@ -7,6 +7,7 @@ import Overlay from "../../Overlay/Overlay";
 import FolderService from "../../../services/FolderService";
 import DeckService from "../../../services/DeckService";
 import Folder from "../../Folder/Folder";
+import { EditFolder, DeleteFolder } from "../../EditFolder/EditFolder";
 import { useOverlay } from "../../../contexts/OverlayContext/OverlayContext";
 
 const FolderPage = () => {
@@ -19,6 +20,9 @@ const FolderPage = () => {
     const [deckIdToDelete, setDeckIdToDelete] = useState(null);
 
     const { isOverlayOpen, toggleOverlay, closeOverlay } = useOverlay();
+    const [formType, setFormType] = useState(null);
+    const [selectedId, setSelectedId] = useState(null);
+    const [selectedTitle, setSelectedTitle] = useState(null);
 
     useEffect(() => {
         const fetchFolder = async () => {
@@ -53,10 +57,58 @@ const FolderPage = () => {
         fetchFolderChildren();
     }, []);
 
+    const handleEditClick = (id, title) => {
+        setSelectedId(id);
+        setSelectedTitle(title);
+        setFormType('edit');
+        toggleOverlay();
+    };
+
+    const handleDeleteClick = (id, title) => {
+        setSelectedId(id);
+        setSelectedTitle(title);
+        setFormType('delete');
+        toggleOverlay();
+    };
+
+    const handleFolderEdit = async (updatedFolderId, newTitle) => {
+        try {
+            if (updatedFolderId !== null) {
+                const response = await FolderService.updateFolder(updatedFolderId, newTitle);
+                setFolderChildren(folderChildren.map((child) =>
+                    child.id === updatedFolderId ? { ...child, name: newTitle } : child
+                ));
+                alert("Folder edited successfully.");
+            }
+        } catch (error) {
+            console.error("Error while editing folder: ", error);
+            alert("Error occurred while editing folder.");
+        } finally {
+            closeOverlay();
+            setSelectedId(null)
+        }
+    };
+
+    const handleFolderDelete = async (deletedFolderId) => {
+        try {
+            if (deletedFolderId !== null) {
+                const response = await FolderService.deleteFolder(deletedFolderId);
+                setFolderChildren(folderChildren.filter((child) => child.id !== deletedFolderId));
+                alert("Folder deleted successfully.");
+            }
+        } catch (error) {
+            console.error("Error while deleting folder: ", error);
+            alert("Error occurred while deleting folder.");
+        } finally {
+            closeOverlay();
+            setSelectedId(null)
+        }
+    };
+
     const handleDeleteYes = async () => {
         try {
             if (deckIdToDelete !== null) {
-                await DeckService.deleteDeck(deckIdToDelete);
+                const response = await DeckService.deleteDeck(deckIdToDelete);
                 setDecks((prevDecks) => prevDecks.filter((deck) => deck.id !== deckIdToDelete));
                 alert("Deck deleted successfully.");
             }
@@ -75,6 +127,7 @@ const FolderPage = () => {
 
     const handleDeleteButton = (id) => {
         setDeckIdToDelete(id);
+        setFormType('deck-edit');
         toggleOverlay();
     }
 
@@ -83,11 +136,19 @@ const FolderPage = () => {
             <Navbar />
             <div className="folder-page">
             <Overlay isOpen={isOverlayOpen} closeOverlay={closeOverlay}>
+                {formType === 'deck-edit' &&
                 <div className="filter-options">
                     <div>Do you really want to delete this deck along side with all its contents?</div>
                     <button onClick={handleDeleteYes}>Yes</button>
                     <button onClick={handleDeleteNo}>No</button>
                 </div>
+                }
+                {formType === 'edit' &&
+                    <EditFolder id={selectedId} title={selectedTitle} closeOverlay={closeOverlay} onFolderEdit={handleFolderEdit}/>
+                }
+                {formType === 'delete' &&
+                    <DeleteFolder id={selectedId} title={selectedTitle} closeOverlay={closeOverlay} onFolderDelete={handleFolderDelete}/>
+                }
             </Overlay>
 
                 {folder ? (

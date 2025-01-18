@@ -12,9 +12,7 @@ const FolderService = {
         return response.data;
     },
     getAllFolders: async () => {
-        const response = await api.get('/folder/getAllFolders', {
-            params: {folderId}
-        });
+        const response = await api.get('/folder/getAllFolders');
         return response.data;
     },
     getFolderStructure: async () => {
