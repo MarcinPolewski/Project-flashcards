@@ -76,9 +76,9 @@ const AuthService = {
         window.location.href = `http://localhost:8080/oauth2/authorization/${provider}`;
     },
 
-    handlePasswordReset: async (password) => {
+    handlePasswordReset: async (email, code, newPassword) => {
         try {
-            const response = await api.post(API_AUTH + '/forgotPassword', { password });
+            const response = await api.post(API_AUTH + '/forgotPassword', { email, code, newPassword });
             return response.data;
         } catch(error) {
             console.error('Error during password reset: ', error.response?.data || error.message);
@@ -108,7 +108,28 @@ const AuthService = {
 
     handleOAuth2: (provider) => {
         window.location.href = `http://localhost:8080/oauth2/authorization/${provider}`;
+    },
+
+    verifyPasswordResetCode: async (email, code) => {
+        try {
+            const response = await api.post(API_AUTH + '/verifyUser', { email, code });
+            return response.data;
+        } catch(error) {
+            console.error('Error during email change: ', error.response?.data || error.message);
+            throw error;
+        }
+    },
+
+    resendVerificationCode: async (email) => {
+        try {
+            const response = await api.post(API_AUTH + '/resendVerificationCode', { email });
+            return response.data;
+        } catch(error) {
+            console.error('Error during email change: ', error.response?.data || error.message);
+            throw error;
+        }
     }
+
 }
 
 export default AuthService;

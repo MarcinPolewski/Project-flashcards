@@ -20,9 +20,7 @@ const Decks = () => {
     const [sortOptions, setSortOptions] = useState({
         alphabet: false,
         recentUsage: false,
-        creationDate: false,
         learningProgress: false,
-        lastModified: false,
         reversed: false,
     });
 
@@ -41,9 +39,7 @@ const Decks = () => {
                 setSortOptions((prev) => ({
                     alphabet: false,
                     recentUsage: false,
-                    creationDate: false,
                     learningProgress: false,
-                    lastModified: false,
                     reversed: prev.reversed,
                     [name]: true,
                 }));
@@ -137,16 +133,8 @@ const Decks = () => {
                         <label htmlFor="recent-usage">Recent usage</label>
                     </div>
                     <div className="filter-item">
-                        <input type="checkbox" id="creation-date" name="creationDate" checked={sortOptions.creationDate} onChange={handleSortChange}/>
-                        <label htmlFor="creation-date">Creation date</label>
-                    </div>
-                    <div className="filter-item">
                         <input type="checkbox" id="progress-learning" name="learningProgress" checked={sortOptions.learningProgress} onChange={handleSortChange}/>
                         <label htmlFor="progress-learning">Progress of learning</label>
-                    </div>
-                    <div className="filter-item">
-                        <input type="checkbox" id="last-modified" name="lastModified" checked={sortOptions.lastModified} onChange={handleSortChange}/>
-                        <label htmlFor="last-modified">Last modified</label>
                     </div>
                 </form>
                 <div className="filter-reverse">

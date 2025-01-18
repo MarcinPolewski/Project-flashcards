@@ -3,18 +3,21 @@ import AuthSection from "../../AuthSection/AuthSection";
 
 import '../../AuthSection/Auth.css';
 import AuthService from "../../../services/AuthService";
+import { useNavigate } from "react-router-dom";
 
 const ForgotPassword = () => {
 
     const [email, setEmail] = useState("");
     const [error, setError] = useState("");
-    const [success, setSuccess] = useState("");
+
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await AuthService.handleForgotPassword({ email });
-            setSuccess("Check your email for password reset instructions.");
+            await AuthService.handleForgotPassword({ email });
+            alert("Check your email for password reset instructions.");
+            navigate("/password-reset/" + email);
         } catch (error) {
             setError("An error occured, please try again.");
         }
@@ -26,7 +29,6 @@ const ForgotPassword = () => {
             <div className="auth-email-signin">
                 <h2>Password reset</h2>
                 {error && <p style={{ color: "red" }}>{error}</p>}
-                {success && <p style={{ color: "green" }}>{success}</p>}
                 <form onSubmit={handleSubmit}>
                 <div>
                     <label htmlFor="email">Email address</label>

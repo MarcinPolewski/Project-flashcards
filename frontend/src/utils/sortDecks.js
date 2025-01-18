@@ -27,17 +27,9 @@ const sortDecks = (decks, sortOptions) => {
     {
         result = dateEval(a.lastUsed, b.lastUsed);
     }
-    if (sortOptions.creationDate && result === 0)
-    {
-        result = dateEval(a.createdAt, b.createdAt);
-    }
     if (sortOptions.learningProgress && result === 0)
     {
         result = b.progress - a.progress;
-    }
-    if (sortOptions.lastModified && result === 0)
-    {
-        result = dateEval(a.lastModified, b.lastModified);
     }
     if (sortOptions.reversed) {
         result = -result;

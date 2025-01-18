@@ -18,7 +18,7 @@ const routesForNotAuthenticatedOnly = [
         element: <ForgotPassword/>,
     },
     {
-        path: "/password-reset",
+        path: "/password-reset/:email",
         element: <PasswordReset/>,
     },
     {

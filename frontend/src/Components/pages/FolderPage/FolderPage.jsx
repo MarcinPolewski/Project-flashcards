@@ -199,10 +199,10 @@ const FolderPage = () => {
                 ) : (
                     <p className="folder-page-not-found">No folder found with this ID</p>
                 )}
-            <div className="home-my-decks">
+            <div className="folder-page-content">
 
-            <div className="latest-reviews-title">Deck Folders</div>
-                <div className="my-decks-container">
+            <div className="folder-page-h1">Deck Folders</div>
+                <div className="folder-page-deck-list">
                 {
                 Array.isArray(folderChildren) && folderChildren.length > 0 ? folderChildren
                     .map((child) => {
@@ -212,7 +212,7 @@ const FolderPage = () => {
                         />
                 })
                 :
-                <div>No folders available</div>
+                <div className="folder-page-not-found">No folders available</div>
                 }
                 </div>
 

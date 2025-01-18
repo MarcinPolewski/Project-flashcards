@@ -8,13 +8,13 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 
 const PieChart = (props) => {
 
-    const {newCards, learningCards, rememberedCards} = props.data;
+    const {newCards, toReview, learnedCards} = props.data;
 
     const pieData = {
-        labels: ["New", "Learning", "Remembered"],
+        labels: ["New", "To Review", "Learned"],
         datasets: [
             {
-                data: [newCards, learningCards, rememberedCards],
+                data: [newCards, toReview, learnedCards],
                 backgroundColor: ["#ff6384", "#36a2eb", "#4bc0c0"],
                 hoverBackgroundColor: ["#ff4d6d", "#3498db", "#26a69a"]
             }
