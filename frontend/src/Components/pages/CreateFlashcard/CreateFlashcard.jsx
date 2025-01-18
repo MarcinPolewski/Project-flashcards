@@ -22,6 +22,10 @@ const CreateFlashcard = () => {
     const navigate = useNavigate();
 
     const handleAddFlashcard = async () => {
+        if (!pickedFolder || !pickedDeck) {
+            alert("Please select a folder and a deck.");
+            return;
+        }
         if (!front.trim() || !back.trim()) {
             alert("Both 'Front' and 'Back' fields must be filled.");
             return;
@@ -29,7 +33,6 @@ const CreateFlashcard = () => {
 
         try {
             await FlashcardService.createFlashcard(deckId, front, back);
-            navigate("/");
         } catch (error) {
             console.error("Error creating flashcard:", error);
         }
@@ -84,7 +87,7 @@ const CreateFlashcard = () => {
                                     </option>
                                 )))
                                 : (
-                                    <option value="">No decks available</option>
+                                    <option value="">No folders available</option>
                                 )}
                             </select>
                             <label htmlFor="deck"> Choose Deck </label>
