@@ -101,9 +101,10 @@
     margin-bottom: 15px;
 }
 
-.plus-button-create-deck button[type="submit"],
-.plus-button-create-folder button[type="submit"] {
-    background-color: var(--continue-button);
+.plus-button-create-deck button[type="button"],
+.plus-button-create-folder button[type="button"] {
+    background-color: var(--flashcard-edit-button);
+    margin: auto;
     color: white;
     padding: 10px 20px;
     border: none;
@@ -113,9 +114,9 @@
     transition: background-color 0.3s ease;
 }
 
-.plus-button-create-deck button[type="submit"]:hover,
-.plus-button-create-folder button[type="submit"]:hover {
-    background-color: var(--create-deck-button);
+.plus-button-create-deck button[type="button"]:hover,
+.plus-button-create-folder button[type="button"]:hover {
+    background-color: var(--flashcard-edit-button-hover);
 }
 
 .plus-button-create-deck h3,
@@ -159,8 +160,8 @@
         font-size: 0.9rem;
     }
 
-    .plus-button-create-deck button[type="submit"],
-    .plus-button-create-folder button[type="submit"] {
+    .plus-button-create-deck button[type="button"],
+    .plus-button-create-folder button[type="button"] {
         font-size: 0.9rem;
     }
 }
@@ -197,8 +198,8 @@
         font-size: 0.8rem;
     }
 
-    .plus-button-create-deck button[type="submit"],
-    .plus-button-create-folder button[type="submit"] {
+    .plus-button-create-deck button[type="button"],
+    .plus-button-create-folder button[type="button"] {
         font-size: 0.8rem;
     }
 }

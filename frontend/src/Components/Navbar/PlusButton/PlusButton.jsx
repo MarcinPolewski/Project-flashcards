@@ -20,8 +20,8 @@ const PlusButton = () => {
     useEffect(() => {
         const fetchFolders = async () => {
             try {
-                const response = await FolderService.getFolderStructure();
-                setFolders(response);
+                const response = await FolderService.getAllFolders();
+                setFolders(response || []);
             } catch (error) {
                 console.error("Error fetching folders:", error);
             }
@@ -41,8 +41,8 @@ const PlusButton = () => {
 
     const handleCreateFolder = async (folderName, parentFolderId) => {
         try {
-        const result = await FolderService.createFolder(folderName, parentFolderId);
-        setNewFolderName("");
+            const result = await FolderService.createFolder(folderName, parentFolderId);
+            setNewFolderName("");
         } catch (error) {
             console.error("Error creating folder:", error);
         } finally {
@@ -50,9 +50,13 @@ const PlusButton = () => {
         }
     };
 
-    const handleCreateDeck = (parentFolderId, deckName) => {
+    const filterRootFolder = (folders) => {
+        return folders.filter((folder) => folder.id === 1);
+    }
+
+    const handleCreateDeck = (folderId, deckName) => {
     try {
-        const result = DeckService.createDeck(parentFolderId, deckName);
+        const result = DeckService.createDeck(folderId, deckName);
     } catch (error) {
         console.error("Error creating folder:", error);
     } finally {
@@ -107,24 +111,37 @@ const PlusButton = () => {
                         required
                     >
                         <option value="" disabled>Select parent folder</option>
-                        {folders.map((folder) => (
-                            <option key={folder.id} value={folder.id}>
-                                {folder.name}
-                            </option>
-                        ))}
+                        {Array.isArray(folders) ? (
+                            filterRootFolder(folders).map((folder) => (
+                                <option key={folder.id} value={folder.id}>
+                                    {folder.name}
+                                </option>
+                            ))
+                        ) : (
+                            <option value="">No folders available</option>
+                        )}
                     </select>
 
-                    <button type="button" onClick={handleCreateDeck}>Create Deck</button>
+                    <button type="button" onClick={handleCreateDeck}>Create</button>
                 </div> }
                 {formType === 'folder' &&
                 <div className="plus-button-create-folder">
                     <h3>Create Folder</h3>
-                    <option value="" disabled>Select parent folder</option>
-                        {folders.map((folder) => (
-                            <option key={folder.id} value={folder.id}>
+                    <p>Select parent folder:</p>
+                    <select
+                        value={selectedFolder}
+                        onChange={(e) => setSelectedFolder(e.target.value)}
+                        required
+                    >
+                        {Array.isArray(folders) ? (folders.map((folder, index) => (
+                            <option key={index} value={folder.name}>
                                 {folder.name}
                             </option>
-                    ))}
+                        ))
+                        ) : (
+                            <option value="">No folders available</option>
+                        )}
+                    </select>
                     <input
                         type="text"
                         placeholder="Folder name..."
@@ -132,7 +149,7 @@ const PlusButton = () => {
                         onChange={(e) => setNewFolderName(e.target.value)}
                         required
                     />
-                    <button type="button" onClick={handleCreateFolder}>Add Folder</button>
+                    <button type="button" onClick={handleCreateFolder}>Create</button>
                 </div> }
             </Overlay>
         </div>

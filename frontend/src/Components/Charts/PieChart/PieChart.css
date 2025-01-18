@@ -1,1 +1,42 @@
+.pie-chart-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    max-width: 600px;
+    margin: 0 auto;
+    width: 100%;
+}
 
+.pie-chart-container canvas {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .pie-chart-container {
+        padding: 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    .pie-chart-container {
+        padding: 10px;
+        max-width: 90%;
+    }
+
+    .pie-chart-container canvas {
+        max-width: 90%;
+    }
+}
+
+@media (max-width: 480px) {
+    .pie-chart-container {
+        padding: 5px;
+    }
+
+    .pie-chart-container canvas {
+        max-width: 100%;
+    }
+}

@@ -19,12 +19,12 @@ interface DeckRepository extends JpaRepository<Deck, Integer> {
     @Procedure(procedureName = "get_deck_progress")
     float getDeckProgress(@Param("userId")int customerId,@Param("deckId") int deckId);
 
-    @Procedure(procedureName = "get_decks_by_folder")
+    @Procedure(procedureName = "count_new_cards")
     int countNewCards(@Param("userId")int customerId,@Param("deckId") int deckId);
 
-    @Procedure(procedureName = "get_decks_by_folder")
+    @Procedure(procedureName = "count_all_cards")
     int countAllCards(@Param("userId")int customerId,@Param("deckId") int deckId);
 
-    @Procedure(procedureName = "count_due_to_review")
-    int countCardsToReview(@Param("userId")int customerId,@Param("deckId") int deckId);
+    @Procedure(procedureName = "count_all_due_cards")
+    int countAllDueCards(@Param("userId")int customerId,@Param("deckId") int deckId);
 }

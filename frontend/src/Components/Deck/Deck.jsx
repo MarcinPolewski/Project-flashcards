@@ -3,14 +3,14 @@ import React from "react";
 import './Deck.css';
 import { useNavigate } from "react-router-dom";
 
-const Deck = (props) => {
+const Deck = ({ deckState, handleDeleteButton }) => {
 
-    const {id, title, newCards, learningCards, reviewingCards} = props.deckState;
+    const {id, name, newCards, learningCards, reviewingCards} = deckState;
 
     const navigate = useNavigate();
 
     return <div className="deck">
-        <div className="deck-title">{title}</div>
+        <div className="deck-title">{name}</div>
 
         <div className="deck-state">
             <div className="card-new">{newCards} new</div>
@@ -25,7 +25,7 @@ const Deck = (props) => {
             <button onClick={() => navigate(`/deck/${id}`)} className="decks-page-edit-btn">
                 Edit
             </button>
-            <button className="decks-page-delete-btn">Delete</button>
+            <button className="decks-page-delete-btn" onClick={() => handleDeleteButton('delete')}>Delete</button>
         </div>
     </div>
 }

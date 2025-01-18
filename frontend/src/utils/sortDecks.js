@@ -21,7 +21,7 @@ const sortDecks = (decks, sortOptions) => {
 
     if (sortOptions.alphabet && result === 0)
     {
-        result = a.title.localeCompare(b.title);
+        result = a.name.localeCompare(b.name);
     }
     if (sortOptions.recentUsage && result === 0)
     {

@@ -1,7 +1,11 @@
 import api from "../api/api";
+import mockData from "../mocks/mockData";
+
+const isDevelopment = process.env.NODE_ENV === 'development';
 
 const FriendshipService = {
     getFriendship: async (id) => {
+        if (isDevelopment) return mockData.friendsGetFriends;
         const response = await api.get(`/friendship/getFriendship/${id}`);
         return response.data;
     },

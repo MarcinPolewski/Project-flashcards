@@ -1,7 +1,12 @@
 import api from "../api/api";
+import mockData from "../mocks/mockData";
+
+const isDevelopment = process.env.NODE_ENV === 'development';
 
 const UserPreferencesService = {
+
     getPreferences: async () => {
+        if (isDevelopment) return mockData.userPreferencesGetUserPreferences;
         const response = await api.get(`/userPreferences/getUserPreferences/`);
         return response.data;
     },

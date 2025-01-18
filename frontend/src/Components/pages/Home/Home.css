@@ -1,6 +1,8 @@
 .home {
     padding: 20px;
     font-family: Arial, sans-serif;
+    width: 80%;
+    margin: auto;
 }
 
 .home-latest-reviews {

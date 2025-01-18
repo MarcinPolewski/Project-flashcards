@@ -1,18 +1,21 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import Navbar from "../../Navbar/Navbar";
 import Deck from "../../Deck/Deck";
 import Overlay from "../../Overlay/Overlay";
-
-import testDecks from "../../../assets/mockData/testDecks";
-
 import './Decks.css';
 import sortDecks from "../../../utils/sortDecks";
 import { useOverlay } from "../../../contexts/OverlayContext/OverlayContext";
+import DeckService from "../../../services/DeckService";
 
 const Decks = () => {
 
+    const [decks, setDecks] = useState([]);
+
     const { isOverlayOpen, toggleOverlay, closeOverlay } = useOverlay();
+
+    const [formType, setFormType] = useState("");
+    const [deckIdToDelete, setDeckIdToDelete] = useState(null);
 
     const [sortOptions, setSortOptions] = useState({
         alphabet: false,
@@ -57,9 +60,54 @@ const Decks = () => {
         setSearchTerm(e.target.value);
     }
 
-    const filteredDecks = testDecks.filter((deck) =>
-        deck.title && deck.title.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    const handleDeleteYes = async () => {
+        try {
+            if (deckIdToDelete !== null) {
+                await DeckService.deleteDeck(deckIdToDelete);
+                setDecks((prevDecks) => prevDecks.filter((deck) => deck.id !== deckIdToDelete));
+                alert("Deck deleted successfully.");
+            }
+        } catch (error) {
+            console.error("Error while deleting deck: ", error);
+            alert("Error occurred while deleting deck.");
+        } finally {
+            closeOverlay();
+            setDeckIdToDelete(null);
+        }
+    }
+
+    const handleDeleteNo = () => {
+        closeOverlay();
+    }
+
+    const handleDeleteButton = (id) => {
+        setDeckIdToDelete(id);
+        toggleOverlay();
+        setFormType('delete');
+    }
+
+    useEffect(() => {
+        const fetchDecks = async () => {
+            try {
+                const response = await DeckService.getAllDecksInfo();
+                console.log(response);
+                setDecks(response || []);
+            } catch (error) {
+                console.error("Error while fetching decks: ", error);
+            }
+        };
+
+        fetchDecks();
+    }, []);
+
+    const filterDecks = (decksToFilter) => {
+        if (!Array.isArray(decksToFilter)) {
+            console.error("filterDecks: decksToFilter is not an array", decksToFilter);
+            return [];
+        }
+        return decksToFilter.filter((deck) =>
+            deck?.name?.toLowerCase().includes(searchTerm.toLowerCase())
+    )};
 
     return <div className="decks">
         <Navbar />
@@ -68,12 +116,13 @@ const Decks = () => {
             <div className="decks-manipulate">
 
                 <input className="decks-input" type="text" placeholder="Search decks.." value={searchTerm} onChange={handleSearchChange}/>
-                <div className="decks-filter-button" onClick={toggleOverlay}>Sort</div>
+                <div className="decks-filter-button" onClick={() => {toggleOverlay(); setFormType('sort')}}>Sort</div>
 
             </div>
 
             <Overlay isOpen={isOverlayOpen} closeOverlay={closeOverlay}>
-                <div
+                {formType === 'sort' &&
+                    <div
                     className="filter-options"
                     onClick={(e) => e.stopPropagation()}
                 >
@@ -105,12 +154,20 @@ const Decks = () => {
                     <label htmlFor="reverse">Reversed</label>
                 </div>
                 </div>
+                }
+                {formType === 'delete' &&
+                    <div className="filter-options">
+                        <div>Do you really want to delete this deck along side with all its contents?</div>
+                        <button onClick={handleDeleteYes}>Yes</button>
+                        <button onClick={handleDeleteNo}>No</button>
+                    </div>
+                }
             </Overlay>
 
             <div className="decks-list">
-                {sortDecks(filteredDecks, sortOptions)
+                {sortDecks(Array.isArray(decks) ? filterDecks(decks) : [], sortOptions)
                     .map((deck, idx) => (
-                        <Deck key={idx} deckState={deck}/>
+                        <Deck key={idx} deckState={deck} handleDeleteButton={() => handleDeleteButton(deck.id)}/>
                 ))}
             </div>
 
