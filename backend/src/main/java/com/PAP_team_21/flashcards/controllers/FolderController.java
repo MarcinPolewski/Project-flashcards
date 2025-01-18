@@ -5,6 +5,7 @@ import com.PAP_team_21.flashcards.Errors.ResourceNotFoundException;
 import com.PAP_team_21.flashcards.authentication.ResourceAccessLevelService.FolderAccessServiceResponse;
 import com.PAP_team_21.flashcards.authentication.ResourceAccessLevelService.ResourceAccessService;
 import com.PAP_team_21.flashcards.controllers.DTOMappers.DeckMapper;
+import com.PAP_team_21.flashcards.controllers.DTOMappers.FolderMapper;
 import com.PAP_team_21.flashcards.controllers.requests.FolderCreationRequest;
 import com.PAP_team_21.flashcards.controllers.requests.FolderUpdateRequest;
 import com.PAP_team_21.flashcards.entities.JsonViewConfig;
@@ -40,6 +41,7 @@ public class FolderController {
     private final CustomerRepository customerRepository;
     private final ResourceAccessService resourceAccessService;
     private final DeckMapper deckMapper;
+    private final FolderMapper folderMapper;
 
     @GetMapping("/getFolderStructure")
     @JsonView(JsonViewConfig.Public.class)
@@ -67,7 +69,6 @@ public class FolderController {
     }
 
     @GetMapping("/getAllFolders")
-    @JsonView(JsonViewConfig.Public.class)
     public ResponseEntity<?> getAllFolders(
             Authentication authentication
 //            @RequestParam(defaultValue = "0") int page,
@@ -86,7 +87,8 @@ public class FolderController {
             return ResponseEntity.badRequest().body("No user with this id found");
         }
 
-        return ResponseEntity.ok(folderService.findAllUserFolders(customer.get().getId()));
+        List<Folder> folders = folderService.findAllUserFolders(customer.get().getId());
+        return ResponseEntity.ok(folderMapper.toDTO(folders));
     }
 
     @PostMapping("/create")
