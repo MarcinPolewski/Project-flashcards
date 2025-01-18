@@ -1156,7 +1156,7 @@ If the user does not have permission to get the deck
 
 # API Documentation
 
-## GET `/getDeckInfo`
+## GET `/deck/getDeckInfo`
 
 ### Description
 Retrieves summary information about a specific deck by its ID. This endpoint verifies the user's access level to ensure they have permission to view the deck's details.
