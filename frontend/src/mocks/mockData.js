@@ -133,9 +133,7 @@ const mockData = {
             learningCards: 25,
             reviewingCards: 200,
             progress: 70,
-            createdAt: "2023-11-01",
             lastUsed: "2023-11-20",
-            lastModified: "2023-11-05"
         },
         {
             id: 2,
