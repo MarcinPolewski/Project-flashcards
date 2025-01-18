@@ -62,6 +62,7 @@ const DeckPage = () => {
             try {
                 const foundDeckProgress = await DeckService.getDeckInfo(deckId);
                 setDeckProgress(foundDeckProgress);
+                console.log("deck page deck: ", foundDeckProgress);
             } catch (error) {
                 console.error("Error fetching deck data:", error);
             }
