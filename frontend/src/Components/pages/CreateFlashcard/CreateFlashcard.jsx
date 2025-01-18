@@ -50,9 +50,15 @@ const CreateFlashcard = () => {
 
     useEffect(() => {
         const fetchFolders = async () => {
-            const folderStructure = await FolderService.getFolderStructure();
-            setFolders(folderStructure);
+            try {
+                const folderStructure = await FolderService.getFolderStructure();
+                setFolders(folderStructure || []);
+            }
+            catch (error) {
+                console.error("Error fetching folders:", error);
+            };
         };
+
         fetchFolders();
     }, []);
 

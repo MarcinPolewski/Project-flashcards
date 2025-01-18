@@ -1,4 +1,8 @@
 import api from "../api/api";
+import mockData from "../mocks/mockData";
+import generateJwtHeader from "../utils/generateJwtHeader";
+
+const isDevelopment = process.env.NODE_ENV === 'development';
 
 const NotificationService = {
     getNotification: async (id) => {
@@ -6,7 +10,8 @@ const NotificationService = {
         return response.data;
     },
     getAllNotifications: async () => {
-        const response = await api.get(`/customer/getNotifications/`);
+        if (isDevelopment) return mockData.customerGetNotifications;
+        const response = await api.get(`/customer/getNotifications/`, generateJwtHeader());
         return response.data;
     },
     createNotification: async (userId, text, received, receivedDate) => {

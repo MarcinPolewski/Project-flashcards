@@ -1,49 +1,95 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import testDecks from "../../../assets/mockData/testDecks";
-import testFolders from "../../../assets/mockData/testFolders";
 import './FolderPage.css';
 
 import Navbar from "../../Navbar/Navbar";
+import Overlay from "../../Overlay/Overlay";
+import FolderService from "../../../services/FolderService";
+import DeckService from "../../../services/DeckService";
+import Folder from "../../Folder/Folder";
+import { useOverlay } from "../../../contexts/OverlayContext/OverlayContext";
 
 const FolderPage = () => {
     const { id } = useParams();
     const [folder, setFolder] = useState(null);
+    const [folderChildren, setFolderChildren] = useState([]);
     const [decks, setDecks] = useState([]);
     const navigate = useNavigate();
 
+    const [deckIdToDelete, setDeckIdToDelete] = useState(null);
+
+    const { isOverlayOpen, toggleOverlay, closeOverlay } = useOverlay();
+
     useEffect(() => {
-        // Find the folder based on the ID from the URL params
-        const foundFolder = testFolders.find(fold => fold.id === parseInt(id));
-
-        // If folder is found, fetch the decks
-        if (foundFolder) {
-            console.log("Found folder:", foundFolder); // Debugging: Check if folder is found
-
-            setFolder(foundFolder);
-            // Map deckIds and only include decks that exist in testDecks
-            const folderDecks = foundFolder.deckIds
-                .map(deckId => {
-                    const deck = testDecks.find(deck => deck.id === deckId);
-                    if (deck) {
-                        return deck; // Return deck if found
-                    }
-                    console.log(`Deck with ID ${deckId} not found in testDecks`); // Debugging: Log missing decks
-                    return null; // Return null if deck not found
-                })
-                .filter(deck => deck !== null); // Remove null values (decks that weren't found)
-
-            setDecks(folderDecks);
-        } else {
-            setFolder(null); // Folder not found
-            console.log(`Folder with ID ${id} not found.`); // Debugging: Log when folder is not found
+        const fetchFolder = async () => {
+            try {
+                const response = await FolderService.getFolder(id);
+                setFolder(response);
+            } catch (error) {
+                console.error("Error while fetching folder: ", error);
+            }
         }
-    }, [id]); // Run effect when the 'id' parameter changes
+
+        const fetchDecksInFolder = async () => {
+            try {
+                const response = await FolderService.getDecksInfo(id);
+                setDecks(response);
+            } catch (error) {
+                console.error("Error while fetching decks: ", error);
+            }
+        }
+
+        const fetchFolderChildren = async () => {
+            try {
+                const response = await FolderService.getFolderChildren(id);
+                setFolderChildren(response || folderChildren);
+            } catch (error) {
+                console.error("Error while fetching child folders: ", error);
+            }
+        }
+
+        fetchFolder();
+        fetchDecksInFolder();
+        fetchFolderChildren();
+    }, []);
+
+    const handleDeleteYes = async () => {
+        try {
+            if (deckIdToDelete !== null) {
+                await DeckService.deleteDeck(deckIdToDelete);
+                setDecks((prevDecks) => prevDecks.filter((deck) => deck.id !== deckIdToDelete));
+                alert("Deck deleted successfully.");
+            }
+        } catch (error) {
+            console.error("Error while deleting deck: ", error);
+            alert("Error occurred while deleting deck.");
+        } finally {
+            closeOverlay();
+            setDeckIdToDelete(null);
+        }
+    }
+
+    const handleDeleteNo = () => {
+        closeOverlay();
+    }
+
+    const handleDeleteButton = (id) => {
+        setDeckIdToDelete(id);
+        toggleOverlay();
+    }
 
     return (
         <div>
             <Navbar />
             <div className="folder-page">
+            <Overlay isOpen={isOverlayOpen} closeOverlay={closeOverlay}>
+                <div className="filter-options">
+                    <div>Do you really want to delete this deck along side with all its contents?</div>
+                    <button onClick={handleDeleteYes}>Yes</button>
+                    <button onClick={handleDeleteNo}>No</button>
+                </div>
+            </Overlay>
+
                 {folder ? (
                     <div className="folder-page-content">
                         <h1 className="folder-page-h1">{folder.name}</h1>
@@ -51,14 +97,13 @@ const FolderPage = () => {
                             <div className="folder-page-deck-list">
                                 {decks.map(deck => (
                                     <div key={deck.id} className="folder-page-deck-card">
-                                        {/* Progress in Upper Right Corner */}
                                         <div className="folder-page-progress">Progress: <strong>{deck.progress}%</strong></div>
 
                                         <div className="folder-page-deck-title">
-                                            {deck.title}
+                                            {deck.name}
                                         </div>
 
-                                        <p className="folder-page-deck-info">{deck.info}</p>
+                                        <p className="folder-page-deck-info"></p>
 
                                         <div className="folder-page-deck-state">
                                             <p className="folder-page-card-new">
@@ -79,7 +124,9 @@ const FolderPage = () => {
                                             <button onClick={() => navigate(`/deck/${deck.id}`)} className="folder-page-edit-btn">
                                                 Edit
                                             </button>
-                                            <button className="folder-page-delete-btn">Delete</button>
+                                            <button className="folder-page-delete-btn" onClick={
+                                                () => handleDeleteButton(deck.id)
+                                            }>Delete</button>
                                         </div>
                                     </div>
                                 ))}
@@ -91,6 +138,24 @@ const FolderPage = () => {
                 ) : (
                     <p className="folder-page-not-found">No folder found with this ID</p>
                 )}
+            <div className="home-my-decks">
+
+            <div className="latest-reviews-title">Deck Folders</div>
+                <div className="my-decks-container">
+                {
+                Array.isArray(folderChildren) && folderChildren.length > 0 ? folderChildren
+                    .map((child) => {
+                        return <Folder key={child.id} id={child.id} title={child.name}
+                                onEdit={handleEditClick}
+                                onDelete={handleDeleteClick}
+                        />
+                })
+                :
+                <div>No folders available</div>
+                }
+                </div>
+
+            </div>
             </div>
         </div>
     );

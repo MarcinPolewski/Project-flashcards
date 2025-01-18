@@ -51,8 +51,8 @@
 
   --filter-background: white;
 
-  --streak-cell-background-inactive: #3c3c3c;
-  --streak-cell-background-active: #3b7a57;
+  --streak-cell-background-inactive: #dfdfdf;
+  --streak-cell-background-active: #00ccff;
 
   --input-color-flashcard: #292929;
   --input-flashcard-background: #ebfbfd;
@@ -115,7 +115,7 @@ body.dark {
   --flashcard-buttons: #202024;
   --flashcard-buttons-hover: #232339;
   --flashcard-buttons-active: #20203a;
-  --flashcard-edit-button:  #2874a6;
+  --flashcard-edit-button: #2874a6;
   --flashcard-edit-button-hover: #1d5981;
   --flashcard-input: rgb(61, 61, 61);
 
@@ -124,7 +124,7 @@ body.dark {
   --filter-background: #2e2e2e;
 
   --streak-cell-background-inactive: #333;
-  --streak-cell-background-active: #3b7a57;
+  --streak-cell-background-active: #2874a6;
 
   --input-color-flashcard: #e4e4e4;
   --input-flashcard-background: #292929;

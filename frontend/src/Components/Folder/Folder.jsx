@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import './Folder.css';
 import { useNavigate } from "react-router-dom";
 
-const Folder = ({ id, title }) => {
+const Folder = ({ id, title, onEdit, onDelete }) => {
     const navigate = useNavigate();
 
     const handleClick = () => {
@@ -17,8 +17,8 @@ const Folder = ({ id, title }) => {
 
             <div className="folder-actions">
                 <button className="folder-page-btn folder-page-study-btn" onClick={handleClick}>Open</button>
-                <button className="folder-page-btn folder-page-edit-btn">Edit</button>
-                <button className="folder-page-btn folder-page-delete-btn">Delete</button>
+                <button className="folder-page-btn folder-page-edit-btn" onClick={() => onEdit(id, title)}>Edit</button>
+                <button className="folder-page-btn folder-page-delete-btn" onClick={() => onDelete(id, title)}>Delete</button>
             </div>
         </div>
     );

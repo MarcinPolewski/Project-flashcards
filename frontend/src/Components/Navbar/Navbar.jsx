@@ -8,36 +8,16 @@ import Logo from "./Logo/Logo";
 import PlusButton from "./PlusButton/PlusButton";
 import Avatar from "./Avatar/Avatar";
 import CustomerService from "../../services/CustomerService";
+import { useUser } from "../../contexts/UserContext/UserContext";
 
 
 const Navbar = () => {
 
     const navigate = useNavigate();
 
-    const [userData, setUserData] = useState({
-            username: '',
-            email: '',
-            avatar: testAvatar
-    });
+    const { userData, isLoading } = useUser();
 
-    const {username, email, avatar} = userData;
-
-    useEffect(() => {
-        const fetchUserData = async () => {
-            try {
-                const user = await CustomerService.getSelf();
-                setUserData({
-                    username: user.username || '',
-                    email: user.email || '',
-                    avatar: user.avatar || testAvatar,
-                });
-            } catch (error) {
-                console.error("Error fetching user data:", error);
-            }
-        };
-
-        fetchUserData();
-    }, []);
+    if (isLoading) return <div>Loading...</div>
 
     return <div className="navbar">
         <div className="navbar-container">
@@ -56,7 +36,7 @@ const Navbar = () => {
 
         <div className="nav-user-options">
             <PlusButton/>
-            <Avatar avatar={avatar} username={username} email={email}/>
+            <Avatar avatar={userData.avatar} username={userData.username} email={userData.email}/>
         </div>
         </div>
     </div>
