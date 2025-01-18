@@ -222,6 +222,29 @@ In case of an error (e.g., invalid credentials, server issue), the responses may
 ```
 ---
 
+# API Documentation
+
+## GET `/api/auth/validateToken`
+
+### Description
+This endpoint validates a JWT token. If the token is valid, it returns a confirmation message. The validation process is handled automatically using Spring Security.
+
+### Parameters
+- **Authentication**: Automatically handled by Spring Security and contains the token details required for validation.
+
+### Request
+No request body is required. The authentication token is passed automatically by Spring Security.
+
+### Responses
+
+#### 200 OK
+The token is valid. A simple confirmation message is returned.
+
+Example response:
+```json
+"token is valid"
+```
+---
 ## Additional Information
 
 - **JWT Token Structure**:  
@@ -293,6 +316,102 @@ This endpoint retrieves a customer by their email.
   or the customer is not found.
   ```json
   "Customer not found"
+  ```
+---
+
+
+### `POST /updateUsername`
+
+This endpoint allows an authenticated user to update their username.
+
+**Parameters:**
+- `Authentication authentication`: Contains authentication details for the current user.
+- `UpdateUsernameRequest request`: Contains the new username to be set.
+
+**Request Body Example:**
+```json
+{
+  "newUsername": "newUsername123"
+}
+```
+**Response:**
+- 200 OK: Returns a success message when the username is successfully updated.
+  ```json
+  "Username updated successfully"
+  ```
+- 400 Bad Request:
+
+  If the user is not authenticated:
+  ```json
+  "No user with this id found"
+  ```
+  If username is empty
+  ```json
+  "Username cannot be empty"
+  ```
+---
+
+### `POST /updateBio`
+
+This endpoint allows an authenticated user to update their biography.
+
+**Parameters:**
+- `Authentication authentication`: Contains authentication details for the current user.
+- `UpdateBioRequest request`: Contains the new biography to be set.
+
+**Request Body Example:**
+```json
+{
+  "bio": "hello"
+}
+```
+**Response:**
+- 200 OK: Returns a success message when the username is successfully updated.
+  ```json
+  "Biography updated successfully"
+  ```
+- 400 Bad Request:
+
+  If the user is not authenticated:
+  ```json
+  "No user with this id found"
+  ```
+  If username is empty
+  ```json
+  "Biography cannot be empty"
+  ```
+---
+### `POST /updateAvatar`
+
+This endpoint allows an authenticated user to update their profile picture (avatar).
+
+**Parameters:**
+- `Authentication authentication`: Contains authentication details for the current user.
+- `UpdateAvatarRequest request`: Contains the new avatar file to be uploaded.
+
+**Request Body Example:**
+```json
+{
+    "avatar": "<MultipartFile>"
+}
+```
+**Response:**
+- 200 OK: Returns a success message when the profile picture is successfully updated.
+  ```json
+  "Profile picture updated successfully"
+  ```
+- 400 Bad Request:
+
+  If the user is not authenticated:
+  ```json
+  "No user with this id found"
+  ```
+
+- 500 Internal server error:
+
+  If the file upload fails due to an IO error:
+  ```json
+  "Failed to upload avatar"
   ```
 ---
 
@@ -371,7 +490,8 @@ This endpoint retrieves the authenticated customer's data.
         "accountLocked": false,
         "credentialsExpired": false,
         "enabled": false,
-        "profilePicturePath": "/profilePicture.png"
+        "profilePicturePath": "/profilePicture.png",
+        "avatar": "<avatar_file>"
     }
     ```
 - 400 Bad Request:
@@ -532,12 +652,14 @@ This endpoint retrieves a list of the authenticated customer's friends.
     {
       "id": 1,
       "username": "john_doe",
-      "email": "john.doe@example.com"
+      "email": "john.doe@example.com",
+      "avatar": "<avatar_file>"
     },
     {
       "id": 2,
       "username": "jane_doe",
-      "email": "jane.doe@example.com"
+      "email": "jane.doe@example.com",
+      "avatar": "<avatar_file>"
     }
   ]
   ```
@@ -563,7 +685,8 @@ This endpoint retrieves a friend by their ID.
   {
     "id": 1,
     "username": "john_doe",
-    "email": "john.doe@example.com"
+    "email": "john.doe@example.com",
+    "avatar": "<avatar_file>"
   }
   ```
 - 400 Bad Request:
@@ -593,7 +716,8 @@ This endpoint retrieves a friend by their email.
   {
     "id": 1,
     "username": "john_doe",
-    "email": "john.doe@example.com"
+    "email": "john.doe@example.com",
+    "avatar": "<avatar_file>"
   }
   ```
 - 400 Bad Request:
@@ -881,7 +1005,7 @@ or if the folder does not exist.
   ```
 ---
 
-### `PUT /deck/update`
+### `POST /deck/update`
 
 This endpoint updates the name of an existing deck.
 
@@ -981,6 +1105,104 @@ All endpoints require the user to be authenticated. Authentication is performed 
 - **VIEWER**: No permissions to modify or delete the deck.
 
 ---
+
+# API Documentation
+
+## GET `/deck/getDeck`
+
+### Description
+Retrieves a deck by its ID if the authenticated user has the appropriate access level.
+
+### Parameters
+- **Authentication**: Automatically handled by Spring Security, representing the authenticated user's credentials.
+- **deckId** (required, integer): The ID of the deck to retrieve.
+
+### Request
+No request body is required. The `deckId` is passed as a query parameter.
+
+### Responses
+
+#### 200 OK
+The user has the appropriate access level, and the deck is successfully retrieved.
+
+Example response:
+```json
+{
+  "id": 123,
+  "name": "Deck Name",
+  "cards": 
+  [
+    { 
+      "id": 1, 
+      "question": "Question 1", 
+      "answer": "Answer 1"
+    },
+    { 
+      "id": 2, 
+      "question": "Question 2", 
+      "answer": "Answer 2"
+    }
+  ],
+  "creationDate": "2025-01-01T12:00:00"
+}
+```
+- 400 Bad Request:
+
+If the user does not have permission to get the deck
+  ```json
+  "You do not have permission to get this deck"
+  ```
+---
+
+# API Documentation
+
+## GET `/deck/getDeckInfo`
+
+### Description
+Retrieves summary information about a specific deck by its ID. This endpoint verifies the user's access level to ensure they have permission to view the deck's details.
+
+### Parameters
+- **Authentication**: Automatically provided by Spring Security, containing the authenticated user's credentials.
+- **deckId** (required, integer): The ID of the deck for which information is being requested.
+
+### Request
+No request body is required. The `deckId` parameter is passed as a query parameter.
+
+### Responses
+
+#### 200 OK
+The user has the required access level, and the deck's information is returned.
+
+Example response:
+```json
+{
+  "customer":
+  {
+    "id": 1,
+    "name": "John Doe",
+    "email": "user@example.com"
+  },
+  "deck": 
+  {
+    "id": 123,
+    "name": "Sample Deck",
+    "cardCount": 20,
+    "creationDate": "2025-01-01T12:00:00"
+  }
+}
+```
+- 400 Bad Request:
+
+If the user does not have permission to get the deck
+  ```json
+  "You do not have permission to get this deck"
+  ```
+or if deck is not found
+  ```json
+  "Deck with ID 123 not found"
+  ```
+---
+
 
 # API Documentation: Demo Controller
 
@@ -1475,7 +1697,37 @@ Retrieves access levels for a specified folder.
   "You do not have permission to view this folder"
   ```
 ---
+### `GET /getFolder`
 
+This endpoint retrieves a folder based on the provided `folderId`, provided the user has the necessary access permissions.
+
+**Parameters:**
+- `Authentication authentication`: Contains authentication details for the current user.
+- `int folderId`: The ID of the folder to retrieve.
+
+**Response:**
+- 200 OK: Returns the folder data if the user has permission to view it.
+  ```json
+  {
+    "id": 1,
+    "name": "Documents",
+    "owner": "user@example.com",
+    "createdDate": "2025-01-01T00:00:00",
+    "updatedDate": "2025-01-01T12:00:00"
+  }
+  ```
+  **400 Bad Request** - Folder or user not found, or insufficient permissions
+  "Folder not found"
+  ```json
+  "Folder not found"
+  ```
+  ```json
+  "User not found"
+  ```
+  ```json
+  "You do not have permission to view this folder"
+  ```
+  
 ## Notes
 - Access level checks ensure that only authorized users can perform actions on folders.
 - Pagination and sorting options are supported for fetching folders and decks.
@@ -1702,6 +1954,95 @@ Generates a PDF document for a specific deck by its ID.
   ```
 ---
 
+# API Documentation TxtGeneratorController
+
+The `TxtGeneratorController` handles the generation of TXT files for decks. It provides an endpoint to generate and download a TXT containing information about a specified deck.
+
+## Endpoints
+
+### 1. **Generate TXT**
+Generates a TXT document for a specific deck by its ID.
+
+- **URL:** `/generateTxt/{id}`
+- **Method:** `GET`
+- **Parameters:**
+  - `Authentication authentication`
+  - `id` (int) - The ID of the deck for which the TXT will be generated.
+- **Response:**
+
+  **200 OK** - Returns a byte array containing the TXT file. Includes headers for file download.
+  - `Content-Disposition`: `attachment; filename={deckName}.txt`
+  - `Content-Type`: `application/txt`
+
+  **400 Bad Request** - User with the specified ID was not found.
+  ```json
+  "No user with this id found"
+  ```
+  **403 Forbidden** - User with the specified ID was not found.
+  ```json
+  "You do not have access to this deck"
+  ```
+  **404 Not Found** - Deck with the specified ID was not found.
+  ```json
+  "No deck with this id found"
+  ```
+---
+
+# API Documentation TxtLoaderController
+
+The `TxtLoaderController` handles the loading of deck data from a specified TXT file. It provides an endpoint for uploading a TXT file, validating the data, and loading it into a specific folder associated with the authenticated user.
+
+## Endpoints
+
+### 1. **Load Deck from TXT**
+
+Loads deck data from a specified TXT file and associates it with a folder.
+
+- **URL:** `/loadDeckTxt`
+- **Method:** `POST`
+- **Request Body:**
+  ```json
+  {
+    "filePath": "string", 
+    "folderId": "int"      
+  }
+  ```
+- **Parameters:**
+  - `Authentication authentication`
+- **Response:**
+
+  **200 OK** - Returns deck object. 
+  ```json
+  [
+    {
+      "id": 1,
+      "deckId": 2,
+      "front": "apple",
+      "back": "jabłko"
+    },
+    {
+      "id": 2,
+      "deckId": 2,
+      "front": "banana",
+      "back": "banan"
+    }
+  ]
+  ```
+
+  **400 Bad Request** - User with the specified ID was not found.
+  ```json
+  "No user with this id found"
+  ```
+  **403 Forbidden** - User has no access the folder.
+  ```json
+  "You do not have access to this deck"
+  ```
+  **404 Not Found** - Folder with the specified ID was not found.
+  ```json
+  "No folder with this id found"
+  ```
+---
+
 ## Implementation Details
 - The endpoint uses the `PdfGenerator` service to generate a PDF based on the data contained in the specified `Deck`.
 - HTTP headers are set to:
@@ -1719,77 +2060,40 @@ The `ReviewController` manages operations related to reviewing flashcards, inclu
 
 ## Endpoints
 
-### 1. **Request Review**
-Retrieve flashcards from a specific deck to be reviewed.
+### `GET /reviewDeck`
 
-- **URL:** `/review/folder/requestReview`
-- **Method:** `POST`
-- **Parameters:**
-  - `Authentication authentication`
+This endpoint retrieves a batch of flashcards from a deck and allows the user to review them. The user must have the necessary access to the deck.
 
-- **Request Body:**
-```json
-{
-  "deckId": 123,
-  "packageSize": 10
-}
-```
-- **Response:**
-  - **200 OK**: Returns a `FlashcardsToReviewResponse` containing the list of flashcards to review.
+**Parameters:**
+- `Authentication authentication`: Contains authentication details for the current user.
+- `int deckId`: The ID of the deck to review.
+- `int batchSize`: The number of flashcards to retrieve in the batch (default value is 10).
 
-  ```json
-    {
-        "flashcards": [
-            {
-                "id": 1,
-                "deckId": 2,
-                "front": "apple",
-                "back": "jabłko"
-            },
-            {
-                "id": 2,
-                "deckId": 2,
-                "front": "banana",
-                "back": "banan"
-            }
-        ]
-    }
-    ```
-  - **400 Bad Request**: User does not have access to the specified flashcard.
-  ```json
-    {
-        "error": "You do not have access to this deck"
-    }
-  ```
----
-
-### 2. **Send Back Results**
-Send review results for specific flashcards and update their review status.
-
-- **URL:** `/review/folder/sendBackResults`
-- **Method:** `POST`
-- **Parameters:**
-  - `Authentication authentication`
-    **Request Body:**
+**Response:**
+- 200 OK: Returns the flashcards in the deck for the user to review.
   ```json
   {
-      "flashcardId": 1,
-      "userAnswer": "A programming language."
+    "flashcards": [
+      {
+        "flashcardId": 101,
+        "front": "apple",
+        "back": "jablko"
+      },
+      {
+        "flashcardId": 102,
+        "front": "banana",
+        "back": "banan"
+      }
+    ]
   }
-  ``` 
-- **Response:**
-  - **200 OK**: Confirms that the flashcard review was successfully processed.
-  ```json
-  "Flashcard Reviewed"
   ```
-  - **400 Bad Request** - User does not have access to the specified flashcard or deck.
+- 400 Bad Request: If the batch size is less than 10, or if the user does not have permission to access the deck.
   ```json
-  "You do not have access to this flashcard"
+  "Batch size must be at least 10"
   ```
   ```json
   "You do not have access to this deck"
   ```
----
 
 ## Security Considerations
 - **Authentication:** Required for all endpoints.
@@ -1803,6 +2107,32 @@ Send review results for specific flashcards and update their review status.
 - Responses include error messages for unauthorized or invalid access attempts, promoting secure use of the API.
 
 ---
+### `POST /flashcardReviewed`
+
+This endpoint allows the authenticated user to mark a flashcard as reviewed and update the information about it based on the user's answer.
+
+**Parameters:**
+- `Authentication authentication`: Contains authentication details of the currently logged-in user.
+- `FlashcardsReviewedRequest reviewResponse`: Contains the `flashcardId` of the flashcard being reviewed and the user's answer (`userAnswer`).
+
+**Request Body:**
+```json
+{
+  "flashcardId": 123,
+  "userAnswer": "<user_answer_enum>"
+}
+```
+- 200 OK: Flashcard has been successfully reviewed.
+  ```json
+  "Flashcard reviewed."
+  ```
+- 400 Bad Request: If the batch size is less than 10, or if the user does not have permission to access the deck.
+  ```json
+  "Batch size must be at least 10"
+  ```
+  ```json
+  "You do not have access to this flashcard"
+  ```
 
 # API Documentation: ReviewLogController
 

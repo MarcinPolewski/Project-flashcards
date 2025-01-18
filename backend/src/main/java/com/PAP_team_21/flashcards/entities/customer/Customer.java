@@ -74,6 +74,7 @@ public class Customer {
     private SentVerificationCode sentVerificationCode;
 
     @Column(name = "bio")
+    @JsonView(JsonViewConfig.Public.class)
     private String bio;
 
     @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL)
@@ -112,6 +113,7 @@ public class Customer {
     public Customer(String email, String username, String passwordHash) {
         this.email = email;
         this.username = username;
+        this.bio = "";
         this.passwordHash = passwordHash;
         this.profileCreationDate = LocalDateTime.now();
         this.rootFolder = new Folder("ROOT", this);
@@ -127,6 +129,7 @@ public class Customer {
     public Customer(String email, String username, String passwordHash, String profilePicturePath) {
         this.email = email;
         this.username = username;
+        this.bio = "";
         this.passwordHash = passwordHash;
         this.profileCreationDate = LocalDateTime.now();
         this.rootFolder = new Folder("ROOT", this);
@@ -140,12 +143,13 @@ public class Customer {
     }
 
 
-    public Customer(String email, String passwordHash, String username, boolean accountExpired,
-                    boolean accountLocked, boolean credentialsExpired, boolean enabled,
-                    LocalDateTime profileCreationDate, String profilePicturePath) {
+    public Customer(String email, String passwordHash, String username, String biography,
+                    boolean accountExpired,  boolean accountLocked, boolean credentialsExpired,
+                    boolean enabled, LocalDateTime profileCreationDate, String profilePicturePath) {
         this.email = email;
         this.passwordHash = passwordHash;
         this.username = username;
+        this.bio = biography;
         this.accountExpired = accountExpired;
         this.accountLocked = accountLocked;
         this.credentialsExpired = credentialsExpired;
