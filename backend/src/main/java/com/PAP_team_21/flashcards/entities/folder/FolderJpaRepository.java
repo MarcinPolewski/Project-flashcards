@@ -14,4 +14,7 @@ public interface FolderJpaRepository  extends JpaRepository<Folder, Integer> {
 //    public Page<Folder> findByCustomersAndName(Pageable pageable, Customer customer, String name);
     @Procedure(procedureName = "get_all_user_folders")
     public List<Folder> findAllUserFolders(@Param("userId") Integer userId);
+
+    @Procedure(procedureName = "get_all_user_folders")
+    public List<Folder> findAllUserFolders(@Param("userId") Integer userId, Pageable pagable);
 }
