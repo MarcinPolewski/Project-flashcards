@@ -4,6 +4,7 @@ import '../../AuthSection/Auth.css';
 import AuthSection from "../../AuthSection/AuthSection";
 import AuthService from "../../../services/AuthService";
 import { useNavigate } from "react-router-dom";
+import validatePassword from "../../../utils/validatePassword";
 
 const Register = () => {
 
@@ -15,6 +16,11 @@ const Register = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (!validatePassword(password, setError)) {
+            return;
+        }
+
         try {
             console.log(`Passing to the backend: ${{username, email, password}}`);
             const response = await AuthService.registerUser({username, email, password});

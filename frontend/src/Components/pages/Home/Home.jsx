@@ -68,7 +68,7 @@ const Home = () => {
         }
         const fetchFolders = async () => {
             try {
-                const folderStructure = await FolderService.getFolderStructure();
+                const folderStructure = await FolderService.getRootFolder();
                 setFolders(folderStructure.children || []);
             } catch (error) {
                 console.error("Error while fetching folders: ", error);
