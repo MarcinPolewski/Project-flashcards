@@ -112,7 +112,7 @@ public class CustomerController {
         String newBio = request.getBio();
         if(newBio.trim().isEmpty())
         {
-            return ResponseEntity.badRequest().body("Bio cannot be empty");
+            return ResponseEntity.badRequest().body("Biography cannot be empty");
         }
 
         Customer customer = customerOpt.get();
