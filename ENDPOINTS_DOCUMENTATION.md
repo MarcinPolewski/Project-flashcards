@@ -222,6 +222,29 @@ In case of an error (e.g., invalid credentials, server issue), the responses may
 ```
 ---
 
+# API Documentation
+
+## GET `/api/auth/validateToken`
+
+### Description
+This endpoint validates a JWT token. If the token is valid, it returns a confirmation message. The validation process is handled automatically using Spring Security.
+
+### Parameters
+- **Authentication**: Automatically handled by Spring Security and contains the token details required for validation.
+
+### Request
+No request body is required. The authentication token is passed automatically by Spring Security.
+
+### Responses
+
+#### 200 OK
+The token is valid. A simple confirmation message is returned.
+
+Example response:
+```json
+"token is valid"
+```
+---
 ## Additional Information
 
 - **JWT Token Structure**:  
@@ -1082,6 +1105,104 @@ All endpoints require the user to be authenticated. Authentication is performed 
 - **VIEWER**: No permissions to modify or delete the deck.
 
 ---
+
+# API Documentation
+
+## GET `/deck/getDeck`
+
+### Description
+Retrieves a deck by its ID if the authenticated user has the appropriate access level.
+
+### Parameters
+- **Authentication**: Automatically handled by Spring Security, representing the authenticated user's credentials.
+- **deckId** (required, integer): The ID of the deck to retrieve.
+
+### Request
+No request body is required. The `deckId` is passed as a query parameter.
+
+### Responses
+
+#### 200 OK
+The user has the appropriate access level, and the deck is successfully retrieved.
+
+Example response:
+```json
+{
+  "id": 123,
+  "name": "Deck Name",
+  "cards": 
+  [
+    { 
+      "id": 1, 
+      "question": "Question 1", 
+      "answer": "Answer 1"
+    },
+    { 
+      "id": 2, 
+      "question": "Question 2", 
+      "answer": "Answer 2"
+    }
+  ],
+  "creationDate": "2025-01-01T12:00:00"
+}
+```
+- 400 Bad Request:
+
+If the user does not have permission to get the deck
+  ```json
+  "You do not have permission to get this deck"
+  ```
+---
+
+# API Documentation
+
+## GET `/getDeckInfo`
+
+### Description
+Retrieves summary information about a specific deck by its ID. This endpoint verifies the user's access level to ensure they have permission to view the deck's details.
+
+### Parameters
+- **Authentication**: Automatically provided by Spring Security, containing the authenticated user's credentials.
+- **deckId** (required, integer): The ID of the deck for which information is being requested.
+
+### Request
+No request body is required. The `deckId` parameter is passed as a query parameter.
+
+### Responses
+
+#### 200 OK
+The user has the required access level, and the deck's information is returned.
+
+Example response:
+```json
+{
+  "customer":
+  {
+    "id": 1,
+    "name": "John Doe",
+    "email": "user@example.com"
+  },
+  "deck": 
+  {
+    "id": 123,
+    "name": "Sample Deck",
+    "cardCount": 20,
+    "creationDate": "2025-01-01T12:00:00"
+  }
+}
+```
+- 400 Bad Request:
+
+If the user does not have permission to get the deck
+  ```json
+  "You do not have permission to get this deck"
+  ```
+or if deck is not found
+  ```json
+  "Deck with ID 123 not found"
+  ```
+---
+
 
 # API Documentation: Demo Controller
 
