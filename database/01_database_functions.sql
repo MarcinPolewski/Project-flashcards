@@ -120,7 +120,7 @@ BEGIN
     SELECT fl.* FROM Flashcards fl
     LEFT JOIN Review_Logs rl ON fl.id = rl.flashcard_id
     WHERE deck_id = deckId AND
-        (rl.user_id IS NULL or rl.user_id = userId)
+        (rl.user_id IS NULL or rl.user_id != userId)
     LIMIT howMany;
 END //
 
@@ -260,9 +260,10 @@ BEGIN
     SELECT COUNT(*)
     INTO newCardCount
     FROM Flashcards fl
-    LEFT JOIN Flashcards_Progresses fp ON fl.id = fp.flashcard_id
-    WHERE fl.deck_id = deckId
-    AND fp.flashcard_id IS NULL;
+
+    LEFT JOIN Review_Logs rl ON fl.id = rl.flashcard_id
+    WHERE deck_id = deckId AND
+        (rl.user_id IS NULL or rl.user_id != userId)
 END //
 
 # =============================================================================
