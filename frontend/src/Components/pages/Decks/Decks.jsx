@@ -16,6 +16,8 @@ const Decks = () => {
 
     const [formType, setFormType] = useState("");
     const [deckIdToDelete, setDeckIdToDelete] = useState(null);
+    const [deckIdToEdit, setDeckIdToEdit] = useState(null);
+    const [newDeckName, setNewDeckName] = useState("");
 
     const [sortOptions, setSortOptions] = useState({
         alphabet: false,
@@ -72,14 +74,40 @@ const Decks = () => {
         }
     }
 
+    const handleSubmitEdit = async () => {
+        try {
+            if (deckIdToEdit !== null) {
+                if (newDeckName.length < 3 || newDeckName.length > 20) {
+                    alert("Deck name must be between 3 and 20 characters!");
+                    return;
+                }
+                const response = await DeckService.updateDeck(deckIdToEdit, newDeckName);
+                setDecks((prevDecks) => prevDecks.map((deck) => deck.id === deckIdToEdit ? response : deck));
+                alert("Deck name changed successfully.");
+            }
+        } catch(error) {
+            alert("Error occurred while changing deck name.");
+        } finally {
+            closeOverlay();
+            setDeckIdToEdit(null);
+            setNewDeckName("");
+        }
+    }
+
     const handleDeleteNo = () => {
         closeOverlay();
     }
 
-    const handleDeleteButton = (id) => {
+    const handleEditButton = (id) => {
         setDeckIdToDelete(id);
+        setFormType('edit');
         toggleOverlay();
+    }
+
+    const handleDeleteButton = (id) => {
+        setDeckIdToEdit(id);
         setFormType('delete');
+        toggleOverlay();
     }
 
     useEffect(() => {
@@ -95,6 +123,10 @@ const Decks = () => {
 
         fetchDecks();
     }, []);
+
+    useEffect(() => {
+        setDecks((prevDecks) => sortDecks(prevDecks, sortOptions));
+    }, [sortOptions, decks]);
 
     const filterDecks = (decksToFilter) => {
         if (!Array.isArray(decksToFilter)) {
@@ -143,6 +175,21 @@ const Decks = () => {
                 </div>
                 </div>
                 }
+                {formType === 'edit' &&
+                    <div className="plus-button-create-deck">
+                        <div>Edit deck name</div>
+
+                        <input
+                            type="text"
+                            placeholder="Deck name..."
+                            value={newDeckName}
+                            onChange={(e) => setNewDeckName(e.target.value)}
+                            required
+                        />
+
+                        <button onClick={handleSubmitEdit}>Save</button>
+                    </div>
+                }
                 {formType === 'delete' &&
                     <div className="filter-options">
                         <div>Do you really want to delete this deck along side with all its contents?</div>
@@ -155,7 +202,9 @@ const Decks = () => {
             <div className="decks-list">
                 {sortDecks(Array.isArray(decks) ? filterDecks(decks) : [], sortOptions)
                     .map((deck, idx) => (
-                        <Deck key={idx} deckState={deck} handleDeleteButton={() => handleDeleteButton(deck.id)}/>
+                        <Deck key={idx} deckState={deck}
+                        handleEditButton={() => handleEditButton(deck.id)}
+                        handleDeleteButton={() => handleDeleteButton(deck.id)}/>
                 ))}
             </div>
 

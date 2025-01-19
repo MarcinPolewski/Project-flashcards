@@ -52,6 +52,7 @@ const PlusButton = () => {
             const response = await FolderService.createFolder(newFolderName, selectedId);
             console.log("Folder created:", response);
             setNewFolderName("");
+            window.location.reload();
         } catch (error) {
             console.error("Error creating folder:", error);
         } finally {
@@ -65,6 +66,7 @@ const PlusButton = () => {
             console.log("Creating deck...", selectedId, deckName);
             const response = await DeckService.createDeck(selectedId, deckName);
             console.log("Deck created:", response);
+            window.location.reload();
         } catch (error) {
             console.error("Error creating folder:", error);
         } finally {

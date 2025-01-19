@@ -117,14 +117,29 @@ const Settings = () => {
           }
     };
 
+    const handleUsernameChange = async () => { }
+
+    const handlePasswordChange = async () => { }
+
+    const handleEmailChange = async () => { }
+
     const handleAvatarChange = (event) => {
         const file = event.target.files[0];
         if (file) {
           const reader = new FileReader();
-          reader.onloadend = () => {
+          reader.onloadend = async () => {
             setNewAvatar(reader.result);
-          };
-          reader.readAsDataURL(file);
+            try {
+                const formData = new FormData();
+
+                await CustomerService.updateAvatar(file);
+                alert("Avatar updated successfully!");
+            } catch (error) {
+                console.error("Error while updating avatar: ", error);
+                alert("Failed to update avatar.");
+            }
+            };
+            reader.readAsDataURL(file);
         }
       };
 

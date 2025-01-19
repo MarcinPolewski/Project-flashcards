@@ -184,7 +184,7 @@ const FolderPage = () => {
                                                 Study
                                             </button>
                                             <button onClick={() => navigate(`/deck/${deck.id}`)} className="folder-page-edit-btn">
-                                                Edit
+                                                Open
                                             </button>
                                             <button className="folder-page-delete-btn" onClick={
                                                 () => handleDeleteButton(deck.id)
