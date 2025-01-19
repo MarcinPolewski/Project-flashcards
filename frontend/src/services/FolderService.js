@@ -40,7 +40,6 @@ const FolderService = {
     },
     getDecksInFolder: async (folderId) => {
         if (isDevelopment) return mockData.deckGetAllDecks;
-        if (isDevelopment) return mockData.deckGetAllDecks;
         const response = await api.get('/folder/getDecks', { params: { folderId } });
         return response.data;
     },
@@ -49,11 +48,6 @@ const FolderService = {
         const response = await api.get('/folder/getDecksInfo', { params: { folderId } });
         return response.data;
     },
-    getDecksInfo: async (folderId) => {
-        if (isDevelopment) return mockData.folderGetDecksInfo;
-        const response = await api.get('/folder/getDecksInfo', { params: { folderId } });
-        return response.data;
-    }
 };
 
 export default FolderService;

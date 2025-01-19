@@ -37,18 +37,6 @@ const DeckService = {
         return response.data;
     },
 
-    getAllDecks: async () => {
-        if (isDevelopment) return mockData.deckGetAllDecks;
-        const response = await api.get('/deck/getAllDecks');
-        return response.data;
-    },
-
-    getAllDecksInfo: async () => {
-        if (isDevelopment) return mockData.deckGetAllDecksInfo;
-        const response = await api.get('/deck/getAllDecksInfo');
-        return response.data;
-    },
-
     getFlashcards: async (deckId, page = 0, size = 5, sortBy = 'id', ascending = true) => {
         if (isDevelopment) { console.log("getting mocked flashcards"); return mockData.deckGetFlashcards};
 

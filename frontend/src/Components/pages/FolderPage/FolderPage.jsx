@@ -166,10 +166,8 @@ const FolderPage = () => {
 
                                         <div className="folder-page-deck-title">
                                             {deck.name}
-                                            {deck.name}
                                         </div>
 
-                                        <p className="folder-page-deck-info"></p>
                                         <p className="folder-page-deck-info"></p>
 
                                         <div className="folder-page-deck-state">
