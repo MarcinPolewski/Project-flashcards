@@ -325,5 +325,16 @@ GROUP BY
     DATE(`when`);
 END //
 
+CREATE PROCEDURE find_customers_last_review(
+    IN userId INT,
+    OUT lastReviewDate DATE
+)
+BEGIN
+    SELECT MAX(`when`)
+    INTO lastReviewDate
+    FROM Review_Logs
+    WHERE user_id = userId;
+END //
+
 # =============================================================================
 DELIMITER ;
