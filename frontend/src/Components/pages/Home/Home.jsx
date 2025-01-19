@@ -62,6 +62,7 @@ const Home = () => {
             alert("Error occurred while editing folder.");
         } finally {
             closeOverlay();
+            setFormType("");
             setSelectedFolderId(null)
         }
     };
@@ -79,6 +80,7 @@ const Home = () => {
             alert("Error occurred while deleting folder.");
         } finally {
             closeOverlay();
+            setFormType("");
             setSelectedFolderId(null)
         }
     };

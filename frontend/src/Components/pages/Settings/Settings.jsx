@@ -99,6 +99,7 @@ const Settings = () => {
           alert("Failed to update preferences.");
         } finally {
             closeOverlay();
+            setFormType("");
         }
       };
 

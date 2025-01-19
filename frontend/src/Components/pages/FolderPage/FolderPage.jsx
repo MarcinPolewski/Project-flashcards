@@ -102,7 +102,8 @@ const FolderPage = () => {
             alert("Error occurred while deleting folder.");
         } finally {
             closeOverlay();
-            setSelectedFolderId(null)
+            setSelectedFolderId(null);
+            setFormType("");
         }
     };
 
@@ -119,11 +120,13 @@ const FolderPage = () => {
         } finally {
             closeOverlay();
             setDeckIdToDelete(null);
+            setFormType("");
         }
     }
 
     const handleDeleteNo = () => {
         closeOverlay();
+        setFormType("");
     }
 
     const handleDeleteButton = (id) => {

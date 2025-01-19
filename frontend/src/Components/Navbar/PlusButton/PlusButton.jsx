@@ -12,7 +12,7 @@ const PlusButton = () => {
     const navigate = useNavigate();
     const [isPopupOpen, setPopupOpen] = useState(false);
     const [folders, setFolders] = useState([]);
-    const { isOverlayOpen, toggleOverlay, closeOverlay } = useOverlay();
+    const { isOverlayOpen, toggleOverlay, closeOverlay, isPlusButtonPopupOpen, togglePlusButtonPopup, closePlusButtonPopup } = useOverlay();
     const [newFolderName, setNewFolderName] = useState("");
     const [deckName, setDeckName] = useState("");
     const [selectedFolderIdForFolders, setSelectedFolderIdForFolders] = useState(null);
@@ -56,7 +56,8 @@ const PlusButton = () => {
         } catch (error) {
             console.error("Error creating folder:", error);
         } finally {
-            closeOverlay();
+            setFormType("");
+            closePlusButtonPopup();
         }
     };
 
@@ -70,13 +71,14 @@ const PlusButton = () => {
         } catch (error) {
             console.error("Error creating folder:", error);
         } finally {
-            closeOverlay();
+            setFormType("");
+            closePlusButtonPopup();
         }
     };
 
     const openCreateForm = (type) => {
         setFormType(type);
-        toggleOverlay();
+        togglePlusButtonPopup();
     };
 
     useEffect(() => {
@@ -102,7 +104,7 @@ const PlusButton = () => {
                 </div>
             )}
 
-            <Overlay isOpen={isOverlayOpen} closeOverlay={closeOverlay}>
+            <Overlay isOpen={isPlusButtonPopupOpen} closeOverlay={closePlusButtonPopup}>
                 {formType === 'deck' &&
                 <div className="plus-button-create-deck">
                     <h3>Create Deck</h3>

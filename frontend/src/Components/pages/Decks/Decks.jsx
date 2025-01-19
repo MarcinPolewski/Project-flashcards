@@ -71,6 +71,7 @@ const Decks = () => {
         } finally {
             closeOverlay();
             setDeckIdToDelete(null);
+            setFormType("");
         }
     }
 
@@ -92,11 +93,13 @@ const Decks = () => {
             closeOverlay();
             setDeckIdToEdit(null);
             setNewDeckName("");
+            setFormType("");
         }
     }
 
     const handleDeleteNo = () => {
         closeOverlay();
+        setFormType("");
     }
 
     const handleEditButton = (id) => {

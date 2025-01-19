@@ -38,6 +38,7 @@ const DeckPage = () => {
             alert("Error occured while editing flashcard!");
         } finally {
             closeOverlay();
+            setFormType("");
         }
     };
 
@@ -50,11 +51,13 @@ const DeckPage = () => {
             alert("Error occured while deleting flashcard!");
         } finally {
             closeOverlay();
+            setFormType("");
         }
     };
 
     const handleDeleteNo = () => {
         closeOverlay();
+        setFormType("");
     }
 
     useEffect(() => {
