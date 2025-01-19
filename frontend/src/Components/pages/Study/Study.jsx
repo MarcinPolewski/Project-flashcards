@@ -38,7 +38,7 @@ const Study = () => {
       try {
         const response = await ReviewService.requestReview(deckId, 10);
         console.log("Review response: ", response);
-        setCards(response.flashcards || []);
+        setCards(response || []);
       } catch (error) {
         console.error("Error while requesting review: ", error);
       }
@@ -69,7 +69,7 @@ const Study = () => {
 
   useEffect(() => {
     const handleKeyPress = (e) => {
-      if (e.key === "Enter") {
+      if (e.key === " " || e.key === "Spacebar") {
         setShowBack((prev) => !prev);
         e.preventDefault();
       }
@@ -96,9 +96,7 @@ const Study = () => {
       setCards(remainingCards);
       console.log("Remaining cards: ", remainingCards);
 
-      setCurrentCardIndex((prevIndex) =>
-        Math.min(prevIndex, remainingCards.length - 1)
-      );
+      setCurrentCardIndex(Math.floor(Math.random() * remainingCards.length));
       console.log("Current card index: ", currentCardIndex);
 
       setShowBack(false);
@@ -195,6 +193,7 @@ const Study = () => {
 
         <p>You're studying deck: {deckInfo.name || "N/A"}</p>
         <p>Flashcards remaining: {flashcardCount}</p>
+        <p>Press SPACE to flip flashcard</p>
         {currentCard && currentCard.front && currentCard.back ? (
           <>
             <div className="card">
