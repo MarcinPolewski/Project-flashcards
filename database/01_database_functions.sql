@@ -120,8 +120,7 @@ BEGIN
     SELECT fl.* FROM Flashcards fl
     LEFT JOIN Review_Logs rl ON fl.id = rl.flashcard_id
     WHERE deck_id = deckId AND
-        rl.user_id = userId AND
-        rl.id IS NULL
+        (rl.user_id IS NULL or rl.user_id = userId)
     LIMIT howMany;
 END //
 

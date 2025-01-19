@@ -32,7 +32,7 @@ public class ReviewLog {
     private int userId;
 
 
-    @Column(name = "when")
+    @Column(name = "`when`")
     @JsonView(JsonViewConfig.Public.class)
     private LocalDateTime when;
 
