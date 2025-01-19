@@ -21,8 +21,9 @@ const FolderPage = () => {
 
     const { isOverlayOpen, toggleOverlay, closeOverlay } = useOverlay();
     const [formType, setFormType] = useState(null);
-    const [selectedId, setSelectedId] = useState(null);
-    const [selectedTitle, setSelectedTitle] = useState(null);
+
+    const [selectedFolderId, setSelectedFolderId] = useState(null);
+    const [selectedFolderTitle, setSelectedFolderTitle] = useState(null);
 
     useEffect(() => {
         const fetchFolder = async () => {
@@ -58,25 +59,25 @@ const FolderPage = () => {
     }, []);
 
     const handleEditClick = (id, title) => {
-        setSelectedId(id);
-        setSelectedTitle(title);
+        setSelectedFolderId(id);
+        setSelectedFolderTitle(title);
         setFormType('edit');
         toggleOverlay();
     };
 
     const handleDeleteClick = (id, title) => {
-        setSelectedId(id);
-        setSelectedTitle(title);
+        setSelectedFolderId(id);
+        setSelectedFolderTitle(title);
         setFormType('delete');
         toggleOverlay();
     };
 
-    const handleFolderEdit = async (updatedFolderId, newTitle) => {
+    const handleFolderEdit = async () => {
         try {
-            if (updatedFolderId !== null) {
-                const response = await FolderService.updateFolder(updatedFolderId, newTitle);
+            if (selectedFolderId !== null) {
+                const response = await FolderService.updateFolder(selectedFolderId, selectedFolderTitle);
                 setFolderChildren(folderChildren.map((child) =>
-                    child.id === updatedFolderId ? { ...child, name: newTitle } : child
+                    child.id === selectedFolderId ? { ...child, name: selectedFolderTitle } : child
                 ));
                 alert("Folder edited successfully.");
             }
@@ -85,15 +86,15 @@ const FolderPage = () => {
             alert("Error occurred while editing folder.");
         } finally {
             closeOverlay();
-            setSelectedId(null)
+            setSelectedFolderId(null)
         }
     };
 
-    const handleFolderDelete = async (deletedFolderId) => {
+    const handleFolderDelete = async () => {
         try {
-            if (deletedFolderId !== null) {
-                const response = await FolderService.deleteFolder(deletedFolderId);
-                setFolderChildren(folderChildren.filter((child) => child.id !== deletedFolderId));
+            if (selectedFolderId !== null) {
+                const response = await FolderService.deleteFolder(selectedFolderId);
+                setFolderChildren(folderChildren.filter((child) => child.id !== selectedFolderId));
                 alert("Folder deleted successfully.");
             }
         } catch (error) {
@@ -101,7 +102,7 @@ const FolderPage = () => {
             alert("Error occurred while deleting folder.");
         } finally {
             closeOverlay();
-            setSelectedId(null)
+            setSelectedFolderId(null)
         }
     };
 
@@ -144,10 +145,10 @@ const FolderPage = () => {
                 </div>
                 }
                 {formType === 'edit' &&
-                    <EditFolder id={selectedId} title={selectedTitle} closeOverlay={closeOverlay} onFolderEdit={handleFolderEdit}/>
+                    <EditFolder id={selectedFolderId} title={selectedFolderTitle} closeOverlay={closeOverlay} onFolderEdit={handleFolderEdit}/>
                 }
                 {formType === 'delete' &&
-                    <DeleteFolder id={selectedId} title={selectedTitle} closeOverlay={closeOverlay} onFolderDelete={handleFolderDelete}/>
+                    <DeleteFolder id={selectedFolderId} title={selectedFolderTitle} closeOverlay={closeOverlay} onFolderDelete={handleFolderDelete}/>
                 }
             </Overlay>
 
@@ -207,8 +208,8 @@ const FolderPage = () => {
                 Array.isArray(folderChildren) && folderChildren.length > 0 ? folderChildren
                     .map((child) => {
                         return <Folder key={child.id} id={child.id} title={child.name}
-                                onEdit={handleEditClick}
-                                onDelete={handleDeleteClick}
+                                onEdit={() => handleEditClick(child.id, child.name)}
+                                onDelete={() => handleDeleteClick(child.id, child.name)}
                         />
                 })
                 :

@@ -19,7 +19,7 @@ const CustomerService = {
         headers: generateJwtHeader(),
     });
       console.log("Response from backend: ", response);
-      return response.data;
+      return response.data.customer;
   },
   getSelfProfile: async () => {
     if (isDevelopment) return mockData.customerGetSelfProfile;

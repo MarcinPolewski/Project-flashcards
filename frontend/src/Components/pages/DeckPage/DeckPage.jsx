@@ -21,13 +21,13 @@ const DeckPage = () => {
     const [editedCardFront, setEditedCardFront] = useState("");
     const [editedCardBack, setEditedCardBack] = useState("");
 
-    const handleEditFlashcard = async (flashcardId) => {
+    const handleEditFlashcard = async () => {
         if (editedCardFront.length < 1 || editedCardBack.length < 1) {
             alert ("Flashcards front and back must not be empty!");
             return;
         }
         try {
-            const response = await FlashcardService.updateFlashcard(flashcardId, editedCardFront, editedCardBack);
+            const response = await FlashcardService.updateFlashcard(editedCardId, editedCardFront, editedCardBack);
             setFlashcards(flashcards.map(flashcard =>
                 flashcard.id === editedCardId
                     ? { ...flashcard, front: editedCardFront, back: editedCardBack }
@@ -41,10 +41,10 @@ const DeckPage = () => {
         }
     };
 
-    const handleDeleteYes = async (flashcardId) => {
+    const handleDeleteYes = async () => {
         try {
-            const response = await FlashcardService.deleteFlashcard(flashcardId)
-            setFlashcards(flashcards.filter(flashcard => flashcard.id !== flashcardId));
+            const response = await FlashcardService.deleteFlashcard(editedCardId)
+            setFlashcards(flashcards.filter(flashcard => flashcard.id !== editedCardId));
             alert("Flashcard deleted successfully!");
         } catch(error) {
             alert("Error occured while deleting flashcard!");
@@ -128,18 +128,18 @@ const DeckPage = () => {
                         <div className="deck-page-right">
                             <PieChart
                                 data={{
-                                    newCards: deckProgress.newCards,
-                                    toReview: deckProgress.toReview,
-                                    learnedCards: deckProgress.learnedCards,
+                                    newCards: deckProgress.newCards || 0,
+                                    toReview: deckProgress.toReview || 0,
+                                    learnedCards: deckProgress.learnedCards || 0,
                                 }}
                                 className="deck-page-pie-chart"
                             />
                         </div>
                         <div className="deck-page-left">
-                            <p>Progress: {deckProgress.progress}%</p>
-                            <p>New Cards: {deckProgress.newCards}</p>
-                            <p>To Review Cards: {deckProgress.toReview}</p>
-                            <p>Learned Cards: {deckProgress.learnedCards}</p>
+                            <p>Progress: {deckProgress.progress || 0}%</p>
+                            <p>New Cards: {deckProgress.newCards || 0}</p>
+                            <p>To Review Cards: {deckProgress.toReview || 0}</p>
+                            <p>Learned Cards: {deckProgress.learnedCards || 0}</p>
                         </div>
                     </div>
                     <h3 className="deck-page-subtitle">Flashcards</h3>

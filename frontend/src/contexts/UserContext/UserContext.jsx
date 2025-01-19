@@ -9,9 +9,12 @@ const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
     const [userData, setUserData] = useState({
+        userId: null,
         username: "",
         email: "",
-        avatar: testAvatar,
+        avatar: "",
+        bio: "",
+        profileCreationDate: "",
     });
     const [isLoading, setIsLoading] = useState(true);
 
@@ -23,9 +26,12 @@ export const UserProvider = ({ children }) => {
             const user = await CustomerService.getSelf();
             console.log("User fetched from getSelf in userContext: ", user);
             setUserData({
+                userId: user.id || null,
                 username: user.username || "",
                 email: user.email || "",
-                avatar: user.avatar || testAvatar,
+                avatar: user.profilePicturePath || testAvatar,
+                bio: user.bio || "",
+                profileCreationDate: user.profileCreationDate || "",
             });
             console.log("User data fetched from userContext: ", userData);
         } catch (error) {

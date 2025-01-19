@@ -23,36 +23,60 @@ const Home = () => {
     const [folders, setFolders] = useState([]);
 
     const [formType, setFormType] = useState(null);
-    const [selectedId, setSelectedId] = useState(null);
-    const [selectedTitle, setSelectedTitle] = useState(null);
 
+    const [selectedFolderId, setSelectedFolderId] = useState(null);
+    const [selectedFolderTitle, setSelectedFolderTitle] = useState(null);
 
     const { isOverlayOpen, toggleOverlay, closeOverlay } = useOverlay();
 
     const navigate = useNavigate();
 
     const handleEditClick = (id, title) => {
-        setSelectedId(id);
-        setSelectedTitle(title);
+        setSelectedFolderId(id);
+        setSelectedFolderTitle(title);
         setFormType('edit');
         toggleOverlay();
     };
 
     const handleDeleteClick = (id, title) => {
-        setSelectedId(id);
-        setSelectedTitle(title);
+        setSelectedFolderId(id);
+        setSelectedFolderTitle(title);
         setFormType('delete');
         toggleOverlay();
     };
 
-    const handleFolderEdit = (updatedFolderId, newTitle) => {
-        setFolders(folders.map((folder) =>
-            folder.id === updatedFolderId ? { ...folder, name: newTitle } : folder
-        ));
+    const handleFolderEdit = async () => {
+        try {
+            if (selectedFolderId !== null) {
+                const response = await FolderService.updateFolder(selectedFolderId, selectedFolderTitle);
+                setFolders(folders.map((child) =>
+                    child.id === selectedFolderId ? { ...child, name: selectedFolderTitle } : child
+                ));
+                alert("Folder edited successfully.");
+            }
+        } catch (error) {
+            console.error("Error while editing folder: ", error);
+            alert("Error occurred while editing folder.");
+        } finally {
+            closeOverlay();
+            setSelectedFolderId(null)
+        }
     };
 
-    const handleFolderDelete = (deletedFolderId) => {
-        setFolders(folders.filter((folder) => folder.id !== deletedFolderId));
+    const handleFolderDelete = async () => {
+        try {
+            if (selectedFolderId !== null) {
+                const response = await FolderService.deleteFolder(selectedFolderId);
+                setFolders(folders.filter((child) => child.id !== selectedFolderId));
+                alert("Folder deleted successfully.");
+            }
+        } catch (error) {
+            console.error("Error while deleting folder: ", error);
+            alert("Error occurred while deleting folder.");
+        } finally {
+            closeOverlay();
+            setSelectedFolderId(null)
+        }
     };
 
     useEffect(() => {
@@ -100,10 +124,10 @@ const Home = () => {
 
             <Overlay isOpen={isOverlayOpen} closeOverlay={closeOverlay}>
                 {formType === 'edit' &&
-                    <EditFolder id={selectedId} title={selectedTitle} closeOverlay={closeOverlay} onFolderEdit={handleFolderEdit}/>
+                    <EditFolder id={selectedFolderId} title={selectedFolderTitle} closeOverlay={closeOverlay} onFolderEdit={handleFolderEdit}/>
                 }
                 {formType === 'delete' &&
-                    <DeleteFolder id={selectedId} title={selectedTitle} closeOverlay={closeOverlay} onFolderDelete={handleFolderDelete}/>
+                    <DeleteFolder id={selectedFolderId} title={selectedFolderTitle} closeOverlay={closeOverlay} onFolderDelete={handleFolderDelete}/>
                 }
             </Overlay>
 

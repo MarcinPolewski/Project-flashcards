@@ -9,6 +9,13 @@ import Overlay from "../../Overlay/Overlay";
 import { useOverlay } from "../../../contexts/OverlayContext/OverlayContext";
 import DeckService from "../../../services/DeckService";
 
+const INTERVALS = {
+  FORGOT: 0,
+  HARD: 1,
+  MID: 2,
+  EASY: 3,
+};
+
 const Study = () => {
   const { deckId } = useParams();
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
@@ -16,7 +23,7 @@ const Study = () => {
   const [showBack, setShowBack] = useState(false);
 
   const [deckInfo, setDeckInfo] = useState(null);
-  const [flashcardCount, setFlashcardCount] = useState(null);
+  const [flashcardCount, setFlashcardCount] = useState(0);
 
   const [currentCardFront, setCurrentCardFront] = useState("");
   const [currentCardBack, setCurrentCardBack] = useState("");
@@ -30,7 +37,7 @@ const Study = () => {
     const requestReview = async () => {
       try {
         const response = await ReviewService.requestReview(deckId, 10);
-        setCards(response.flashcards);
+        setCards(response.flashcards || 0);
       } catch (error) {
         console.error("Error while requesting review: ", error);
       }
@@ -51,7 +58,7 @@ const Study = () => {
 
   useEffect(() => {
     setFlashcardCount(cards.length);
-    if (cards.length > 0 && currentCardIndex >= 0) {
+    if (cards && cards.length > 0 && currentCardIndex >= 0) {
       const currentCard = cards[currentCardIndex];
       setCurrentCardFront(currentCard.front);
       setCurrentCardBack(currentCard.back);
@@ -74,28 +81,19 @@ const Study = () => {
 
     const currentCard = cards[currentCardIndex];
 
-    const updatedCard = { ...currentCard, progressInterval: interval };
-
-    const updatedCards = cards.map((card, index) =>
-      index === currentCardIndex ? updatedCard : card
-    );
-    setCards(updatedCards);
-
     try {
-      console.log ("sent back results to backend: ", currentCard.id, interval);
-      // const response = await ReviewService.sendBackResults(currentCard.id, interval);
-      // console.log("Flashcard reviewed:", response);
+      await ReviewService.sendBackResults(currentCard.id, interval);
 
-      if (interval === "Easy") {
-        const remainingCards = updatedCards.filter((card) => card.id !== currentCard.id);
-        setCards(remainingCards);
-      }
+      const remainingCards =
+        interval === INTERVALS.EASY
+          ? cards.filter((card) => card.id !== currentCard.id)
+          : cards;
 
-      if (currentCardIndex < updatedCards.length - 1) {
-        setCurrentCardIndex(currentCardIndex + 1);
-      } else {
-        setCurrentCardIndex(0);
-      }
+      setCards(remainingCards);
+
+      setCurrentCardIndex((prevIndex) =>
+        prevIndex < remainingCards.length - 1 ? prevIndex + 1 : 0
+      );
 
       setShowBack(false);
     } catch (error) {
@@ -187,10 +185,10 @@ const Study = () => {
               )}
             </div>
             <div className="progress-buttons">
-              <button onClick={() => handleProgressUpdate("Repeat")}>Repeat</button>
-              <button onClick={() => handleProgressUpdate("Hard")}>Hard</button>
-              <button onClick={() => handleProgressUpdate("Mid")}>Mid</button>
-              <button onClick={() => handleProgressUpdate("Easy")}>Easy</button>
+              <button onClick={() => handleProgressUpdate(INTERVALS.FORGOT)}>Repeat</button>
+              <button onClick={() => handleProgressUpdate(INTERVALS.HARD)}>Hard</button>
+              <button onClick={() => handleProgressUpdate(INTERVALS.MID)}>Mid</button>
+              <button onClick={() => handleProgressUpdate(INTERVALS.EASY)}>Easy</button>
             </div>
             <button className="edit-button" onClick={toggleOverlay}>Edit</button>
           </>
