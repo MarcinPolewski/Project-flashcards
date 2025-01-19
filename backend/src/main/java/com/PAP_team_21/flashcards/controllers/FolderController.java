@@ -106,7 +106,7 @@ public class FolderController {
         AccessLevel userAccessLevel = response.getAccessLevel();
         Customer customer = response.getCustomer();
 
-        if(userAccessLevel.equals(AccessLevel.EDITOR) || userAccessLevel.equals(AccessLevel.OWNER))
+        if(userAccessLevel != null || userAccessLevel.equals(AccessLevel.EDITOR) || userAccessLevel.equals(AccessLevel.OWNER))
         {
             Folder folder = new Folder(request.getName(), customer, parentFolder);
             folderService.save(folder);
@@ -125,7 +125,7 @@ public class FolderController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
 
-        if(response.getAccessLevel().equals(AccessLevel.OWNER) || response.getAccessLevel().equals(AccessLevel.EDITOR))
+        if(response.getAccessLevel() != null || response.getAccessLevel().equals(AccessLevel.OWNER) || response.getAccessLevel().equals(AccessLevel.EDITOR))
         {
             Folder folder = response.getFolder();
             folder.setName(request.getName());
@@ -148,7 +148,7 @@ public class FolderController {
         if(response.getFolder().equals(response.getCustomer().getRootFolder()))
             return ResponseEntity.badRequest().body("You cannot delete the root folder");
 
-        if(response.getAccessLevel().equals(AccessLevel.OWNER) || response.getAccessLevel().equals(AccessLevel.EDITOR))
+        if(response.getAccessLevel() != null || response.getAccessLevel().equals(AccessLevel.OWNER) || response.getAccessLevel().equals(AccessLevel.EDITOR))
         {
             folderService.delete(folderId);
             return ResponseEntity.ok("folder deleted");
@@ -188,7 +188,7 @@ public class FolderController {
         AccessLevel al = response.getAccessLevel();
         Folder folder = response.getFolder();
 
-        if(al.equals(AccessLevel.EDITOR) || al.equals(AccessLevel.OWNER))
+        if(al != null || al.equals(AccessLevel.EDITOR) || al.equals(AccessLevel.OWNER))
         {
             List<Deck> decks = folder.getDecks();
             return ResponseEntity.ok(decks);
@@ -212,7 +212,7 @@ public class FolderController {
         AccessLevel al = response.getAccessLevel();
         Folder folder = response.getFolder();
 
-        if(al.equals(AccessLevel.EDITOR) || al.equals(AccessLevel.OWNER))
+        if(al != null || al.equals(AccessLevel.EDITOR) || al.equals(AccessLevel.OWNER))
         {
             List<Deck> decks = folder.getDecks();
             return ResponseEntity.ok(deckMapper.toDTO(response.getCustomer(), decks));
@@ -240,7 +240,7 @@ public class FolderController {
         AccessLevel al = response.getAccessLevel();
         Folder folder = response.getFolder();
 
-        if(al.equals(AccessLevel.EDITOR) || al.equals(AccessLevel.OWNER))
+        if(al != null || al.equals(AccessLevel.EDITOR) || al.equals(AccessLevel.OWNER))
         {
             try{
                 List<Deck> decks = folder.getDecks(page, size, sortBy, ascending);
@@ -272,7 +272,7 @@ public class FolderController {
         AccessLevel al = response.getAccessLevel();
         Folder folder = response.getFolder();
 
-        if(al.equals(AccessLevel.EDITOR) || al.equals(AccessLevel.OWNER))
+        if(al != null || al.equals(AccessLevel.EDITOR) || al.equals(AccessLevel.OWNER))
         {
             try{
                 List<Deck> decks = folder.getDecks(page, size, sortBy, ascending);

@@ -48,7 +48,7 @@ public class FlashcardController {
 
         AccessLevel al = response.getAccessLevel();
 
-        if(al.equals(AccessLevel.OWNER) || al.equals(AccessLevel.EDITOR))
+        if(al != null || al.equals(AccessLevel.OWNER) || al.equals(AccessLevel.EDITOR))
         {
             Flashcard flashcard = new Flashcard(response.getDeck(), request.getFront(), request.getBack());
             flashcardService.save(flashcard);
@@ -74,7 +74,7 @@ public class FlashcardController {
 
         AccessLevel al = response.getAccessLevel();
 
-        if(al.equals(AccessLevel.OWNER) || al.equals(AccessLevel.EDITOR))
+        if(al != null || al.equals(AccessLevel.OWNER) || al.equals(AccessLevel.EDITOR))
         {
             Flashcard flashcard = response.getFlashcard();
             flashcard.setFront(request.getFront());
@@ -105,7 +105,7 @@ public class FlashcardController {
 
         AccessLevel al = response.getAccessLevel();
 
-        if(al.equals(AccessLevel.OWNER) || al.equals(AccessLevel.EDITOR))
+        if(al != null || al.equals(AccessLevel.OWNER) || al.equals(AccessLevel.EDITOR))
         {
             flashcardService.delete(response.getFlashcard());
 
