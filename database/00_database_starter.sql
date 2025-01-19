@@ -55,7 +55,11 @@ CREATE TABLE `User_Statistics`(
                                   `user_id` INT UNSIGNED NOT NULL,
                                   `total_time_spent` INT NOT NULL DEFAULT '0',
                                   `login_count` INT NOT NULL DEFAULT '0',
-                                  `last_login` DATETIME NOT NULL
+                                  `last_login` DATETIME NOT NULL,
+                                   `total_days_learning` INT NOT NULL DEFAULT '0',
+                                   `days_learning_streak` INT NOT NULL DEFAULT '0',
+                                    `longest_learning_streak` INT NOT NULL DEFAULT '0'
+
 );
 CREATE TABLE `Review_Logs`(
                               `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
