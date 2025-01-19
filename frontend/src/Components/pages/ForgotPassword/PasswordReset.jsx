@@ -69,19 +69,19 @@ const PasswordReset = () => {
                 <h2>Enter Verification Code</h2>
                 <form>
                     <div>
-                        <label htmlFor="text">Verification Code</label>
+                        <label htmlFor="text" className="form-label">Verification Code</label>
                         <input type="text" id="text" name="text" value={verificationCode} onChange={handleCodeChange} required />
                     </div>
                 </form>
                 <h2>Password reset</h2>
                     <form>
                         <div>
-                            <label htmlFor="password">Password</label>
+                            <label htmlFor="password" className="form-label">Password</label>
                             <input type="password" id="password" name="password" value={state.password} onChange={handlePasswordChange} required />
                         </div>
 
                         <div>
-                            <label htmlFor="password">Reenter Password</label>
+                            <label htmlFor="password" className="form-label">Reenter Password</label>
                             <input type="password" id="repassword" name="repassword" value={state.repassword} onChange={handlePasswordChange} required />
                         </div>
 
