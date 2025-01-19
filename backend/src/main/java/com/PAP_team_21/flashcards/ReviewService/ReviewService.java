@@ -230,8 +230,9 @@ public class ReviewService {
 
             FlashcardProgress fp = new FlashcardProgress(flashcard,
                     customer,
-                    getNextReview(progress.get().getLastReviewLog().getWhen(), progress.get().getNext_review(), userAnswer),
-                    rl);
+                    LocalDateTime.now().plus(Duration.ofMinutes(2)),
+                    rl
+                    );
             flashcardProgressRepository.save(fp);
         }
         else
