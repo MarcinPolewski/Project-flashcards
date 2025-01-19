@@ -52,6 +52,12 @@ updateAvatar: async (formData) => {
     });
     return response.data;
     },
+updateBio: async (bio) => {
+    const response = await api.post('/customer/updateBio', {
+        bio
+    });
+    return response.data;
+    },
   deleteCustomer: async () => {
       const response = await api.delete('/customer/delete');
       return response.data;

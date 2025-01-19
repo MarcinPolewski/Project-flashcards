@@ -73,7 +73,7 @@ const routesForAuthenticatedOnly = [
             </UserProvider>,
         },
         {
-            path: "/user/:userId",
+            path: "/userProfile/",
             element:
             <UserProvider><UserProfile/>
             </UserProvider>,

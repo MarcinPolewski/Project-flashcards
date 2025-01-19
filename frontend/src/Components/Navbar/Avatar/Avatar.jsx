@@ -26,7 +26,7 @@ const Avatar = (props) => {
     }
 
     const handleUserProfileRedirect = () => {
-        navigate(`/user/${props.id}`)
+        navigate(`/user-profile`)
     }
 
     useEffect(() => {
