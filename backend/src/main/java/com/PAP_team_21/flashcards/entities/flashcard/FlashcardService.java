@@ -60,4 +60,19 @@ public class FlashcardService {
     public List<Flashcard> getDueToReview(Integer customerId, int deckId, Duration reviewGapConstant, Duration lastReviewConstant, int howMany) {
         return flashcardRepository.getDueToReview(customerId, deckId, (int)reviewGapConstant.toMinutes(), (int)lastReviewConstant.toMinutes(), howMany);
     }
+
+    public int countAllNewCards(int customerId)
+    {
+        return flashcardRepository.countAllNewCards(customerId);
+    }
+
+    public int countAllDueCards(int customerId)
+    {
+        return flashcardRepository.countAllDueCards(customerId);
+    }
+
+    public int countAllCards(int customerId)
+    {
+        return flashcardRepository.countAllCards(customerId);
+    }
 }
