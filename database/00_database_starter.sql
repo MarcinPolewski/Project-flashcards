@@ -48,7 +48,10 @@ CREATE TABLE `User_Preferences`(
                                    `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
                                    `user_id` INT UNSIGNED NOT NULL,
                                    `dark_mode` BOOLEAN NOT NULL DEFAULT '1',
-                                   `language` INT NOT NULL
+                                   `language` INT NOT NULL,
+                                   `reminder_time` TIME NOT NULL,
+                                   `timezone` INT NOT NULL,
+                                   `study_reminders` INT NOT NULL
 );
 CREATE TABLE `User_Statistics`(
                                   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
