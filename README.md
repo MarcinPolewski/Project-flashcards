@@ -31,9 +31,7 @@ Zgodnie z wymaganiami projektu wykorzystamy architekturę 3-warstwową, w które
 2. **Tworzenie Fiszek**
    - Tworzenie folderów na fiszki
    - Modyfikacja i usuwanie fiszek
-   - Obsługa różnych trybów powtarzania materiału:
-     - Klasyczne fiszki
-     - Wpisywanie odpowiedzi i sprawdzanie poprawności
+   - Obsługa trybów powtarzania materiału: Klasyczne fiszki
    - Import i eksport fiszek
 
 3. **Algorytm Powtarzania – Spaced Repetition**
@@ -59,4 +57,4 @@ Zgodnie z wymaganiami projektu wykorzystamy architekturę 3-warstwową, w które
 
 ### Przydatne komendy
 - "docker compose down -v --rmi all" wyłącza kontenery, usuwa pamięć i obrazy
-- "docker compose up" uruchamia aplikacje 
+- "docker compose up" uruchamia aplikacje

@@ -8,8 +8,17 @@ export const ThemeProvider = ({children}) => {
 
     useEffect(() => {
         document.body.classList.remove("light", "dark");
+        localStorage.setItem("theme", theme);
         document.body.classList.add(theme);
     }, [theme]);
+
+    useEffect(() => {
+        const storedTheme = localStorage.getItem("theme");
+        if (storedTheme && storedTheme !== theme) {
+            setTheme(storedTheme);
+        }
+    }, []);
+
 
     const toggleTheme = () => {
         setTheme((prevTheme) => {

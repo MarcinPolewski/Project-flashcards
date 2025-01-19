@@ -28,7 +28,7 @@ const CustomerService = {
   },
   updateUsername: async (username) => {
     const response = await api.post('/customer/updateUsername', {
-        params: username
+        username
     });
     return response.data;
     },
@@ -44,9 +44,11 @@ updatePassword: async (password) => {
     });
     return response.data;
     },
-updateAvatar: async (avatar) => {
-    const response = await api.post('/customer/updateAvatar', {
-        params: avatar
+updateAvatar: async (formData) => {
+    const response = await api.post('/customer/updateAvatar', formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        },
     });
     return response.data;
     },

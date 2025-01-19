@@ -33,12 +33,11 @@ const Settings = () => {
       });
 
     const [settingsState, setSettingsState] = useState({
-        theme: "light",
         language: settingsPreferences.languages[0].code,
         reminderTime: settingsPreferences.reminderTimes[0].value,
         timezone: settingsPreferences.timezones[0].code,
         studyReminders: false,
-      });
+    });
 
     const [formType, setFormType] = useState(null);
 
@@ -55,16 +54,15 @@ const Settings = () => {
             const preferences = await UserPreferencesService.getPreferences();
             setSettingsState({
                 ...settingsState,
-                theme: preferences.darkMode ? "dark" : "light",
                 language: preferences.language,
                 reminderTime: preferences.reminderTime,
                 timezone: preferences.timezone,
                 studyReminders: preferences.studyReminders,
             });
-            const preferredTheme = preferences.darkMode ? "dark" : "light";
-            if (preferredTheme !== sysTheme) {
-                setTheme(preferredTheme);
-            }
+
+            //const preferredTheme = preferences.darkMode ? "dark" : "light";
+            const preferredTheme = localStorage.getItem("theme") || "dark";
+            setTheme(preferredTheme);
 
             } catch (error) {
             console.error("Error fetching user preferences:", error);
@@ -72,28 +70,30 @@ const Settings = () => {
         };
 
         fetchPreferencesData();
-    }, [sysTheme, setTheme]);
+    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             if (formType === 'delete') {
-                if (formData.password !== formData.confirmPassword) {
-                    alert("Passwords do not match!");
-                    return;
-                }
-
                 await CustomerService.deleteCustomer(formData.password);
                 alert("Your account has been deleted successfully.");
-
                 AuthService.logout();
-            } else {
-                const { theme, language, studyReminders, reminderTime, timezone } = settingsState;
-                const darkMode = theme === "Dark";
 
-                await UserPreferencesService.updatePreferences(darkMode, language, reminderTime, timezone, studyReminders);
-                alert("Preferences updated successfully!");
-        }
+            }
+            else if (formType === 'email') { alert("Not implemented yet!" ); }
+
+            else if (formType === 'username') {
+                try {
+                    console.log("Updating username: ", formData.username);
+                    await CustomerService.updateUsername(formData.username);
+                    alert("Username updated successfully!");
+                    window.location.reload();
+                } catch(error) {
+                    alert("Failed to update username.");
+                }
+            }
+            else if (formType === 'password') { handlePasswordChange() }
         } catch (error) {
           console.error("Error updating user preferences:", error);
           alert("Failed to update preferences.");
@@ -126,37 +126,37 @@ const Settings = () => {
           ...prevState,
           [key]: value,
         }));
-
-        if (key === "theme") {
-            setTheme(value.toLowerCase());
-          }
     };
 
-    const handleUsernameChange = async () => { }
+    const handlePasswordChange = async () => {
+        localStorage.removeItem("jwtToken");
+        sessionStorage.removeItem("jwtToken");
+        window.location.reload();
+        window.location.href = "/forgot-password";
+    };
 
-    const handlePasswordChange = async () => { }
-
-    const handleEmailChange = async () => { }
-
-    const handleAvatarChange = (event) => {
+    const handleAvatarChange = async (event) => {
         const file = event.target.files[0];
         if (file) {
-          const reader = new FileReader();
-          reader.onloadend = async () => {
-            setNewAvatar(reader.result);
-            try {
-                const formData = new FormData();
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setNewAvatar(reader.result);
+            };
+            reader.readAsDataURL(file);
 
-                await CustomerService.updateAvatar(file);
+            const formData = new FormData();
+            formData.append("avatar", file);
+
+            try {
+                await CustomerService.updateAvatar(formData);
                 alert("Avatar updated successfully!");
+                window.location.reload();
             } catch (error) {
                 console.error("Error while updating avatar: ", error);
                 alert("Failed to update avatar.");
             }
-            };
-            reader.readAsDataURL(file);
-        }
-      };
+        };
+    }
 
     useEffect(() => {
         const savedSettings = localStorage.getItem("userSettings");
@@ -172,43 +172,23 @@ const Settings = () => {
 
     const renderFormContent = () => {
         switch (formType) {
-            case 'email':
-                return (
-                    <>
-                        <label>New Email</label>
-                        <input type="email" value={formData.email} onChange={handleInputChange('email')} />
-                        {/* Password is needed for sensitive changes like email, so we keep it */}
-                        <label>Password</label>
-                        <input type="password" value={formData.password} onChange={handleInputChange('password')} />
-                    </>
-                );
             case 'username':
                 return (
                     <>
                         <label>New Username</label>
                         <input type="text" value={formData.username} onChange={handleInputChange('username')} />
-                        {/* Password is needed for sensitive changes like username, so we keep it */}
-                        <label>Password</label>
-                        <input type="password" value={formData.password} onChange={handleInputChange('password')} />
                     </>
                 );
             case 'password':
                 return (
                     <>
-                        <label>New Password</label>
-                        <input type="password" value={formData.password} onChange={handleInputChange('password')} />
-                        <label>Reenter New Password</label>
-                        <input type="password" value={formData.confirmPassword} onChange={handleInputChange('confirmPassword')} />
+                        <label>You will be logged out and redirected to the password change form..</label>
                     </>
                 );
             case 'delete':
                 return (
                     <>
                         <p className="warning-text">Are you sure you want to delete your account? This action cannot be undone.</p>
-                        <label>Enter Password</label>
-                        <input type="password" value={formData.password} onChange={handleInputChange('password')} />
-                        <label>Reenter Password</label>
-                        <input type="password" value={formData.confirmPassword} onChange={handleInputChange('confirmPassword')} />
                     </>
                 );
             default:
@@ -246,7 +226,7 @@ const Settings = () => {
                             <div className="label">Email</div>
                             <div className="value">{email}</div>
                         </div>
-                        <button className="edit-button" onClick={() => handleEditClick('email')}>Edit</button>
+                        {/* <button className="edit-button" onClick={() => handleEditClick('email')}>Edit</button> */}
                     </div>
                     <hr />
                     <div className="personal-info-item">
@@ -355,7 +335,7 @@ const Settings = () => {
                     {renderFormContent()}
                 </div>
                 <button onClick={handleSubmit}>
-                    {formType === 'delete' ? 'Confirm' : 'Send Confirmation Mail'}
+                    Confirm
                 </button>
             </div>
         </Overlay>
