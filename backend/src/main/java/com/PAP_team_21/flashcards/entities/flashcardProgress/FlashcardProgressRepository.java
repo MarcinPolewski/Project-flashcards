@@ -11,7 +11,4 @@ import java.util.Optional;
 
 public interface FlashcardProgressRepository extends JpaRepository<FlashcardProgress, Integer> {
     Optional<FlashcardProgress> findByCustomerAndFlashcard(Customer customer, Flashcard flashcard);
-
-    @Procedure(procedureName = "find_customers_last_review")
-    Optional<LocalDateTime> findCustomersLastReview(@Param("customerId") int id);
 }
