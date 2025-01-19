@@ -18,7 +18,7 @@
 }
 
 .auth-container-register {
-    height: 100%; /* Maintain full height for child container */
+    height: 100vh; /* Maintain full height for child container */
 }
 
 .auth-email-signin {

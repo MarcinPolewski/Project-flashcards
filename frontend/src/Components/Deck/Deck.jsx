@@ -11,7 +11,6 @@ const Deck = ({ deckState, handleEditButton, handleDeleteButton }) => {
 
     return <div className="deck">
         <div className="deck-title">{name}</div>
-        <div className="deck-title">{name}</div>
 
         <div className="deck-state">
             <div className="card-new">{newCards} new</div>
@@ -32,7 +31,6 @@ const Deck = ({ deckState, handleEditButton, handleDeleteButton }) => {
                 } className="decks-page-edit-btn">
                 Open
             </button>
-            <button className="decks-page-delete-btn" onClick={() => handleDeleteButton('delete')}>Delete</button>
             <button className="decks-page-delete-btn" onClick={() => handleDeleteButton('delete')}>Delete</button>
         </div>
     </div>
