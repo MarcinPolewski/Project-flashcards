@@ -2,34 +2,57 @@ import React, { useEffect, useState } from "react";
 import Navbar from "../../Navbar/Navbar";
 import './Share.css';
 import DeckService from "../../../services/DeckService";
-import PdfGeneratorService from "../../../services/PdfGeneratorService";
+import ShareService from "../../../services/ShareService";
+import FolderService from "../../../services/FolderService";
+import filterRootFolder from "../../../utils/filterRootFolder";
 
 const Share = () => {
     const [selectedExportDeck, setSelectedExportDeck] = useState("");
-    const [selectedImportDeck, setSelectedImportDeck] = useState("");
+    const [selectedImportFolder, setSelectedImportFolder] = useState("");
     const [importFile, setImportFile] = useState(null);
     const [decksToChoose, setDecksToChoose] = useState([]);
+    const [foldersToChoose, setFoldersToChoose] = useState([]);
 
-    const handleExport = async () => {
+    const handlePdfExport = async () => {
         if (!selectedExportDeck) {
             alert("Please select a deck to export.");
             return;
         }
-        alert(`Exporting deck: ${selectedExportDeck}`);
+        alert(`Exporting deck: ${selectedExportDeck} as pdf`);
 
         try {
-            const response = await PdfGeneratorService.generatePdf();
+            const response = await ShareService.generatePdf(selectedExportDeck);
         } catch (error) {
             console.error("Error while generating PDF: ", error);
         }
     };
 
-    const handleImport = () => {
-        if (!selectedImportDeck || !importFile) {
-            alert("Please select a deck and a file to import.");
+    const handleTxtExport = async () => {
+        if (!selectedExportDeck) {
+            alert("Please select a deck to export.");
             return;
         }
-        alert(`Importing into deck: ${selectedImportDeck}`);
+        alert(`Exporting deck: ${selectedExportDeck} as txt`);
+
+        try {
+            const response = await ShareService.generateTxt(selectedExportDeck);
+        } catch (error) {
+            console.error("Error while generating PDF: ", error);
+        }
+    };
+
+    const handleImport = async () => {
+        if (!selectedImportFolder || !importFile) {
+            alert("Please select a folder and a file to import.");
+            return;
+        }
+        alert(`Importing into folder: ${selectedImportFolder}`);
+
+        try {
+            const response = await ShareService.loadDeck(importFile, selectedImportFolder);
+        } catch (error) {
+            console.error("Error while generating PDF: ", error);
+        }
     };
 
     const handleFileChange = (event) => {
@@ -41,12 +64,25 @@ const Share = () => {
             try {
                 const fetchedDecks = await DeckService.getAllDecks();
                 setDecksToChoose(fetchedDecks || []);
+                setSelectedExportDeck(fetchedDecks[0]?.id);
             } catch (error) {
                 console.log("Error while fetching decks: ", error);
             }
         };
 
+        const fetchFoldersToChoose = async () => {
+            try {
+                const fetchedDecks = await FolderService.getAllFolders();
+                const foldersWithoutRoot = filterRootFolder(fetchedDecks);
+                setFoldersToChoose(foldersWithoutRoot || []);
+                setSelectedImportFolder(foldersWithoutRoot[0]?.id);
+            } catch (error) {
+                console.log("Error while fetching folders: ", error);
+            }
+        };
+
         fetchDecksToChoose();
+        fetchFoldersToChoose();
     }, []);
 
     return (
@@ -65,7 +101,7 @@ const Share = () => {
                         <option value="">Select a deck to export</option>
                         {Array.isArray(decksToChoose) ? (
                             decksToChoose.map((deck, index) => (
-                                <option key={index} value={deck.name}>
+                                <option key={index} value={deck.id}>
                                     {deck.name}
                                 </option>
                             ))
@@ -73,8 +109,11 @@ const Share = () => {
                             <option value="">No decks available</option>
                         )}
                     </select>
-                    <button className="btn" onClick={handleExport}>
-                        Export
+                    <button className="btn" onClick={handlePdfExport}>
+                        Export as PDF
+                    </button>
+                    <button className="btn" onClick={handleTxtExport}>
+                        Export as TXT
                     </button>
                 </div>
             </div>
@@ -85,18 +124,18 @@ const Share = () => {
                 <div className="field-container">
                     <select
                         className="dropdown"
-                        value={selectedImportDeck}
-                        onChange={(e) => setSelectedImportDeck(e.target.value)}
+                        value={selectedImportFolder}
+                        onChange={(e) => setSelectedImportFolder(e.target.value)}
                     >
-                        <option value="">Select a deck to import into</option>
+                        <option value="">Select a folder to import into</option>
                         {Array.isArray(decksToChoose) ? (
-                            decksToChoose.map((deck, index) => (
-                                <option key={index} value={deck.name}>
-                                    {deck.name}
+                            foldersToChoose.map((folder, index) => (
+                                <option key={index} value={folder.id}>
+                                    {folder.name}
                                 </option>
                             ))
                         ) : (
-                            <option value="">No decks available</option>
+                            <option value="">No folder available</option>
                         )}
                     </select>
                     <input

@@ -37,7 +37,7 @@ const Study = () => {
     const requestReview = async () => {
       try {
         const response = await ReviewService.requestReview(deckId, 10);
-        setCards(response.flashcards || 0);
+        setCards(response.flashcards || []);
       } catch (error) {
         console.error("Error while requesting review: ", error);
       }
@@ -100,6 +100,10 @@ const Study = () => {
       console.error("Error while sending results: ", error);
     }
   };
+
+  if (!deckInfo) {
+    return <div>Loading deck...</div>;
+  }
 
   if (cards.length === 0) {
     return <div>Loading or no cards available...</div>;
@@ -173,7 +177,7 @@ const Study = () => {
           </div>
         </Overlay>
 
-        <p>You're studying deck: {deckInfo.name}</p>
+        <p>You're studying deck: {deckInfo.name || "N/A"}</p>
         <p>Flashcards remaining: {flashcardCount}</p>
         {currentCard && currentCard.front && currentCard.back ? (
           <>

@@ -23,15 +23,21 @@ export const UserProvider = ({ children }) => {
     const fetchUserData = async () => {
 
         try {
-            const user = await CustomerService.getSelf();
-            console.log("User fetched from getSelf in userContext: ", user);
+            const { customer, avatar } = await CustomerService.getSelf();
+            console.log("User fetched from getSelf in userContext: ", customer);
+
+            let newAvatar = testAvatar;
+            if (avatar) {
+                newAvatar = `data:image/jpeg;base64,${avatar}`;
+            }
+
             setUserData({
-                userId: user.id || null,
-                username: user.username || "",
-                email: user.email || "",
-                avatar: user.profilePicturePath || testAvatar,
-                bio: user.bio || "",
-                profileCreationDate: user.profileCreationDate || "",
+                userId: customer.id || null,
+                username: customer.username || "",
+                email: customer.email || "",
+                avatar: newAvatar,
+                bio: customer.bio || "",
+                profileCreationDate: customer.profileCreationDate || "",
             });
             console.log("User data fetched from userContext: ", userData);
         } catch (error) {

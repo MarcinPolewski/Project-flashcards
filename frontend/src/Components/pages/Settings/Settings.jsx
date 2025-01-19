@@ -33,7 +33,7 @@ const Settings = () => {
       });
 
     const [settingsState, setSettingsState] = useState({
-        theme: "Light",
+        theme: "light",
         language: settingsPreferences.languages[0].code,
         reminderTime: settingsPreferences.reminderTimes[0].value,
         timezone: settingsPreferences.timezones[0].code,
@@ -55,7 +55,7 @@ const Settings = () => {
             const preferences = await UserPreferencesService.getPreferences();
             setSettingsState({
                 ...settingsState,
-                theme: preferences.darkMode ? "Dark" : "Light",
+                theme: preferences.darkMode ? "dark" : "light",
                 language: preferences.language,
                 reminderTime: preferences.reminderTime,
                 timezone: preferences.timezone,
@@ -162,10 +162,6 @@ const Settings = () => {
         if (savedSettings) {
             const parsedSettings = JSON.parse(savedSettings);
             setSettingsState(parsedSettings);
-
-            if (parsedSettings.theme !== sysTheme) {
-                setTheme(parsedSettings.theme.toLowerCase());
-            }
         }
     }, []);
 
