@@ -157,7 +157,14 @@ const Home = () => {
                         </div>
                     ))
                 ) : (
-                    <div>No last decks recorded</div>
+                    <div className="home-user-notifcation">
+                        <div className="home-user-notifcation-header">
+                            <div className="home-user-notifcation-title">No last decks recorded</div>
+                        </div>
+                        <div className="home-user-notifcation-text">
+                        </div>
+
+                    </div>
                 )}
             </div>
 
@@ -205,7 +212,14 @@ const Home = () => {
                     />
             })
             :
-            <div>No folders available</div>
+            <div className="home-user-notifcation">
+                <div className="home-user-notifcation-header">
+                    <div className="home-user-notifcation-title">No root folder children recorded</div>
+                </div>
+                <div className="home-user-notifcation-text">
+                </div>
+
+            </div>
             }
             </div>
 
