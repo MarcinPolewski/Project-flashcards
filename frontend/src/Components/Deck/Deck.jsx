@@ -19,7 +19,7 @@ const Deck = ({ deckState, handleEditButton, handleDeleteButton }) => {
         </div>
 
         <div className="deck-actions">
-            <button onClick={() => navigate(`/study/${id}`)} className="decks-page-study-btn">
+            <button onClick={() => {navigate(`/study/${id}`); window.location.reload();}} className="decks-page-study-btn">
                 Study
             </button>
             <button onClick={() => handleEditButton('edit')} className="decks-page-edit-btn">

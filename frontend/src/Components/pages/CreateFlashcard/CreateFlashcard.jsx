@@ -78,7 +78,7 @@ const CreateFlashcard = () => {
 
         const fetchDecks = async () => {
             try {
-                const decksInFolder = await DeckService.getDecksInFolder(pickedFolder);
+                const decksInFolder = await FolderService.getDecksInFolder(pickedFolder);
                 setDecks(decksInFolder || []);
                 setPickedDeck(decksInFolder[0]?.id);
             }
