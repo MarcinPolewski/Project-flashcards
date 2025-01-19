@@ -94,29 +94,28 @@
     margin-bottom: 10px;
 }
 
+.user-profile-bio-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
 .user-profile-button {
-    background-color: #007bff;
-    color: var(--text-color);
+    background-color: var(--flashcard-edit-button);
+    color: white;
     border: none;
-    padding: 10px 15px;
-    border-radius: 5px;
+    padding: 8px 15px;
     font-size: 1rem;
+    font-weight: 500;
+    border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
     margin-top: 10px;
 }
 
 .user-profile-button:hover {
-    background-color: #0056b3;
-}
-
-.user-profile-button.cancel {
-    background-color: #dc3545;
-    margin-left: 10px;
-}
-
-.user-profile-button.cancel:hover {
-    background-color: #c82333;
+    background-color: var(--flashcard-edit-button);
 }
 
 .user-profile-friend-container {

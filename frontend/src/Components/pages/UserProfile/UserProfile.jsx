@@ -66,8 +66,10 @@ const UserProfile = () => {
                                             onChange={handleBioChange}
                                             placeholder="Write your bio..."
                                         />
-                                        <button className="user-profile-button" onClick={handleSaveBio}>Save</button>
-                                        <button className="user-profile-button" onClick={() => setIsEditing(false)}>Cancel</button>
+                                        <div className="user-profile-bio-buttons">
+                                            <button className="user-profile-button" onClick={handleSaveBio}>Save</button>
+                                            <button className="user-profile-button" onClick={() => setIsEditing(false)}>Cancel</button>
+                                        </div>
                                     </>
                                 ) : (
                                     <>
