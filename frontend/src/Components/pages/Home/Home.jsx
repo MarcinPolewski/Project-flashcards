@@ -88,17 +88,31 @@ const Home = () => {
     useEffect(() => {
         const fetchDecks = async () => {
             try {
-            const lastUsedDecks = await DeckService.getLastUsed();
-            const folderStructure = await FolderService.getFolderStructure();
-            const notificationsSet = await NotificationService.getAllNotifications();
-            setLatestDecks(lastUsedDecks);
-            setFolders(folderStructure);
-            setNotifications(notificationsSet);
+                const lastUsedDecks = await DeckService.getLastUsed();
+                console.log("Latest decks fetched: ", lastUsedDecks);
+                setLatestDecks(lastUsedDecks || []);
             } catch (error) {
                 console.error("Error fetching last used decks:", error);
                 setLatestDecks(null);
-                setNotifications(null);
+            }
+        }
+        const fetchFolders = async () => {
+            try {
+                const folderStructure = await FolderService.getRootFolder();
+                setFolders(folderStructure.children || []);
+            } catch (error) {
+                console.error("Error while fetching folders: ", error);
                 setFolders(null);
+            }
+        }
+
+        const fetchNotifications = async () => {
+            try {
+                const notificationsSet = await NotificationService.getAllNotifications();
+                setNotifications(notificationsSet || []);
+            } catch (error) {
+                console.error("Error while fetching notifications: ", error);
+                setNotifications(null);
             }
         }
         fetchDecks();

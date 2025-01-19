@@ -3,7 +3,11 @@ import { useParams } from "react-router-dom";
 
 import Navbar from "../../Navbar/Navbar";
 import "./Study.css";
-import testDecks from "../../../assets/mockData/testDecks";
+import ReviewService from "../../../services/ReviewService";
+import FlashcardService from "../../../services/FlashcardService";
+import Overlay from "../../Overlay/Overlay";
+import { useOverlay } from "../../../contexts/OverlayContext/OverlayContext";
+import DeckService from "../../../services/DeckService";
 
 const INTERVALS = {
   FORGOT: 0,
@@ -29,7 +33,6 @@ const Study = () => {
 
   const {isOverlayOpen, toggleOverlay, closeOverlay} = useOverlay();
 
-  // Fetch the deck dynamically
   useEffect(() => {
     const requestReview = async () => {
       try {
