@@ -12,7 +12,6 @@ import java.time.LocalTime;
 @AllArgsConstructor
 @Builder
 public class UserPreferencesUpdateRequest {
-    int userPreferencesId;
     boolean darkMode;
     int language;
     LocalTime reminderTime;
