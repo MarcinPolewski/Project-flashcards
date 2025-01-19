@@ -257,21 +257,6 @@ public class CustomerController {
         return ResponseEntity.ok(notifications);
     }
 
-    @GetMapping("/getRootFolder")
-    @JsonView(JsonViewConfig.Public.class)
-    public ResponseEntity<?> getRootFolder(Authentication authentication) {
-        String email = authentication.getName();
-        Optional<Customer> customerOpt= customerRepository.findByEmail(email);
-        if(customerOpt.isEmpty())
-        {
-            return ResponseEntity.badRequest().body("No user with this id found");
-        }
-        Customer customer = customerOpt.get();
-
-        Folder rootFolder = customer.getRootFolder();
-        return ResponseEntity.ok(rootFolder);
-    }
-
     @GetMapping("/getFriends")
     @JsonView(JsonViewConfig.Public.class)
     public ResponseEntity<?> getFriends(Authentication authentication) {

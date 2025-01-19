@@ -157,6 +157,69 @@ public class FolderController {
         return ResponseEntity.badRequest().body("You do not have permission to delete this folder");
     }
 
+    @GetMapping("/getRootFolder")
+    @JsonView(JsonViewConfig.Public.class)
+    public ResponseEntity<?> getRootFolder(Authentication authentication) {
+        String email = authentication.getName();
+        Optional<Customer> customerOpt= customerRepository.findByEmail(email);
+        if(customerOpt.isEmpty())
+        {
+            return ResponseEntity.badRequest().body("No user with this id found");
+        }
+        Customer customer = customerOpt.get();
+
+        Folder rootFolder = customer.getRootFolder();
+        return ResponseEntity.ok(rootFolder);
+    }
+
+    @GetMapping("/getAllDecks")
+    @JsonView(JsonViewConfig.Public.class)
+    public ResponseEntity<?> getAllDecks(
+            Authentication authentication,
+            @RequestParam int folderId
+    )
+    {
+        FolderAccessServiceResponse response;
+        try {
+            response = resourceAccessService.getFolderAccessLevel(authentication, folderId);
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+        AccessLevel al = response.getAccessLevel();
+        Folder folder = response.getFolder();
+
+        if(al.equals(AccessLevel.EDITOR) || al.equals(AccessLevel.OWNER))
+        {
+            List<Deck> decks = folder.getDecks();
+            return ResponseEntity.ok(decks);
+
+        }
+        return ResponseEntity.badRequest().body("You do not have permission to view this folder");
+    }
+
+    @GetMapping("/getAllDecksInfo")
+    public ResponseEntity<?> getAllDecksInfo(
+            Authentication authentication,
+            @RequestParam int folderId
+    )
+    {
+        FolderAccessServiceResponse response;
+        try {
+            response = resourceAccessService.getFolderAccessLevel(authentication, folderId);
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+        AccessLevel al = response.getAccessLevel();
+        Folder folder = response.getFolder();
+
+        if(al.equals(AccessLevel.EDITOR) || al.equals(AccessLevel.OWNER))
+        {
+            List<Deck> decks = folder.getDecks();
+            return ResponseEntity.ok(deckMapper.toDTO(response.getCustomer(), decks));
+        }
+        return ResponseEntity.badRequest().body("You do not have permission to view this folder");
+    }
+
     @GetMapping("/getDecks")
     @JsonView(JsonViewConfig.Public.class)
     public ResponseEntity<?> getDecks(
