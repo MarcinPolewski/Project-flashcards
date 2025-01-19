@@ -36,7 +36,7 @@
     width: 100%;
 }
 
-.folder-page-btn {
+.folder-btn {
     padding: 10px 20px;
     font-size: 1rem;
     font-weight: 500;
@@ -46,31 +46,24 @@
     transition: background-color 0.3s ease;
 }
 
-.folder-page-study-btn {
-    background-color: var(--primary-button-bg);
-    color: var(--primary-button-text);
+.folder-study-btn, .folder-edit-btn {
+    background-color: var(--flashcard-edit-button);
+    color: white;
 }
 
-.folder-page-study-btn:hover {
-    background-color: var(--primary-button-bg-hover);
+.folder-study-btn:hover,
+.folder-edit-btn:hover {
+    background-color: var(--flashcard-edit-button-hover);
 }
 
-.folder-page-edit-btn {
-    background-color: var(--edit-button-bg);
-    color: var(--edit-button-text);
+
+.folder-delete-btn {
+    background-color: var(--delete-button);
+    color: white;
 }
 
-.folder-page-edit-btn:hover {
-    background-color: var(--edit-button-bg-hover);
-}
-
-.folder-page-delete-btn {
-    background-color: var(--delete-button-bg);
-    color: var(--delete-button-text);
-}
-
-.folder-page-delete-btn:hover {
-    background-color: var(--delete-button-bg-hover);
+.folder-delete-btn:hover {
+    background-color: var(--delete-button-hover);
 }
 
 @media (max-width: 480px) {
@@ -88,7 +81,7 @@
         gap: 6px; /* Decrease gap for very small screens */
     }
 
-    .folder-page-btn {
+    .folder-btn {
         width: 100%;
         padding: 10px 0; /* Adjust padding for touch interaction */
         font-size: 1rem; /* Adjust font size for readability */

@@ -31,7 +31,7 @@ const ForgotPassword = () => {
                 {error && <p style={{ color: "red" }}>{error}</p>}
                 <form onSubmit={handleSubmit}>
                 <div>
-                    <label htmlFor="email">Email address</label>
+                    <label htmlFor="email" className="form-label">Email address</label>
                     <input
                         type="email"
                         id="email"
