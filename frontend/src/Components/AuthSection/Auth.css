@@ -1,30 +1,40 @@
 .auth-container {
     max-width: 400px;
-    margin: 50px auto;
+    margin: 0 auto; /* Adjust margin to avoid overriding vertical centering */
     padding: 30px;
-}
-
-.auth-container-register {
-    height: 100%;
+    height: 100vh;
+    display: flex; /* Enable flexbox */
+    flex-direction: column; /* Stack children vertically */
+    justify-content: center; /* Center content vertically */
+    align-items: center; /* Center content horizontally */
+    box-sizing: border-box; /* Ensure padding is included in dimensions */
 }
 
 .auth-container h2 {
     text-align: left;
     font-weight: bold;
     color: var(--create-deck-text);
-    margin-bottom: 30px;
+    align-self: flex-start; /* Align heading to the left if needed */
+}
+
+.auth-container-register {
+    height: 100%; /* Maintain full height for child container */
 }
 
 .auth-email-signin {
     padding-bottom: 50px;
     border-bottom: 1px solid var(--section-border);
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-left: 5%;
 }
 
 .auth-email-signin input[type="text"],
 .auth-email-signin input[type="email"],
 .auth-email-signin input[type="password"] {
     width: 100%;
-    padding: 12px 0;
+    padding: 12px;
     margin-bottom: 20px;
     border: 1px solid var(--section-border);
     border-radius: 8px;
@@ -40,10 +50,6 @@
     outline: none;
 }
 
-.auth-remember input[type="checkbox"] {
-    margin-right: 10px;
-}
-
 .auth-sign-in-button {
     margin-top: 30px;
 }
@@ -54,20 +60,30 @@
     justify-content: space-between;
 }
 
+.auth-remember input[type="checkbox"] {
+    margin-right: 10px;
+}
+
 .auth-remember label {
     font-size: 14px;
     color: var(--auth-remember-label-text);
 }
 
 .auth-social-signin button {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
+    width: calc(100% - 20px); /* Adjust width to account for padding (10px left + 10px right) */
+    padding: 10px; /* Maintain uniform padding */
+    margin-bottom: 10px; /* Space between buttons */
     background-color: var(--auth-signin-button);
     color: var(--auth-signin-button-text);
-    border: none;
+    border: none; /* Remove border for cleaner design */
     cursor: pointer;
     font-size: 16px;
+    box-sizing: border-box; /* Include padding and border in the element's width */
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 8px;
 }
 
 .auth-social-signin button:nth-child(1) {
@@ -82,29 +98,22 @@
     background-color: var(--auth-social-button-color-3);
 }
 
-.auth-email-signin button[type="submit"] {
+.auth-email-signin button {
     width: 100%;
     padding: 12px;
-    background-color: var(--auth-signin-button-submit);
-    border: none;
+    margin-bottom: 20px;
+    border: 1px solid var(--section-border);
     border-radius: 8px;
+    background-color: var(--auth-signin-button-submit);
     color: var(--auth-signin-button-text);
     font-size: 16px;
     cursor: pointer;
     font-weight: bold;
+    margin: 1rem 0;
 }
 
-.auth-email-signin button[type="submit"]:hover {
+.auth-email-signin button:hover {
     background-color: var(--auth-signin-button-submit-hover);
-}
-
-.auth-signup a {
-    color: var(--auth-signin-button-submit);
-    text-decoration: none;
-}
-
-.auth-signup a:hover {
-    text-decoration: underline;
 }
 
 .auth-signup {
@@ -118,14 +127,30 @@
 }
 
 .auth-signup a {
+    color: var(--auth-signin-button-submit);
+    text-decoration: none;
     margin-left: 5px;
+}
+
+.auth-signup a:hover {
+    text-decoration: underline;
+}
+
+a, a:visited {
+    color: var(--auth-signin-button-submit);
+    text-decoration: none;
+}
+
+a:hover, a:active {
+    color: var(--auth-signin-button-submit-hover);
+    text-decoration: underline;
 }
 
 @media (max-width: 767px) {
     .auth-container {
         max-width: 100%;
         width: 90%;
-        margin: 0;
+        margin: 0 auto; /* Maintain centering */
         padding: 20px;
     }
 
