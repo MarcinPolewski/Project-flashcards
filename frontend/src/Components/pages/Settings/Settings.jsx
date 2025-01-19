@@ -33,10 +33,10 @@ const Settings = () => {
       });
 
     const [settingsState, setSettingsState] = useState({
-        language: settingsPreferences.languages[0].code,
+        language: settingsPreferences.languages[0].id,
         reminderTime: settingsPreferences.reminderTimes[0].value,
-        timezone: settingsPreferences.timezones[0].code,
-        studyReminders: false,
+        timezone: settingsPreferences.timezones[0].id,
+        studyReminders: 0,
     });
 
     const [formType, setFormType] = useState(null);
@@ -49,28 +49,51 @@ const Settings = () => {
     const { username, email, avatar } = userData;
 
     useEffect(() => {
+        const savedTheme = localStorage.getItem("theme");
+        const initialTheme = savedTheme ? savedTheme : "light";
+        setTheme(initialTheme);
+
+        const themeListener = window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (e) => {
+            if (!savedTheme) {
+                setTheme(e.matches ? "dark" : "light");
+            }
+        });
+
+        return () => {
+            window.matchMedia("(prefers-color-scheme: dark)").removeEventListener("change", themeListener);
+        };
+    }, [setTheme]);
+
+    useEffect(() => {
         const fetchPreferencesData = async () => {
             try {
-            const preferences = await UserPreferencesService.getPreferences();
-            setSettingsState({
-                ...settingsState,
-                language: preferences.language,
-                reminderTime: preferences.reminderTime,
-                timezone: preferences.timezone,
-                studyReminders: preferences.studyReminders,
-            });
+                console.log("Fetching user preferences...");
+                const preferences = await UserPreferencesService.getPreferences();
+                console.log("Preferences: ", preferences);
 
-            //const preferredTheme = preferences.darkMode ? "dark" : "light";
-            const preferredTheme = localStorage.getItem("theme") || "dark";
-            setTheme(preferredTheme);
+                const formattedReminderTime = preferences.reminderTime.substring(0, 5);
+
+                setSettingsState({
+                    ...settingsState,
+                    language: preferences.language,
+                    reminderTime: formattedReminderTime,
+                    timezone: preferences.timezone,
+                    studyReminders: preferences.studyReminders,
+                });
 
             } catch (error) {
-            console.error("Error fetching user preferences:", error);
+                console.error("Error fetching user preferences:", error);
             }
         };
 
         fetchPreferencesData();
     }, []);
+
+    const handleThemeChange = (e) => {
+        const newTheme = e.target.value;
+        setTheme(newTheme);
+        localStorage.setItem("theme", newTheme);
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -103,12 +126,6 @@ const Settings = () => {
         }
       };
 
-      const validatePassword = (password) => {
-        const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
-        return passwordPattern.test(password);
-      };
-
-
     const handleInputChange = (field) => (event) => {
         setFormData(prevState => ({
           ...prevState,
@@ -121,11 +138,20 @@ const Settings = () => {
         toggleOverlay();
     };
 
-    const handleSettingsChange = (key, value) => {
+    const handleSettingsChange = async (key, value) => {
         setSettingsState((prevState) => ({
           ...prevState,
           [key]: value,
         }));
+
+        try {
+            console.log("Updating preferences: ", key, value);
+            await UserPreferencesService.updatePreferences(settingsState);
+            console.log("Preferences updated successfully as: ", settingsState);
+        } catch (error) {
+            console.error("Error updating user preferences:", error);
+            alert("Failed to update preferences.");
+         }
     };
 
     const handlePasswordChange = async () => {
@@ -165,10 +191,6 @@ const Settings = () => {
             setSettingsState(parsedSettings);
         }
     }, []);
-
-    useEffect(() => {
-        localStorage.setItem("userSettings", JSON.stringify(settingsState));
-    }, [settingsState]);
 
     const renderFormContent = () => {
         switch (formType) {
@@ -245,7 +267,7 @@ const Settings = () => {
                 <select
                     className="dropdown"
                     value={sysTheme}
-                    onChange={(e) => setTheme(e.target.value)}
+                    onChange={(e) => {handleThemeChange(e)}}
                 >
                     <option value="dark">Dark</option>
                     <option value="light">Light</option>
@@ -260,7 +282,7 @@ const Settings = () => {
                     onChange={(e) => handleSettingsChange("language", e.target.value)}
                 >
                     {settingsPreferences.languages.map((lang) => (
-                    <option key={lang.code} value={lang.code}>
+                    <option key={lang.id} value={lang.id}>
                         {lang.label}
                     </option>
                     ))}
@@ -302,7 +324,7 @@ const Settings = () => {
                     onChange={(e) => handleSettingsChange("timezone", e.target.value)}
                 >
                     {settingsPreferences.timezones.map((tz) => (
-                    <option key={tz.code} value={tz.code}>
+                    <option key={tz.code} value={tz.id}>
                         {tz.label}
                     </option>
                     ))}
