@@ -34,8 +34,8 @@ const CreateFlashcard = () => {
 
         try {
             console.log("Creating flashcard...", front, back);
-            console.log("Deck ID:", deckId);
-            await FlashcardService.createFlashcard(deckId, front, back);
+            console.log("Deck ID:", pickedDeck);
+            await FlashcardService.createFlashcard(pickedDeck, front, back);
             setBack("");
             setFront("");
         } catch (error) {
@@ -49,6 +49,7 @@ const CreateFlashcard = () => {
         setDeckId(null);
         try {
             const newDecks = await FolderService.getDecksInFolder(folderId);
+            console.log("New decks:", newDecks);
             setDecks(newDecks);
             setPickedDeck(newDecks[0]?.id);
         } catch (error) {
@@ -107,13 +108,13 @@ const CreateFlashcard = () => {
                                 id="deck"
                                 className="dropdown"
                                 onChange={(e) => handleDeckChange(e.target.value)}
-                                value={pickedDeck || ''}
+                                value={pickedDeck}
                                 disabled={!pickedFolder}
                             >
                                 <option value="" disabled>Select a deck</option>
                                 {Array.isArray(decks) ? (
                                         decks.map((deck) => (
-                                            <option key={deck.id} value={deck.name}>
+                                            <option key={deck.id} value={deck.id}>
                                                 {deck.name}
                                             </option>
                                         ))

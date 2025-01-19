@@ -35,7 +35,7 @@ const Home = () => {
         console.log("Edit clicked for folder:", id, title);
         setSelectedFolderId(id);
         setSelectedFolderTitle(title);
-        setFormType('edit');
+        setFormType('edit-folder');
         toggleOverlay();
     };
 
@@ -43,7 +43,7 @@ const Home = () => {
         console.log("Delete clicked for folder:", id, title);
         setSelectedFolderId(id);
         setSelectedFolderTitle(title);
-        setFormType('delete');
+        setFormType('delete-folder');
         toggleOverlay();
     };
 
@@ -127,10 +127,10 @@ const Home = () => {
         <div className="home-latest-reviews">
 
             <Overlay isOpen={isOverlayOpen} closeOverlay={closeOverlay}>
-                {formType === 'edit' &&
+                {formType === 'edit-folder' &&
                     <EditFolder id={selectedFolderId} title={selectedFolderTitle} closeOverlay={closeOverlay} onFolderEdit={handleFolderEdit}/>
                 }
-                {formType === 'delete' &&
+                {formType === 'delete-folder' &&
                     <DeleteFolder id={selectedFolderId} title={selectedFolderTitle} closeOverlay={closeOverlay} onFolderDelete={handleFolderDelete}/>
                 }
             </Overlay>
