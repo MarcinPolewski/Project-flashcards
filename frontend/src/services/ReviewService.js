@@ -4,14 +4,16 @@ import mockData from "../mocks/mockData";
 const isDevelopment = process.env.NODE_ENV === 'development';
 
 const ReviewService = {
-    requestReview: async (deckId, packageSize) => {
+    requestReview: async (deckId, batchSize = 10) => {
         if (isDevelopment) return mockData.reviewRequest;
 
-        const response = await api.post('/folder/requestReview', { deckId, packageSize });
+        const response = await api.get('/review/reviewDeck', {
+            params: {deckId, batchSize}
+        });
         return response.data;
     },
     sendBackResults: async (flashcardId, userAnswer) => {
-        const response = await api.post('/folder/sendBackResults', { flashcardId, userAnswer });
+        const response = await api.post('/review/flashcardReviewed', { flashcardId, userAnswer });
         return response.data;
     }
 };

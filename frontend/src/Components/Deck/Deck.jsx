@@ -3,7 +3,7 @@ import React from "react";
 import './Deck.css';
 import { useNavigate } from "react-router-dom";
 
-const Deck = ({ deckState, handleDeleteButton }) => {
+const Deck = ({ deckState, handleEditButton, handleDeleteButton }) => {
 
     const {id, name, newCards, toReviewCards, learnedCards} = deckState;
 
@@ -20,11 +20,17 @@ const Deck = ({ deckState, handleDeleteButton }) => {
         </div>
 
         <div className="deck-actions">
-            <button onClick={() => navigate(`/study/${id}`)} className="decks-page-study-btn">
+            <button onClick={() => {navigate(`/study/${id}`); window.location.reload();}} className="decks-page-study-btn">
                 Study
             </button>
-            <button onClick={() => navigate(`/deck/${id}`)} className="decks-page-edit-btn">
+            <button onClick={() => handleEditButton('edit')} className="decks-page-edit-btn">
                 Edit
+            </button>
+            <button onClick={() => {
+                navigate(`/deck/${id}`);
+                window.location.reload(); }
+                } className="decks-page-edit-btn">
+                Open
             </button>
             <button className="decks-page-delete-btn" onClick={() => handleDeleteButton('delete')}>Delete</button>
             <button className="decks-page-delete-btn" onClick={() => handleDeleteButton('delete')}>Delete</button>

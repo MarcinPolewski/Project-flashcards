@@ -4,7 +4,6 @@ import Navbar from "../../Navbar/Navbar";
 import Overlay from "../../Overlay/Overlay";
 
 import UserPreferencesService from "../../../services/UserPreferencesService";
-import testAvatar from "../../../assets/test/test-avatar.png";
 
 import './Settings.css';
 import { ThemeContext } from "../../../contexts/ThemeContext/ThemeContext";
@@ -12,6 +11,7 @@ import { useOverlay } from "../../../contexts/OverlayContext/OverlayContext";
 import { settingsPreferences } from "../../../utils/settingsPrefferences";
 import CustomerService from "../../../services/CustomerService";
 import { useUser } from "../../../contexts/UserContext/UserContext";
+import AuthService from "../../../services/AuthService";
 
 const SettingsSection = ({ title, children }) => (
     <div>
@@ -33,7 +33,7 @@ const Settings = () => {
       });
 
     const [settingsState, setSettingsState] = useState({
-        theme: "Light",
+        theme: "light",
         language: settingsPreferences.languages[0].code,
         reminderTime: settingsPreferences.reminderTimes[0].value,
         timezone: settingsPreferences.timezones[0].code,
@@ -55,14 +55,15 @@ const Settings = () => {
             const preferences = await UserPreferencesService.getPreferences();
             setSettingsState({
                 ...settingsState,
-                theme: preferences.darkMode ? "Dark" : "Light",
+                theme: preferences.darkMode ? "dark" : "light",
                 language: preferences.language,
                 reminderTime: preferences.reminderTime,
                 timezone: preferences.timezone,
                 studyReminders: preferences.studyReminders,
             });
-            if (preferences.darkMode !== sysTheme) {
-                setTheme(preferences.darkMode ? "dark" : "light");
+            const preferredTheme = preferences.darkMode ? "dark" : "light";
+            if (preferredTheme !== sysTheme) {
+                setTheme(preferredTheme);
             }
 
             } catch (error) {
@@ -76,15 +77,29 @@ const Settings = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-          const { theme, language, studyReminders, reminderTime, timezone } = settingsState;
-          const darkMode = theme === "Dark";
+            if (formType === 'delete') {
+                if (formData.password !== formData.confirmPassword) {
+                    alert("Passwords do not match!");
+                    return;
+                }
 
-          await UserPreferencesService.updatePreferences(darkMode, language, reminderTime, timezone, studyReminders);
-          alert("Preferences updated successfully!");
-          closeOverlay();
+                await CustomerService.deleteCustomer(formData.password);
+                alert("Your account has been deleted successfully.");
+
+                AuthService.logout();
+            } else {
+                const { theme, language, studyReminders, reminderTime, timezone } = settingsState;
+                const darkMode = theme === "Dark";
+
+                await UserPreferencesService.updatePreferences(darkMode, language, reminderTime, timezone, studyReminders);
+                alert("Preferences updated successfully!");
+        }
         } catch (error) {
           console.error("Error updating user preferences:", error);
           alert("Failed to update preferences.");
+        } finally {
+            closeOverlay();
+            setFormType("");
         }
       };
 
@@ -113,18 +128,33 @@ const Settings = () => {
         }));
 
         if (key === "theme") {
-            setTheme(value);
+            setTheme(value.toLowerCase());
           }
     };
+
+    const handleUsernameChange = async () => { }
+
+    const handlePasswordChange = async () => { }
+
+    const handleEmailChange = async () => { }
 
     const handleAvatarChange = (event) => {
         const file = event.target.files[0];
         if (file) {
           const reader = new FileReader();
-          reader.onloadend = () => {
+          reader.onloadend = async () => {
             setNewAvatar(reader.result);
-          };
-          reader.readAsDataURL(file);
+            try {
+                const formData = new FormData();
+
+                await CustomerService.updateAvatar(file);
+                alert("Avatar updated successfully!");
+            } catch (error) {
+                console.error("Error while updating avatar: ", error);
+                alert("Failed to update avatar.");
+            }
+            };
+            reader.readAsDataURL(file);
         }
       };
 
@@ -133,10 +163,6 @@ const Settings = () => {
         if (savedSettings) {
             const parsedSettings = JSON.parse(savedSettings);
             setSettingsState(parsedSettings);
-
-            if (parsedSettings.theme !== sysTheme) {
-                setTheme(parsedSettings.theme);
-            }
         }
     }, []);
 
@@ -241,8 +267,8 @@ const Settings = () => {
                     value={sysTheme}
                     onChange={(e) => setTheme(e.target.value)}
                 >
-                    <option value="light">Light</option>
                     <option value="dark">Dark</option>
+                    <option value="light">Light</option>
                 </select>
                 </div>
                 <hr />

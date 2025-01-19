@@ -6,6 +6,8 @@ import './CreateFlashcard.css';
 
 import FlashcardService from '../../../services/FlashcardService';
 import FolderService from "../../../services/FolderService";
+import filterRootFolder from "../../../utils/filterRootFolder";
+import DeckService from "../../../services/DeckService";
 
 const CreateFlashcard = () => {
 
@@ -32,7 +34,11 @@ const CreateFlashcard = () => {
         }
 
         try {
-            await FlashcardService.createFlashcard(deckId, front, back);
+            console.log("Creating flashcard...", front, back);
+            console.log("Deck ID:", pickedDeck);
+            await FlashcardService.createFlashcard(pickedDeck, front, back);
+            setBack("");
+            setFront("");
         } catch (error) {
             console.error("Error creating flashcard:", error);
         }
@@ -42,8 +48,14 @@ const CreateFlashcard = () => {
         setPickedFolder(folderId);
         setPickedDeck(null);
         setDeckId(null);
-        const newDecks = await FolderService.getDecksInFolder(folderId);
-        setDecks(newDecks);
+        try {
+            const newDecks = await FolderService.getDecksInFolder(folderId);
+            console.log("New decks:", newDecks);
+            setDecks(newDecks);
+            setPickedDeck(newDecks[0]?.id);
+        } catch (error) {
+            console.error("Error fetching decks:", error);
+        }
     }
 
     const handleDeckChange = (deckId) => {
@@ -54,15 +66,29 @@ const CreateFlashcard = () => {
     useEffect(() => {
         const fetchFolders = async () => {
             try {
-                const folderStructure = await FolderService.getFolderStructure();
-                setFolders(folderStructure || []);
+                const folderStructure = await FolderService.getAllFolders();
+                const foldersWithoutRoot = filterRootFolder(folderStructure);
+                setFolders(foldersWithoutRoot || []);
+                setPickedFolder(foldersWithoutRoot[0]?.id);
             }
             catch (error) {
                 console.error("Error fetching folders:", error);
             };
         };
 
+        const fetchDecks = async () => {
+            try {
+                const decksInFolder = await FolderService.getDecksInFolder(pickedFolder);
+                setDecks(decksInFolder || []);
+                setPickedDeck(decksInFolder[0]?.id);
+            }
+            catch (error) {
+                console.error("Error fetching decks:", error);
+            };
+        }
+
         fetchFolders();
+        fetchDecks();
     }, []);
 
     return (
@@ -95,13 +121,13 @@ const CreateFlashcard = () => {
                                 id="deck"
                                 className="dropdown"
                                 onChange={(e) => handleDeckChange(e.target.value)}
-                                value={pickedDeck || ''}
+                                value={pickedDeck}
                                 disabled={!pickedFolder}
                             >
                                 <option value="" disabled>Select a deck</option>
                                 {Array.isArray(decks) ? (
                                         decks.map((deck) => (
-                                            <option key={deck.id} value={deck.name}>
+                                            <option key={deck.id} value={deck.id}>
                                                 {deck.name}
                                             </option>
                                         ))

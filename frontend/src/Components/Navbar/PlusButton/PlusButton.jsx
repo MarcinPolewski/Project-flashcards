@@ -3,25 +3,31 @@ import './PlusButton.css';
 import { useOverlay } from "../../../contexts/OverlayContext/OverlayContext";
 import { useNavigate } from "react-router-dom";
 import Overlay from "../../Overlay/Overlay";
-import testFolders from "../../../assets/mockData/testFolders";
 import FolderService from "../../../services/FolderService";
 import DeckService from "../../../services/DeckService";
+
+import filterRootFolder from "../../../utils/filterRootFolder";
 
 const PlusButton = () => {
     const navigate = useNavigate();
     const [isPopupOpen, setPopupOpen] = useState(false);
     const [folders, setFolders] = useState([]);
-    const { isOverlayOpen, toggleOverlay, closeOverlay } = useOverlay();
+    const { isOverlayOpen, toggleOverlay, closeOverlay, isPlusButtonPopupOpen, togglePlusButtonPopup, closePlusButtonPopup } = useOverlay();
     const [newFolderName, setNewFolderName] = useState("");
     const [deckName, setDeckName] = useState("");
-    const [selectedFolder, setSelectedFolder] = useState(null);
-    const [formType, setFormType] = useState(null);
+    const [selectedFolderIdForFolders, setSelectedFolderIdForFolders] = useState(null);
+    const [selectedFolderIdForDecks, setSelectedFolderIdForDecks] = useState(null);
+    const [formType, setFormType] = useState("");
 
     useEffect(() => {
         const fetchFolders = async () => {
             try {
                 const response = await FolderService.getAllFolders();
                 setFolders(response || []);
+                if (response && response.length > 0) {
+                    setSelectedFolderIdForFolders(response[0]?.id);
+                    setSelectedFolderIdForDecks(response[1]?.id);
+                }
             } catch (error) {
                 console.error("Error fetching folders:", error);
             }
@@ -39,34 +45,40 @@ const PlusButton = () => {
         }
     };
 
-    const handleCreateFolder = async (folderName, parentFolderId) => {
+    const handleCreateFolder = async () => {
         try {
-            const result = await FolderService.createFolder(folderName, parentFolderId);
+            const selectedId = formType === 'folder' ? selectedFolderIdForFolders : selectedFolderIdForDecks;
+            console.log("Creating folder...", selectedId, newFolderName);
+            const response = await FolderService.createFolder(newFolderName, selectedId);
+            console.log("Folder created:", response);
             setNewFolderName("");
+            window.location.reload();
         } catch (error) {
             console.error("Error creating folder:", error);
         } finally {
-            closeOverlay();
+            setFormType("");
+            closePlusButtonPopup();
         }
     };
 
-    const filterRootFolder = (folders) => {
-        return folders.filter((folder) => folder.id === 1);
-    }
-
-    const handleCreateDeck = (folderId, deckName) => {
-    try {
-        const result = DeckService.createDeck(folderId, deckName);
-    } catch (error) {
-        console.error("Error creating folder:", error);
-    } finally {
-        closeOverlay();
-    }
+    const handleCreateDeck = async () => {
+        try {
+            const selectedId = formType === 'folder' ? selectedFolderIdForFolders : selectedFolderIdForDecks;
+            console.log("Creating deck...", selectedId, deckName);
+            const response = await DeckService.createDeck(selectedId, deckName);
+            console.log("Deck created:", response);
+            window.location.reload();
+        } catch (error) {
+            console.error("Error creating folder:", error);
+        } finally {
+            setFormType("");
+            closePlusButtonPopup();
+        }
     };
 
     const openCreateForm = (type) => {
         setFormType(type);
-        toggleOverlay();
+        togglePlusButtonPopup();
     };
 
     useEffect(() => {
@@ -92,10 +104,26 @@ const PlusButton = () => {
                 </div>
             )}
 
-            <Overlay isOpen={isOverlayOpen} closeOverlay={closeOverlay}>
+            <Overlay isOpen={isPlusButtonPopupOpen} closeOverlay={closePlusButtonPopup}>
                 {formType === 'deck' &&
                 <div className="plus-button-create-deck">
                     <h3>Create Deck</h3>
+
+                    <select
+                        value={selectedFolderIdForDecks}
+                        onChange={(e) => {setSelectedFolderIdForDecks(e.target.value); console.log("Selected folder: ", e.target.value)}}
+                        required
+                    >
+                        <option value="" disabled>Select folder</option>
+                        {Array.isArray(folders) && folders.length > 0 ? (filterRootFolder(folders).map((folder) => (
+                            <option key={folder.id} value={folder.id}>
+                                {folder.name}
+                            </option>
+                        ))
+                        ) : (
+                            <option value={null}>No folders available</option>
+                        )}
+                    </select>
 
                     <input
                         type="text"
@@ -105,23 +133,6 @@ const PlusButton = () => {
                         required
                     />
 
-                    <select
-                        value={selectedFolder}
-                        onChange={(e) => setSelectedFolder(e.target.value)}
-                        required
-                    >
-                        <option value="" disabled>Select parent folder</option>
-                        {Array.isArray(folders) ? (
-                            filterRootFolder(folders).map((folder) => (
-                                <option key={folder.id} value={folder.id}>
-                                    {folder.name}
-                                </option>
-                            ))
-                        ) : (
-                            <option value="">No folders available</option>
-                        )}
-                    </select>
-
                     <button type="button" onClick={handleCreateDeck}>Create</button>
                     <button type="button" onClick={handleCreateDeck}>Create</button>
                 </div> }
@@ -130,12 +141,13 @@ const PlusButton = () => {
                     <h3>Create Folder</h3>
                     <p>Select parent folder:</p>
                     <select
-                        value={selectedFolder}
-                        onChange={(e) => setSelectedFolder(e.target.value)}
+                        value={selectedFolderIdForFolders}
+                        onChange={(e) => {setSelectedFolderIdForFolders(e.target.value); console.log("Selected folder: ", e.target.value)}}
                         required
                     >
-                        {Array.isArray(folders) ? (folders.map((folder, index) => (
-                            <option key={index} value={folder.name}>
+                        <option value="" disabled>Select folder</option>
+                        {Array.isArray(folders) ? (folders.map((folder) => (
+                            <option key={folder.id} value={folder.id}>
                                 {folder.name}
                             </option>
                         ))

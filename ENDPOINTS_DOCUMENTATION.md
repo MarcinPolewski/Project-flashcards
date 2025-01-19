@@ -1434,8 +1434,7 @@ Returns the flashcard progress data.
   {
   "id": 1,
   "flashcardId": 1,
-  "nextReview": "2025-01-04 14:23:45",
-  "valid": true
+  "nextReview": "2025-01-04 14:23:45"
 }
 ```
 - 400 Bad Request:
@@ -1621,7 +1620,6 @@ Retrieves all decks in a specified folder.
   "You do not have permission to view this folder"
   ```
 ---
-
 ### 6. **Get Folder Children**
 Retrieves all child folders of a specified folder.
 
@@ -1685,6 +1683,7 @@ Retrieves access levels for a specified folder.
     }
   ]
   ```
+
   **400 Bad Request** - Folder or user not found, or insufficient permissions
   "Folder not found"
   ```json
@@ -1697,36 +1696,67 @@ Retrieves access levels for a specified folder.
   "You do not have permission to view this folder"
   ```
 ---
-### `GET /getFolder`
+### Get Decks Information
 
-This endpoint retrieves a folder based on the provided `folderId`, provided the user has the necessary access permissions.
+Retrieves a paginated list of decks for a specific folder, based on the user's access level.
 
-**Parameters:**
-- `Authentication authentication`: Contains authentication details for the current user.
-- `int folderId`: The ID of the folder to retrieve.
+- **URL:** `/getDecksInfo`
+- **Method:** `GET`
+- **Parameters:**
+  - `Authentication authentication` (automatic) - The authentication object representing the currently logged-in user.
+  - `page` (int, optional, default: `0`) - The page number for pagination.
+  - `size` (int, optional, default: `5`) - The size of each page.
+  - `sortBy` (String, optional, default: `id`) - The field to sort the decks by.
+  - `ascending` (boolean, optional, default: `true`) - Determines if sorting is in ascending (`true`) or descending (`false`) order.
+  - `folderId` (int, required) - The ID of the folder to fetch decks from.
 
-**Response:**
-- 200 OK: Returns the folder data if the user has permission to view it.
-  ```json
-  {
-    "id": 1,
-    "name": "Documents",
-    "owner": "user@example.com",
-    "createdDate": "2025-01-01T00:00:00",
-    "updatedDate": "2025-01-01T12:00:00"
-  }
-  ```
-  **400 Bad Request** - Folder or user not found, or insufficient permissions
-  "Folder not found"
-  ```json
-  "Folder not found"
-  ```
-  ```json
-  "User not found"
-  ```
-  ```json
-  "You do not have permission to view this folder"
-  ```
+- **Response:**
+  - **200 OK:**
+    Returns a paginated list of decks in the specified folder.
+    ```json
+     [
+       {
+         "id": 1,
+         "name": "deck1",
+         "progress": 0.0,
+         "newCards": 3,
+         "toReview": 0,
+         "totalCards": 3,
+         "learnedCards": 0
+       },
+       {
+         "id": 2,
+         "name": "deck2",
+         "progress": 0.0,
+         "newCards": 3,
+         "toReview": 0,
+         "totalCards": 3,
+         "learnedCards": 0
+       }
+     ]
+    ```
+  - **400 Bad Request:**
+    - If the folder ID does not exist:
+      ```json
+      "Folder with the given ID does not exist."
+      ```
+    - If the user does not have permission to view the folder:
+      ```json
+      "You do not have permission to view this folder."
+      ```
+    - If the `sortBy` parameter is invalid:
+      ```json
+      "Invalid sort field, cannot sort by: <sortBy>"
+      ```
+
+- **Access Control:**  
+  Only users with `EDITOR` or `OWNER` access levels for the folder can view the decks.
+
+- **Error Handling:**
+  - Throws `ResourceNotFoundException` if the folder ID is invalid.
+  - Returns an appropriate error message for invalid sort parameters or insufficient permissions.
+---
+
   
 ## Notes
 - Access level checks ensure that only authorized users can perform actions on folders.

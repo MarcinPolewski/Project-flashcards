@@ -17,6 +17,11 @@ const Navbar = () => {
 
     const { userData, isLoading } = useUser();
 
+    const navig = (path) => {
+        navigate(path);
+        window.location.reload();
+    }
+
     if (isLoading) return <div>Loading...</div>
 
     return <div className="navbar">
@@ -25,18 +30,18 @@ const Navbar = () => {
         <Logo/>
 
         <div className="nav-buttons">
-            <div className="navbar-item" onClick={() => navigate("/")}>Browse</div>
+            <div className="navbar-item" onClick={() => navig("/")}>Browse</div>
 
-            <div className="navbar-item" onClick={() => navigate("/decks")}>Decks</div>
+            <div className="navbar-item" onClick={() => navig("/decks")}>Decks</div>
 
-            <div className="navbar-item" onClick={() => navigate("/share")}>Share</div>
+            <div className="navbar-item" onClick={() => navig("/share")}>Share</div>
 
-            <div className="navbar-item" onClick={() => navigate("/statistics")}>Statistics</div>
+            <div className="navbar-item" onClick={() => navig("/statistics")}>Statistics</div>
         </div>
 
         <div className="nav-user-options">
             <PlusButton/>
-            <Avatar avatar={userData.avatar} username={userData.username} email={userData.email}/>
+            <Avatar id={userData.id} avatar={userData.avatar} username={userData.username} email={userData.email}/>
         </div>
         </div>
     </div>

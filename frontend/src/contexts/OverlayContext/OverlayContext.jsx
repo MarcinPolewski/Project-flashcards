@@ -8,6 +8,7 @@ export const useOverlay = () => {
 
 export const OverlayProvider = ({ children }) => {
     const [isOverlayOpen, setOverlayOpen] = useState(false);
+    const [isPlusButtonPopupOpen, setPlusButtonPopupOpen] = useState(false);
 
     const toggleOverlay = () => {
         setOverlayOpen(!isOverlayOpen);
@@ -17,7 +18,22 @@ export const OverlayProvider = ({ children }) => {
         setOverlayOpen(false);
     }
 
-    return <OverlayContext.Provider value={{isOverlayOpen, toggleOverlay, closeOverlay }}>
+    const togglePlusButtonPopup = () => {
+        setPlusButtonPopupOpen(!isPlusButtonPopupOpen);
+    }
+
+    const closePlusButtonPopup = () => {
+        setPlusButtonPopupOpen(false);
+    }
+
+    return <OverlayContext.Provider value={{
+        isOverlayOpen,
+        toggleOverlay,
+        closeOverlay,
+        isPlusButtonPopupOpen,
+        togglePlusButtonPopup,
+        closePlusButtonPopup }}
+        >
         { children }
     </OverlayContext.Provider>
 }

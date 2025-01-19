@@ -5,20 +5,60 @@ import Navbar from "../../Navbar/Navbar";
 import "./Study.css";
 import testDecks from "../../../assets/mockData/testDecks";
 
+const INTERVALS = {
+  FORGOT: 0,
+  HARD: 1,
+  MID: 2,
+  EASY: 3,
+};
+
 const Study = () => {
   const { deckId } = useParams();
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [cards, setCards] = useState([]);
-  const [currentDeck, setCurrentDeck] = useState(null); // Null initially
-  const [showBack, setShowBack] = useState(false); // State to toggle card sides
+  const [showBack, setShowBack] = useState(false);
+
+  const [deckInfo, setDeckInfo] = useState(null);
+  const [flashcardCount, setFlashcardCount] = useState(0);
+
+  const [currentCardFront, setCurrentCardFront] = useState("");
+  const [currentCardBack, setCurrentCardBack] = useState("");
+
+  const [editedCardFront, setEditedCardFront] = useState("");
+  const [editedCardBack, setEditedCardBack] = useState("");
+
+  const {isOverlayOpen, toggleOverlay, closeOverlay} = useOverlay();
 
   // Fetch the deck dynamically
   useEffect(() => {
-    const fetchedDeck =
-      testDecks.find((deck) => deck.id === Number(deckId)) || null;
-    if (fetchedDeck) {
-      setCurrentDeck(fetchedDeck);
-      setCards(fetchedDeck.newCards || []);
+    const requestReview = async () => {
+      try {
+        const response = await ReviewService.requestReview(deckId, 10);
+        setCards(response.flashcards || []);
+      } catch (error) {
+        console.error("Error while requesting review: ", error);
+      }
+    };
+
+    const fetchDeckInfo = async () => {
+      try {
+        const response = await DeckService.getDeck(deckId);
+        setDeckInfo(response);
+      } catch (error) {
+        console.error("Error while fetching detch: ", error);
+      }
+    }
+
+    requestReview();
+    fetchDeckInfo();
+  }, [deckId]);
+
+  useEffect(() => {
+    setFlashcardCount(cards.length);
+    if (cards && cards.length > 0 && currentCardIndex >= 0) {
+      const currentCard = cards[currentCardIndex];
+      setCurrentCardFront(currentCard.front);
+      setCurrentCardBack(currentCard.back);
     }
   }, [cards, currentCardIndex]);
 
@@ -38,34 +78,29 @@ const Study = () => {
 
     const currentCard = cards[currentCardIndex];
 
-    const updatedCard = { ...currentCard, progressInterval: interval };
-
-    const updatedCards = cards.map((card, index) =>
-      index === currentCardIndex ? updatedCard : card
-    );
-    setCards(updatedCards);
-
     try {
-      console.log ("sent back results to backend: ", currentCard.id, interval);
-      // const response = await ReviewService.sendBackResults(currentCard.id, interval);
-      // console.log("Flashcard reviewed:", response);
+      await ReviewService.sendBackResults(currentCard.id, interval);
 
-      if (interval === "Easy") {
-        const remainingCards = updatedCards.filter((card) => card.id !== currentCard.id);
-        setCards(remainingCards);
-      }
+      const remainingCards =
+        interval === INTERVALS.EASY
+          ? cards.filter((card) => card.id !== currentCard.id)
+          : cards;
 
-      if (currentCardIndex < updatedCards.length - 1) {
-        setCurrentCardIndex(currentCardIndex + 1);
-      } else {
-        setCurrentCardIndex(0);
-      }
+      setCards(remainingCards);
+
+      setCurrentCardIndex((prevIndex) =>
+        prevIndex < remainingCards.length - 1 ? prevIndex + 1 : 0
+      );
 
       setShowBack(false);
     } catch (error) {
       console.error("Error while sending results: ", error);
     }
   };
+
+  if (!deckInfo) {
+    return <div>Loading deck...</div>;
+  }
 
   if (cards.length === 0) {
     return <div>Loading or no cards available...</div>;
@@ -114,8 +149,34 @@ const Study = () => {
     <div className="study">
       <Navbar />
       <div className="study-container">
-      <p>You're studying: {currentDeck?.title || "Unknown Deck"}</p>
-        {currentCard.front && currentCard.back ? (
+
+        <Overlay isOpen={isOverlayOpen} closeOverlay={closeOverlay}>
+          <div className="plus-button-create-deck">
+              <h3>Edit Flashcard</h3>
+
+              <input
+                  type="text"
+                  placeholder="Front.."
+                  value={editedCardFront}
+                  onChange={(e) => setEditedCardFront(e.target.value)}
+                  required
+              />
+
+              <input
+                  type="text"
+                  placeholder="Back.."
+                  value={editedCardBack}
+                  onChange={(e) => setEditedCardBack(e.target.value)}
+                  required
+              />
+
+              <button type="button" onClick={handleEditFlashcard}>Save</button>
+          </div>
+        </Overlay>
+
+        <p>You're studying deck: {deckInfo.name || "N/A"}</p>
+        <p>Flashcards remaining: {flashcardCount}</p>
+        {currentCard && currentCard.front && currentCard.back ? (
           <>
             <div className="card">
               {showBack ? (
@@ -125,10 +186,10 @@ const Study = () => {
               )}
             </div>
             <div className="progress-buttons">
-              <button onClick={() => handleProgressUpdate("Repeat")}>Repeat</button>
-              <button onClick={() => handleProgressUpdate("Hard")}>Hard</button>
-              <button onClick={() => handleProgressUpdate("Mid")}>Mid</button>
-              <button onClick={() => handleProgressUpdate("Easy")}>Easy</button>
+              <button onClick={() => handleProgressUpdate(INTERVALS.FORGOT)}>Repeat</button>
+              <button onClick={() => handleProgressUpdate(INTERVALS.HARD)}>Hard</button>
+              <button onClick={() => handleProgressUpdate(INTERVALS.MID)}>Mid</button>
+              <button onClick={() => handleProgressUpdate(INTERVALS.EASY)}>Easy</button>
             </div>
             <button className="edit-button" onClick={toggleOverlay}>Edit</button>
           </>

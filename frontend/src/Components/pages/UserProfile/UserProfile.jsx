@@ -5,35 +5,16 @@ import defaultAvatar from "../../../assets/test/test-avatar.png";
 
 import Navbar from "../../Navbar/Navbar";
 import CustomerService from "../../../services/CustomerService";
+import { useUser } from "../../../contexts/UserContext/UserContext";
 
 const UserProfile = () => {
     const { userId } = useParams();
 
-    const [userData, setUserData] = useState(null);
     const [friends, setFriends] = useState([]);
 
-    useEffect(() => {
-        const fetchUserData = async () => {
-            try {
-                const response = await CustomerService.getSelfProfile();
-                setUserData(response);
-            } catch (error) {
-                console.error("Error while fetching user data: ", error);
-            }
-        };
+    const { userData, isLoading } = useUser();
 
-        const fetchFriendsData = async () => {
-            try {
-                const response = await CustomerService.getFriends();
-                setFriends(response);
-            } catch (error) {
-                console.error("Error while fetching user friends: ", error);
-            }
-        };
-
-        fetchUserData();
-        fetchFriendsData();
-     });
+    // TODO add a useEffect hook to fetch user data from userId and friends
 
      if (!userData) {
         return <div>Loading...</div>;

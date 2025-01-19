@@ -5,6 +5,10 @@ const dateEval = (a, b) => {
 }
 
 const sortDecks = (decks, sortOptions) => {
+    if (!decks || !decks.length) {
+        return [];
+    }
+
     let sortedDecks = decks.slice();
 
     return sortedDecks.sort((a, b) => {

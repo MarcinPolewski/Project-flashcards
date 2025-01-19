@@ -15,14 +15,11 @@ const FolderService = {
         const response = await api.get('/folder/getAllFolders');
         return response.data;
     },
-    getFolderStructure: async () => {
+    getRootFolder: async () => {
         if (isDevelopment) {
             return mockData.folderGetFolderStructure;
         }
-        if (isDevelopment) {
-            return mockData.folderGetFolderStructure;
-        }
-        const response = await api.get('/folder/getFolderStructure');
+        const response = await api.get('/folder/getRootFolder');
         return response.data;
     },
     createFolder: async (name, parentId) => {

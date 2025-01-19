@@ -60,6 +60,9 @@ public class UserPreferencesController {
 
         userPreferences.setDarkMode(request.isDarkMode());
         userPreferences.setLanguage(request.getLanguage());
+        userPreferences.setReminderTime(request.getReminderTime());
+        userPreferences.setTimezone(request.getTimezone());
+        userPreferences.setStudyReminders(request.getStudyReminders());
         userPreferencesRepository.save(userPreferences);
         return ResponseEntity.ok(userPreferences);
     }
