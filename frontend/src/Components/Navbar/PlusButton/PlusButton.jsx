@@ -134,7 +134,6 @@ const PlusButton = () => {
                     />
 
                     <button type="button" onClick={handleCreateDeck}>Create</button>
-                    <button type="button" onClick={handleCreateDeck}>Create</button>
                 </div> }
                 {formType === 'folder' &&
                 <div className="plus-button-create-folder">
@@ -162,7 +161,6 @@ const PlusButton = () => {
                         onChange={(e) => setNewFolderName(e.target.value)}
                         required
                     />
-                    <button type="button" onClick={handleCreateFolder}>Create</button>
                     <button type="button" onClick={handleCreateFolder}>Create</button>
                 </div> }
             </Overlay>
