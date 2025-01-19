@@ -4,7 +4,6 @@ import './Deck.css';
 import { useNavigate } from "react-router-dom";
 
 const Deck = ({ deckState, handleDeleteButton }) => {
-const Deck = ({ deckState, handleDeleteButton }) => {
 
     const {id, name, newCards, toReviewCards, learnedCards} = deckState;
 

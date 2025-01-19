@@ -2,9 +2,6 @@ import api from "../api/api";
 import mockData from "../mocks/mockData";
 
 const isDevelopment = process.env.NODE_ENV === 'development';
-import mockData from "../mocks/mockData";
-
-const isDevelopment = process.env.NODE_ENV === 'development';
 
 const FolderService = {
     getFolder: async (folderId) => {

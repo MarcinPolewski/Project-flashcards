@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from "react";
-import React, { useEffect, useState } from "react";
 import Navbar from "../../Navbar/Navbar";
 import './Share.css';
-import DeckService from "../../../services/DeckService";
-import PdfGeneratorService from "../../../services/PdfGeneratorService";
 import DeckService from "../../../services/DeckService";
 import PdfGeneratorService from "../../../services/PdfGeneratorService";
 

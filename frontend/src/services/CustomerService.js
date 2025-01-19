@@ -21,68 +21,37 @@ const CustomerService = {
       console.log("Response from backend: ", response);
       return response.data;
   },
-  getSelfProfile: async () => {
-    if (isDevelopment) return mockData.customerGetSelfProfile;
-    const response = await api.get('/customer/getSelfProfile');
-    return response.data;
-  },
   getFriends: async () => {
       if (isDevelopment) return mockData.friendsGetFriends;
       const response = await api.get('/customer/getFriends');
       return response.data;
   },
   updateUsername: async (username) => {
-    const response = await api.get('/customer/updateUsername', {
+    const response = await api.post('/customer/updateUsername', {
         params: username
     });
     return response.data;
     },
 updateEmail: async (email) => {
-    const response = await api.get('/customer/updateEmail', {
+    const response = await api.post('/customer/updateEmail', {
         params: email
     });
     return response.data;
 },
 updatePassword: async (password) => {
-    const response = await api.get('/customer/updatePassword', {
+    const response = await api.post('/customer/updatePassword', {
         params: password
     });
     return response.data;
     },
 updateAvatar: async (avatar) => {
-    const response = await api.get('/customer/updateAvatar', {
-        params: avatar
-    });
-    return response.data;
-    },
-      return response.data;
-  },
-  updateUsername: async (username) => {
-    const response = await api.get('/customer/updateUsername', {
-        params: username
-    });
-    return response.data;
-    },
-updateEmail: async (email) => {
-    const response = await api.get('/customer/updateEmail', {
-        params: email
-    });
-    return response.data;
-},
-updatePassword: async (password) => {
-    const response = await api.get('/customer/updatePassword', {
-        params: password
-    });
-    return response.data;
-    },
-updateAvatar: async (avatar) => {
-    const response = await api.get('/customer/updateAvatar', {
+    const response = await api.post('/customer/updateAvatar', {
         params: avatar
     });
     return response.data;
     },
   deleteCustomer: async () => {
-      const response = await api.post('/customer/delete');
+      const response = await api.delete('/customer/delete');
       return response.data;
   }
 };
