@@ -35,6 +35,18 @@ public class UserStatistics {
     @JsonView(JsonViewConfig.Public.class)
     private LocalDateTime lastLogin;
 
+    @Column(name = "total_days_learning")
+    @JsonView(JsonViewConfig.Public.class)
+    private int totalDaysLearning;
+
+    @Column(name = "days_learning_streak")
+    @JsonView(JsonViewConfig.Public.class)
+    private int daysLearningStreak;
+
+    @Column(name = "longest_learning_streak")
+    @JsonView(JsonViewConfig.Public.class)
+    private int longestLearningStreak;
+
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", insertable = false, updatable = false)
     private Customer customer;
