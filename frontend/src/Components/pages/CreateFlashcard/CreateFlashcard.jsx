@@ -70,27 +70,38 @@ const CreateFlashcard = () => {
                 const foldersWithoutRoot = filterRootFolder(folderStructure);
                 console.log("Folders without root:", foldersWithoutRoot);
                 setFolders(foldersWithoutRoot || []);
-                setPickedFolder(foldersWithoutRoot[0]?.id);
+                if (foldersWithoutRoot.length > 0) {
+                    setPickedFolder(foldersWithoutRoot[0]?.id);
+                }
             }
             catch (error) {
                 console.error("Error fetching folders:", error);
             };
         };
 
+        fetchFolders();
+    }, []);
+
+    useEffect(() => {
         const fetchDecks = async () => {
+            if (!pickedFolder) return;
+
             try {
                 const decksInFolder = await FolderService.getDecksInFolder(pickedFolder);
                 console.log("Decks in folder", pickedFolder," :", decksInFolder);
                 setDecks(decksInFolder || []);
-                setPickedDeck(decksInFolder[0]?.id);
+                if (decksInFolder.length > 0) {
+                    setPickedDeck(decksInFolder[0]?.id);
+                }
             }
             catch (error) {
                 console.error("Error fetching decks:", error);
             };
         }
 
-        fetchFolders();
-        fetchDecks();
+        if (pickedFolder) {
+            fetchDecks();
+        }
     }, [pickedFolder]);
 
     return (
