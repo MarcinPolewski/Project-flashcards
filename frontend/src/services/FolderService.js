@@ -19,7 +19,7 @@ const FolderService = {
         if (isDevelopment) {
             return mockData.folderGetFolderStructure;
         }
-        const response = await api.get('/customer/getRootFolder');
+        const response = await api.get('/folder/getRootFolder');
         return response.data;
     },
     createFolder: async (name, parentId) => {

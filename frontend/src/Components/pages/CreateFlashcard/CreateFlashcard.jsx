@@ -7,6 +7,7 @@ import './CreateFlashcard.css';
 import FlashcardService from '../../../services/FlashcardService';
 import FolderService from "../../../services/FolderService";
 import filterRootFolder from "../../../utils/filterRootFolder";
+import DeckService from "../../../services/DeckService";
 
 const CreateFlashcard = () => {
 
@@ -75,7 +76,19 @@ const CreateFlashcard = () => {
             };
         };
 
+        const fetchDecks = async () => {
+            try {
+                const decksInFolder = await DeckService.getDecksInFolder(pickedFolder);
+                setDecks(decksInFolder || []);
+                setPickedDeck(decksInFolder[0]?.id);
+            }
+            catch (error) {
+                console.error("Error fetching decks:", error);
+            };
+        }
+
         fetchFolders();
+        fetchDecks();
     }, []);
 
     return (
