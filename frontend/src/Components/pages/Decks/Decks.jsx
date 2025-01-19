@@ -84,7 +84,8 @@ const Decks = () => {
                 const response = await DeckService.updateDeck(deckIdToEdit, newDeckName);
                 setDecks((prevDecks) => prevDecks.map((deck) => deck.id === deckIdToEdit ? response : deck));
                 alert("Deck name changed successfully.");
-            }
+
+            } else console.error("deckIdToEdit is null");
         } catch(error) {
             alert("Error occurred while changing deck name.");
         } finally {
@@ -99,13 +100,13 @@ const Decks = () => {
     }
 
     const handleEditButton = (id) => {
-        setDeckIdToDelete(id);
+        setDeckIdToEdit(id);
         setFormType('edit');
         toggleOverlay();
     }
 
     const handleDeleteButton = (id) => {
-        setDeckIdToEdit(id);
+        setDeckIdToDelete(id);
         setFormType('delete');
         toggleOverlay();
     }
