@@ -149,7 +149,7 @@ public class DeckController {
         return ResponseEntity.badRequest().body("You do not have permission to create a deck here");
     }
 
-    @PutMapping("/update")
+    @PostMapping("/update")
     @JsonView(JsonViewConfig.Public.class)
     public ResponseEntity<?> updateDeck(
             Authentication authentication,
