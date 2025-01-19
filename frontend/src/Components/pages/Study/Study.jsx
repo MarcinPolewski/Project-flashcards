@@ -3,58 +3,22 @@ import { useParams } from "react-router-dom";
 
 import Navbar from "../../Navbar/Navbar";
 import "./Study.css";
-import ReviewService from "../../../services/ReviewService";
-import FlashcardService from "../../../services/FlashcardService";
-import Overlay from "../../Overlay/Overlay";
-import { useOverlay } from "../../../contexts/OverlayContext/OverlayContext";
-import DeckService from "../../../services/DeckService";
+import testDecks from "../../../assets/mockData/testDecks";
 
 const Study = () => {
   const { deckId } = useParams();
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [cards, setCards] = useState([]);
-  const [showBack, setShowBack] = useState(false);
+  const [currentDeck, setCurrentDeck] = useState(null); // Null initially
+  const [showBack, setShowBack] = useState(false); // State to toggle card sides
 
-  const [deckInfo, setDeckInfo] = useState(null);
-  const [flashcardCount, setFlashcardCount] = useState(null);
-
-  const [currentCardFront, setCurrentCardFront] = useState("");
-  const [currentCardBack, setCurrentCardBack] = useState("");
-
-  const [editedCardFront, setEditedCardFront] = useState("");
-  const [editedCardBack, setEditedCardBack] = useState("");
-
-  const {isOverlayOpen, toggleOverlay, closeOverlay} = useOverlay();
-
+  // Fetch the deck dynamically
   useEffect(() => {
-    const requestReview = async () => {
-      try {
-        const response = await ReviewService.requestReview(deckId, 10);
-        setCards(response.flashcards);
-      } catch (error) {
-        console.error("Error while requesting review: ", error);
-      }
-    };
-
-    const fetchDeckInfo = async () => {
-      try {
-        const response = await DeckService.getDeck(deckId);
-        setDeckInfo(response);
-      } catch (error) {
-        console.error("Error while fetching detch: ", error);
-      }
-    }
-
-    requestReview();
-    fetchDeckInfo();
-  }, [deckId]);
-
-  useEffect(() => {
-    setFlashcardCount(cards.length);
-    if (cards.length > 0 && currentCardIndex >= 0) {
-      const currentCard = cards[currentCardIndex];
-      setCurrentCardFront(currentCard.front);
-      setCurrentCardBack(currentCard.back);
+    const fetchedDeck =
+      testDecks.find((deck) => deck.id === Number(deckId)) || null;
+    if (fetchedDeck) {
+      setCurrentDeck(fetchedDeck);
+      setCards(fetchedDeck.newCards || []);
     }
   }, [cards, currentCardIndex]);
 
@@ -150,34 +114,8 @@ const Study = () => {
     <div className="study">
       <Navbar />
       <div className="study-container">
-
-        <Overlay isOpen={isOverlayOpen} closeOverlay={closeOverlay}>
-          <div className="plus-button-create-deck">
-              <h3>Edit Flashcard</h3>
-
-              <input
-                  type="text"
-                  placeholder="Front.."
-                  value={editedCardFront}
-                  onChange={(e) => setEditedCardFront(e.target.value)}
-                  required
-              />
-
-              <input
-                  type="text"
-                  placeholder="Back.."
-                  value={editedCardBack}
-                  onChange={(e) => setEditedCardBack(e.target.value)}
-                  required
-              />
-
-              <button type="button" onClick={handleEditFlashcard}>Save</button>
-          </div>
-        </Overlay>
-
-        <p>You're studying deck: {deckInfo.name}</p>
-        <p>Flashcards remaining: {flashcardCount}</p>
-        {currentCard && currentCard.front && currentCard.back ? (
+      <p>You're studying: {currentDeck?.title || "Unknown Deck"}</p>
+        {currentCard.front && currentCard.back ? (
           <>
             <div className="card">
               {showBack ? (

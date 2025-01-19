@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../../Navbar/Navbar";
 import './Share.css';
+import DeckService from "../../../services/DeckService";
+import PdfGeneratorService from "../../../services/PdfGeneratorService";
 import DeckService from "../../../services/DeckService";
 import PdfGeneratorService from "../../../services/PdfGeneratorService";
 
@@ -36,19 +39,6 @@ const Share = () => {
         setImportFile(event.target.files[0]);
     };
 
-    useEffect(() => {
-        const fetchDecksToChoose = async () => {
-            try {
-                const fetchedDecks = await DeckService.getAllDecks();
-                setDecksToChoose(fetchedDecks || []);
-            } catch (error) {
-                console.log("Error while fetching decks: ", error);
-            }
-        };
-
-        fetchDecksToChoose();
-    }, []);
-
     return (
         <div className="main-importcontainer">
         <Navbar />
@@ -63,15 +53,11 @@ const Share = () => {
                         onChange={(e) => setSelectedExportDeck(e.target.value)}
                     >
                         <option value="">Select a deck to export</option>
-                        {Array.isArray(decksToChoose) ? (
-                            decksToChoose.map((deck, index) => (
-                                <option key={index} value={deck.name}>
-                                    {deck.name}
-                                </option>
-                            ))
-                        ) : (
-                            <option value="">No decks available</option>
-                        )}
+                        {testDecks.map((deck, index) => (
+                            <option key={index} value={deck.title}>
+                                {deck.title}
+                            </option>
+                        ))}
                     </select>
                     <button className="btn" onClick={handleExport}>
                         Export
@@ -89,15 +75,11 @@ const Share = () => {
                         onChange={(e) => setSelectedImportDeck(e.target.value)}
                     >
                         <option value="">Select a deck to import into</option>
-                        {Array.isArray(decksToChoose) ? (
-                            decksToChoose.map((deck, index) => (
-                                <option key={index} value={deck.name}>
-                                    {deck.name}
-                                </option>
-                            ))
-                        ) : (
-                            <option value="">No decks available</option>
-                        )}
+                        {testDecks.map((deck, index) => (
+                            <option key={index} value={deck.title}>
+                                {deck.title}
+                            </option>
+                        ))}
                     </select>
                     <input
                         type="file"

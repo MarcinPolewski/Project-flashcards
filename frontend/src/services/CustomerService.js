@@ -55,6 +55,32 @@ updateAvatar: async (avatar) => {
     });
     return response.data;
     },
+      return response.data;
+  },
+  updateUsername: async (username) => {
+    const response = await api.get('/customer/updateUsername', {
+        params: username
+    });
+    return response.data;
+    },
+updateEmail: async (email) => {
+    const response = await api.get('/customer/updateEmail', {
+        params: email
+    });
+    return response.data;
+},
+updatePassword: async (password) => {
+    const response = await api.get('/customer/updatePassword', {
+        params: password
+    });
+    return response.data;
+    },
+updateAvatar: async (avatar) => {
+    const response = await api.get('/customer/updateAvatar', {
+        params: avatar
+    });
+    return response.data;
+    },
   deleteCustomer: async () => {
       const response = await api.post('/customer/delete');
       return response.data;

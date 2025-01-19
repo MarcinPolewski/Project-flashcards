@@ -2,6 +2,9 @@ import api from "../api/api";
 import mockData from "../mocks/mockData";
 
 const isDevelopment = process.env.NODE_ENV === 'development';
+import mockData from "../mocks/mockData";
+
+const isDevelopment = process.env.NODE_ENV === 'development';
 
 const FolderService = {
     getFolder: async (folderId) => {
@@ -16,6 +19,9 @@ const FolderService = {
         return response.data;
     },
     getFolderStructure: async () => {
+        if (isDevelopment) {
+            return mockData.folderGetFolderStructure;
+        }
         if (isDevelopment) {
             return mockData.folderGetFolderStructure;
         }
@@ -40,7 +46,13 @@ const FolderService = {
     },
     getDecksInFolder: async (folderId) => {
         if (isDevelopment) return mockData.deckGetAllDecks;
+        if (isDevelopment) return mockData.deckGetAllDecks;
         const response = await api.get('/folder/getDecks', { params: { folderId } });
+        return response.data;
+    },
+    getDecksInfo: async (folderId) => {
+        if (isDevelopment) return mockData.folderGetDecksInfo;
+        const response = await api.get('/folder/getDecksInfo', { params: { folderId } });
         return response.data;
     },
     getDecksInfo: async (folderId) => {

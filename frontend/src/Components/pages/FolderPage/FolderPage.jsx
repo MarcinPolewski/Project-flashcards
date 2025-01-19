@@ -162,8 +162,10 @@ const FolderPage = () => {
 
                                         <div className="folder-page-deck-title">
                                             {deck.name}
+                                            {deck.name}
                                         </div>
 
+                                        <p className="folder-page-deck-info"></p>
                                         <p className="folder-page-deck-info"></p>
 
                                         <div className="folder-page-deck-state">
@@ -179,10 +181,10 @@ const FolderPage = () => {
                                         </div>
 
                                         <div className="folder-page-deck-actions">
-                                            <button onClick={() => navigate(`/study/${deck.id}`)} className="folder-page-study-btn">
+                                            <button onClick={() => navigate(`/study/${deck.id}`)} className="folder-study-btn">
                                                 Study
                                             </button>
-                                            <button onClick={() => navigate(`/deck/${deck.id}`)} className="folder-page-edit-btn">
+                                            <button onClick={() => navigate(`/deck/${deck.id}`)} className="folder-edit-btn">
                                                 Edit
                                             </button>
                                             <button className="folder-page-delete-btn" onClick={

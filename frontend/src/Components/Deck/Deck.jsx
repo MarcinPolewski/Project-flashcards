@@ -4,12 +4,14 @@ import './Deck.css';
 import { useNavigate } from "react-router-dom";
 
 const Deck = ({ deckState, handleDeleteButton }) => {
+const Deck = ({ deckState, handleDeleteButton }) => {
 
     const {id, name, newCards, toReviewCards, learnedCards} = deckState;
 
     const navigate = useNavigate();
 
     return <div className="deck">
+        <div className="deck-title">{name}</div>
         <div className="deck-title">{name}</div>
 
         <div className="deck-state">
@@ -25,6 +27,7 @@ const Deck = ({ deckState, handleDeleteButton }) => {
             <button onClick={() => navigate(`/deck/${id}`)} className="decks-page-edit-btn">
                 Edit
             </button>
+            <button className="decks-page-delete-btn" onClick={() => handleDeleteButton('delete')}>Delete</button>
             <button className="decks-page-delete-btn" onClick={() => handleDeleteButton('delete')}>Delete</button>
         </div>
     </div>
