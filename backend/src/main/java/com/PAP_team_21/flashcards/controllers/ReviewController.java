@@ -6,6 +6,8 @@ import com.PAP_team_21.flashcards.authentication.ResourceAccessLevelService.Deck
 import com.PAP_team_21.flashcards.authentication.ResourceAccessLevelService.FlashcardAccessServiceResponse;
 import com.PAP_team_21.flashcards.authentication.ResourceAccessLevelService.ResourceAccessService;
 import com.PAP_team_21.flashcards.controllers.requests.FlashcardsReviewedRequest;
+import com.PAP_team_21.flashcards.entities.JsonViewConfig;
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -19,6 +21,7 @@ public class ReviewController {
     private final ResourceAccessService resourceAccessService;
 
     @GetMapping("/reviewDeck")
+    @JsonView(JsonViewConfig.Public.class)
     public ResponseEntity<?> reviewDeck(Authentication authentication,
                                         @RequestParam int deckId,
                                         @RequestParam(defaultValue = "10") int batchSize) {
