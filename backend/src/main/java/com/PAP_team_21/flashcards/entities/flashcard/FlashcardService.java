@@ -30,15 +30,15 @@ public class FlashcardService {
     }
 
     public int countCurrentlyLearning(Integer customerId, int deckId, Duration reviewGapConstant, Duration lastReviewConstant) {
-        return flashcardRepository.countCurrentlyLearning( customerId,  deckId,  (int)reviewGapConstant.get(ChronoUnit.MINUTES),  (int)lastReviewConstant.get(ChronoUnit.MINUTES));
+        return flashcardRepository.countCurrentlyLearning( customerId,  deckId,  (int)reviewGapConstant.toMinutes(),  (int)lastReviewConstant.toMinutes());
     }
 
     public int countDueInLearning(Integer customerId, int deckId, Duration reviewGapConstant, Duration lastReviewConstant) {
-        return flashcardRepository.countDueInLearning(customerId, deckId, (int)reviewGapConstant.get(ChronoUnit.MINUTES), (int)lastReviewConstant.get(ChronoUnit.MINUTES));
+        return flashcardRepository.countDueInLearning(customerId, deckId, (int)reviewGapConstant.toMinutes(), (int)lastReviewConstant.toMinutes());
     }
 
     public int countDueToReview(Integer customerId, int deckId, Duration reviewGapConstant, Duration lastReviewConstant) {
-        return flashcardRepository.countDueToReview(customerId, deckId, (int)reviewGapConstant.get(ChronoUnit.MINUTES), (int)lastReviewConstant.get(ChronoUnit.MINUTES));
+        return flashcardRepository.countDueToReview(customerId, deckId, (int)reviewGapConstant.toMinutes(), (int)lastReviewConstant.toMinutes());
     }
 
     public List<Flashcard> getDueFlashcards(Integer customerId, int deckId, int howMany) {
@@ -50,14 +50,14 @@ public class FlashcardService {
     }
 
     public List<Flashcard> getEarlyReviewFlashcards(Integer customerId, int deckId, Duration reviewGapConstant, Duration lastReviewConstant, int howMany) {
-        return flashcardRepository.getEarlyReviewFlashcards(customerId, deckId, (int)reviewGapConstant.get(ChronoUnit.MINUTES), (int)lastReviewConstant.get(ChronoUnit.MINUTES), howMany);
+        return flashcardRepository.getEarlyReviewFlashcards(customerId, deckId, (int)reviewGapConstant.toMinutes(), (int)lastReviewConstant.toMinutes(), howMany);
     }
 
     public List<Flashcard> getDueInLearning(Integer customerId, int deckId, Duration reviewGapConstant, Duration lastReviewConstant, int howMany) {
-        return flashcardRepository.getDueInLearning(customerId, deckId, (int)reviewGapConstant.get(ChronoUnit.MINUTES), (int)lastReviewConstant.get(ChronoUnit.MINUTES), howMany);
+        return flashcardRepository.getDueInLearning(customerId, deckId, (int)reviewGapConstant.toMinutes(), (int)lastReviewConstant.toMinutes(), howMany);
     }
 
     public List<Flashcard> getDueToReview(Integer customerId, int deckId, Duration reviewGapConstant, Duration lastReviewConstant, int howMany) {
-        return flashcardRepository.getDueToReview(customerId, deckId, (int)reviewGapConstant.get(ChronoUnit.MINUTES), (int)lastReviewConstant.get(ChronoUnit.MINUTES), howMany);
+        return flashcardRepository.getDueToReview(customerId, deckId, (int)reviewGapConstant.toMinutes(), (int)lastReviewConstant.toMinutes(), howMany);
     }
 }
