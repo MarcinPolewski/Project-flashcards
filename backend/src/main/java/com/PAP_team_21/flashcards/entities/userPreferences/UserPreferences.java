@@ -7,6 +7,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+
 @Entity
 @Table(name = "User_Preferences")
 @Getter
@@ -30,6 +33,18 @@ public class UserPreferences {
     @JsonView(JsonViewConfig.Public.class)
     private int language;
 
+    @Column(name = "reminder_time")
+    @JsonView(JsonViewConfig.Public.class)
+    private LocalTime reminderTime;
+
+    @Column(name = "timezone")
+    @JsonView(JsonViewConfig.Public.class)
+    private int timezone;
+
+    @Column(name = "study_reminders")
+    @JsonView(JsonViewConfig.Public.class)
+    private int studyReminders;
+
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", insertable = false, updatable = false)
     private Customer customer;
@@ -40,5 +55,8 @@ public class UserPreferences {
         this.userId = userId;
         this.darkMode = darkMode;
         this.language = language;
+        this.reminderTime = LocalTime.of(16, 30);
+        this.timezone = 1;
+        this.studyReminders = 1;
     }
 }

@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalTime;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -13,4 +15,7 @@ public class UserPreferencesUpdateRequest {
     int userPreferencesId;
     boolean darkMode;
     int language;
+    LocalTime reminderTime;
+    int timezone;
+    int studyReminders;
 }
