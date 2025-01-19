@@ -33,11 +33,13 @@ export const DeleteFolder = ( { id, title, closeOverlay, onFolderDelete } ) => {
     };
 
     return (
-        <div className="plus-button-create-deck">
+        <div className="edit-folder-popup-delete">
             <h3>Delete Folder</h3>
             <div>Do you really want to delete folder "{title}" along with all its contents?</div>
-            <button type="button" onClick={() => onFolderDelete(id)}>Yes</button>
-            <button type="button" onClick={handleCancel}>No</button>
+            <div className="edit-folder-reponses">
+                <button type="button" onClick={() => onFolderDelete(id)}>Yes</button>
+                <button type="button" onClick={handleCancel}>No</button>
+            </div>
         </div>
     );
 }
