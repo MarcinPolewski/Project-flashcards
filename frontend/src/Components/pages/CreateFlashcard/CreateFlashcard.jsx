@@ -6,6 +6,7 @@ import './CreateFlashcard.css';
 
 import FlashcardService from '../../../services/FlashcardService';
 import FolderService from "../../../services/FolderService";
+import filterRootFolder from "../../../utils/filterRootFolder";
 
 const CreateFlashcard = () => {
 
@@ -32,7 +33,11 @@ const CreateFlashcard = () => {
         }
 
         try {
+            console.log("Creating flashcard...", front, back);
+            console.log("Deck ID:", deckId);
             await FlashcardService.createFlashcard(deckId, front, back);
+            setBack("");
+            setFront("");
         } catch (error) {
             console.error("Error creating flashcard:", error);
         }
@@ -42,8 +47,13 @@ const CreateFlashcard = () => {
         setPickedFolder(folderId);
         setPickedDeck(null);
         setDeckId(null);
-        const newDecks = await FolderService.getDecksInFolder(folderId);
-        setDecks(newDecks);
+        try {
+            const newDecks = await FolderService.getDecksInFolder(folderId);
+            setDecks(newDecks);
+            setPickedDeck(newDecks[0]?.id);
+        } catch (error) {
+            console.error("Error fetching decks:", error);
+        }
     }
 
     const handleDeckChange = (deckId) => {
@@ -55,7 +65,9 @@ const CreateFlashcard = () => {
         const fetchFolders = async () => {
             try {
                 const folderStructure = await FolderService.getAllFolders();
-                setFolders(folderStructure || []);
+                const foldersWithoutRoot = filterRootFolder(folderStructure);
+                setFolders(foldersWithoutRoot || []);
+                setPickedFolder(foldersWithoutRoot[0]?.id);
             }
             catch (error) {
                 console.error("Error fetching folders:", error);

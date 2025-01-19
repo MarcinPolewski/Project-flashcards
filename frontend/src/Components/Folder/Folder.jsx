@@ -7,6 +7,7 @@ const Folder = ({ id, title, onEdit, onDelete }) => {
 
     const handleClick = () => {
         navigate(`/folder/${id}`);
+        window.location.reload();
     }
 
     return (

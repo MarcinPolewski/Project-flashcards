@@ -32,6 +32,7 @@ const Home = () => {
     const navigate = useNavigate();
 
     const handleEditClick = (id, title) => {
+        console.log("Edit clicked for folder:", id, title);
         setSelectedFolderId(id);
         setSelectedFolderTitle(title);
         setFormType('edit');
@@ -39,15 +40,17 @@ const Home = () => {
     };
 
     const handleDeleteClick = (id, title) => {
+        console.log("Delete clicked for folder:", id, title);
         setSelectedFolderId(id);
         setSelectedFolderTitle(title);
         setFormType('delete');
         toggleOverlay();
     };
 
-    const handleFolderEdit = async () => {
+    const handleFolderEdit = async (selectedFolderId, selectedFolderTitle) => {
         try {
             if (selectedFolderId !== null) {
+                console.log("Editing folder with id: ", selectedFolderId);
                 const response = await FolderService.updateFolder(selectedFolderId, selectedFolderTitle);
                 setFolders(folders.map((child) =>
                     child.id === selectedFolderId ? { ...child, name: selectedFolderTitle } : child
@@ -63,9 +66,10 @@ const Home = () => {
         }
     };
 
-    const handleFolderDelete = async () => {
+    const handleFolderDelete = async (selectedFolderId) => {
         try {
             if (selectedFolderId !== null) {
+                console.log("Deleting folder with id: ", selectedFolderId);
                 const response = await FolderService.deleteFolder(selectedFolderId);
                 setFolders(folders.filter((child) => child.id !== selectedFolderId));
                 alert("Folder deleted successfully.");

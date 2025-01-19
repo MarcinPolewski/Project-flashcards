@@ -6,6 +6,8 @@ import Overlay from "../../Overlay/Overlay";
 import FolderService from "../../../services/FolderService";
 import DeckService from "../../../services/DeckService";
 
+import filterRootFolder from "../../../utils/filterRootFolder";
+
 const PlusButton = () => {
     const navigate = useNavigate();
     const [isPopupOpen, setPopupOpen] = useState(false);
@@ -13,15 +15,19 @@ const PlusButton = () => {
     const { isOverlayOpen, toggleOverlay, closeOverlay } = useOverlay();
     const [newFolderName, setNewFolderName] = useState("");
     const [deckName, setDeckName] = useState("");
-    const [folderName, setFolderName] = useState("");
-    const [selectedFolderId, setSelectedFolderId] = useState(null);
-    const [formType, setFormType] = useState(null);
+    const [selectedFolderIdForFolders, setSelectedFolderIdForFolders] = useState(null);
+    const [selectedFolderIdForDecks, setSelectedFolderIdForDecks] = useState(null);
+    const [formType, setFormType] = useState("");
 
     useEffect(() => {
         const fetchFolders = async () => {
             try {
                 const response = await FolderService.getAllFolders();
                 setFolders(response || []);
+                if (response && response.length > 0) {
+                    setSelectedFolderIdForFolders(response[0]?.id);
+                    setSelectedFolderIdForDecks(response[1]?.id);
+                }
             } catch (error) {
                 console.error("Error fetching folders:", error);
             }
@@ -41,7 +47,9 @@ const PlusButton = () => {
 
     const handleCreateFolder = async () => {
         try {
-            const response = await FolderService.createFolder(newFolderName, selectedFolderId);
+            const selectedId = formType === 'folder' ? selectedFolderIdForFolders : selectedFolderIdForDecks;
+            console.log("Creating folder...", selectedId, newFolderName);
+            const response = await FolderService.createFolder(newFolderName, selectedId);
             console.log("Folder created:", response);
             setNewFolderName("");
         } catch (error) {
@@ -51,20 +59,17 @@ const PlusButton = () => {
         }
     };
 
-    const filterRootFolder = (folders) => {
-        if (!folders || folders.length === 0) return [];
-        return folders.filter((folder) => folder.name !== "ROOT");
-    }
-
     const handleCreateDeck = async () => {
-    try {
-        const response = await DeckService.createDeck(selectedFolderId, deckName);
-        console.log("Deck created:", response);
-    } catch (error) {
-        console.error("Error creating folder:", error);
-    } finally {
-        closeOverlay();
-    }
+        try {
+            const selectedId = formType === 'folder' ? selectedFolderIdForFolders : selectedFolderIdForDecks;
+            console.log("Creating deck...", selectedId, deckName);
+            const response = await DeckService.createDeck(selectedId, deckName);
+            console.log("Deck created:", response);
+        } catch (error) {
+            console.error("Error creating folder:", error);
+        } finally {
+            closeOverlay();
+        }
     };
 
     const openCreateForm = (type) => {
@@ -101,8 +106,8 @@ const PlusButton = () => {
                     <h3>Create Deck</h3>
 
                     <select
-                        value={selectedFolderId}
-                        onChange={(e) => setSelectedFolderId(e.target.value)}
+                        value={selectedFolderIdForDecks}
+                        onChange={(e) => {setSelectedFolderIdForDecks(e.target.value); console.log("Selected folder: ", e.target.value)}}
                         required
                     >
                         <option value="" disabled>Select folder</option>
@@ -112,7 +117,7 @@ const PlusButton = () => {
                             </option>
                         ))
                         ) : (
-                            <option value="">No folders available</option>
+                            <option value={null}>No folders available</option>
                         )}
                     </select>
 
@@ -131,8 +136,8 @@ const PlusButton = () => {
                     <h3>Create Folder</h3>
                     <p>Select parent folder:</p>
                     <select
-                        value={selectedFolderId}
-                        onChange={(e) => setSelectedFolderId(e.target.value)}
+                        value={selectedFolderIdForFolders}
+                        onChange={(e) => {setSelectedFolderIdForFolders(e.target.value); console.log("Selected folder: ", e.target.value)}}
                         required
                     >
                         <option value="" disabled>Select folder</option>

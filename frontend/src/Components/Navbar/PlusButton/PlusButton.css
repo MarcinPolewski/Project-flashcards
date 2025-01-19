@@ -68,7 +68,7 @@
     max-width: 400px;
     margin: 0 auto;
     border: 1px solid var(--section-border);
-    z-index: 30;
+    z-index: 200;
 }
 
 .plus-button-create-deck input[type="text"],
