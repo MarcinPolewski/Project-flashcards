@@ -21,9 +21,18 @@ const Share = () => {
         alert(`Exporting deck: ${selectedExportDeck} as pdf`);
 
         try {
-            const response = await ShareService.generatePdf(selectedExportDeck);
+            const pdfBlob = await ShareService.generatePdf(selectedExportDeck);
+            const blobUrl = window.URL.createObjectURL(new Blob([pdfBlob], { type: 'application/pdf' }));
+
+            const link = document.createElement('a');
+            link.href = blobUrl;
+            link.download = `${selectedExportDeck}-deck.pdf`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
         } catch (error) {
             console.error("Error while generating PDF: ", error);
+            alert("Error while generating PDF. Please try again.");
         }
     };
 
@@ -35,9 +44,19 @@ const Share = () => {
         alert(`Exporting deck: ${selectedExportDeck} as txt`);
 
         try {
-            const response = await ShareService.generateTxt(selectedExportDeck);
+            const txtBlob = await ShareService.generateTxt(selectedExportDeck);
+            const blobUrl = window.URL.createObjectURL(
+                new Blob([txtBlob], { type: "text/plain" })
+            );
+
+            const link = document.createElement("a");
+            link.href = blobUrl;
+            link.download = `${selectedExportDeck}-deck.txt`;
+            link.click();
+            window.URL.revokeObjectURL(blobUrl);
         } catch (error) {
             console.error("Error while generating PDF: ", error);
+            alert("Error while generating TXT. Please try again.");
         }
     };
 
@@ -49,7 +68,8 @@ const Share = () => {
         alert(`Importing into folder: ${selectedImportFolder}`);
 
         try {
-            const response = await ShareService.loadDeck(importFile, selectedImportFolder);
+            await ShareService.loadDeck(importFile, selectedImportFolder);
+            alert("Deck imported successfully!");
         } catch (error) {
             console.error("Error while generating PDF: ", error);
         }
@@ -120,7 +140,7 @@ const Share = () => {
 
             {/* Import Section */}
             <div className="section">
-                <h3>Import into Deck</h3>
+                <h3>Import into Folder</h3>
                 <div className="field-container">
                     <select
                         className="dropdown"

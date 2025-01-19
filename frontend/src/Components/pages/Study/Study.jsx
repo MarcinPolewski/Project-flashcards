@@ -37,6 +37,7 @@ const Study = () => {
     const requestReview = async () => {
       try {
         const response = await ReviewService.requestReview(deckId, 10);
+        console.log("Review response: ", response);
         setCards(response.flashcards || []);
       } catch (error) {
         console.error("Error while requesting review: ", error);
@@ -46,6 +47,7 @@ const Study = () => {
     const fetchDeckInfo = async () => {
       try {
         const response = await DeckService.getDeck(deckId);
+        console.log("Deck info: ", response);
         setDeckInfo(response);
       } catch (error) {
         console.error("Error while fetching detch: ", error);
@@ -82,7 +84,9 @@ const Study = () => {
     const currentCard = cards[currentCardIndex];
 
     try {
+      console.log("Sending results for card: ", currentCard.id);
       await ReviewService.sendBackResults(currentCard.id, interval);
+      console.log("Results sent successfully!");
 
       const remainingCards =
         interval === INTERVALS.EASY
@@ -90,10 +94,12 @@ const Study = () => {
           : cards;
 
       setCards(remainingCards);
+      console.log("Remaining cards: ", remainingCards);
 
       setCurrentCardIndex((prevIndex) =>
-        prevIndex < remainingCards.length - 1 ? prevIndex + 1 : 0
+        Math.min(prevIndex, remainingCards.length - 1)
       );
+      console.log("Current card index: ", currentCardIndex);
 
       setShowBack(false);
     } catch (error) {
@@ -102,11 +108,21 @@ const Study = () => {
   };
 
   if (!deckInfo) {
-    return <div>Loading deck...</div>;
+    return <div>
+        <Navbar />
+        <div>
+          Loading deck...
+        </div>
+      </div>;
   }
 
   if (cards.length === 0) {
-    return <div>Loading or no cards available...</div>;
+    return <div>
+        <Navbar />
+        <div>
+          No cards available...
+        </div>
+      </div>;
   }
 
   const handleEditFlashcard = async () => {

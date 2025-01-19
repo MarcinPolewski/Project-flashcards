@@ -68,6 +68,7 @@ const CreateFlashcard = () => {
             try {
                 const folderStructure = await FolderService.getAllFolders();
                 const foldersWithoutRoot = filterRootFolder(folderStructure);
+                console.log("Folders without root:", foldersWithoutRoot);
                 setFolders(foldersWithoutRoot || []);
                 setPickedFolder(foldersWithoutRoot[0]?.id);
             }
@@ -79,6 +80,7 @@ const CreateFlashcard = () => {
         const fetchDecks = async () => {
             try {
                 const decksInFolder = await FolderService.getDecksInFolder(pickedFolder);
+                console.log("Decks in folder", pickedFolder," :", decksInFolder);
                 setDecks(decksInFolder || []);
                 setPickedDeck(decksInFolder[0]?.id);
             }
@@ -89,7 +91,7 @@ const CreateFlashcard = () => {
 
         fetchFolders();
         fetchDecks();
-    }, []);
+    }, [pickedFolder]);
 
     return (
         <div>
