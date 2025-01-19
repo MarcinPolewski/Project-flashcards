@@ -310,4 +310,20 @@ BEGIN
 END //
 
 # =============================================================================
+CREATE PROCEDURE get_github_style_chart_data(
+    IN userId INT
+)
+BEGIN
+SELECT
+    DATE(`when`) AS activity_date
+FROM
+    Review_Logs
+WHERE
+    user_id = userId
+  AND `when` > DATE_SUB(NOW(), INTERVAL 1 YEAR)
+GROUP BY
+    DATE(`when`);
+END //
+
+# =============================================================================
 DELIMITER ;
