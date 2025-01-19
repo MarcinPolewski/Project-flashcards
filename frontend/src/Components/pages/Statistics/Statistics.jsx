@@ -107,19 +107,19 @@ const Statistics = () => {
                             <div className="card-detail">
                                 <span>New </span>
                                 <span>
-                                    {pieChartData.newCards} - {calcPercentage(statisticData.allNewCards, totalCards)}%
+                                    {pieChartData.newCards === 0 ? 0 : pieChartData.newCards} - {calcPercentage(statisticData.allNewCards, totalCards)}%
                                 </span>
                             </div>
                             <div className="card-detail">
                                 <span>Learning</span>
                                 <span>
-                                    {pieChartData.learningCards} - {calcPercentage(statisticData.allLearningCards, totalCards)}%
+                                    {pieChartData.learningCards === 0 ? 0 : pieChartData.learningCards} - {calcPercentage(statisticData.allLearningCards, totalCards)}%
                                 </span>
                             </div>
                             <div className="card-detail">
                                 <span>Learnt</span>
                                 <span>
-                                    {pieChartData.rememberedCards} - {calcPercentage(statisticData.allRememberedCards, totalCards)}%
+                                    {pieChartData.rememberedCards === 0 ? 0 : pieChartData.rememberedCards} - {calcPercentage(statisticData.allRememberedCards, totalCards)}%
                                 </span>
                             </div>
                         </div>

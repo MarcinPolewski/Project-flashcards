@@ -26,9 +26,9 @@ const CustomerService = {
       const response = await api.get('/customer/getFriends');
       return response.data;
   },
-  updateUsername: async (username) => {
+  updateUsername: async (newUsername) => {
     const response = await api.post('/customer/updateUsername', {
-        username
+        newUsername
     });
     return response.data;
     },
