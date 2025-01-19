@@ -7,13 +7,17 @@ const UserPreferencesService = {
 
     getPreferences: async () => {
         if (isDevelopment) return mockData.userPreferencesGetUserPreferences;
-        const response = await api.get(`/userPreferences/getUserPreferences/`);
+        const response = await api.get(`/userPreferences/getUserPreferences`);
+        console.log("Inside UserPreferencesService.getPreferences: ", response.data);
         return response.data;
     },
 
-    updatePreferences: async (darkMode, language, reminderTime, timezone, studyReminders) => {
+    updatePreferences: async (userPreferences) => {
+        const { language, timezone, studyReminders } = userPreferences;
+        const reminderTime = userPreferences.reminderTime + ":00";
+        const darkMode = false; // dummy
         const response = await api.post(`/userPreferences/update`, {
-            darkMode,
+            darkMode: false,
             language,
             reminderTime,
             timezone,
