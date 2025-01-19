@@ -141,7 +141,7 @@ public class DeckController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
         AccessLevel al = response.getAccessLevel();
-        if(al.equals(AccessLevel.OWNER) || al.equals(AccessLevel.EDITOR))
+        if(al != null || al.equals(AccessLevel.OWNER) || al.equals(AccessLevel.EDITOR))
         {
             Deck deck = new Deck(request.getName(), response.getFolder());
             deckService.save(deck);
@@ -165,7 +165,7 @@ public class DeckController {
         }
         AccessLevel al = response.getAccessLevel();
 
-        if(al.equals(AccessLevel.OWNER) || al.equals(AccessLevel.EDITOR))
+        if(al != null || al.equals(AccessLevel.OWNER) || al.equals(AccessLevel.EDITOR))
         {
             response.getDeck().setName(request.getName());
             deckService.save(response.getDeck());
@@ -189,7 +189,7 @@ public class DeckController {
         }
         AccessLevel al = response.getAccessLevel();
 
-        if(al.equals(AccessLevel.OWNER) || al.equals(AccessLevel.EDITOR))
+        if(al != null || al.equals(AccessLevel.OWNER) || al.equals(AccessLevel.EDITOR))
         {
             deckService.delete(response.getDeck());
             return ResponseEntity.ok("deck deleted");
