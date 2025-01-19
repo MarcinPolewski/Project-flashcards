@@ -39,7 +39,7 @@
     border: 1px solid var(--section-border);
     border-radius: 8px;
     font-size: 16px;
-    color: var(--create-deck-text);
+    color: var(--auth-input-text);
 }
 
 .auth-email-signin input[type="text"]:focus,
