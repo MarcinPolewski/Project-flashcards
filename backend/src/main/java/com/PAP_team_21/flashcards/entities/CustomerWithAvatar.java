@@ -17,5 +17,5 @@ public class CustomerWithAvatar {
     @JsonView(JsonViewConfig.Public.class)
     private Customer customer;
     @JsonView(JsonViewConfig.Public.class)
-    private File avatar;
+    private byte[] avatar;
 }

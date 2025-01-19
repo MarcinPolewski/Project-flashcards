@@ -117,7 +117,7 @@ public class Customer {
         this.passwordHash = passwordHash;
         this.profileCreationDate = LocalDateTime.now();
         this.rootFolder = new Folder("ROOT", this);
-        this.profilePicturePath = null;
+        this.profilePicturePath = "/app/avatars/default-avatar.png";
 
         if(folderAccessLevels == null) {
             folderAccessLevels = new ArrayList<>();

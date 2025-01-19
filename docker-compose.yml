@@ -40,6 +40,8 @@ services:
       - jwt_secret_key
       - email_email
       - email_password
+    volumes:
+      - ./avatars:/app/avatars
 
   database:
     build: ./database
@@ -94,7 +96,6 @@ secrets:
     file: ./secrets/email_application_email.txt
   email_password:
     file: ./secrets/email_application_password.txt
-
 
 networks:
   back-network:

@@ -25,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -122,36 +123,36 @@ public class CustomerController {
     }
 
     @PostMapping("/updateAvatar")
-    public ResponseEntity<?> updateAvatar(Authentication authentication, @RequestBody UpdateAvatarRequest request) {
-        final String avatarsFolder = "/app/avatars";
+    public ResponseEntity<?> updateAvatar(Authentication authentication, @RequestParam("avatar") MultipartFile avatar) {
         String email = authentication.getName();
-        Optional<Customer> customerOpt= customerRepository.findByEmail(email);
-        if(customerOpt.isEmpty())
-        {
+        Optional<Customer> customerOpt = customerRepository.findByEmail(email);
+        if (customerOpt.isEmpty()) {
             return ResponseEntity.badRequest().body("No user with this id found");
         }
 
-        MultipartFile newAvatar = request.getAvatar();
-        File uploadDirectory = new File(avatarsFolder);
-        if (!uploadDirectory.exists()) {
-            uploadDirectory.mkdirs();
+        String newAvatarPath = "/app/avatars/new_profile_picture.jpg";
+
+        File avatarFile = new File(newAvatarPath);
+
+        if (avatarFile.exists()) {
+            avatarFile.delete();
         }
 
-        String newAvatarPath = UUID.randomUUID() + "_" + newAvatar.getOriginalFilename();
-        File avatarFile = new File(avatarsFolder, newAvatarPath);
         try {
-            newAvatar.transferTo(avatarFile);
+            avatar.transferTo(avatarFile);
         }
         catch (IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Failed to upload avatar");
+                    .body("Failed to upload avatar:" + e.getMessage());
         }
 
         Customer customer = customerOpt.get();
         customer.setProfilePicturePath(newAvatarPath);
         customerRepository.save(customer);
+
         return ResponseEntity.ok("Profile picture updated successfully");
     }
+
 
     @GetMapping("/findByUsername/{username}")
     @JsonView(JsonViewConfig.Public.class)
@@ -200,15 +201,14 @@ public class CustomerController {
         String avatarPath = customer.getProfilePicturePath();
 
         try {
-            Path avatarFilePath = Paths.get("/app/avatars", avatarPath);
-            File avatar = avatarFilePath.toFile();
-
-            CustomerWithAvatar customerWithAvatar = new CustomerWithAvatar(customer, avatar);
+            Path avatarFilePath = Paths.get(avatarPath);
+            byte[] avatarBytes = Files.readAllBytes(avatarFilePath);
+            CustomerWithAvatar customerWithAvatar = new CustomerWithAvatar(customer, avatarBytes);
 
             return ResponseEntity.ok(customerWithAvatar);
         }
         catch (Exception e) {
-            return ResponseEntity.badRequest().body("Error fetching avatar");
+            return ResponseEntity.badRequest().body("Error fetching avatar: " + e.getMessage());
         }
     }
 
@@ -280,9 +280,9 @@ public class CustomerController {
 
                 try {
                     Path avatarFilePath = Paths.get("/app/avatars", avatarPath);
-                    File avatar = avatarFilePath.toFile();
+                    byte[] avatarBytes = Files.readAllBytes(avatarFilePath);
 
-                    CustomerWithAvatar friendWithAvatar = new CustomerWithAvatar(friend, avatar);
+                    CustomerWithAvatar friendWithAvatar = new CustomerWithAvatar(friend, avatarBytes);
                     friendsWithAvatars.add(friendWithAvatar);
                 }
                 catch (Exception e) {
@@ -299,9 +299,9 @@ public class CustomerController {
 
                 try {
                     Path avatarFilePath = Paths.get("/app/avatars", avatarPath);
-                    File avatar = avatarFilePath.toFile();
+                    byte[] avatarBytes = Files.readAllBytes(avatarFilePath);
 
-                    CustomerWithAvatar friendWithAvatar = new CustomerWithAvatar(friend, avatar);
+                    CustomerWithAvatar friendWithAvatar = new CustomerWithAvatar(friend, avatarBytes);
                     friendsWithAvatars.add(friendWithAvatar);
                 }
                 catch (Exception e) {
@@ -359,7 +359,8 @@ public class CustomerController {
             Path avatarFilePath = Paths.get("/app/avatars", avatarPath);
             File avatar = avatarFilePath.toFile();
 
-            CustomerWithAvatar friendWithAvatar = new CustomerWithAvatar(friend, avatar);
+            byte[] avatarBytes = Files.readAllBytes(avatarFilePath);
+            CustomerWithAvatar friendWithAvatar = new CustomerWithAvatar(friend, avatarBytes);
             return ResponseEntity.ok(friendWithAvatar);
         }
         catch (Exception e) {
@@ -413,9 +414,9 @@ public class CustomerController {
 
         try {
             Path avatarFilePath = Paths.get("/app/avatars", avatarPath);
-            File avatar = avatarFilePath.toFile();
+            byte[] avatarBytes = Files.readAllBytes(avatarFilePath);
 
-            CustomerWithAvatar friendWithAvatar = new CustomerWithAvatar(friend, avatar);
+            CustomerWithAvatar friendWithAvatar = new CustomerWithAvatar(friend, avatarBytes);
             return ResponseEntity.ok(friendWithAvatar);
         }
         catch (Exception e) {

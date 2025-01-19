@@ -6,6 +6,7 @@ RUN apt-get update && apt-get install -y maven
 
 # Set the working directory inside the container
 WORKDIR /app
+COPY /avatars /app/avatars
 
 # Copy the necessary files for Maven
 COPY pom.xml ./
