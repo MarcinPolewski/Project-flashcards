@@ -53,7 +53,7 @@ const PlusButton = () => {
 
     const filterRootFolder = (folders) => {
         if (!folders || folders.length === 0) return [];
-        return folders.filter((folder) => folder.name === "ROOT");
+        return folders.filter((folder) => folder.name !== "ROOT");
     }
 
     const handleCreateDeck = async () => {

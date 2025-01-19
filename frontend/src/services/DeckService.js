@@ -46,19 +46,12 @@ const DeckService = {
         });
         return response.data;
     },
-    getDeckProgress: async (deckId) => {
-        if (isDevelopment) return mockData.deckGetDeckProgress;
-        const response = await api.get('/deck/getDeckProgress', {
-            params: { deckId }
-        });
-        return response.data;
-    },
     createDeck: async (folderId, name) => {
         const response = await api.post('/deck/create', { folderId, name });
         return response.data;
     },
     updateDeck: async (deckId, name) => {
-        const response = await api.put('/deck/update', { deckId, name });
+        const response = await api.post('/deck/update', { deckId, name });
         return response.data;
     },
     deleteDeck: async (deckId) => {
