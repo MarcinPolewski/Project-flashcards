@@ -15,6 +15,7 @@ import com.PAP_team_21.flashcards.entities.deck.Deck;
 import com.PAP_team_21.flashcards.entities.deck.DeckService;
 import com.PAP_team_21.flashcards.entities.folder.Folder;
 import com.PAP_team_21.flashcards.entities.folder.FolderJpaRepository;
+import com.PAP_team_21.flashcards.entities.folder.FolderService;
 import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +35,7 @@ public class DeckController {
     private final CustomerRepository customerRepository;
     private final DeckService deckService;
     private final DeckMapper deckMapper;
-    private final FolderJpaRepository folderRepository;
+    private final FolderService folderService;
 
     @GetMapping("/flashcards")
     @JsonView(JsonViewConfig.Public.class)
@@ -96,7 +97,7 @@ public class DeckController {
         }
 
         List<Deck> result = new ArrayList<>();
-        List< Folder > folders = folderRepository.findAllUserFolders(customerOpt.get().getId());
+        List< Folder > folders = folderService.findAllUserFolders(customerOpt.get().getId());
 
         for(Folder f: folders)
         {
@@ -117,7 +118,7 @@ public class DeckController {
         }
 
         List<Deck> result = new ArrayList<>();
-        List< Folder > folders = folderRepository.findAllUserFolders(customerOpt.get().getId());
+        List< Folder > folders = folderService.findAllUserFolders(customerOpt.get().getId());
 
         for(Folder f: folders)
         {
