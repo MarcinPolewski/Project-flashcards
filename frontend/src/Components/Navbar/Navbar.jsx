@@ -41,7 +41,7 @@ const Navbar = () => {
 
         <div className="nav-user-options">
             <PlusButton/>
-            <Avatar avatar={userData.avatar} username={userData.username} email={userData.email}/>
+            <Avatar id={userData.id} avatar={userData.avatar} username={userData.username} email={userData.email}/>
         </div>
         </div>
     </div>
