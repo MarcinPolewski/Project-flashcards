@@ -5,6 +5,7 @@ import defaultAvatar from "../../../assets/test/test-avatar.png";
 
 import Navbar from "../../Navbar/Navbar";
 import CustomerService from "../../../services/CustomerService";
+import { useUser } from "../../../contexts/UserContext/UserContext";
 
 const UserProfile = () => {
     const { userId } = useParams();
