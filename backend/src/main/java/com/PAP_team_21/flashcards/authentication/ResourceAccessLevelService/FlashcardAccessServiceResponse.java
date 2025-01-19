@@ -10,7 +10,6 @@ import lombok.Setter;
 @Setter
 public class FlashcardAccessServiceResponse extends ResourceAccessServiceResponse {
     private Flashcard flashcard;
-    private Customer customer;
     public FlashcardAccessServiceResponse(Flashcard flashcard, AccessLevel accessLevel, Customer customer) {
         super(accessLevel, customer);
         this.flashcard = flashcard;
