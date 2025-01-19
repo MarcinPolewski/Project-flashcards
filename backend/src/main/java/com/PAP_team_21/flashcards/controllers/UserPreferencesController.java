@@ -46,17 +46,9 @@ public class UserPreferencesController {
         {
             return ResponseEntity.badRequest().body("No user with this id found");
         }
+        Customer customer = customerOpt.get();
 
-        Optional<UserPreferences> userPreferencesOpt = userPreferencesRepository.findById(
-                                                        request.getUserPreferencesId());
-        if (userPreferencesOpt.isEmpty()) {
-            return ResponseEntity.badRequest().body("No userPreferences with this id found");
-        }
-        UserPreferences userPreferences = userPreferencesOpt.get();
-
-        if (userPreferences.getUserId() != customerOpt.get().getId()) {
-            return ResponseEntity.badRequest().body("UserPreferences do not belong to user");
-        }
+        UserPreferences userPreferences = customer.getUserPreferences();
 
         userPreferences.setDarkMode(request.isDarkMode());
         userPreferences.setLanguage(request.getLanguage());
