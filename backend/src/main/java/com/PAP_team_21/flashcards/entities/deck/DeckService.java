@@ -32,21 +32,17 @@ public class DeckService {
         deckRepository.delete(deck);
     }
 
-    public float getDeckProgress(int customerId, int deckId) {
-        return deckRepository.getDeckProgress(customerId, deckId);
-    }
-
-    public int countTotalCards(Integer customerId, int deckId) {
-        return deckRepository.countAllCards(customerId, deckId);
+    public int countDeckTotalCards(Integer customerId, int deckId) {
+        return deckRepository.countDeckAllCards(customerId, deckId);
     }
 
 
     public int countDeckNewCards(Integer customerId, int deckId) {
-        return deckRepository.countNewCards(customerId, deckId);
+        return deckRepository.countDeckNewCards(customerId, deckId);
     }
 
-    public int countAllDueCards(Integer customerId, int deckId) {
-        return deckRepository.countAllDueCards(customerId, deckId);
+    public int countDeckAllDueCards(Integer customerId, int deckId) {
+        return deckRepository.countDeckAllDueCards(customerId, deckId);
     }
 
 }
