@@ -42,7 +42,6 @@ services:
       - email_password
     volumes:
       - ./avatars:/app/avatars
-      - ./files_to_load:/app/files_to_load
 
   database:
     build: ./database
