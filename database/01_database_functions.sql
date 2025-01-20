@@ -117,7 +117,7 @@ CREATE PROCEDURE get_new_flashcard(
     IN howMany INT
 )
 BEGIN
-    SELECT fl.* FROM Flashcards fl
+    SELECT DISTINCT fl.* FROM Flashcards fl
     LEFT JOIN Review_Logs rl ON fl.id = rl.flashcard_id
     WHERE deck_id = deckId AND
         (rl.user_id IS NULL or rl.user_id != userId)
@@ -257,13 +257,18 @@ CREATE PROCEDURE count_decks_new_cards(
     OUT newCardCount INT
 )
 BEGIN
-    SELECT COUNT(*)
+    SELECT COUNT(DISTINCT fl.id)
     INTO newCardCount
     FROM Flashcards fl
-
-    LEFT JOIN Review_Logs rl ON fl.id = rl.flashcard_id
-    WHERE deck_id = deckId AND
-        (rl.user_id IS NULL or rl.user_id != userId);
+             LEFT JOIN Review_Logs rl ON fl.id = rl.flashcard_id
+    WHERE deck_id = deckId AND rl.user_id = userId AND rl.id IS NULL;
+#     SELECT COUNT(*)
+#     INTO newCardCount
+#     FROM Flashcards fl
+#
+#     LEFT JOIN Review_Logs rl ON fl.id = rl.flashcard_id
+#     WHERE deck_id = deckId AND
+#         (rl.user_id IS NULL or rl.user_id != userId);
 END //
 
 # =============================================================================
@@ -339,18 +344,30 @@ BEGIN
 END //
 
 # =============================================================================
+# CREATE PROCEDURE count_all_new_cards(
+#     IN userId INT,
+#     OUT result INT
+# )
+# BEGIN
+# SELECT COUNT(*)
+# INTO result
+# FROM Flashcards fl
+# LEFT JOIN Review_Logs rl ON fl.id = rl.flashcard_id
+# WHERE
+#     rl.user_id = userId AND
+#     rl.id IS NULL;
+# END //
+
 CREATE PROCEDURE count_all_new_cards(
     IN userId INT,
     OUT result INT
 )
 BEGIN
-SELECT COUNT(*)
-INTO result
-FROM Flashcards fl
-LEFT JOIN Review_Logs rl ON fl.id = rl.flashcard_id
-WHERE
-    rl.user_id = userId AND
-    rl.id IS NULL;
+    SELECT COUNT(DISTINCT fl.id)
+    INTO result
+    FROM Flashcards fl
+             LEFT JOIN Review_Logs rl ON fl.id = rl.flashcard_id
+    WHERE rl.user_id = userId AND rl.id IS NULL;
 END //
 
 # =============================================================================
