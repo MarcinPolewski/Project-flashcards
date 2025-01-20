@@ -63,14 +63,14 @@ public interface FlashcardRepository extends JpaRepository<Flashcard, Integer> {
                                    @Param("howMany")int howMany);
 
     @Procedure(procedureName = "count_all_new_cards")
-    int countAllNewCards(int customerId);
+    int countAllNewCards(@Param("userId")int customerId);
 
     @Procedure(procedureName = "count_all_due_cards")
-    int countAllDueCards(int customerId);
+    int countAllDueCards(@Param("userId")int customerId);
 
 
     @Procedure(procedureName = "count_all_cards")
-    int countAllCards(int customerId);
+    int countAllCards(@Param("userId")int customerId);
 
 //
 //
