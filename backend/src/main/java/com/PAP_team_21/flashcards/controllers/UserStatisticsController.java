@@ -48,17 +48,9 @@ public class UserStatisticsController {
         {
             return ResponseEntity.badRequest().body("No user with this id found");
         }
+        Customer customer = customerOpt.get();
 
-        Optional<UserStatistics> userStatisticsOpt = userStatisticsRepository.findById(
-                request.getUserStatisticsId());
-        if (userStatisticsOpt.isEmpty()) {
-            return ResponseEntity.badRequest().body("No userStatistics with this id found");
-        }
-        UserStatistics userStatistics = userStatisticsOpt.get();
-
-        if (userStatistics.getUserId() != customerOpt.get().getId()) {
-            return ResponseEntity.badRequest().body("UserStatistics do not belong to user");
-        }
+        UserStatistics userStatistics = customer.getUserStatistics();
 
         userStatistics.setTotalTimeSpent(request.getTotalTimeSpent());
         userStatistics.setLoginCount(request.getLoginCount());

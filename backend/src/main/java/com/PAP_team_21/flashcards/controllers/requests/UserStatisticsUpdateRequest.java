@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class UserStatisticsUpdateRequest {
-    int userStatisticsId;
     int totalTimeSpent;
     int loginCount;
     LocalDateTime lastLogin;
