@@ -40,7 +40,7 @@ public class TxtLoaderController {
         }
         Customer customer = customerOpt.get();
 
-        String filePath = loadDataFromTxtRequest.getFilePath();
+        String filePath = "/app/files_to_load/" + loadDataFromTxtRequest.getFilePath();
         int folderId = loadDataFromTxtRequest.getFolderId();
 
         Optional<Folder> folderOpt = folderJpaRepository.findById(folderId);
@@ -63,7 +63,7 @@ public class TxtLoaderController {
             return ResponseEntity.ok(deck);
         }
         catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid TXT format:");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid TXT format:" + e);
         }
     }
 }

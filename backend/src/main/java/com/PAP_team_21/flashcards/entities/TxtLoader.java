@@ -1,6 +1,7 @@
 package com.PAP_team_21.flashcards.entities;
 
 import com.PAP_team_21.flashcards.entities.deck.Deck;
+import com.PAP_team_21.flashcards.entities.deck.DeckService;
 import com.PAP_team_21.flashcards.entities.flashcard.Flashcard;
 import com.PAP_team_21.flashcards.entities.flashcard.FlashcardService;
 import com.PAP_team_21.flashcards.entities.folder.Folder;
@@ -13,6 +14,7 @@ import java.nio.charset.StandardCharsets;
 @RequiredArgsConstructor
 public class TxtLoader {
     private final FlashcardService flashcardService;
+    private final DeckService deckService;
 
     public Deck loadDeckFromTxt(byte[] txtData, Folder folderParent) {
         String content = new String(txtData, StandardCharsets.UTF_8);
@@ -24,8 +26,9 @@ public class TxtLoader {
 
         String deckName = lines[0].substring(6).trim();
         Deck deck = new Deck(deckName, folderParent);
+        deckService.save(deck);
 
-        for (int i = 3; i < lines.length; i++) {
+        for (int i = 4; i < lines.length; i++) {
             String line = lines[i].trim();
             if (line.isEmpty()) continue;
 
