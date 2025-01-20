@@ -431,5 +431,14 @@ MAXVALUE 9999
 CYCLE
 CACHE 20;
 
+CREATE SEQUENCE friendship_seq
+START WITH 100
+INCREMENT BY 1
+MINVALUE 100
+MAXVALUE 999
+CYCLE
+CACHE 10;
+
+
 # =============================================================================
 DELIMITER ;
