@@ -511,5 +511,14 @@ MAXVALUE 999
 CYCLE
 CACHE 10;
 
+
+CREATE SEQUENCE review_logs_seq
+START WITH 1000
+INCREMENT BY 1
+MINVALUE 1000
+MAXVALUE 9999
+CYCLE
+CACHE 20;
+
 # =============================================================================
 DELIMITER ;
