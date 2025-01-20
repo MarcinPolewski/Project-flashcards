@@ -1,7 +1,6 @@
 package com.PAP_team_21.flashcards.controllers;
 
 import com.PAP_team_21.flashcards.AccessLevel;
-import com.PAP_team_21.flashcards.controllers.requests.LoadDataFromTxtRequest;
 import com.PAP_team_21.flashcards.entities.TxtLoader;
 import com.PAP_team_21.flashcards.entities.customer.Customer;
 import com.PAP_team_21.flashcards.entities.customer.CustomerRepository;
@@ -13,12 +12,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Optional;
 
 @RestController
@@ -31,7 +29,8 @@ public class TxtLoaderController {
 
     @PostMapping("/loadDeckTxt")
     public ResponseEntity<?> loadDeckTxt(Authentication authentication,
-                                            @RequestBody LoadDataFromTxtRequest loadDataFromTxtRequest) {
+                                         @RequestParam("file") MultipartFile file,
+                                         @RequestParam("folderId") int folderId) {
         String email = authentication.getName();
         Optional<Customer> customerOpt = customerRepository.findByEmail(email);
 
@@ -39,9 +38,6 @@ public class TxtLoaderController {
             return ResponseEntity.badRequest().body("No user with this id found");
         }
         Customer customer = customerOpt.get();
-
-        String filePath = "/app/files_to_load/" + loadDataFromTxtRequest.getFilePath();
-        int folderId = loadDataFromTxtRequest.getFolderId();
 
         Optional<Folder> folderOpt = folderJpaRepository.findById(folderId);
         if (folderOpt.isEmpty()) {
@@ -57,7 +53,7 @@ public class TxtLoaderController {
         }
 
         try {
-            byte[] txtData = Files.readAllBytes(Paths.get(filePath));
+            byte[] txtData = file.getBytes();
             Deck deck = txtLoader.loadDeckFromTxt(txtData, folder);
             deckService.save(deck);
             return ResponseEntity.ok(deck);
