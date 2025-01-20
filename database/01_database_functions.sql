@@ -399,7 +399,15 @@ FROM Flashcards fl;
 END //
 
 # =============================================================================
-CREATE SEQUENCE customer_id_seq
+CREATE SEQUENCE customer_seq
+START WITH 100
+INCREMENT BY 1
+MINVALUE 100
+MAXVALUE 5000
+CYCLE
+CACHE 10;
+
+CREATE SEQUENCE folder_seq
 START WITH 100
 INCREMENT BY 1
 MINVALUE 100
