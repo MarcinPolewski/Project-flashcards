@@ -62,6 +62,16 @@ public interface FlashcardRepository extends JpaRepository<Flashcard, Integer> {
                                    @Param("lastReviewConstant")int lastReviewConstantMinutes,
                                    @Param("howMany")int howMany);
 
+    @Procedure(procedureName = "count_all_new_cards")
+    int countAllNewCards(@Param("userId")int customerId);
+
+    @Procedure(procedureName = "count_all_due_cards")
+    int countAllDueCards(@Param("userId")int customerId);
+
+
+    @Procedure(procedureName = "count_all_cards")
+    int countAllCards(@Param("userId")int customerId);
+
 //
 //
 //    int countDueInLearning(Integer id, int id1, Duration reviewGapConstant, Duration lastReviewConstant);

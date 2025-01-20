@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Entity
 @Table(name="User_Statistics")
@@ -35,6 +36,18 @@ public class UserStatistics {
     @JsonView(JsonViewConfig.Public.class)
     private LocalDateTime lastLogin;
 
+    @Column(name = "total_days_learning")
+    @JsonView(JsonViewConfig.Public.class)
+    private int totalDaysLearning;
+
+    @Column(name = "days_learning_streak")
+    @JsonView(JsonViewConfig.Public.class)
+    private int daysLearningStreak;
+
+    @Column(name = "longest_learning_streak")
+    @JsonView(JsonViewConfig.Public.class)
+    private int longestLearningStreak;
+
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", insertable = false, updatable = false)
     private Customer customer;
@@ -47,4 +60,38 @@ public class UserStatistics {
         this.loginCount = loginCount;
         this.lastLogin = lastLogin;
     }
+
+    public void updateStatistics(LocalDateTime lastReview)
+    {
+
+            LocalDateTime now = LocalDateTime.now();
+            if(!(lastReview.getYear() == now.getYear() && lastReview.getMonth() == now.getMonth()))
+            {
+                if(lastReview.getDayOfMonth() != now.getDayOfMonth()) // if not today
+                {
+                    totalDaysLearning++;
+                    if (lastReview.getDayOfMonth() == now.getDayOfMonth() - 1) // yesterday
+                    {
+                        // increment streak
+                        daysLearningStreak++;
+                        // check for max streak
+                        if (daysLearningStreak > longestLearningStreak) {
+                            longestLearningStreak = daysLearningStreak;
+                        }
+                    } else {
+                        // clear streak
+                        daysLearningStreak = 0;
+                    }
+
+                }
+            }
+    }
+
+    public void updateStatistics()
+    {
+        daysLearningStreak++;
+        longestLearningStreak++;
+        totalDaysLearning++;
+    }
+
 }

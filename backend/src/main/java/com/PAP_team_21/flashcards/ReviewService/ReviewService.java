@@ -9,6 +9,8 @@ import com.PAP_team_21.flashcards.entities.flashcardProgress.FlashcardProgress;
 import com.PAP_team_21.flashcards.entities.flashcardProgress.FlashcardProgressRepository;
 import com.PAP_team_21.flashcards.entities.folder.Folder;
 import com.PAP_team_21.flashcards.entities.reviewLog.ReviewLog;
+import com.PAP_team_21.flashcards.entities.userStatistics.UserStatisticsRepository;
+import com.nimbusds.jwt.util.DateUtils;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
@@ -18,6 +20,7 @@ import java.time.temporal.TemporalUnit;
 
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cglib.core.Local;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +35,8 @@ public class ReviewService {
 
     private final FlashcardService flashcardService;
     private final FlashcardProgressRepository flashcardProgressRepository;
+
+    private final UserStatisticsRepository userStatisticsRepository;
 
     @Value("${scheduling.max_flashcard_learning}")
     private int maxCurrentlyLearning;
@@ -225,6 +230,15 @@ public class ReviewService {
                 userAnswer);
 
         Optional<FlashcardProgress> progress = flashcardProgressRepository.findByCustomerAndFlashcard(customer, flashcard);
+
+
+        Optional<LocalDateTime> lastReviewOpt = userStatisticsRepository.findCustomersLastReview(customer.getId());
+        if (lastReviewOpt.isPresent())
+            customer.getUserStatistics().updateStatistics(lastReviewOpt.get());
+        else
+            customer.getUserStatistics().updateStatistics();
+        userStatisticsRepository.save(customer.getUserStatistics());
+
         if(progress.isEmpty())
         {
 
