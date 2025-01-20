@@ -71,12 +71,10 @@ const Settings = () => {
                 const preferences = await UserPreferencesService.getPreferences();
                 console.log("Preferences: ", preferences);
 
-                const formattedReminderTime = preferences.reminderTime.substring(0, 5);
-
                 setSettingsState({
                     ...settingsState,
                     language: preferences.language,
-                    reminderTime: formattedReminderTime,
+                    reminderTime: preferences.reminderTime,
                     timezone: preferences.timezone,
                     studyReminders: preferences.studyReminders,
                 });
@@ -143,16 +141,24 @@ const Settings = () => {
           ...prevState,
           [key]: value,
         }));
-
-        try {
-            console.log("Updating preferences: ", key, value);
-            await UserPreferencesService.updatePreferences(settingsState);
-            console.log("Preferences updated successfully as: ", settingsState);
-        } catch (error) {
-            console.error("Error updating user preferences:", error);
-            alert("Failed to update preferences.");
-         }
     };
+
+    useEffect(() => {
+        const updatePreferences = async () => {
+            try {
+                console.log("Updating preferences: ", settingsState);
+                await UserPreferencesService.updatePreferences(settingsState);
+                console.log("Preferences updated successfully.");
+            } catch (error) {
+                console.error("Error updating user preferences:", error);
+                alert("Failed to update preferences.");
+            }
+        };
+
+        if (settingsState.language && settingsState.reminderTime && settingsState.timezone) {
+            updatePreferences();
+        }
+    }, [settingsState]);
 
     const handlePasswordChange = async () => {
         localStorage.removeItem("jwtToken");

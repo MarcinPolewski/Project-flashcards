@@ -13,11 +13,10 @@ const UserPreferencesService = {
     },
 
     updatePreferences: async (userPreferences) => {
-        const { language, timezone, studyReminders } = userPreferences;
-        const reminderTime = userPreferences.reminderTime + ":00";
+        const { language, reminderTime, timezone, studyReminders } = userPreferences;
         const darkMode = false; // dummy
         const response = await api.post(`/userPreferences/update`, {
-            darkMode: false,
+            darkMode,
             language,
             reminderTime,
             timezone,
