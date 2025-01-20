@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "./EditFolder.css";
 
 export const EditFolder = ( { id, title, closeOverlay, onFolderEdit } ) => {
     const [newFolderName, setNewFolderName] = useState(title);
