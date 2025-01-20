@@ -121,6 +121,7 @@ BEGIN
     LEFT JOIN Review_Logs rl ON fl.id = rl.flashcard_id
     WHERE deck_id = deckId AND
         (rl.user_id IS NULL or rl.user_id != userId)
+    GROUP BY fl.id, fl.deck_id, fl.front, fl.back
     LIMIT howMany;
 END //
 
@@ -264,7 +265,7 @@ BEGIN
     LEFT JOIN Review_Logs rl ON fl.id = rl.flashcard_id
     WHERE deck_id = deckId AND
         (rl.user_id IS NULL or rl.user_id != userId)
-    group by fl.id;
+    GROUP BY fl.id;
 END //
 
 # =============================================================================
