@@ -378,8 +378,7 @@ CREATE PROCEDURE count_all_cards(
 BEGIN
 SELECT COUNT(*)
 INTO result
-FROM Flashcards fl
-WHERE fl.deck_id = deckId;
+FROM Flashcards fl;
 END //
 
 # =============================================================================
