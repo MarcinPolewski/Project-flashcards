@@ -32,6 +32,20 @@ const Login = () => {
       }
     }
 
+    useEffect(() => {
+      try {
+          const token = AuthService.handleOAuth2Redirect();
+          if (token) {
+              setToken(token);
+              navigate("/", { replace: true });
+          }
+      } catch (error) {
+          console.error("OAuth2 redirect error:", error);
+          setError("Error during OAuth2 login. Please try again.");
+      }
+    }, [navigate, setToken]);
+
+
     return <AuthSection>
         <div className="auth-container">
           <h2>Sign in</h2>

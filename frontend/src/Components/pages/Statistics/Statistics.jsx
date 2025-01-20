@@ -6,6 +6,7 @@ import './Statistics.css';
 import UserStatisticsService from "../../../services/UserStatisticsService";
 
 const calcPercentage = (part, total) => {
+    if (total === 0) return "0.00";
     return ((part / total) * 100).toFixed(2);
 };
 
@@ -69,7 +70,7 @@ const Statistics = () => {
                         </div>
                     </StatisticsSection>
 
-    
+
                     {/* Streak Statistics */}
                     <StatisticsSection className="streak-statistics-box">
                         <div className="streak-statistics">

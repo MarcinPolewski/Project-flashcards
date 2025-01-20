@@ -61,15 +61,14 @@ const AuthService = {
         }
     },
 
-    handleOAuth2Login: async (OAuth2Res) => {
-        try {
-            const { token } = OAuth2Res;
+    handleOAuth2Redirect: () => {
+        const params = new URLSearchParams(window.location.search);
+        const token = params.get('token');
+        if (token) {
             localStorage.setItem('jwtToken', token);
             return token;
-        } catch (error) {
-            console.error('Error during OAuth2 authentication:', error.response.data);
-            throw error;
         }
+        return null;
     },
 
     handleOAuth2: (provider) => {

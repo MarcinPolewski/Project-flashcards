@@ -17,7 +17,7 @@ const UserStatisticsService = {
         //         '10-12-2024', '11-12-2024', '14-12-2024'
         //     ]
         // }
-        const response = await api.get(`/userStatistics/getUserStatistics/`);
+        const response = await api.get(`/userStatistics/getUserStatistics`);
         return response.data;
     }
 };
