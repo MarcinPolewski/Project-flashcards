@@ -263,7 +263,7 @@ BEGIN
 
     LEFT JOIN Review_Logs rl ON fl.id = rl.flashcard_id
     WHERE deck_id = deckId AND
-        (rl.user_id IS NULL or rl.user_id != userId)
+        (rl.user_id IS NULL or rl.user_id != userId);
 END //
 
 # =============================================================================
