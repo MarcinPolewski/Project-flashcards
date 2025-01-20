@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -24,7 +25,7 @@ public class UserStatisticsController {
     private final UserStatisticsMapper userStatisticsMapper;
 
     @GetMapping("/getUserStatistics")
-    @JsonView(JsonViewConfig.Public.class)
+    @Transactional
     public ResponseEntity<?> getUserStatistics(Authentication authentication) {
         String email = authentication.getName();
         Optional<Customer> customerOpt = customerRepository.findByEmail(email);
