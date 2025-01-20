@@ -520,13 +520,21 @@ MAXVALUE 9999
 CYCLE
 CACHE 20;
 
-CREATE SEQUENCE rfolders_decks_seq
+CREATE SEQUENCE folders_decks_seq
 START WITH 1000
 INCREMENT BY 1
 MINVALUE 1000
 MAXVALUE 9999
 CYCLE
 CACHE 20;
+
+CREATE SEQUENCE flashcard_seq
+START WITH 10000
+INCREMENT BY 1
+MINVALUE 10000
+MAXVALUE 99999
+CYCLE
+CACHE 30;
 
 # =============================================================================
 DELIMITER ;
