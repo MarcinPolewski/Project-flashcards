@@ -1,5 +1,6 @@
 package com.PAP_team_21.flashcards.controllers;
 
+import com.PAP_team_21.flashcards.controllers.DTOMappers.UserStatisticsMapper;
 import com.PAP_team_21.flashcards.controllers.requests.UserStatisticsUpdateRequest;
 import com.PAP_team_21.flashcards.entities.JsonViewConfig;
 import com.PAP_team_21.flashcards.entities.customer.Customer;
@@ -10,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -20,9 +22,10 @@ import java.util.Optional;
 public class UserStatisticsController {
     private final UserStatisticsRepository userStatisticsRepository;
     private final CustomerRepository customerRepository;
+    private final UserStatisticsMapper userStatisticsMapper;
 
     @GetMapping("/getUserStatistics")
-    @JsonView(JsonViewConfig.Public.class)
+    @Transactional
     public ResponseEntity<?> getUserStatistics(Authentication authentication) {
         String email = authentication.getName();
         Optional<Customer> customerOpt = customerRepository.findByEmail(email);
@@ -33,7 +36,7 @@ public class UserStatisticsController {
 
         UserStatistics userStatistics = customerOpt.get().getUserStatistics();
 
-        return ResponseEntity.ok(userStatistics);
+        return ResponseEntity.ok(userStatisticsMapper.toDTO(customerOpt.get(), userStatistics));
     }
 
     @PostMapping("/update")

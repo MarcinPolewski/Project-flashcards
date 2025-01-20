@@ -251,7 +251,7 @@ END //
 
 # =============================================================================
 
-CREATE PROCEDURE count_new_cards(
+CREATE PROCEDURE count_decks_new_cards(
     IN userId INT,
     IN deckId INT,
     OUT newCardCount INT
@@ -268,7 +268,7 @@ END //
 
 # =============================================================================
 
-CREATE PROCEDURE count_all_due_cards(
+CREATE PROCEDURE count_all_deck_due_cards(
     IN userId INT,
     IN deckId INT,
     OUT dueCardCount INT
@@ -285,7 +285,7 @@ END //
 
 # =============================================================================
 
-CREATE PROCEDURE count_all_cards(
+CREATE PROCEDURE count_all_deck_cards(
     IN userId INT,
     IN deckId INT,
     OUT totalCardCount INT
@@ -307,6 +307,78 @@ BEGIN
     JOIN Access_Levels_Folders alf ON f.id = alf.folder_id
     JOIN Folder_Access_Level fal ON alf.access_level_id = fal.id
     WHERE fal.customer_id = userId;
+END //
+
+# =============================================================================
+CREATE PROCEDURE get_github_style_chart_data(
+    IN userId INT
+)
+BEGIN
+SELECT
+    DATE(`when`) AS activity_date
+FROM
+    Review_Logs
+WHERE
+    user_id = userId
+  AND `when` > DATE_SUB(NOW(), INTERVAL 1 YEAR)
+GROUP BY
+    DATE(`when`);
+END //
+
+# =============================================================================
+
+CREATE PROCEDURE find_customers_last_review(
+    IN userId INT,
+    OUT lastReviewDate DATE
+)
+BEGIN
+    SELECT MAX(`when`)
+    INTO lastReviewDate
+    FROM Review_Logs
+    WHERE user_id = userId;
+END //
+
+# =============================================================================
+CREATE PROCEDURE count_all_new_cards(
+    IN userId INT,
+    OUT result INT
+)
+BEGIN
+SELECT COUNT(*)
+INTO result
+FROM Flashcards fl
+LEFT JOIN Review_Logs rl ON fl.id = rl.flashcard_id
+WHERE
+    rl.user_id = userId AND
+    rl.id IS NULL;
+END //
+
+# =============================================================================
+
+CREATE PROCEDURE count_all_due_cards(
+    IN userId INT,
+    OUT result INT
+)
+BEGIN
+SELECT COUNT(*)
+INTO result
+FROM Flashcards fl
+         JOIN Flashcards_Progresses fp ON fl.id = fp.flashcard_id
+WHERE
+  fp.user_id = userId
+  AND fp.next_review <= NOW();
+END //
+
+# =============================================================================
+
+CREATE PROCEDURE count_all_cards(
+    IN userId INT,
+    OUT result INT
+)
+BEGIN
+SELECT COUNT(*)
+INTO result
+FROM Flashcards fl;
 END //
 
 # =============================================================================
