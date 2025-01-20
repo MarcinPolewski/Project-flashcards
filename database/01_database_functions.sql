@@ -471,5 +471,13 @@ MAXVALUE 999
 CYCLE
 CACHE 10;
 
+CREATE SEQUENCE friendship_notifications_seq
+START WITH 100
+INCREMENT BY 1
+MINVALUE 100
+MAXVALUE 999
+CYCLE
+CACHE 10;
+
 # =============================================================================
 DELIMITER ;
