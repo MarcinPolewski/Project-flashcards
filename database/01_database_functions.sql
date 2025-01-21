@@ -452,6 +452,38 @@ BEGIN
     RETURN newCardCount;
 END;
 
+CREATE OR REPLACE FUNCTION get_deck_progress(userId INT, deckId INT)
+    RETURN FLOAT
+IS
+    total_flashcards INT;
+    learned_flashcards INT;
+    progress FLOAT;
+BEGIN
+    -- Count the total number of flashcards in the deck
+    SELECT count(*) INTO total_flashcards
+    FROM Flashcards fl
+    WHERE fl.deck_id = deckId;
+
+    -- Count the number of learned flashcards for the user
+    SELECT count(*) INTO learned_flashcards
+    FROM Flashcards fl
+    JOIN Flashcards_Progresses fp ON fl.id = fp.flashcard_id
+    JOIN Review_Logs rl ON fp.last_review_id = rl.id
+    WHERE fl.deck_id = deckId
+      AND fp.user_id = userId
+      AND fp.next_review IS NOT NULL
+      AND DATEDIFF(fp.next_review, rl."when") > 30;
+
+    -- Calculate the progress
+    IF total_flashcards = 0 THEN
+        progress := 0;
+    ELSE
+        progress := learned_flashcards / total_flashcards;
+    END IF;
+
+    -- Return the progress
+    RETURN progress;
+END;
 
 # =============================================================================
 DELIMITER ;
