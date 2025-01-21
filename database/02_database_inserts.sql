@@ -21,9 +21,9 @@ SET FOREIGN_KEY_CHECKS = 1;
 
 
 INSERT INTO `Authorities` (`name`) VALUES
-                                       ('ROLE_USER'),
-                                       ('ROLE_ADMIN'),
-                                       ('ROLE_SUPERADMIN');
+       ('ROLE_USER'),
+       ('ROLE_ADMIN'),
+       ('ROLE_SUPERADMIN');
 
 
 INSERT INTO `Folders` (`name`) VALUES
