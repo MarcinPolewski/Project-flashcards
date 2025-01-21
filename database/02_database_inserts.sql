@@ -1,151 +1,3 @@
-# =============================================================================
-# CREATE SEQUENCE customer_seq
-#     START WITH 1
-#     INCREMENT BY 1
-#     MINVALUE 1
-#     MAXVALUE 5000
-#     CYCLE
-#     CACHE 10;
-#
-# CREATE SEQUENCE folder_seq
-#     START WITH 1
-#     INCREMENT BY 1
-#     MINVALUE 1
-#     MAXVALUE 9999
-#     CYCLE
-#     CACHE 10;
-#
-# CREATE SEQUENCE authority_seq
-#     START WITH 1
-#     INCREMENT BY 1
-#     MINVALUE 1
-#     MAXVALUE 999
-#     CYCLE
-#     CACHE 10;
-#
-# CREATE SEQUENCE folder_access_level_seq
-#     START WITH 1
-#     INCREMENT BY 1
-#     MINVALUE 1
-#     MAXVALUE 9999
-#     CYCLE
-#     CACHE 20;
-#
-# CREATE SEQUENCE friendship_seq
-#     START WITH 1
-#     INCREMENT BY 1
-#     MINVALUE 1
-#     MAXVALUE 999
-#     CYCLE
-#     CACHE 10;
-#
-# CREATE SEQUENCE sent_verification_code_seq
-#     START WITH 1
-#     INCREMENT BY 1
-#     MINVALUE 1
-#     MAXVALUE 9999
-#     CYCLE
-#     CACHE 20;
-#
-# CREATE SEQUENCE folder_parent_seq
-#     START WITH 1
-#     INCREMENT BY 1
-#     MINVALUE 1
-#     MAXVALUE 9999
-#     CYCLE
-#     CACHE 20;
-#
-# CREATE SEQUENCE authorities_customers_seq
-#     START WITH 1
-#     INCREMENT BY 1
-#     MINVALUE 1
-#     MAXVALUE 9999
-#     CYCLE
-#     CACHE 20;
-#
-# CREATE SEQUENCE access_level_folder_seq
-#     START WITH 1
-#     INCREMENT BY 1
-#     MINVALUE 1
-#     MAXVALUE 999
-#     CYCLE
-#     CACHE 10;
-#
-# CREATE SEQUENCE friendship_notifications_seq
-#     START WITH 1
-#     INCREMENT BY 1
-#     MINVALUE 1
-#     MAXVALUE 999
-#     CYCLE
-#     CACHE 10;
-#
-# CREATE SEQUENCE notifications_seq
-#     START WITH 1
-#     INCREMENT BY 1
-#     MINVALUE 1
-#     MAXVALUE 9999
-#     CYCLE
-#     CACHE 20;
-#
-# CREATE SEQUENCE user_statistics_seq
-#     START WITH 1
-#     INCREMENT BY 1
-#     MINVALUE 1
-#     MAXVALUE 999
-#     CYCLE
-#     CACHE 10;
-#
-# CREATE SEQUENCE flashcard_progress_seq
-#     START WITH 1
-#     INCREMENT BY 1
-#     MINVALUE 1
-#     MAXVALUE 9999
-#     CYCLE
-#     CACHE 20;
-#
-# CREATE SEQUENCE user_preferences_seq
-#     START WITH 1
-#     INCREMENT BY 1
-#     MINVALUE 1
-#     MAXVALUE 999
-#     CYCLE
-#     CACHE 10;
-#
-#
-# CREATE SEQUENCE review_logs_seq
-#     START WITH 1
-#     INCREMENT BY 1
-#     MINVALUE 1
-#     MAXVALUE 9999
-#     CYCLE
-#     CACHE 20;
-#
-# CREATE SEQUENCE folders_decks_seq
-#     START WITH 1
-#     INCREMENT BY 1
-#     MINVALUE 1
-#     MAXVALUE 9999
-#     CYCLE
-#     CACHE 20;
-#
-# CREATE SEQUENCE flashcard_seq
-#     START WITH 1
-#     INCREMENT BY 1
-#     MINVALUE 1
-#     MAXVALUE 99999
-#     CYCLE
-#     CACHE 30;
-#
-# CREATE SEQUENCE decks_seq
-#     START WITH 1
-#     INCREMENT BY 1
-#     MINVALUE 1
-#     MAXVALUE 9999
-#     CYCLE
-#     CACHE 20;
-
-# =============================================================================
-
 SET FOREIGN_KEY_CHECKS = 0;
 TRUNCATE TABLE User_Preferences;
 TRUNCATE TABLE User_Statistics;
@@ -477,44 +329,44 @@ INSERT INTO `Folders_Decks` (`folder_id`, `deck_id`) VALUES
 
 
 INSERT INTO `Folder_Parent` (`parent_folder_id`, `child_folder_id`) VALUES
-                                                                        (1, 11),
-                                                                        (1, 12),
-                                                                        (3, 13),
-                                                                        (4, 14),
-                                                                        (5, 15);
+        (1, 11),
+        (1, 12),
+        (3, 13),
+        (4, 14),
+        (5, 15);
 
 
 INSERT INTO `Folder_Access_Level` (`customer_id`, `access_level`) VALUES
-                                                                      (1, 1),
-                                                                      (2, 2),
-                                                                      (3, 1),
-                                                                      (4, 3),
-                                                                      (5, 1),
-                                                                      (6, 2),
-                                                                      (7, 3),
-                                                                      (8, 1),
-                                                                      (9, 2),
-                                                                      (10, 3),
-                                                                      (1, 2),
-                                                                      (1, 3),
-                                                                      (2, 1),
-                                                                      (8, 2),
-                                                                      (10, 3);
+      (1, 1),
+      (2, 2),
+      (3, 1),
+      (4, 3),
+      (5, 1),
+      (6, 2),
+      (7, 3),
+      (8, 1),
+      (9, 2),
+      (10, 3),
+      (1, 2),
+      (1, 3),
+      (2, 1),
+      (8, 2),
+      (10, 3);
 
 
 INSERT INTO `Access_Levels_Folders` (`access_level_id`, `folder_id`) VALUES
-                                                                         (1, 1),
-                                                                         (2, 2),
-                                                                         (3, 3),
-                                                                         (4, 4),
-                                                                         (5, 5),
-                                                                         (6, 6),
-                                                                         (7, 7),
-                                                                         (8, 8),
-                                                                         (9, 9),
-                                                                         (10, 10),
-                                                                         (11, 11),
-                                                                         (12, 12),
-                                                                         (13, 13),
-                                                                         (14, 14),
-                                                                         (15, 15);
+     (1, 1),
+     (2, 2),
+     (3, 3),
+     (4, 4),
+     (5, 5),
+     (6, 6),
+     (7, 7),
+     (8, 8),
+     (9, 9),
+     (10, 10),
+     (11, 11),
+     (12, 12),
+     (13, 13),
+     (14, 14),
+     (15, 15);
