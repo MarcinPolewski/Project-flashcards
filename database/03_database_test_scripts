@@ -48,26 +48,44 @@ END;
 
 
 -- get_deck_progress_func
--- 1. User with 50% progress in a deck
+-- 1. user with 50% progress in a deck
 DECLARE
     result FLOAT;
 BEGIN
-    -- Assuming userId = 1 and deckId = 1
+    -- userId = 1, deckId = 1
     result := get_deck_progress__func(1, 1);
     DBMS_OUTPUT.PUT_LINE('Deck Progress: ' || result); -- Expected: 50%
 END;
--- 2. User has not learned any flashcards in a deck
+-- 2. user has not learned any flashcards in a deck
 DECLARE
     result FLOAT;
 BEGIN
-    -- Assuming userId = 2 and deckId = 1
+    -- userId = 2, deckId = 1
     result := get_deck_progress_func(2, 1);
     DBMS_OUTPUT.PUT_LINE('Deck Progress: ' || result); -- Expected: 0
--- 3. Deck with no flashcards
+-- 3. deck with no flashcards
 DECLARE
     result FLOAT;
 BEGIN
-    -- Assuming userId = 1 and deckId = 999 (no cards in deck 999)
+    -- userId = 1, deckId = 999 (no cards in deck 999)
     result := get_deck_progress_func(1, 999);
     DBMS_OUTPUT.PUT_LINE('Deck Progress: ' || result); -- Expected: 0
+END;
+
+--calculate_study_time
+-- 1. calculate study time for a user with review logs in the last 7 days
+DECLARE
+    result FLOAT;
+BEGIN
+    -- userId = 1
+    result := calculate_study_time(1);
+    DBMS_OUTPUT.PUT_LINE('Study Time (hours): ' || result); -- Expected: Total study time in hours (assuming 10 minutes per review log)
+END;
+-- 2. calculate study time for a user with no review logs in the last 7 days
+DECLARE
+    result FLOAT;
+BEGIN
+    -- userId = 2 (user with no recent review logs)
+    result := calculate_study_time(2);
+    DBMS_OUTPUT.PUT_LINE('Study Time (hours): ' || result); -- Expected: 0, as there are no review logs in the last 7 days
 END;
