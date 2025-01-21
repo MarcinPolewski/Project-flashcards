@@ -4,6 +4,11 @@
 -- after_insert_customer_statistics
 INSERT INTO Customers (email, password_hash, username, profile_creation_date, root_folder_id) 
 VALUES ('test_user@example.com', 'hashedpassword', 'test_user', NOW(), 1);
-
 -- verify the trigger
 SELECT * FROM User_Statistics WHERE user_id = LAST_INSERT_ID();
+
+-- before_insert_notification
+INSERT INTO Notifications (user_id, received, text, received_date) 
+VALUES (1, 0, 'Test Notification', NOW());
+-- verify the trigger
+SELECT creation_date FROM Notifications WHERE id = LAST_INSERT_ID();
