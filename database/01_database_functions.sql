@@ -570,5 +570,15 @@ BEGIN
     SET NEW.root_folder_id = LAST_INSERT_ID();
 END;
 
+CREATE TRIGGER after_insert_friendship_notification
+AFTER INSERT ON Friendships
+FOR EACH ROW
+BEGIN
+    IF NEW.accepted = 0 THEN
+        INSERT INTO Notifications (user_id, text, creation_date) 
+        VALUES (NEW.receiver_id, CONCAT('You have a new friend request from user ID: ', NEW.sender_id), NOW());
+    END IF;
+END;
+
 # =============================================================================
 DELIMITER ;
