@@ -562,5 +562,13 @@ BEGIN
     SET NEW.creation_date = NOW();
 END;
 
+CREATE TRIGGER after_insert_customer_folder
+AFTER INSERT ON Customers
+FOR EACH ROW
+BEGIN
+    INSERT INTO Folders (name) VALUES (CONCAT('Root Folder - ', NEW.username));
+    SET NEW.root_folder_id = LAST_INSERT_ID();
+END;
+
 # =============================================================================
 DELIMITER ;
