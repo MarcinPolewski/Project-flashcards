@@ -159,6 +159,8 @@ BEGIN
     VALUES (NEW.id, NOW());
 END;
 
+DROP TRIGGER IF EXISTS before_insert_notification;
+
 CREATE TRIGGER before_insert_notification
     BEFORE INSERT ON Notifications
     FOR EACH ROW
@@ -166,21 +168,15 @@ BEGIN
     SET NEW.creation_date = NOW();
 END;
 
-CREATE TRIGGER after_insert_customer_folder
-    AFTER INSERT ON Customers
-    FOR EACH ROW
-BEGIN
-    INSERT INTO Folders (name) VALUES (CONCAT('Root Folder - ', NEW.username));
-    SET NEW.root_folder_id = LAST_INSERT_ID();
-END;
+DROP TRIGGER IF EXISTS after_insert_friendship_notification;
 
 CREATE TRIGGER after_insert_friendship_notification
     AFTER INSERT ON Friendships
     FOR EACH ROW
 BEGIN
     IF NEW.accepted = 0 THEN
-        INSERT INTO Notifications (user_id, text, creation_date)
-        VALUES (NEW.receiver_id, CONCAT('You have a new friend request from user ID: ', NEW.sender_id), NOW());
+        INSERT INTO Notifications (user_id, text, creation_date, received_date)
+        VALUES (NEW.receiver_id, CONCAT('You have a new friend request from user ID: ', NEW.sender_id), NOW(), NOW());
     END IF;
 END;
 
@@ -596,10 +592,10 @@ END //
 # =============================================================================
 
 DELIMITER $$
-DROP PROCEDURE IF EXISTS count_decks_new_cards_func;
+DROP FUNCTION IF EXISTS count_decks_new_cards;
 
 -- Funkcja zliczająca nowe karty
-CREATE FUNCTION count_decks_new_cards_func (userId INT, deckId INT)
+CREATE FUNCTION count_decks_new_cards (userId INT, deckId INT)
     RETURNS INT
     DETERMINISTIC
 BEGIN
@@ -615,9 +611,9 @@ BEGIN
     RETURN newCardCount;
 END $$
 
-DROP PROCEDURE IF EXISTS get_deck_progress_func;
+DROP FUNCTION IF EXISTS get_deck_progress;
 -- Funkcja obliczająca postęp w danym decku
-CREATE FUNCTION get_deck_progress_func(userId INT, deckId INT)
+CREATE FUNCTION get_deck_progress(userId INT, deckId INT)
     RETURNS FLOAT
     DETERMINISTIC
 BEGIN
@@ -654,7 +650,9 @@ BEGIN
 END $$
 
 -- Funkcja obliczająca całkowity czas nauki
-DROP PROCEDURE IF EXISTS calculate_study_time;
+
+DROP FUNCTION IF EXISTS calculate_study_time;
+
 
 DELIMITER $$
 
@@ -665,6 +663,9 @@ BEGIN
     DECLARE total_time INT DEFAULT 0;
     DECLARE study_time_in_seconds INT;
     DECLARE done INT DEFAULT 0;
+    DECLARE when_time DATETIME;
+    DECLARE user_answer VARCHAR(255);
+
     DECLARE rec_cursor CURSOR FOR
         SELECT rl.`when`, rl.user_answer
         FROM Review_Logs rl
@@ -677,7 +678,7 @@ BEGIN
     OPEN rec_cursor;
 
     read_loop: LOOP
-        FETCH rec_cursor INTO @dummy1, @dummy2;
+        FETCH rec_cursor INTO when_time, user_answer;
         IF done THEN
             LEAVE read_loop;
         END IF;
@@ -688,13 +689,13 @@ BEGIN
 
     CLOSE rec_cursor;
 
-    RETURN total_time / 3600;
+    RETURN total_time / 3600;  -- Return time in hours
 END $$
 
 DELIMITER ;
 
 -- Funkcja obliczająca najdłuższą serię dni nauki
-DROP PROCEDURE IF EXISTS calculate_longest_learning_streak;
+DROP FUNCTION IF EXISTS calculate_longest_learning_streak;
 
 DELIMITER $$
 
@@ -748,10 +749,8 @@ END $$
 
 DELIMITER ;
 
-
-
 -- Funkcja zliczająca karty nauczone w ciągu ostatnich 30 dni
-DROP PROCEDURE IF EXISTS calculate_flashcards_learned_last_30_days;
+DROP FUNCTION IF EXISTS calculate_flashcards_learned_last_30_days;
 
 DELIMITER $$
 
@@ -782,8 +781,8 @@ VALUES ('test_user@example.com', 'hashedpassword', 'test_user', NOW(), 1);
 SELECT * FROM User_Statistics WHERE user_id = LAST_INSERT_ID();
 
 -- before_insert_notification
-INSERT INTO Notifications (user_id, received, text, received_date)
-VALUES (1, 0, 'Test Notification', NOW());
+INSERT INTO Notifications (user_id, received, text, creation_date, received_date)
+VALUES (1, 0, 'Test Notification', '2025-01-22 00:30:59', '2025-01-22 00:30:59');
 -- verify the trigger
 SELECT creation_date FROM Notifications WHERE id = LAST_INSERT_ID();
 
@@ -797,56 +796,46 @@ SELECT root_folder_id FROM Customers WHERE id = LAST_INSERT_ID();
 -- after_insert_friendship_notification
 INSERT INTO Friendships (sender_id, receiver_id, accepted)
 VALUES (1, 2, 0);
+
 -- verify the trigger
 SELECT * FROM Notifications WHERE user_id = 2 AND text LIKE '%friend request from user ID: 1%';
 
 -- FUNCTIONS TESTING
 
--- count_decks_new_cards_func
--- Test case 1
-CALL count_decks_new_cards(1, 1, @result);
-SELECT @result AS 'New Cards Count for user 1 and deck 1';
+-- count_decks_new_cards
+-- Test case 1: user 1, deck 1
+SELECT count_decks_new_cards(1, 1) AS 'New Cards Count for user 1 and deck 1';
 
--- Test case 2
-CALL count_decks_new_cards(2, 1, @result);
-SELECT @result AS 'New Cards Count for user 2 and deck 1';
+-- Test case 2: user 2, deck 1
+SELECT count_decks_new_cards(2, 1) AS 'New Cards Count for user 2 and deck 1';
 
 -- get_deck_progress_func
 -- Test case 1: user with 50% progress in a deck
-CALL get_deck_progress(1, 1, @progress);
-SELECT @progress AS 'Deck Progress for user 1 and deck 1';
+SELECT get_deck_progress(1, 1) AS 'Deck Progress for user 1 and deck 1';
 
 -- Test case 2: user has not learned any flashcards in a deck
-CALL get_deck_progress(2, 1, @progress);
-SELECT @progress AS 'Deck Progress for user 2 and deck 1';
+SELECT get_deck_progress(2, 1) AS 'Deck Progress for user 2 and deck 1';
 
 -- Test case 3: deck with no flashcards
-CALL get_deck_progress(1, 999, @progress);
-SELECT @progress AS 'Deck Progress for user 1 and deck 999';
+SELECT get_deck_progress(1, 999) AS 'Deck Progress for user 1 and deck 999';
 
 -- calculate_study_time
 -- Test case 1: user with review logs in the last 7 days
-CALL calculate_study_time(1, @study_time);
-SELECT @study_time AS 'Study Time for user 1';
+SELECT calculate_study_time(1) AS 'Study Time for user 1';
 
 -- Test case 2: user with no review logs in the last 7 days
-CALL calculate_study_time(2, @study_time);
-SELECT @study_time AS 'Study Time for user 2';
+SELECT calculate_study_time(2) AS 'Study Time for user 2';
 
 -- calculate_longest_learning_streak
 -- Test case 1: user with a streak of consecutive days
-CALL calculate_longest_learning_streak(1, @streak);
-SELECT @streak AS 'Longest Learning Streak for user 1';
+SELECT calculate_longest_learning_streak(1) AS 'Longest Learning Streak for user 1';
 
 -- Test case 2: user with no review logs
-CALL calculate_longest_learning_streak(2, @streak);
-SELECT @streak AS 'Longest Learning Streak for user 2';
+SELECT calculate_longest_learning_streak(2) AS 'Longest Learning Streak for user 2';
 
 -- calculate_flashcards_learned_last_30_days
 -- Test case 1: user who has reviewed some flashcards in the last 30 days
-CALL calculate_flashcards_learned_last_30_days(1, @learned);
-SELECT @learned AS 'Flashcards Learned in Last 30 Days for user 1';
+SELECT calculate_flashcards_learned_last_30_days(1) AS 'Flashcards Learned in Last 30 Days for user 1';
 
 -- Test case 2: user who has not reviewed any flashcards in the last 30 days
-CALL calculate_flashcards_learned_last_30_days(2, @learned);
-SELECT @learned AS 'Flashcards Learned in Last 30 Days for user 2';
+SELECT calculate_flashcards_learned_last_30_days(2) AS 'Flashcards Learned in Last 30 Days for user 2';
