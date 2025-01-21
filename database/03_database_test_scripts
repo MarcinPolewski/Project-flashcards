@@ -19,3 +19,9 @@ VALUES ('another_user@example.com', 'anotherhashedpassword', 'another_user', NOW
 -- verify the trigger
 SELECT * FROM Folders WHERE name = CONCAT('Root Folder - ', 'another_user');
 SELECT root_folder_id FROM Customers WHERE id = LAST_INSERT_ID();
+
+----after_insert_friendship_notification
+INSERT INTO Friendships (sender_id, receiver_id, accepted) 
+VALUES (1, 2, 0);
+-- verify the trigger
+SELECT * FROM Notifications WHERE user_id = 2 AND text LIKE '%friend request from user ID: 1%';
