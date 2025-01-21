@@ -547,6 +547,24 @@ BEGIN
     RETURN longest_streak;
 END;
 
+CREATE OR REPLACE FUNCTION calculate_flashcards_learned_last_30_days(userId INT)
+    RETURN INT
+IS
+    flashcards_learned INT := 0;
+BEGIN
+    -- Count the number of flashcards reviewed in the last 30 days
+    SELECT COUNT(DISTINCT fp.flashcard_id)
+    INTO flashcards_learned
+    FROM Flashcards_Progresses fp
+    JOIN Review_Logs rl ON fp.last_review_id = rl.id
+    WHERE fp.user_id = userId
+    AND fp.next_review IS NOT NULL
+    AND DATEDIFF(CURRENT_DATE, rl.`when`) <= 30;
+
+    -- Return the count of learned flashcards
+    RETURN flashcards_learned;
+END;
+
 
 # =============================================================================
 DELIMITER ;
