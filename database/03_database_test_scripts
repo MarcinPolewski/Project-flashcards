@@ -25,3 +25,25 @@ INSERT INTO Friendships (sender_id, receiver_id, accepted)
 VALUES (1, 2, 0);
 -- verify the trigger
 SELECT * FROM Notifications WHERE user_id = 2 AND text LIKE '%friend request from user ID: 1%';
+
+# -----------------------------------------------------------------
+-- FUNCTIONS
+-- count_decks_new_cards_func
+-- count new flashcards in a deck for a user who has not reviewed any card yet
+DECLARE
+    result NUMBER;
+BEGIN
+    -- Assuming deckId = 1 and userId = 1
+    result := count_decks_new_cards_func(1, 1);
+    DBMS_OUTPUT.PUT_LINE('New Cards Count: ' || result); -- Expected: number of flashcards in deck 1 that the user hasn't reviewed
+END;
+
+-- Test Case 2: Count new flashcards in a deck for a user who has reviewed all cards
+DECLARE
+    result NUMBER;
+BEGIN
+    -- Assuming deckId = 1 and userId = 2
+    result := count_decks_new_cards_func(2, 1);
+    DBMS_OUTPUT.PUT_LINE('New Cards Count: ' || result); -- Expected: 0, as the user has reviewed all cards in deck 1
+END;
+
