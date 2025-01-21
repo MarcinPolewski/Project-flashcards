@@ -12,3 +12,10 @@ INSERT INTO Notifications (user_id, received, text, received_date)
 VALUES (1, 0, 'Test Notification', NOW());
 -- verify the trigger
 SELECT creation_date FROM Notifications WHERE id = LAST_INSERT_ID();
+
+--after_insert_customer_folder
+INSERT INTO Customers (email, password_hash, username, profile_creation_date, root_folder_id) 
+VALUES ('another_user@example.com', 'anotherhashedpassword', 'another_user', NOW(), 1);
+-- verify the trigger
+SELECT * FROM Folders WHERE name = CONCAT('Root Folder - ', 'another_user');
+SELECT root_folder_id FROM Customers WHERE id = LAST_INSERT_ID();
