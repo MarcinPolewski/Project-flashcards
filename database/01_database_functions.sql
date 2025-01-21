@@ -485,5 +485,29 @@ BEGIN
     RETURN progress;
 END;
 
+CREATE OR REPLACE FUNCTION calculate_study_time(userId INT)
+    RETURN FLOAT
+IS
+    total_time INT := 0;
+    study_time_in_seconds INT;
+BEGIN
+    -- Calculate the total time spent on review for the last 7 days by the user
+    FOR rec IN (
+        SELECT rl.`when`, rl.user_answer
+        FROM Review_Logs rl
+        WHERE rl.user_id = userId
+        AND rl.`when` >= NOW() - INTERVAL 7 DAY
+    ) LOOP
+        -- Each review log represents a study session, and we consider the time spent in seconds.
+        -- For simplicity, we assume the average study time per log is 10 minutes (600 seconds).
+        study_time_in_seconds := 600;
+        total_time := total_time + study_time_in_seconds;
+    END LOOP;
+
+    -- Convert time from seconds to hours and return the result
+    RETURN total_time / 3600;
+END;
+
+
 # =============================================================================
 DELIMITER ;
