@@ -1,0 +1,9 @@
+# -----------------------------------------------------------------
+-- TRIGGERS
+
+-- after_insert_customer_statistics
+INSERT INTO Customers (email, password_hash, username, profile_creation_date, root_folder_id) 
+VALUES ('test_user@example.com', 'hashedpassword', 'test_user', NOW(), 1);
+
+-- verify the trigger
+SELECT * FROM User_Statistics WHERE user_id = LAST_INSERT_ID();
