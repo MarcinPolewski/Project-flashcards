@@ -555,7 +555,12 @@ BEGIN
     VALUES (NEW.id, NOW());
 END;
 
-
+CREATE TRIGGER before_insert_notification
+BEFORE INSERT ON Notifications
+FOR EACH ROW
+BEGIN
+    SET NEW.creation_date = NOW();
+END;
 
 # =============================================================================
 DELIMITER ;
