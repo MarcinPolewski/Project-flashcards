@@ -150,52 +150,16 @@ CREATE SEQUENCE decks_seq
 INSERT INTO `Authorities` (
     `id`, `name`
 ) VALUES
-    (NEXTVAL(authority_seq), 'ROLE_USER');
-
-INSERT INTO `Authorities` (
-    `id`, `name`
-) VALUES
-    (NEXTVAL(authority_seq), 'ROLE_ADMIN');
-
-INSERT INTO `Authorities` (
-    `id`, `name`
-) VALUES
-    (NEXTVAL(authority_seq), 'ROLE_SUPERADMIN');
-
-INSERT INTO `Authorities` (
-    `id`, `name`
-) VALUES
-    (NEXTVAL(authority_seq), 'ROLE_MODERATOR');
-
-INSERT INTO `Authorities` (
-    `id`, `name`
-) VALUES
-    (NEXTVAL(authority_seq), 'ROLE_VIEWER');
-
-INSERT INTO `Authorities` (
-    `id`, `name`
-) VALUES
-    (NEXTVAL(authority_seq), 'ROLE_EDITOR');
-
-INSERT INTO `Authorities` (
-    `id`, `name`
-) VALUES
-    (NEXTVAL(authority_seq), 'ROLE_ANALYST');
-
-INSERT INTO `Authorities` (
-    `id`, `name`
-) VALUES
-    (NEXTVAL(authority_seq), 'ROLE_DEVELOPER');
-
-INSERT INTO `Authorities` (
-    `id`, `name`
-) VALUES
-    (NEXTVAL(authority_seq), 'ROLE_SUPPORT');
-
-INSERT INTO `Authorities` (
-    `id`, `name`
-) VALUES
-    (NEXTVAL(authority_seq), 'ROLE_MANAGER');
+      (NEXTVAL(authority_seq), 'ROLE_USER'),
+      (NEXTVAL(authority_seq), 'ROLE_ADMIN'),
+      (NEXTVAL(authority_seq), 'ROLE_SUPERADMIN'),
+      (NEXTVAL(authority_seq), 'ROLE_MODERATOR'),
+      (NEXTVAL(authority_seq), 'ROLE_VIEWER'),
+      (NEXTVAL(authority_seq), 'ROLE_EDITOR'),
+      (NEXTVAL(authority_seq), 'ROLE_ANALYST'),
+      (NEXTVAL(authority_seq), 'ROLE_DEVELOPER'),
+      (NEXTVAL(authority_seq), 'ROLE_SUPPORT'),
+      (NEXTVAL(authority_seq), 'ROLE_MANAGER');
 
 
 -- customer
@@ -205,290 +169,83 @@ INSERT INTO `Customers` (
     `account_locked`, `credentials_expired`, `enabled`, `profile_creation_date`,
     `profile_picture_path`, `root_folder_id`, `bio`
 ) VALUES
-(NEXTVAL(customer_seq), 'user1@example.com', 'hashed_password_1', 'user1', 0, 0, 0, 1, NOW(),
-    'exemplary_path', 1, 'hello'
-);
+      (NEXTVAL(customer_seq), 'user1@example.com', 'hashed_password_1', 'user1', 0, 0, 0, 1, NOW(), 'exemplary_path', 1, 'hello'),
+      (NEXTVAL(customer_seq), 'user2@example.com', 'hashed_password_2', 'user2', 0, 0, 0, 1, NOW(), '/static/profile_pictures/user2.jpg', 2, 'Welcome to my profile!'),
+      (NEXTVAL(customer_seq), 'user3@example.com', 'hashed_password_3', 'user3', 1, 0, 1, 0, NOW(), '/static/profile_pictures/user3.jpg', 3, 'This is user3’s bio.'),
+      (NEXTVAL(customer_seq), 'user4@example.com', 'hashed_password_4', 'user4', 0, 1, 0, 1, NOW(), '/static/profile_pictures/user4.jpg', 4, 'Hello! User4 here.'),
+      (NEXTVAL(customer_seq), 'user5@example.com', 'hashed_password_5', 'user5', 0, 0, 0, 1, NOW(), '/static/profile_pictures/user5.jpg', 5, 'I love using the Flashcards app!'),
+      (NEXTVAL(customer_seq), 'user6@example.com', 'hashed_password_6', 'user6', 0, 1, 0, 0, NOW(), NULL, 6, 'This is user6’s custom bio.'),
+      (NEXTVAL(customer_seq), 'user7@example.com', 'hashed_password_7', 'user7', 1, 0, 1, 0, NOW(), '/static/profile_pictures/user7.jpg', 7, NULL),
+      (NEXTVAL(customer_seq), 'user8@example.com', 'hashed_password_8', 'user6', 0, 0, 0, 1, NOW(), '/static/profile_pictures/user8.jpg', 8, 'Hello from user8!'),
+      (NEXTVAL(customer_seq), 'user9@example.com', 'hashed_password_9', 'user7', 1, 1, 1, 0, NOW(), '/static/profile_pictures/user9.jpg', 9, 'Bio for user9'),
+      (NEXTVAL(customer_seq), 'user10@example.com', 'hashed_password_10', 'user7', 0, 0, 0, 1, NOW(), '/static/profile_pictures/user10.jpg', 10, 'User10 loves this app!');
 
-INSERT INTO `Customers` (
-    `id`, `email`, `password_hash`, `username`, `account_expired`,
-    `account_locked`, `credentials_expired`, `enabled`, `profile_creation_date`,
-    `profile_picture_path`, `root_folder_id`, `bio`
-) VALUES
-    (NEXTVAL(customer_seq), 'user2@example.com', 'hashed_password_2', 'user2', 0, 0, 0, 1, NOW(),
-     '/static/profile_pictures/user2.jpg', 2, 'Welcome to my profile!');
-
-INSERT INTO `Customers` (
-    `id`, `email`, `password_hash`, `username`, `account_expired`,
-    `account_locked`, `credentials_expired`, `enabled`, `profile_creation_date`,
-    `profile_picture_path`, `root_folder_id`, `bio`
-) VALUES
-    (NEXTVAL(customer_seq), 'user3@example.com', 'hashed_password_3', 'user3', 1, 0, 1, 0, NOW(),
-     '/static/profile_pictures/user3.jpg', 3, 'This is user3’s bio.');
-
-INSERT INTO `Customers` (
-    `id`, `email`, `password_hash`, `username`, `account_expired`,
-    `account_locked`, `credentials_expired`, `enabled`, `profile_creation_date`,
-    `profile_picture_path`, `root_folder_id`, `bio`
-) VALUES
-    (NEXTVAL(customer_seq), 'user4@example.com', 'hashed_password_4', 'user4', 0, 1, 0, 1, NOW(),
-     '/static/profile_pictures/user4.jpg', 4, 'Hello! User4 here.');
-
-
-INSERT INTO `Customers` (
-    `id`, `email`, `password_hash`, `username`, `account_expired`,
-    `account_locked`, `credentials_expired`, `enabled`, `profile_creation_date`,
-    `profile_picture_path`, `root_folder_id`, `bio`
-) VALUES
-    (NEXTVAL(customer_seq), 'user5@example.com', 'hashed_password_5', 'user5', 0, 0, 0, 1, NOW(),
-     '/static/profile_pictures/user5.jpg', 5, 'I love using the Flashcards app!');
-
-INSERT INTO `Customers` (
-    `id`, `email`, `password_hash`, `username`, `account_expired`,
-    `account_locked`, `credentials_expired`, `enabled`, `profile_creation_date`,
-    `profile_picture_path`, `root_folder_id`, `bio`
-) VALUES
-    (NEXTVAL(customer_seq), 'user6@example.com', 'hashed_password_6', 'user6', 0, 1, 0, 0, NOW(),
-     NULL, 6, 'This is user6’s custom bio.');
-
-INSERT INTO `Customers` (
-    `id`, `email`, `password_hash`, `username`, `account_expired`,
-    `account_locked`, `credentials_expired`, `enabled`, `profile_creation_date`,
-    `profile_picture_path`, `root_folder_id`, `bio`
-) VALUES
-    (NEXTVAL(customer_seq), 'user7@example.com', 'hashed_password_7', 'user7', 1, 0, 1, 0, NOW(),
-     '/static/profile_pictures/user7.jpg', 7, NULL);
-
-INSERT INTO `Customers` (
-    `id`, `email`, `password_hash`, `username`, `account_expired`,
-    `account_locked`, `credentials_expired`, `enabled`, `profile_creation_date`,
-    `profile_picture_path`, `root_folder_id`, `bio`
-) VALUES
-    (NEXTVAL(customer_seq), 'user8@example.com', 'hashed_password_8', 'user6', 0, 0, 0, 1, NOW(),
-     '/static/profile_pictures/user8.jpg', 8, 'Hello from user8!');
-
-INSERT INTO `Customers` (
-    `id`, `email`, `password_hash`, `username`, `account_expired`,
-    `account_locked`, `credentials_expired`, `enabled`, `profile_creation_date`,
-    `profile_picture_path`, `root_folder_id`, `bio`
-) VALUES
-    (NEXTVAL(customer_seq), 'user9@example.com', 'hashed_password_9', 'user7', 1, 1, 1, 0, NOW(),
-     '/static/profile_pictures/user9.jpg', 9, 'Bio for user9');
-
-INSERT INTO `Customers` (
-    `id`, `email`, `password_hash`, `username`, `account_expired`,
-    `account_locked`, `credentials_expired`, `enabled`, `profile_creation_date`,
-    `profile_picture_path`, `root_folder_id`, `bio`
-) VALUES
-    (NEXTVAL(customer_seq), 'user10@example.com', 'hashed_password_10', 'user7', 0, 0, 0, 1, NOW(),
-     '/static/profile_pictures/user10.jpg', 10, 'User10 loves this app!');
 
 --  folders
 
 INSERT INTO `Folders` (
     `id`, `name`
 ) VALUES
-    (NEXTVAL(folder_seq), 'Polish');
-
-INSERT INTO `Folders` (
-    `id`, `name`
-) VALUES
-    (NEXTVAL(folder_seq), 'English');
-
-INSERT INTO `Folders` (
-    `id`, `name`
-) VALUES
-    (NEXTVAL(folder_seq), 'German');
-
-INSERT INTO `Folders` (
-    `id`, `name`
-) VALUES
-    (NEXTVAL(folder_seq), 'Spanish');
-
-INSERT INTO `Folders` (
-    `id`, `name`
-) VALUES
-    (NEXTVAL(folder_seq), 'French');
-
-INSERT INTO `Folders` (
-    `id`, `name`
-) VALUES
-    (NEXTVAL(folder_seq), 'Italian');
-
-INSERT INTO `Folders` (
-    `id`, `name`
-) VALUES
-    (NEXTVAL(folder_seq), 'Russian');
-
-INSERT INTO `Folders` (
-    `id`, `name`
-) VALUES
-    (NEXTVAL(folder_seq), 'Chinese');
-
-INSERT INTO `Folders` (
-    `id`, `name`
-) VALUES
-    (NEXTVAL(folder_seq), 'Japanese');
-
-INSERT INTO `Folders` (
-    `id`, `name`
-) VALUES
-    (NEXTVAL(folder_seq), 'Portuguese');
+      (NEXTVAL(folder_seq), 'Polish'),
+      (NEXTVAL(folder_seq), 'English'),
+      (NEXTVAL(folder_seq), 'German'),
+      (NEXTVAL(folder_seq), 'Spanish'),
+      (NEXTVAL(folder_seq), 'French'),
+      (NEXTVAL(folder_seq), 'Italian'),
+      (NEXTVAL(folder_seq), 'Russian'),
+      (NEXTVAL(folder_seq), 'Chinese'),
+      (NEXTVAL(folder_seq), 'Japanese'),
+      (NEXTVAL(folder_seq), 'Portuguese');
 
 -- access_levels
 
 INSERT INTO `Access_Levels_Folders` (
     `id`, `access_level_id`, `folder_id`
 ) VALUES
-    (NEXTVAL(access_level_seq), 1001, 1000);
+      (NEXTVAL(access_level_seq), 1001, 1000),
+      (NEXTVAL(access_level_seq), 1002, 1001),
+      (NEXTVAL(access_level_seq), 1003, 1002),
+      (NEXTVAL(access_level_seq), 1004, 1003),
+      (NEXTVAL(access_level_seq), 1005, 1004),
+      (NEXTVAL(access_level_seq), 1006, 1005),
+      (NEXTVAL(access_level_seq), 1007, 1006),
+      (NEXTVAL(access_level_seq), 1008, 1007),
+      (NEXTVAL(access_level_seq), 1009, 1008),
+      (NEXTVAL(access_level_seq), 1010, 1009);
 
-INSERT INTO `Access_Levels_Folders` (
-    `id`, `access_level_id`, `folder_id`
-) VALUES
-    (NEXTVAL(access_level_seq), 1002, 1001);
-
-INSERT INTO `Access_Levels_Folders` (
-    `id`, `access_level_id`, `folder_id`
-) VALUES
-    (NEXTVAL(access_level_seq), 1003, 1002);
-
-INSERT INTO `Access_Levels_Folders` (
-    `id`, `access_level_id`, `folder_id`
-) VALUES
-    (NEXTVAL(access_level_seq), 1004, 1003);
-
-INSERT INTO `Access_Levels_Folders` (
-    `id`, `access_level_id`, `folder_id`
-) VALUES
-    (NEXTVAL(access_level_seq), 1005, 1004);
-
-INSERT INTO `Access_Levels_Folders` (
-    `id`, `access_level_id`, `folder_id`
-) VALUES
-    (NEXTVAL(access_level_seq), 1006, 1005);
-
-INSERT INTO `Access_Levels_Folders` (
-    `id`, `access_level_id`, `folder_id`
-) VALUES
-    (NEXTVAL(access_level_seq), 1007, 1006);
-
-INSERT INTO `Access_Levels_Folders` (
-    `id`, `access_level_id`, `folder_id`
-) VALUES
-    (NEXTVAL(access_level_seq), 1008, 1007);
-
-INSERT INTO `Access_Levels_Folders` (
-    `id`, `access_level_id`, `folder_id`
-) VALUES
-    (NEXTVAL(access_level_seq), 1009, 1008);
-
-INSERT INTO `Access_Levels_Folders` (
-    `id`, `access_level_id`, `folder_id`
-) VALUES
-    (NEXTVAL(access_level_seq), 1010, 1009);
 
 -- friendships
 
 INSERT INTO `Friendships` (
     `id`, `sender_id`, `receiver_id`, `accepted`
 ) VALUES
-    (NEXTVAL(friendship_seq), 100, 101, 0);
+      (NEXTVAL(friendship_seq), 100, 101, 0),
+      (NEXTVAL(friendship_seq), 101, 102, 1),
+      (NEXTVAL(friendship_seq), 102, 103, 0),
+      (NEXTVAL(friendship_seq), 103, 104, 1),
+      (NEXTVAL(friendship_seq), 104, 105, 0),
+      (NEXTVAL(friendship_seq), 105, 106, 1),
+      (NEXTVAL(friendship_seq), 106, 107, 0),
+      (NEXTVAL(friendship_seq), 107, 108, 1),
+      (NEXTVAL(friendship_seq), 108, 109, 0),
+      (NEXTVAL(friendship_seq), 109, 110, 1);
 
-INSERT INTO `Friendships` (
-    `id`, `sender_id`, `receiver_id`, `accepted`
-) VALUES
-    (NEXTVAL(friendship_seq), 101, 102, 1);
-
-INSERT INTO `Friendships` (
-    `id`, `sender_id`, `receiver_id`, `accepted`
-) VALUES
-    (NEXTVAL(friendship_seq), 102, 103, 0);
-
-INSERT INTO `Friendships` (
-    `id`, `sender_id`, `receiver_id`, `accepted`
-) VALUES
-    (NEXTVAL(friendship_seq), 103, 104, 1);
-
-INSERT INTO `Friendships` (
-    `id`, `sender_id`, `receiver_id`, `accepted`
-) VALUES
-    (NEXTVAL(friendship_seq), 104, 105, 0);
-
-INSERT INTO `Friendships` (
-    `id`, `sender_id`, `receiver_id`, `accepted`
-) VALUES
-    (NEXTVAL(friendship_seq), 105, 106, 1);
-
-INSERT INTO `Friendships` (
-    `id`, `sender_id`, `receiver_id`, `accepted`
-) VALUES
-    (NEXTVAL(friendship_seq), 106, 107, 0);
-
-INSERT INTO `Friendships` (
-    `id`, `sender_id`, `receiver_id`, `accepted`
-) VALUES
-    (NEXTVAL(friendship_seq), 107, 108, 1);
-
-INSERT INTO `Friendships` (
-    `id`, `sender_id`, `receiver_id`, `accepted`
-) VALUES
-    (NEXTVAL(friendship_seq), 108, 109, 0);
-
-INSERT INTO `Friendships` (
-    `id`, `sender_id`, `receiver_id`, `accepted`
-) VALUES
-    (NEXTVAL(friendship_seq), 109, 110, 1);
 
 -- sent_verification_code
 
 INSERT INTO `Sent_Verification_Codes` (
     `id`, `customer_id`, `expiration_date`, `code`
 ) VALUES
-    (NEXTVAL(sent_verification_code_seq), 100, NOW() + INTERVAL 1 DAY, 'CODE1001');
-
-INSERT INTO `Sent_Verification_Codes` (
-    `id`, `customer_id`, `expiration_date`, `code`
-) VALUES
-    (NEXTVAL(sent_verification_code_seq), 101, NOW() + INTERVAL 2 DAY, 'CODE1002');
-
-INSERT INTO `Sent_Verification_Codes` (
-    `id`, `customer_id`, `expiration_date`, `code`
-) VALUES
-    (NEXTVAL(sent_verification_code_seq), 102, NOW() + INTERVAL 3 DAY, 'CODE1003');
-
-INSERT INTO `Sent_Verification_Codes` (
-    `id`, `customer_id`, `expiration_date`, `code`
-) VALUES
-    (NEXTVAL(sent_verification_code_seq), 103, NOW() + INTERVAL 1 HOUR, 'CODE1004');
-
-INSERT INTO `Sent_Verification_Codes` (
-    `id`, `customer_id`, `expiration_date`, `code`
-) VALUES
-    (NEXTVAL(sent_verification_code_seq), 104, NOW() + INTERVAL 6 HOUR, 'CODE1005');
-
-INSERT INTO `Sent_Verification_Codes` (
-    `id`, `customer_id`, `expiration_date`, `code`
-) VALUES
-    (NEXTVAL(sent_verification_code_seq), 105, NOW() + INTERVAL 1 DAY, 'CODE1006');
-
-INSERT INTO `Sent_Verification_Codes` (
-    `id`, `customer_id`, `expiration_date`, `code`
-) VALUES
-    (NEXTVAL(sent_verification_code_seq), 106, NOW() + INTERVAL 2 DAY, 'CODE1007');
-
-INSERT INTO `Sent_Verification_Codes` (
-    `id`, `customer_id`, `expiration_date`, `code`
-) VALUES
-    (NEXTVAL(sent_verification_code_seq), 107, NOW() + INTERVAL 3 HOUR, 'CODE1008');
-
-INSERT INTO `Sent_Verification_Codes` (
-    `id`, `customer_id`, `expiration_date`, `code`
-) VALUES
-    (NEXTVAL(sent_verification_code_seq), 108, NOW() + INTERVAL 2 HOUR, 'CODE1009');
-
-INSERT INTO `Sent_Verification_Codes` (
-    `id`, `customer_id`, `expiration_date`, `code`
-) VALUES
-    (NEXTVAL(sent_verification_code_seq), 109, NOW() + INTERVAL 1 HOUR, 'CODE1010');
+      (NEXTVAL(sent_verification_code_seq), 100, NOW() + INTERVAL 1 DAY, 'CODE1001'),
+      (NEXTVAL(sent_verification_code_seq), 101, NOW() + INTERVAL 2 DAY, 'CODE1002'),
+      (NEXTVAL(sent_verification_code_seq), 102, NOW() + INTERVAL 3 DAY, 'CODE1003'),
+      (NEXTVAL(sent_verification_code_seq), 103, NOW() + INTERVAL 1 HOUR, 'CODE1004'),
+      (NEXTVAL(sent_verification_code_seq), 104, NOW() + INTERVAL 6 HOUR, 'CODE1005'),
+      (NEXTVAL(sent_verification_code_seq), 105, NOW() + INTERVAL 1 DAY, 'CODE1006'),
+      (NEXTVAL(sent_verification_code_seq), 106, NOW() + INTERVAL 2 DAY, 'CODE1007'),
+      (NEXTVAL(sent_verification_code_seq), 107, NOW() + INTERVAL 3 HOUR, 'CODE1008'),
+      (NEXTVAL(sent_verification_code_seq), 108, NOW() + INTERVAL 2 HOUR, 'CODE1009'),
+      (NEXTVAL(sent_verification_code_seq), 109, NOW() + INTERVAL 1 HOUR, 'CODE1010');
 
 -- Insert into Folder_Parent table
 INSERT INTO `Folder_Parent` (
@@ -505,7 +262,7 @@ INSERT INTO `Folder_Parent` (
       (NEXTVAL(folder_parent_seq), 1008, 1009),
       (NEXTVAL(folder_parent_seq), 1009, 1010);
 
---authorities_customers
+-- authorities_customers
 
 -- Insert into Authorities_Customers table
 INSERT INTO `Authorities_Customers` (
