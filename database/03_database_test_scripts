@@ -97,7 +97,7 @@ DECLARE
 BEGIN
     -- userId = 1 with consecutive review days
     result := calculate_longest_learning_streak(1);
-    DBMS_OUTPUT.PUT_LINE('Longest Learning Streak (days): ' || result); -- Expected: longest streak of consecutive days
+    DBMS_OUTPUT.PUT_LINE('Longest Learning Streak (days): ' || result);
 END;
 
 -- 2. user with no review logs (no learning streak)
@@ -106,5 +106,24 @@ DECLARE
 BEGIN
     -- userId = 2 with no review logs
     result := calculate_longest_learning_streak(2);
-    DBMS_OUTPUT.PUT_LINE('Longest Learning Streak (days): ' || result); -- Expected: 0, as the user has no review logs
+    DBMS_OUTPUT.PUT_LINE('Longest Learning Streak (days): ' || result); -- Expected: 0
+END;
+
+--calculate_flashcards_learned_last_30_days
+-- 1. count flashcards reviewed in the last 30 days for a user who has reviewed some flashcards
+DECLARE
+    result INT;
+BEGIN
+    -- userId = 1
+    result := calculate_flashcards_learned_last_30_days(1);
+    DBMS_OUTPUT.PUT_LINE('Flashcards Learned in Last 30 Days: ' || result);
+END;
+
+-- 2. count flashcards reviewed in the last 30 days for a user who has not reviewed any flashcards recently
+DECLARE
+    result INT;
+BEGIN
+    -- userId = 2 (user who hasn't reviewed flashcards in the last 30 days)
+    result := calculate_flashcards_learned_last_30_days(2);
+    DBMS_OUTPUT.PUT_LINE('Flashcards Learned in Last 30 Days: ' || result); -- Expected: 0
 END;
