@@ -452,7 +452,7 @@ BEGIN
     RETURN newCardCount;
 END;
 
-CREATE OR REPLACE FUNCTION get_deck_progress(userId INT, deckId INT)
+CREATE OR REPLACE FUNCTION get_deck_progress_func(userId INT, deckId INT)
     RETURN FLOAT
 IS
     total_flashcards INT;
