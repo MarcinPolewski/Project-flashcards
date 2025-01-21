@@ -485,6 +485,8 @@ BEGIN
     RETURN progress;
 END;
 
+-- FUNCTIONS AND CURSORS
+
 CREATE OR REPLACE FUNCTION calculate_study_time(userId INT)
     RETURN FLOAT
 IS
@@ -504,8 +506,45 @@ BEGIN
         total_time := total_time + study_time_in_seconds;
     END LOOP;
 
-    -- Convert time from seconds to hours and return the result
     RETURN total_time / 3600;
+END;
+
+CREATE OR REPLACE FUNCTION calculate_longest_learning_streak(userId INT)
+    RETURN INT
+IS
+    longest_streak INT := 0;
+    current_streak INT := 0;
+    prev_date DATE;
+    current_date DATE;
+BEGIN
+    -- Loop through the user's review logs and find the longest streak of consecutive days
+    FOR rec IN (
+        SELECT DISTINCT DATE(rl.`when`) AS review_date
+        FROM Review_Logs rl
+        WHERE rl.user_id = userId
+        ORDER BY review_date
+    ) LOOP
+        current_date := rec.review_date;
+
+        IF prev_date IS NOT NULL AND current_date = prev_date + INTERVAL 1 DAY THEN
+            -- Consecutive day, increment the current streak
+            current_streak := current_streak + 1;
+        ELSE
+            -- Not a consecutive day, reset the current streak
+            current_streak := 1;
+        END IF;
+
+        -- Update the longest streak if the current streak is greater
+        IF current_streak > longest_streak THEN
+            longest_streak := current_streak;
+        END IF;
+
+        -- Update prev_date for next iteration
+        prev_date := current_date;
+    END LOOP;
+
+    -- Return the longest streak of learning days
+    RETURN longest_streak;
 END;
 
 
