@@ -399,6 +399,7 @@ FROM Flashcards fl;
 END //
 
 # =============================================================================
+-- SEQUENCES
 CREATE SEQUENCE customer_seq
 START WITH 100
 INCREMENT BY 1
@@ -543,6 +544,18 @@ MINVALUE 1000
 MAXVALUE 9999
 CYCLE
 CACHE 20;
+
+# =============================================================================
+-- TRIGGERS
+CREATE TRIGGER after_insert_customer_statistics
+AFTER INSERT ON Customers
+FOR EACH ROW
+BEGIN
+    INSERT INTO User_Statistics (user_id, last_login)
+    VALUES (NEW.id, NOW());
+END;
+
+
 
 # =============================================================================
 DELIMITER ;
