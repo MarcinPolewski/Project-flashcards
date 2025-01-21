@@ -89,3 +89,22 @@ BEGIN
     result := calculate_study_time(2);
     DBMS_OUTPUT.PUT_LINE('Study Time (hours): ' || result); -- Expected: 0, as there are no review logs in the last 7 days
 END;
+
+-- calculate_longest_learning_streak
+-- 1: user with a streak of consecutive days
+DECLARE
+    result INT;
+BEGIN
+    -- userId = 1 with consecutive review days
+    result := calculate_longest_learning_streak(1);
+    DBMS_OUTPUT.PUT_LINE('Longest Learning Streak (days): ' || result); -- Expected: longest streak of consecutive days
+END;
+
+-- 2. user with no review logs (no learning streak)
+DECLARE
+    result INT;
+BEGIN
+    -- userId = 2 with no review logs
+    result := calculate_longest_learning_streak(2);
+    DBMS_OUTPUT.PUT_LINE('Longest Learning Streak (days): ' || result); -- Expected: 0, as the user has no review logs
+END;
