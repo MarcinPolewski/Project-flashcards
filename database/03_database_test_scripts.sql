@@ -149,6 +149,7 @@
 DELIMITER //
 
 -- TRIGGERS
+DROP TRIGGER IF EXISTS after_insert_customer_statistics;
 
 CREATE TRIGGER after_insert_customer_statistics
     AFTER INSERT ON Customers
@@ -185,6 +186,7 @@ END;
 
 
 # =============================================================================
+DROP PROCEDURE IF EXISTS count_current_learning;
 
 CREATE PROCEDURE count_current_learning(
     IN userId INT,
@@ -209,6 +211,7 @@ BEGIN
 END //
 
 # =============================================================================
+DROP PROCEDURE IF EXISTS count_due_in_learning;
 
 CREATE PROCEDURE count_due_in_learning(
     IN userId INT,
@@ -237,6 +240,7 @@ BEGIN
 END //
 
 # =============================================================================
+DROP PROCEDURE IF EXISTS count_due_to_review;
 
 # cards that are due but are not in learning
 CREATE PROCEDURE count_due_to_review(
@@ -267,6 +271,7 @@ END //
 
 
 # =============================================================================
+DROP PROCEDURE IF EXISTS get_due_flashcards;
 
 CREATE PROCEDURE get_due_flashcards(
     IN userId INT,
@@ -292,6 +297,7 @@ BEGIN
 END //
 
 # =============================================================================
+DROP PROCEDURE IF EXISTS get_new_flashcard;
 
 CREATE PROCEDURE get_new_flashcard(
     IN userId INT,
@@ -307,6 +313,7 @@ BEGIN
 END //
 
 # =============================================================================
+DROP PROCEDURE IF EXISTS get_early_review;
 
 CREATE PROCEDURE get_early_review(
     IN userId INT,
@@ -336,6 +343,8 @@ BEGIN
 END //
 
 # =============================================================================
+DROP PROCEDURE IF EXISTS get_due_in_learning;
+
 CREATE PROCEDURE get_due_in_learning(
     IN userId INT,
     IN deckId INT,
@@ -360,6 +369,8 @@ BEGIN
 
 END //
 # =============================================================================
+DROP PROCEDURE IF EXISTS get_due_to_review;
+
 CREATE PROCEDURE get_due_to_review(
     IN userId INT,
     IN deckId INT,
@@ -385,6 +396,8 @@ BEGIN
 END //
 
 # =============================================================================
+DROP PROCEDURE IF EXISTS get_last_used_decks;
+
 CREATE PROCEDURE get_last_used_decks(
     IN userId INT,
     IN howMany INT
@@ -401,6 +414,7 @@ END //
 
 
 # =============================================================================
+DROP PROCEDURE IF EXISTS get_deck_progress;
 
 CREATE PROCEDURE get_deck_progress( IN userId INT,
                                     IN deckId INT,
@@ -432,6 +446,7 @@ BEGIN
 END //
 
 # =============================================================================
+DROP PROCEDURE IF EXISTS count_decks_new_cards;
 
 CREATE PROCEDURE count_decks_new_cards(
     IN userId INT,
@@ -454,6 +469,7 @@ BEGIN
 END //
 
 # =============================================================================
+DROP PROCEDURE IF EXISTS count_all_deck_due_cards;
 
 CREATE PROCEDURE count_all_deck_due_cards(
     IN userId INT,
@@ -471,6 +487,7 @@ BEGIN
 END //
 
 # =============================================================================
+DROP PROCEDURE IF EXISTS count_all_deck_cards;
 
 CREATE PROCEDURE count_all_deck_cards(
     IN userId INT,
@@ -485,6 +502,8 @@ BEGIN
 END //
 
 # =============================================================================
+DROP PROCEDURE IF EXISTS get_all_user_folders;
+
 CREATE PROCEDURE get_all_user_folders(
     IN userId INT
 )
@@ -497,6 +516,8 @@ BEGIN
 END //
 
 # =============================================================================
+DROP PROCEDURE IF EXISTS get_github_style_chart_data;
+
 CREATE PROCEDURE get_github_style_chart_data(
     IN userId INT
 )
@@ -513,6 +534,7 @@ BEGIN
 END //
 
 # =============================================================================
+DROP PROCEDURE IF EXISTS find_customers_last_review;
 
 CREATE PROCEDURE find_customers_last_review(
     IN userId INT,
@@ -526,6 +548,8 @@ BEGIN
 END //
 
 # =============================================================================
+DROP PROCEDURE IF EXISTS count_all_new_cards;
+
 
 CREATE PROCEDURE count_all_new_cards(
     IN userId INT,
@@ -540,6 +564,7 @@ BEGIN
 END //
 
 # =============================================================================
+DROP PROCEDURE IF EXISTS count_all_due_cards;
 
 CREATE PROCEDURE count_all_due_cards(
     IN userId INT,
@@ -556,6 +581,7 @@ BEGIN
 END //
 
 # =============================================================================
+DROP PROCEDURE IF EXISTS count_all_cards;
 
 CREATE PROCEDURE count_all_cards(
     IN userId INT,
@@ -570,6 +596,7 @@ END //
 # =============================================================================
 
 DELIMITER $$
+DROP PROCEDURE IF EXISTS count_decks_new_cards_func;
 
 -- Funkcja zliczająca nowe karty
 CREATE FUNCTION count_decks_new_cards_func (userId INT, deckId INT)
@@ -588,6 +615,7 @@ BEGIN
     RETURN newCardCount;
 END $$
 
+DROP PROCEDURE IF EXISTS get_deck_progress_func;
 -- Funkcja obliczająca postęp w danym decku
 CREATE FUNCTION get_deck_progress_func(userId INT, deckId INT)
     RETURNS FLOAT
@@ -626,6 +654,8 @@ BEGIN
 END $$
 
 -- Funkcja obliczająca całkowity czas nauki
+DROP PROCEDURE IF EXISTS calculate_study_time;
+
 DELIMITER $$
 
 CREATE FUNCTION calculate_study_time(userId INT)
@@ -664,7 +694,7 @@ END $$
 DELIMITER ;
 
 -- Funkcja obliczająca najdłuższą serię dni nauki
-DELIMITER $$
+DROP PROCEDURE IF EXISTS calculate_longest_learning_streak;
 
 DELIMITER $$
 
@@ -721,6 +751,8 @@ DELIMITER ;
 
 
 -- Funkcja zliczająca karty nauczone w ciągu ostatnich 30 dni
+DROP PROCEDURE IF EXISTS calculate_flashcards_learned_last_30_days;
+
 DELIMITER $$
 
 CREATE FUNCTION calculate_flashcards_learned_last_30_days(userId INT)
@@ -741,8 +773,6 @@ BEGIN
 END $$
 
 DELIMITER ;
-
-
 
 -- TRIGGERS
 -- after_insert_customer_statistics
