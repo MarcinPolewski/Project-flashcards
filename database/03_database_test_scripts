@@ -29,7 +29,7 @@ SELECT * FROM Notifications WHERE user_id = 2 AND text LIKE '%friend request fro
 # -----------------------------------------------------------------
 -- FUNCTIONS
 -- count_decks_new_cards_func
--- count new flashcards in a deck for a user who has not reviewed any card yet
+-- 1. count new flashcards in a deck for a user who has not reviewed any card yet
 DECLARE
     result NUMBER;
 BEGIN
@@ -37,8 +37,7 @@ BEGIN
     result := count_decks_new_cards_func(1, 1);
     DBMS_OUTPUT.PUT_LINE('New Cards Count: ' || result); -- Expected: number of flashcards in deck 1 that the user hasn't reviewed
 END;
-
--- Test Case 2: Count new flashcards in a deck for a user who has reviewed all cards
+-- 2. count new flashcards in a deck for a user who has reviewed all cards
 DECLARE
     result NUMBER;
 BEGIN
@@ -47,3 +46,28 @@ BEGIN
     DBMS_OUTPUT.PUT_LINE('New Cards Count: ' || result); -- Expected: 0, as the user has reviewed all cards in deck 1
 END;
 
+
+-- get_deck_progress_func
+-- 1. User with 50% progress in a deck
+DECLARE
+    result FLOAT;
+BEGIN
+    -- Assuming userId = 1 and deckId = 1
+    result := get_deck_progress__func(1, 1);
+    DBMS_OUTPUT.PUT_LINE('Deck Progress: ' || result); -- Expected: 50%
+END;
+-- 2. User has not learned any flashcards in a deck
+DECLARE
+    result FLOAT;
+BEGIN
+    -- Assuming userId = 2 and deckId = 1
+    result := get_deck_progress_func(2, 1);
+    DBMS_OUTPUT.PUT_LINE('Deck Progress: ' || result); -- Expected: 0
+-- 3. Deck with no flashcards
+DECLARE
+    result FLOAT;
+BEGIN
+    -- Assuming userId = 1 and deckId = 999 (no cards in deck 999)
+    result := get_deck_progress_func(1, 999);
+    DBMS_OUTPUT.PUT_LINE('Deck Progress: ' || result); -- Expected: 0
+END;
