@@ -1,6 +1,6 @@
 # =============================================================================
 CREATE SEQUENCE customer_seq
-    START WITH 100
+    START WITH 1
     INCREMENT BY 1
     MINVALUE 100
     MAXVALUE 5000
@@ -8,7 +8,7 @@ CREATE SEQUENCE customer_seq
     CACHE 10;
 
 CREATE SEQUENCE folder_seq
-    START WITH 1000
+    START WITH 1
     INCREMENT BY 1
     MINVALUE 1000
     MAXVALUE 9999
@@ -16,7 +16,7 @@ CREATE SEQUENCE folder_seq
     CACHE 10;
 
 CREATE SEQUENCE authority_seq
-    START WITH 100
+    START WITH 1
     INCREMENT BY 1
     MINVALUE 100
     MAXVALUE 999
@@ -24,7 +24,7 @@ CREATE SEQUENCE authority_seq
     CACHE 10;
 
 CREATE SEQUENCE access_level_seq
-    START WITH 1000
+    START WITH 1
     INCREMENT BY 1
     MINVALUE 1000
     MAXVALUE 9999
@@ -32,7 +32,7 @@ CREATE SEQUENCE access_level_seq
     CACHE 20;
 
 CREATE SEQUENCE friendship_seq
-    START WITH 100
+    START WITH 1
     INCREMENT BY 1
     MINVALUE 100
     MAXVALUE 999
@@ -40,7 +40,7 @@ CREATE SEQUENCE friendship_seq
     CACHE 10;
 
 CREATE SEQUENCE sent_verification_code_seq
-    START WITH 1000
+    START WITH 1
     INCREMENT BY 1
     MINVALUE 1000
     MAXVALUE 9999
@@ -48,7 +48,7 @@ CREATE SEQUENCE sent_verification_code_seq
     CACHE 20;
 
 CREATE SEQUENCE folder_parent_seq
-    START WITH 1000
+    START WITH 1
     INCREMENT BY 1
     MINVALUE 1000
     MAXVALUE 9999
@@ -56,7 +56,7 @@ CREATE SEQUENCE folder_parent_seq
     CACHE 20;
 
 CREATE SEQUENCE authorities_customers_seq
-    START WITH 1000
+    START WITH 1
     INCREMENT BY 1
     MINVALUE 1000
     MAXVALUE 9999
@@ -64,7 +64,7 @@ CREATE SEQUENCE authorities_customers_seq
     CACHE 20;
 
 CREATE SEQUENCE access_level_folder_seq
-    START WITH 100
+    START WITH 1
     INCREMENT BY 1
     MINVALUE 100
     MAXVALUE 999
@@ -72,7 +72,7 @@ CREATE SEQUENCE access_level_folder_seq
     CACHE 10;
 
 CREATE SEQUENCE friendship_notifications_seq
-    START WITH 100
+    START WITH 1
     INCREMENT BY 1
     MINVALUE 100
     MAXVALUE 999
@@ -80,7 +80,7 @@ CREATE SEQUENCE friendship_notifications_seq
     CACHE 10;
 
 CREATE SEQUENCE notifications_seq
-    START WITH 1000
+    START WITH 1
     INCREMENT BY 1
     MINVALUE 1000
     MAXVALUE 9999
@@ -88,7 +88,7 @@ CREATE SEQUENCE notifications_seq
     CACHE 20;
 
 CREATE SEQUENCE user_statistics_seq
-    START WITH 100
+    START WITH 1
     INCREMENT BY 1
     MINVALUE 100
     MAXVALUE 999
@@ -96,7 +96,7 @@ CREATE SEQUENCE user_statistics_seq
     CACHE 10;
 
 CREATE SEQUENCE flashcard_progress_seq
-    START WITH 1000
+    START WITH 1
     INCREMENT BY 1
     MINVALUE 1000
     MAXVALUE 9999
@@ -104,7 +104,7 @@ CREATE SEQUENCE flashcard_progress_seq
     CACHE 20;
 
 CREATE SEQUENCE user_preferences_seq
-    START WITH 100
+    START WITH 1
     INCREMENT BY 1
     MINVALUE 100
     MAXVALUE 999
@@ -113,7 +113,7 @@ CREATE SEQUENCE user_preferences_seq
 
 
 CREATE SEQUENCE review_logs_seq
-    START WITH 1000
+    START WITH 1
     INCREMENT BY 1
     MINVALUE 1000
     MAXVALUE 9999
@@ -121,7 +121,7 @@ CREATE SEQUENCE review_logs_seq
     CACHE 20;
 
 CREATE SEQUENCE folders_decks_seq
-    START WITH 1000
+    START WITH 1
     INCREMENT BY 1
     MINVALUE 1000
     MAXVALUE 9999
@@ -129,7 +129,7 @@ CREATE SEQUENCE folders_decks_seq
     CACHE 20;
 
 CREATE SEQUENCE flashcard_seq
-    START WITH 10000
+    START WITH 1
     INCREMENT BY 1
     MINVALUE 10000
     MAXVALUE 99999
@@ -137,7 +137,7 @@ CREATE SEQUENCE flashcard_seq
     CACHE 30;
 
 CREATE SEQUENCE decks_seq
-    START WITH 1000
+    START WITH 1
     INCREMENT BY 1
     MINVALUE 1000
     MAXVALUE 9999
