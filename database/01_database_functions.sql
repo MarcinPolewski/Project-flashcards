@@ -434,5 +434,24 @@ BEGIN
     END IF;
 END;
 
+#==============================================================================
+-- FUNCTIONS
+CREATE OR REPLACE FUNCTION count_decks_new_cards_func (
+    userId IN NUMBER,
+    deckId IN NUMBER
+) RETURN NUMBER IS
+    newCardCount NUMBER;
+BEGIN
+    SELECT COUNT(DISTINCT fl.id)
+    INTO newCardCount
+    FROM Flashcards fl
+    LEFT JOIN Review_Logs rl ON fl.id = rl.flashcard_id
+    WHERE fl.deck_id = deckId
+      AND (rl.user_id IS NULL OR rl.user_id != userId);
+
+    RETURN newCardCount;
+END;
+
+
 # =============================================================================
 DELIMITER ;
