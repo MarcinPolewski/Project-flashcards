@@ -398,6 +398,41 @@ INTO result
 FROM Flashcards fl;
 END //
 
+# =============================================================================
+-- TRIGGERS
+
+CREATE TRIGGER after_insert_customer_statistics
+AFTER INSERT ON Customers
+FOR EACH ROW
+BEGIN
+    INSERT INTO User_Statistics (user_id, last_login)
+    VALUES (NEW.id, NOW());
+END;
+
+CREATE TRIGGER before_insert_notification
+BEFORE INSERT ON Notifications
+FOR EACH ROW
+BEGIN
+    SET NEW.creation_date = NOW();
+END;
+
+CREATE TRIGGER after_insert_customer_folder
+AFTER INSERT ON Customers
+FOR EACH ROW
+BEGIN
+    INSERT INTO Folders (name) VALUES (CONCAT('Root Folder - ', NEW.username));
+    SET NEW.root_folder_id = LAST_INSERT_ID();
+END;
+
+CREATE TRIGGER after_insert_friendship_notification
+AFTER INSERT ON Friendships
+FOR EACH ROW
+BEGIN
+    IF NEW.accepted = 0 THEN
+        INSERT INTO Notifications (user_id, text, creation_date) 
+        VALUES (NEW.receiver_id, CONCAT('You have a new friend request from user ID: ', NEW.sender_id), NOW());
+    END IF;
+END;
 
 # =============================================================================
 DELIMITER ;
