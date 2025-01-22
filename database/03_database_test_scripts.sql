@@ -935,3 +935,8 @@ BEGIN
     SELECT 'Test count_all_deck_cards:', result;
 END //
 
+-- Test for get_all_user_folders
+CREATE PROCEDURE test_get_all_user_folders()
+BEGIN
+    CALL get_all_user_folders(1);
+END //
