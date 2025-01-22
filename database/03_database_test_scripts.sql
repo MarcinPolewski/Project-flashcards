@@ -902,3 +902,11 @@ CREATE PROCEDURE test_get_last_used_decks()
 BEGIN
     CALL get_last_used_decks(1, 5);
 END //
+
+-- Test for get_deck_progress
+CREATE PROCEDURE test_get_deck_progress()
+BEGIN
+    DECLARE progress FLOAT;
+    CALL get_deck_progress(1, 1, progress);
+    SELECT 'Test get_deck_progress:', progress;
+END //
