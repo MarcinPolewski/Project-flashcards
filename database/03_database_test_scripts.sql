@@ -954,3 +954,11 @@ BEGIN
     CALL find_customers_last_review(1, lastReviewDate);
     SELECT 'Test find_customers_last_review:', lastReviewDate;
 END //
+
+-- Test for count_all_new_cards
+CREATE PROCEDURE test_count_all_new_cards()
+BEGIN
+    DECLARE result INT;
+    CALL count_all_new_cards(1, result);
+    SELECT 'Test count_all_new_cards:', result;
+END //
