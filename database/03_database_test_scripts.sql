@@ -878,3 +878,10 @@ CREATE PROCEDURE test_get_new_flashcard()
 BEGIN
     CALL get_new_flashcard(1, 1, 5);
 END //
+
+-- Test for get_early_review
+CREATE PROCEDURE test_get_early_review()
+BEGIN
+    CALL get_early_review(1, 1, 5, 30, 60);
+END //
+
