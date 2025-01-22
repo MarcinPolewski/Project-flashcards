@@ -839,3 +839,25 @@ SELECT calculate_flashcards_learned_last_30_days(1) AS 'Flashcards Learned in La
 
 -- Test case 2: user who has not reviewed any flashcards in the last 30 days
 SELECT calculate_flashcards_learned_last_30_days(2) AS 'Flashcards Learned in Last 30 Days for user 2';
+
+
+-- PROCEDURES TESTING
+
+--add_friendship
+-- Test setup: Insert two customers
+INSERT INTO Customers (email, password_hash, username, profile_creation_date, root_folder_id)
+VALUES ('user1@example.com', SHA2('password123', 256), 'user1', NOW(), 1);
+SET @user1_id = LAST_INSERT_ID();
+INSERT INTO Customers (email, password_hash, username, profile_creation_date, root_folder_id)
+VALUES ('user2@example.com', SHA2('password123', 256), 'user2', NOW(), 1);
+SET @user2_id = LAST_INSERT_ID();
+-- Execute the procedure
+CALL add_friendship(@user1_id, @user2_id);
+-- Verify friendship was added
+SELECT * FROM Friendships WHERE sender_id = @user1_id AND receiver_id = @user2_id;
+-- Expected: One row with sender_id = @user1_id, receiver_id = @user2_id, accepted = 0
+-- Cleanup
+DELETE FROM Friendships WHERE sender_id = @user1_id AND receiver_id = @user2_id;
+DELETE FROM Customers WHERE id IN (@user1_id, @user2_id);
+
+-- accept_friendship
