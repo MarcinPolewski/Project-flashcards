@@ -896,3 +896,9 @@ CREATE PROCEDURE test_get_due_to_review()
 BEGIN
     CALL get_due_to_review(1, 1, 5, 30, 60);
 END //
+
+-- Test for get_last_used_decks
+CREATE PROCEDURE test_get_last_used_decks()
+BEGIN
+    CALL get_last_used_decks(1, 5);
+END //
