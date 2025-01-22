@@ -851,3 +851,10 @@ BEGIN
     SELECT 'Test count_current_learning:', result;
 END //
 
+-- Test for count_due_in_learning
+CREATE PROCEDURE test_count_due_in_learning()
+BEGIN
+    DECLARE result INT;
+    CALL count_due_in_learning(1, 1, 30, 60, result);
+    SELECT 'Test count_due_in_learning:', result;
+END //
