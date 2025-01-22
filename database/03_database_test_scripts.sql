@@ -926,3 +926,12 @@ BEGIN
     CALL count_all_deck_due_cards(1, 1, result);
     SELECT 'Test count_all_deck_due_cards:', result;
 END //
+
+-- Test for count_all_deck_cards
+CREATE PROCEDURE test_count_all_deck_cards()
+BEGIN
+    DECLARE result INT;
+    CALL count_all_deck_cards(1, 1, result);
+    SELECT 'Test count_all_deck_cards:', result;
+END //
+
