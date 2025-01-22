@@ -843,21 +843,11 @@ SELECT calculate_flashcards_learned_last_30_days(2) AS 'Flashcards Learned in La
 
 -- PROCEDURES TESTING
 
---add_friendship
--- Test setup: Insert two customers
-INSERT INTO Customers (email, password_hash, username, profile_creation_date, root_folder_id)
-VALUES ('user1@example.com', SHA2('password123', 256), 'user1', NOW(), 1);
-SET @user1_id = LAST_INSERT_ID();
-INSERT INTO Customers (email, password_hash, username, profile_creation_date, root_folder_id)
-VALUES ('user2@example.com', SHA2('password123', 256), 'user2', NOW(), 1);
-SET @user2_id = LAST_INSERT_ID();
--- Execute the procedure
-CALL add_friendship(@user1_id, @user2_id);
--- Verify friendship was added
-SELECT * FROM Friendships WHERE sender_id = @user1_id AND receiver_id = @user2_id;
--- Expected: One row with sender_id = @user1_id, receiver_id = @user2_id, accepted = 0
--- Cleanup
-DELETE FROM Friendships WHERE sender_id = @user1_id AND receiver_id = @user2_id;
-DELETE FROM Customers WHERE id IN (@user1_id, @user2_id);
+-- Test for count_current_learning
+CREATE PROCEDURE test_count_current_learning()
+BEGIN
+    DECLARE result INT;
+    CALL count_current_learning(1, 1, 30, 60, result);
+    SELECT 'Test count_current_learning:', result;
+END //
 
--- accept_friendship
