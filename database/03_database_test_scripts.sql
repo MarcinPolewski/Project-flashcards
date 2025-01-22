@@ -844,14 +844,21 @@ SELECT calculate_flashcards_learned_last_30_days(2) AS 'Flashcards Learned in La
 -- PROCEDURES TESTING
 
 -- Test for count_current_learning
+DELIMITER //
+
+-- Test for count_current_learning
+DROP PROCEDURE IF EXISTS test_count_current_learning;
+
 CREATE PROCEDURE test_count_current_learning()
 BEGIN
     DECLARE result INT;
     CALL count_current_learning(1, 1, 30, 60, result);
-    SELECT 'Test count_current_learning:', result;
+    SELECT 'Test count_current_learning:' AS Description, result AS Result;
 END //
 
 -- Test for count_due_in_learning
+DROP PROCEDURE IF EXISTS test_count_due_in_learning;
+
 CREATE PROCEDURE test_count_due_in_learning()
 BEGIN
     DECLARE result INT;
@@ -860,6 +867,10 @@ BEGIN
 END //
 
 -- Test for count_due_to_review
+DROP PROCEDURE IF EXISTS test_count_due_to_review;
+
+DROP PROCEDURE IF EXISTS test_count_due_to_review;
+
 CREATE PROCEDURE test_count_due_to_review()
 BEGIN
     DECLARE result INT;
@@ -868,42 +879,56 @@ BEGIN
 END //
 
 -- Test for get_due_flashcards
+DROP PROCEDURE IF EXISTS test_get_due_flashcards;
+
 CREATE PROCEDURE test_get_due_flashcards()
 BEGIN
     CALL get_due_flashcards(1, 1, 5);
 END //
 
 -- Test for get_new_flashcard
+DROP PROCEDURE IF EXISTS test_get_new_flashcard;
+
 CREATE PROCEDURE test_get_new_flashcard()
 BEGIN
     CALL get_new_flashcard(1, 1, 5);
 END //
 
 -- Test for get_early_review
+DROP PROCEDURE IF EXISTS test_get_early_review;
+
 CREATE PROCEDURE test_get_early_review()
 BEGIN
     CALL get_early_review(1, 1, 5, 30, 60);
 END //
 
 -- Test for get_due_in_learning
+DROP PROCEDURE IF EXISTS test_get_due_in_learning;
+
 CREATE PROCEDURE test_get_due_in_learning()
 BEGIN
     CALL get_due_in_learning(1, 1, 5, 30, 60);
 END //
 
 -- Test for get_due_to_review
+DROP PROCEDURE IF EXISTS test_get_due_to_review;
+
 CREATE PROCEDURE test_get_due_to_review()
 BEGIN
     CALL get_due_to_review(1, 1, 5, 30, 60);
 END //
 
 -- Test for get_last_used_decks
+DROP PROCEDURE IF EXISTS test_get_last_used_decks;
+
 CREATE PROCEDURE test_get_last_used_decks()
 BEGIN
     CALL get_last_used_decks(1, 5);
 END //
 
 -- Test for get_deck_progress
+DROP PROCEDURE IF EXISTS test_get_deck_progress;
+
 CREATE PROCEDURE test_get_deck_progress()
 BEGIN
     DECLARE progress FLOAT;
@@ -912,6 +937,8 @@ BEGIN
 END //
 
 -- Test for count_decks_new_cards
+DROP PROCEDURE IF EXISTS test_count_decks_new_cards;
+
 CREATE PROCEDURE test_count_decks_new_cards()
 BEGIN
     DECLARE result INT;
@@ -920,6 +947,8 @@ BEGIN
 END //
 
 -- Test for count_all_deck_due_cards
+DROP PROCEDURE IF EXISTS test_count_all_deck_due_cards;
+
 CREATE PROCEDURE test_count_all_deck_due_cards()
 BEGIN
     DECLARE result INT;
@@ -928,6 +957,8 @@ BEGIN
 END //
 
 -- Test for count_all_deck_cards
+DROP PROCEDURE IF EXISTS test_count_all_deck_cards;
+
 CREATE PROCEDURE test_count_all_deck_cards()
 BEGIN
     DECLARE result INT;
@@ -936,18 +967,24 @@ BEGIN
 END //
 
 -- Test for get_all_user_folders
+DROP PROCEDURE IF EXISTS test_get_all_user_folders;
+
 CREATE PROCEDURE test_get_all_user_folders()
 BEGIN
     CALL get_all_user_folders(1);
 END //
 
 -- Test for get_github_style_chart_data
+DROP PROCEDURE IF EXISTS test_get_github_style_chart_data;
+
 CREATE PROCEDURE test_get_github_style_chart_data()
 BEGIN
     CALL get_github_style_chart_data(1);
 END //
 
 -- Test for find_customers_last_review
+DROP PROCEDURE IF EXISTS test_find_customers_last_review;
+
 CREATE PROCEDURE test_find_customers_last_review()
 BEGIN
     DECLARE lastReviewDate DATE;
@@ -956,6 +993,8 @@ BEGIN
 END //
 
 -- Test for count_all_new_cards
+DROP PROCEDURE IF EXISTS test_count_all_new_cards;
+
 CREATE PROCEDURE test_count_all_new_cards()
 BEGIN
     DECLARE result INT;
@@ -964,6 +1003,8 @@ BEGIN
 END //
 
 -- Test for count_all_due_cards
+DROP PROCEDURE IF EXISTS test_count_all_due_cards;
+
 CREATE PROCEDURE test_count_all_due_cards()
 BEGIN
     DECLARE result INT;
@@ -972,9 +1013,33 @@ BEGIN
 END //
 
 -- Test for count_all_cards
+DROP PROCEDURE IF EXISTS test_count_all_cards;
+
 CREATE PROCEDURE test_count_all_cards()
 BEGIN
     DECLARE result INT;
     CALL count_all_cards(1, result);
     SELECT 'Test count_all_cards:', result;
 END //
+
+DELIMITER ;
+
+CALL test_count_current_learning();
+CALL test_count_due_in_learning();
+CALL test_count_due_to_review();
+CALL test_get_due_flashcards();
+CALL test_get_new_flashcard();
+CALL test_get_early_review();
+CALL test_get_due_in_learning();
+CALL test_get_due_to_review();
+CALL test_get_last_used_decks();
+CALL test_get_deck_progress();
+CALL test_count_decks_new_cards();
+CALL test_count_all_deck_due_cards();
+CALL test_count_all_deck_cards();
+CALL test_get_all_user_folders();
+CALL test_get_github_style_chart_data();
+CALL test_find_customers_last_review();
+CALL test_count_all_new_cards();
+CALL test_count_all_due_cards();
+CALL test_count_all_cards();
