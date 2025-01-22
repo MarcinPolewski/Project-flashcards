@@ -890,3 +890,9 @@ CREATE PROCEDURE test_get_due_in_learning()
 BEGIN
     CALL get_due_in_learning(1, 1, 5, 30, 60);
 END //
+
+-- Test for get_due_to_review
+CREATE PROCEDURE test_get_due_to_review()
+BEGIN
+    CALL get_due_to_review(1, 1, 5, 30, 60);
+END //
