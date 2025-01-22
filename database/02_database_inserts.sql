@@ -268,8 +268,8 @@ INSERT INTO `Review_Logs` (
 INSERT INTO `Flashcards_Progresses` (
     `flashcard_id`, `user_id`, `next_review`, `last_review_id`
 ) VALUES
-      (1, 1, NOW() + INTERVAL 1 DAY, 1),
-      (12, 1, NOW() + INTERVAL 2 DAY, 2),
+      (1, 1, '2025-09-22 12:34:56' + INTERVAL 1 DAY, 1),
+      (12, 1, '2025-09-22 12:34:56' + INTERVAL 2 DAY, 2),
       (13, 1, NOW() + INTERVAL 3 DAY, 3),
       (14, 1, NOW() + INTERVAL 4 DAY, 4),
       (15, 1, NOW() + INTERVAL 5 DAY, 5),
@@ -303,7 +303,7 @@ INSERT INTO `Flashcards_Progresses` (
       (15, 1, NOW() + INTERVAL 3 DAY, 33),
       (15, 1, NOW() + INTERVAL 4 DAY, 34),
       (16, 1, NOW() + INTERVAL 5 DAY, 35),
-      (17, 1, NOW() + INTERVAL 6 DAY, 36),
+      (17, 1, '2025-09-22 12:34:56' + INTERVAL 6 DAY, 36),
       (17, 1, NOW() + INTERVAL 7 DAY, 37),
       (19, 1, NOW() + INTERVAL 8 DAY, 38),
       (20, 10, NOW() + INTERVAL 9 DAY, 39),
