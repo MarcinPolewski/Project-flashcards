@@ -970,3 +970,11 @@ BEGIN
     CALL count_all_due_cards(1, result);
     SELECT 'Test count_all_due_cards:', result;
 END //
+
+-- Test for count_all_cards
+CREATE PROCEDURE test_count_all_cards()
+BEGIN
+    DECLARE result INT;
+    CALL count_all_cards(1, result);
+    SELECT 'Test count_all_cards:', result;
+END //
