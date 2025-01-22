@@ -807,14 +807,14 @@ SELECT * FROM Notifications WHERE user_id = 2 AND text LIKE '%friend request fro
 SELECT count_decks_new_cards(1, 1) AS 'New Cards Count for user 1 and deck 1';
 
 -- Test case 2: user 2, deck 1
-SELECT count_decks_new_cards(2, 1) AS 'New Cards Count for user 2 and deck 1';
+SELECT count_decks_new_cards(1, 2) AS 'New Cards Count for user 1 and deck 2';
 
 -- get_deck_progress_func
 -- Test case 1: user with 50% progress in a deck
 SELECT get_deck_progress(1, 1) AS 'Deck Progress for user 1 and deck 1';
 
 -- Test case 2: user has not learned any flashcards in a deck
-SELECT get_deck_progress(2, 1) AS 'Deck Progress for user 2 and deck 1';
+SELECT get_deck_progress(1, 2) AS 'Deck Progress for user 2 and deck 1';
 
 -- Test case 3: deck with no flashcards
 SELECT get_deck_progress(1, 999) AS 'Deck Progress for user 1 and deck 999';
