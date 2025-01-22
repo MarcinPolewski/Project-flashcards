@@ -867,3 +867,14 @@ BEGIN
     SELECT 'Test count_due_to_review:', result;
 END //
 
+-- Test for get_due_flashcards
+CREATE PROCEDURE test_get_due_flashcards()
+BEGIN
+    CALL get_due_flashcards(1, 1, 5);
+END //
+
+-- Test for get_new_flashcard
+CREATE PROCEDURE test_get_new_flashcard()
+BEGIN
+    CALL get_new_flashcard(1, 1, 5);
+END //
