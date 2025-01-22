@@ -915,8 +915,14 @@ END //
 CREATE PROCEDURE test_count_decks_new_cards()
 BEGIN
     DECLARE result INT;
-
-    -- Replace with appropriate test values
     CALL count_decks_new_cards(1, 1, result);
     SELECT 'Test count_decks_new_cards:', result;
+END //
+
+-- Test for count_all_deck_due_cards
+CREATE PROCEDURE test_count_all_deck_due_cards()
+BEGIN
+    DECLARE result INT;
+    CALL count_all_deck_due_cards(1, 1, result);
+    SELECT 'Test count_all_deck_due_cards:', result;
 END //
