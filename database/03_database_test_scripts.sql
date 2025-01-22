@@ -858,3 +858,12 @@ BEGIN
     CALL count_due_in_learning(1, 1, 30, 60, result);
     SELECT 'Test count_due_in_learning:', result;
 END //
+
+-- Test for count_due_to_review
+CREATE PROCEDURE test_count_due_to_review()
+BEGIN
+    DECLARE result INT;
+    CALL count_due_to_review(1, 1, 30, 60, result);
+    SELECT 'Test count_due_to_review:', result;
+END //
+
