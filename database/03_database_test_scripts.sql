@@ -885,3 +885,8 @@ BEGIN
     CALL get_early_review(1, 1, 5, 30, 60);
 END //
 
+-- Test for get_due_in_learning
+CREATE PROCEDURE test_get_due_in_learning()
+BEGIN
+    CALL get_due_in_learning(1, 1, 5, 30, 60);
+END //
