@@ -910,3 +910,13 @@ BEGIN
     CALL get_deck_progress(1, 1, progress);
     SELECT 'Test get_deck_progress:', progress;
 END //
+
+-- Test for count_decks_new_cards
+CREATE PROCEDURE test_count_decks_new_cards()
+BEGIN
+    DECLARE result INT;
+
+    -- Replace with appropriate test values
+    CALL count_decks_new_cards(1, 1, result);
+    SELECT 'Test count_decks_new_cards:', result;
+END //
