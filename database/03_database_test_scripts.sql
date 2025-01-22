@@ -940,3 +940,10 @@ CREATE PROCEDURE test_get_all_user_folders()
 BEGIN
     CALL get_all_user_folders(1);
 END //
+
+-- Test for get_github_style_chart_data
+CREATE PROCEDURE test_get_github_style_chart_data()
+BEGIN
+    CALL get_github_style_chart_data(1);
+END //
+
