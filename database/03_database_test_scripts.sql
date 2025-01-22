@@ -947,3 +947,10 @@ BEGIN
     CALL get_github_style_chart_data(1);
 END //
 
+-- Test for find_customers_last_review
+CREATE PROCEDURE test_find_customers_last_review()
+BEGIN
+    DECLARE lastReviewDate DATE;
+    CALL find_customers_last_review(1, lastReviewDate);
+    SELECT 'Test find_customers_last_review:', lastReviewDate;
+END //
