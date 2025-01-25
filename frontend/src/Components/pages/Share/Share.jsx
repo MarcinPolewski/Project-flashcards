@@ -168,6 +168,48 @@ const Share = () => {
                     </button>
                 </div>
             </div>
+
+            {/* Share Section */}
+            <div className="section">
+                <h3>Share Folder with Friends</h3>
+                <div className="field-container">
+                    <select
+                        className="dropdown"
+                        value={selectedImportFolder}
+                        onChange={(e) => setSelectedImportFolder(e.target.value)}
+                    >
+                        <option value="">Select a folder to share</option>
+                        {Array.isArray(decksToChoose) ? (
+                            foldersToChoose.map((folder, index) => (
+                                <option key={index} value={folder.id}>
+                                    {folder.name}
+                                </option>
+                            ))
+                        ) : (
+                            <option value="">No folder available</option>
+                        )}
+                    </select>
+                    <select
+                        className="dropdown"
+                        value={selectedFriend}
+                        onChange={(e) => setSelectedFriend(e.target.value)}
+                    >
+                        <option value="">Select a friend</option>
+                        {Array.isArray(decksToChoose) ? (
+                            foldersToChoose.map((folder, index) => (
+                                <option key={index} value={folder.id}>
+                                    {folder.name}
+                                </option>
+                            ))
+                        ) : (
+                            <option value="">No friend available</option>
+                        )}
+                    </select>
+                    <button className="btn" onClick={handleShare}>
+                        Share
+                    </button>
+                </div>
+            </div>
         </div>
         </div>
     );
