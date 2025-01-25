@@ -119,6 +119,15 @@ const Share = () => {
             }
         };
 
+        const fetchFriendsList = async () => {
+            try {
+                const fetchedFriends = await ShareService.getFriendsList();
+                setFriendsList(fetchedFriends || []);
+                setSelectedFriend(fetchedFriends[0]?.id);
+            } catch (error) {
+                console.log("Error while fetching friends list: ", error);
+            }
+        };
 
         fetchDecksToChoose();
         fetchFoldersToChoose();
