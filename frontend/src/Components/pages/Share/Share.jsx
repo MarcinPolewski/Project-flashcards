@@ -9,6 +9,7 @@ import filterRootFolder from "../../../utils/filterRootFolder";
 const Share = () => {
     const [selectedExportDeck, setSelectedExportDeck] = useState("");
     const [selectedImportFolder, setSelectedImportFolder] = useState("");
+    const [selectedShareFolder, setSelectedShareFolder] = useState("");
     const [importFile, setImportFile] = useState(null);
     const [decksToChoose, setDecksToChoose] = useState([]);
     const [foldersToChoose, setFoldersToChoose] = useState([]);
@@ -205,11 +206,11 @@ const Share = () => {
                 <div className="field-container">
                     <select
                         className="dropdown"
-                        value={selectedImportFolder}
-                        onChange={(e) => setSelectedImportFolder(e.target.value)}
+                        value={selectedShareFolder}
+                        onChange={(e) => setSelectedShareFolder(e.target.value)}
                     >
                         <option value="">Select a folder to share</option>
-                        {Array.isArray(decksToChoose) ? (
+                        {Array.isArray(foldersToChoose) ? (
                             foldersToChoose.map((folder, index) => (
                                 <option key={index} value={folder.id}>
                                     {folder.name}
@@ -225,14 +226,14 @@ const Share = () => {
                         onChange={(e) => setSelectedFriend(e.target.value)}
                     >
                         <option value="">Select a friend</option>
-                        {Array.isArray(decksToChoose) ? (
-                            foldersToChoose.map((folder, index) => (
-                                <option key={index} value={folder.id}>
-                                    {folder.name}
+                        {Array.isArray(friendsList) ? (
+                            friendsList.map((friend, index) => (
+                                <option key={index} value={friend.id}>
+                                    {friend.name}
                                 </option>
                             ))
                         ) : (
-                            <option value="">No friend available</option>
+                            <option value="">No friends available</option>
                         )}
                     </select>
                     <button className="btn" onClick={handleShare}>
