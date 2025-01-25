@@ -12,6 +12,8 @@ const Share = () => {
     const [importFile, setImportFile] = useState(null);
     const [decksToChoose, setDecksToChoose] = useState([]);
     const [foldersToChoose, setFoldersToChoose] = useState([]);
+    const [selectedFriend, setSelectedFriend] = useState("");
+    const [friendsList, setFriendsList] = useState([]);
 
     const handlePdfExport = async () => {
         if (!selectedExportDeck) {
@@ -79,6 +81,22 @@ const Share = () => {
         setImportFile(event.target.files[0]);
     };
 
+    const handleShare = async () => {
+        if (!selectedImportFolder || !selectedFriend) {
+            alert("Please select a folder and a friend to share with.");
+            return;
+        }
+        alert(`Sharing folder: ${selectedImportFolder} with friend: ${selectedFriend}`);
+
+        try {
+            await ShareService.shareFolder(selectedImportFolder, selectedFriend);
+            alert("Folder shared successfully!");
+        } catch (error) {
+            console.error("Error while sharing folder: ", error);
+            alert("Error while sharing folder. Please try again.");
+        }
+    };
+
     useEffect(() => {
         const fetchDecksToChoose = async () => {
             try {
@@ -92,8 +110,8 @@ const Share = () => {
 
         const fetchFoldersToChoose = async () => {
             try {
-                const fetchedDecks = await FolderService.getAllFolders();
-                const foldersWithoutRoot = filterRootFolder(fetchedDecks);
+                const fetchedFolders = await FolderService.getAllFolders();
+                const foldersWithoutRoot = filterRootFolder(fetchedFolders);
                 setFoldersToChoose(foldersWithoutRoot || []);
                 setSelectedImportFolder(foldersWithoutRoot[0]?.id);
             } catch (error) {
@@ -101,9 +119,12 @@ const Share = () => {
             }
         };
 
+
         fetchDecksToChoose();
         fetchFoldersToChoose();
+        fetchFriendsList();
     }, []);
+
 
     return (
         <div className="main-importcontainer">
