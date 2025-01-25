@@ -16,6 +16,11 @@ const ShareService = {
             filePath, folderId
         });
         return response.data;
+    },
+
+    getFriendsList: async () => {
+        const response = await api.get('/friendsList');
+        return response.data;
     }
 };
 
