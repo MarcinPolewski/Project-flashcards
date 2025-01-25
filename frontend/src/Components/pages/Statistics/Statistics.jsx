@@ -46,13 +46,11 @@ const Statistics = () => {
         );
     }
 
-    const pieChartData = {
-        newCards: statisticData.allNewCards || 0,
-        learningCards: statisticData.allLearningCards || 0,
-        rememberedCards: statisticData.allRememberedCards || 0,
+    const totalCards = () => {
+        return (statisticData.allNewCards || 0) +
+        (statisticData.allLearningCards || 0) +
+        (statisticData.allRememberedCards || 0);
     };
-
-    const totalCards = pieChartData.newCards + pieChartData.learningCards + pieChartData.rememberedCards;
 
     return (
         <div className="statistics">
@@ -95,8 +93,8 @@ const Statistics = () => {
                                 className="card-number-pie-chart"
                                 data={{
                                     newCards: statisticData.allNewCards,
-                                    learningCards: statisticData.allLearningCards,
-                                    rememberedCards: statisticData.allRememberedCards,
+                                    toReview: statisticData.allLearningCards,
+                                    learnedCards: statisticData.allRememberedCards,
                                 }}
                             />
                         </div>
@@ -107,19 +105,19 @@ const Statistics = () => {
                             <div className="card-detail">
                                 <span>New </span>
                                 <span>
-                                    {pieChartData.newCards === 0 ? 0 : pieChartData.newCards} - {calcPercentage(statisticData.allNewCards, totalCards)}%
+                                    {statisticData.allNewCards === 0 ? 0 : statisticData.allNewCards} - {calcPercentage(statisticData.allNewCards, totalCards())}%
                                 </span>
                             </div>
                             <div className="card-detail">
                                 <span>Learning</span>
                                 <span>
-                                    {pieChartData.learningCards === 0 ? 0 : pieChartData.learningCards} - {calcPercentage(statisticData.allLearningCards, totalCards)}%
+                                    {statisticData.allLearningCards === 0 ? 0 : statisticData.allLearningCards} - {calcPercentage(statisticData.allLearningCards, totalCards())}%
                                 </span>
                             </div>
                             <div className="card-detail">
                                 <span>Learnt</span>
                                 <span>
-                                    {pieChartData.rememberedCards === 0 ? 0 : pieChartData.rememberedCards} - {calcPercentage(statisticData.allRememberedCards, totalCards)}%
+                                    {statisticData.allRememberedCards === 0 ? 0 : statisticData.allRememberedCards} - {calcPercentage(statisticData.allRememberedCards, totalCards())}%
                                 </span>
                             </div>
                         </div>
