@@ -16,6 +16,20 @@ const UserProfile = () => {
     const { userData, isLoading } = useUser();
 
     useEffect(() => {
+        const fetchFriends = async () => {
+            try {
+                const response = await CustomerService.getFriends(userId);
+                console.log("Friends fetched:", response);
+                setFriends(response);
+            } catch (error) {
+                console.error("Error fetching friends:", error);
+            }
+        };
+
+        fetchFriends();
+    }, [userId]);
+
+    useEffect(() => {
         if (userData) {
             setBio(userData?.bio);
         }
@@ -80,9 +94,9 @@ const UserProfile = () => {
                             </div>
                         </div>
 
-                        {/* <div className="user-profile-section-friends">
+                        <div className="user-profile-section-friends">
                             <h2 className="user-profile-friends-title">{userData.username}'s friends</h2>
-                            {friends && friends.length > 0 ?
+                            {Array.isArray(friends) && friends.length > 0 ?
                                 friends.map((friend) => (
                                     <div key={friend.id} className="user-profile-friend-container">
                                         <div className="user-profile-friend-info">
@@ -101,7 +115,7 @@ const UserProfile = () => {
                                 )) :
                                 <p>No friends to display</p>
                             }
-                        </div> */}
+                        </div>
                     </div>
                 </div>
             </div>

@@ -138,9 +138,9 @@ const Home = () => {
             </Overlay>
 
             <div className="latest-reviews-title">My Latest Reviews</div>
-            <div className="latest-reviews-decks">
                 {Array.isArray(latestDecks) && latestDecks.length > 0 ? (
                     latestDecks.map((deck) => (
+                    <div className="latest-reviews-decks">
                         <div key={deck.id} className="latest-review-deck">
                             <div className="deck-title">{deck.name}</div>
                             <CircularProgressbar
@@ -155,8 +155,11 @@ const Home = () => {
                                 Continue
                             </button>
                         </div>
+                    </div>
                     ))
                 ) : (
+
+                <div className="home-user-notifications-container">
                     <div className="home-user-notifcation">
                         <div className="home-user-notifcation-header">
                             <div className="home-user-notifcation-title">No last decks recorded</div>
@@ -165,8 +168,8 @@ const Home = () => {
                         </div>
 
                     </div>
+                </div>
                 )}
-            </div>
 
         </div>
 
