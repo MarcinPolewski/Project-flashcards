@@ -278,18 +278,18 @@ public class CustomerController {
                 Customer friend = friendship.getReceiver();
                 friends.add(friend);
 
-                String avatarPath = friend.getProfilePicturePath();
-
-                try {
-                    Path avatarFilePath = Paths.get("/app/avatars", avatarPath);
-                    byte[] avatarBytes = Files.readAllBytes(avatarFilePath);
-
-                    CustomerWithAvatar friendWithAvatar = new CustomerWithAvatar(friend, avatarBytes);
-                    friendsWithAvatars.add(friendWithAvatar);
-                }
-                catch (Exception e) {
-                    return ResponseEntity.badRequest().body("Error fetching avatar");
-                }
+//                String avatarPath = friend.getProfilePicturePath();
+//
+//                try {
+//                    Path avatarFilePath = Paths.get("/app/avatars", avatarPath);
+//                    byte[] avatarBytes = Files.readAllBytes(avatarFilePath);
+//
+//                    CustomerWithAvatar friendWithAvatar = new CustomerWithAvatar(friend, avatarBytes);
+//                    friendsWithAvatars.add(friendWithAvatar);
+//                }
+//                catch (Exception e) {
+//                    return ResponseEntity.badRequest().body("Error fetching avatar");
+//                }
             }
         }
 
@@ -298,18 +298,18 @@ public class CustomerController {
             if (friendship.isAccepted()) {
                 Customer friend = friendship.getSender();
                 friends.add(friend);
-                String avatarPath = friend.getProfilePicturePath();
-
-                try {
-                    Path avatarFilePath = Paths.get("/app/avatars", avatarPath);
-                    byte[] avatarBytes = Files.readAllBytes(avatarFilePath);
-
-                    CustomerWithAvatar friendWithAvatar = new CustomerWithAvatar(friend, avatarBytes);
-                    friendsWithAvatars.add(friendWithAvatar);
-                }
-                catch (Exception e) {
-                    return ResponseEntity.badRequest().body("Error fetching avatar");
-                }
+//                String avatarPath = friend.getProfilePicturePath();
+//
+//                try {
+//                    Path avatarFilePath = Paths.get("/app/avatars", avatarPath);
+//                    byte[] avatarBytes = Files.readAllBytes(avatarFilePath);
+//
+//                    CustomerWithAvatar friendWithAvatar = new CustomerWithAvatar(friend, avatarBytes);
+//                    friendsWithAvatars.add(friendWithAvatar);
+//                }
+//                catch (Exception e) {
+//                    return ResponseEntity.badRequest().body("Error fetching avatar");
+//                }
             }
         }
 
