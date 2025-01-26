@@ -2,12 +2,16 @@ package com.PAP_team_21.flashcards.controllers;
 
 import com.PAP_team_21.flashcards.AccessLevel;
 import com.PAP_team_21.flashcards.Errors.ResourceNotFoundException;
+import com.PAP_team_21.flashcards.VerificationTokenGenerator;
+import com.PAP_team_21.flashcards.authentication.AuthenticationEmailSender.AuthenticationEmailSender;
 import com.PAP_team_21.flashcards.authentication.ResourceAccessLevelService.FolderAccessServiceResponse;
 import com.PAP_team_21.flashcards.authentication.ResourceAccessLevelService.ResourceAccessService;
+import com.PAP_team_21.flashcards.controllers.DTO.ShareFolderDTO;
 import com.PAP_team_21.flashcards.controllers.DTOMappers.DeckMapper;
 import com.PAP_team_21.flashcards.controllers.DTOMappers.FolderMapper;
 import com.PAP_team_21.flashcards.controllers.requests.FolderCreationRequest;
 import com.PAP_team_21.flashcards.controllers.requests.FolderUpdateRequest;
+import com.PAP_team_21.flashcards.controllers.requests.ShareFolderRequest;
 import com.PAP_team_21.flashcards.entities.JsonViewConfig;
 import com.PAP_team_21.flashcards.entities.customer.Customer;
 import com.PAP_team_21.flashcards.entities.customer.CustomerRepository;
@@ -42,6 +46,8 @@ public class FolderController {
     private final ResourceAccessService resourceAccessService;
     private final DeckMapper deckMapper;
     private final FolderMapper folderMapper;
+    private final AuthenticationEmailSender emailSender;
+    private final VerificationTokenGenerator tokenGenerator;
 
     @GetMapping("/getFolderStructure")
     @JsonView(JsonViewConfig.Public.class)
@@ -171,6 +177,65 @@ public class FolderController {
         Folder rootFolder = customer.getRootFolder();
         return ResponseEntity.ok(rootFolder);
     }
+
+    @PostMapping("/shareFolder")
+    public ResponseEntity<?> shareFolder(Authentication authentication, ShareFolderRequest request)
+    {
+        FolderAccessServiceResponse response;
+        try {
+            response = resourceAccessService.getFolderAccessLevel(authentication, request.getFolderId());
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+
+        AccessLevel al = response.getAccessLevel();
+        Folder folder = response.getFolder();
+
+        if(al != null && (al.equals(AccessLevel.EDITOR) || al.equals(AccessLevel.OWNER)))
+        {
+            // wyślij email
+            ShareFolderDTO dto = new ShareFolderDTO(response.getCustomer().getEmail(), request.getAddresseeEmail(), request.getFolderId(), request.getAccessLevel());
+            try{
+                String verificationCode = tokenGenerator.encodeObject(dto);
+                emailSender.sendVerifyFolderShareLink(request.getAddresseeEmail(), verificationCode);
+            } catch (Exception e) {
+                return ResponseEntity.badRequest().body("Error while encoding object" + e.getMessage());
+            }
+
+            return ResponseEntity.ok("shared successfully - tell your friend to check email");
+        }
+        return ResponseEntity.badRequest().body("You do not have permission to view this folder");
+
+    }
+
+    @PostMapping ("/acceptFolderShare")
+    public ResponseEntity<?> shareFolder(Authentication authentication, String token)
+    {
+        ShareFolderDTO dto;
+        try{
+            dto = (ShareFolderDTO) tokenGenerator.decodeToken(token);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error while decoding token" + e.getMessage());
+        }
+
+        Optional<Customer> addresseeOpt = customerRepository.findByEmail(dto.getAddresseeEmail());
+        if(addresseeOpt.isEmpty())
+        {
+            return ResponseEntity.badRequest().body("No user with this email found");
+        }
+
+        Customer addressee = addresseeOpt.get();
+        Optional<Folder> folder = folderService.findById(dto.getFolderId());
+        if(folder.isEmpty())
+        {
+            return ResponseEntity.badRequest().body("No folder with this id found");
+        }
+
+        folder.get().share(addressee, dto.getAccessLevel());
+        folderService.save(folder.get());
+        return ResponseEntity.ok("Folder shared successfully");
+    }
+
 
     @GetMapping("/getAllDecks")
     @JsonView(JsonViewConfig.Public.class)
