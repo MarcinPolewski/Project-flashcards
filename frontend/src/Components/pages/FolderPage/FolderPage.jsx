@@ -175,10 +175,10 @@ const FolderPage = () => {
                                                 {deck.newCards} new
                                             </p>
                                             <p className="folder-page-card-learning">
-                                                {deck.learningCards} learning
+                                                {deck.toReview} to review
                                             </p>
                                             <p className="folder-page-card-reviewing">
-                                                {deck.reviewingCards} reviewing
+                                                {deck.learnedCards} learned
                                             </p>
                                         </div>
 

@@ -5,6 +5,7 @@ import DeckService from "../../../services/DeckService";
 import ShareService from "../../../services/ShareService";
 import FolderService from "../../../services/FolderService";
 import filterRootFolder from "../../../utils/filterRootFolder";
+import CustomerService from "../../../services/CustomerService";
 
 const AccessLevels = {
     OWNER: 0,
@@ -130,7 +131,8 @@ const Share = () => {
 
         const fetchFriendsList = async () => {
             try {
-                const fetchedFriends = await ShareService.getFriendsList();
+                const fetchedFriends = await CustomerService.getFriends();
+                console.log("Fetched friends: ", fetchedFriends);
                 setFriendsList(fetchedFriends || []);
                 setSelectedFriendEmail(fetchedFriends[0]?.email);
             } catch (error) {
@@ -237,7 +239,7 @@ const Share = () => {
                         {Array.isArray(friendsList) ? (
                             friendsList.map((friend, index) => (
                                 <option key={index} value={friend.email}>
-                                    {friend.name}
+                                    {friend.username}
                                 </option>
                             ))
                         ) : (
