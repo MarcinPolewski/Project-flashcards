@@ -17,6 +17,9 @@ public class AuthenticationEmailSender {
     @Value("${links.verify-user}")
     private String verifyUserLink;
 
+    @Value("${links.verify-folder-share}")
+    private String verifyFolderShareLink;
+
     @Async
     public void sendVerificationLink(String email, String verificationCode)
     {
@@ -49,6 +52,23 @@ public class AuthenticationEmailSender {
             mailSender.send(message);
         } catch (Exception e)
         {
+            e.printStackTrace();
+        }
+    }
+
+    @Async
+    public void sendVerifyFolderShareLink(String email, String verificationCode)
+    {
+        try{
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+            helper.setTo(email);
+            helper.setSubject("Flashcards - Folder share verification code");
+            helper.setText("Click this link to verify folder share: " + verifyFolderShareLink  + "/" + verificationCode);
+
+            mailSender.send(message);
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
