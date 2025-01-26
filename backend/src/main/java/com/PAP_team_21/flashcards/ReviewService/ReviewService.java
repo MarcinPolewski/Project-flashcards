@@ -9,6 +9,7 @@ import com.PAP_team_21.flashcards.entities.flashcardProgress.FlashcardProgress;
 import com.PAP_team_21.flashcards.entities.flashcardProgress.FlashcardProgressRepository;
 import com.PAP_team_21.flashcards.entities.folder.Folder;
 import com.PAP_team_21.flashcards.entities.reviewLog.ReviewLog;
+import com.PAP_team_21.flashcards.entities.reviewLog.ReviewLogRepository;
 import com.PAP_team_21.flashcards.entities.userStatistics.UserStatisticsRepository;
 import com.nimbusds.jwt.util.DateUtils;
 import jakarta.transaction.Transactional;
@@ -37,6 +38,7 @@ public class ReviewService {
     private final FlashcardProgressRepository flashcardProgressRepository;
 
     private final UserStatisticsRepository userStatisticsRepository;
+    private final ReviewLogRepository reviewLogRepository;
 
     @Value("${scheduling.max_flashcard_learning}")
     private int maxCurrentlyLearning;
@@ -228,7 +230,9 @@ public class ReviewService {
                 customer,
                 LocalDateTime.now(),
                 userAnswer);
-
+        if (flashcard != null && customer != null && userAnswer != null) {
+            reviewLogRepository.save(rl);
+        }
         Optional<FlashcardProgress> progress = flashcardProgressRepository.findByCustomerAndFlashcard(customer, flashcard);
 
 
