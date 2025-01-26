@@ -344,6 +344,19 @@ BEGIN
 END //
 
 # =============================================================================
+
+CREATE PROCEDURE find_customers_second_last_review(
+    IN userId INT
+)
+BEGIN
+    SELECT MAX(`when`)
+    FROM Review_Logs
+    WHERE user_id = userId
+      AND `when` < (SELECT MAX(`when`) FROM Review_Logs WHERE user_id = userId);
+END //
+
+# =============================================================================
+
 # CREATE PROCEDURE count_all_new_cards(
 #     IN userId INT,
 #     OUT result INT

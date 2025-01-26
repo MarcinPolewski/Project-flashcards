@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -59,33 +61,53 @@ public class UserStatistics {
         this.totalTimeSpent = totalTimeSpent;
         this.loginCount = loginCount;
         this.lastLogin = lastLogin;
+        this.daysLearningStreak = 0;
+        this.totalDaysLearning = 0;
+        this.longestLearningStreak = 0;
     }
 
-    public void updateStatistics(LocalDateTime lastReview)
-    {
+//    public void updateStatistics(LocalDate lastReview)
+//    {
+//
+//            LocalDateTime now = LocalDateTime.now();
+//            if(!(lastReview.getYear() == now.getYear() && lastReview.getMonth() == now.getMonth()))
+//            {
+//                if(lastReview.getDayOfMonth() != now.getDayOfMonth()) // if not today
+//                {
+//                    totalDaysLearning++;
+//                    if (lastReview.getDayOfMonth() == now.getDayOfMonth() - 1) // yesterday
+//                    {
+//                        // increment streak
+//                        daysLearningStreak++;
+//                        // check for max streak
+//                        if (daysLearningStreak > longestLearningStreak) {
+//                            longestLearningStreak = daysLearningStreak;
+//                        }
+//                    } else {
+//                        // clear streak
+//                        daysLearningStreak = 0;
+//                    }
+//
+//                }
+//            }
+//    }
 
-            LocalDateTime now = LocalDateTime.now();
-            if(!(lastReview.getYear() == now.getYear() && lastReview.getMonth() == now.getMonth()))
-            {
-                if(lastReview.getDayOfMonth() != now.getDayOfMonth()) // if not today
-                {
-                    totalDaysLearning++;
-                    if (lastReview.getDayOfMonth() == now.getDayOfMonth() - 1) // yesterday
-                    {
-                        // increment streak
-                        daysLearningStreak++;
-                        // check for max streak
-                        if (daysLearningStreak > longestLearningStreak) {
-                            longestLearningStreak = daysLearningStreak;
-                        }
-                    } else {
-                        // clear streak
-                        daysLearningStreak = 0;
-                    }
+    public void updateStatistics(LocalDate lastReview) {
+        LocalDate today = LocalDate.now();
+        LocalDate yesterday = today.minusDays(1);
 
-                }
-            }
+        if (lastReview.equals(yesterday)) {
+            totalDaysLearning++;
+            daysLearningStreak++;
+            if (daysLearningStreak > longestLearningStreak)
+                longestLearningStreak = daysLearningStreak;
+        }
+        else {
+            totalDaysLearning++;
+            daysLearningStreak = 0;
+        }
     }
+
 
     public void updateStatistics()
     {

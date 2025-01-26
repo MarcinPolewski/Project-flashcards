@@ -19,5 +19,5 @@ public interface UserStatisticsRepository extends JpaRepository<UserStatistics, 
 
 
     @Procedure(procedureName = "find_customers_last_review")
-    Optional<LocalDateTime> findCustomersLastReview(@Param("customerId") int id);
+    Optional<java.sql.Date> findCustomersLastReview(@Param("customerId") int id);
 }

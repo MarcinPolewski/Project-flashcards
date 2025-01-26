@@ -226,6 +226,8 @@ public class ReviewService {
 
     public void flashcardReviewed(Customer customer, Flashcard flashcard, UserAnswer userAnswer) {
 
+
+
         ReviewLog rl = new ReviewLog(flashcard,
                 customer,
                 LocalDateTime.now(),
@@ -235,10 +237,12 @@ public class ReviewService {
         }
         Optional<FlashcardProgress> progress = flashcardProgressRepository.findByCustomerAndFlashcard(customer, flashcard);
 
+        Optional<java.sql.Date> lastReviewOpt = userStatisticsRepository.findCustomersLastReview(customer.getId());
 
-        Optional<LocalDateTime> lastReviewOpt = userStatisticsRepository.findCustomersLastReview(customer.getId());
-        if (lastReviewOpt.isPresent())
-            customer.getUserStatistics().updateStatistics(lastReviewOpt.get());
+        if (lastReviewOpt.isPresent()) {
+            java.sql.Date sqlDate = lastReviewOpt.get();
+            customer.getUserStatistics().updateStatistics(sqlDate.toLocalDate());
+        }
         else
             customer.getUserStatistics().updateStatistics();
         userStatisticsRepository.save(customer.getUserStatistics());
