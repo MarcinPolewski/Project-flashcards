@@ -1,5 +1,6 @@
 package com.PAP_team_21.flashcards.controllers;
 
+import com.PAP_team_21.flashcards.controllers.requests.NotificationCreationByEmailRequest;
 import com.PAP_team_21.flashcards.controllers.requests.NotificationCreationRequest;
 import com.PAP_team_21.flashcards.entities.JsonViewConfig;
 import com.PAP_team_21.flashcards.entities.customer.Customer;
@@ -62,6 +63,32 @@ public class NotificationController {
 
         if (request.getUserId() != customer.getId()) {
             Notification notification = new Notification(request.getUserId(), request.getText());
+            notificationRepository.save(notification);
+            return ResponseEntity.ok(notification);
+        }
+
+        return ResponseEntity.badRequest().body("You cannot send notification to yourself");
+    }
+
+    @PostMapping("/createByEmail")
+    public ResponseEntity<?> createNotification(Authentication authentication,
+                                                @RequestBody NotificationCreationByEmailRequest request) {
+        String email = authentication.getName();
+        Optional<Customer> customerOpt= customerRepository.findByEmail(email);
+        if(customerOpt.isEmpty())
+        {
+            return ResponseEntity.badRequest().body("No user with this id found");
+        }
+        Customer customer = customerOpt.get();
+
+        Optional<Customer> customerToSendOpt = customerRepository.findByEmail(request.getEmail());
+        if (customerToSendOpt.isEmpty()) {
+            return ResponseEntity.badRequest().body("No user with this id found");
+        }
+        Customer customerToSend = customerToSendOpt.get();
+
+        if (request.getEmail() != customer.getEmail()) {
+            Notification notification = new Notification(customerToSend.getId(), request.getText());
             notificationRepository.save(notification);
             return ResponseEntity.ok(notification);
         }
