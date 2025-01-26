@@ -16,6 +16,13 @@ const ShareService = {
             filePath, folderId
         });
         return response.data;
+    },
+
+    shareFolder: async (addresseeEmail, folderId, accessLevel) => {
+        const response = await api.post('folder/shareFolder', {
+            addresseeEmail, folderId, accessLevel
+        });
+        return response.data;
     }
 };
 

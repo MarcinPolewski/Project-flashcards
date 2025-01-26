@@ -11,11 +11,11 @@ const NotificationService = {
     },
     getAllNotifications: async () => {
         if (isDevelopment) return mockData.customerGetNotifications;
-        const response = await api.get(`/customer/getNotifications/`, generateJwtHeader());
+        const response = await api.get('/customer/getNotifications');
         return response.data;
     },
-    createNotification: async (userId, text, received, receivedDate) => {
-        const response = await api.post('/notification/create', { userId, text, received, receivedDate });
+    createNotification: async (userId, text) => {
+        const response = await api.post('/notification/create', { userId, text });
         return response.data;
     },
     deleteNotification: async (notificationId) => {
