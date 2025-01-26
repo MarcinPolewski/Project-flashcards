@@ -269,12 +269,14 @@ public class CustomerController {
         Customer customer = customerOpt.get();
 
         List<CustomerWithAvatar> friendsWithAvatars = new ArrayList<CustomerWithAvatar>();
+        List<Customer> friends = new ArrayList<Customer>();
 
         List<Friendship> possibleFriendships = customer.getSentFriendships();
 
         for (Friendship friendship : possibleFriendships) {
             if (friendship.isAccepted()) {
                 Customer friend = friendship.getReceiver();
+                friends.add(friend);
 
                 String avatarPath = friend.getProfilePicturePath();
 
@@ -295,6 +297,7 @@ public class CustomerController {
         for (Friendship friendship : possibleFriendships) {
             if (friendship.isAccepted()) {
                 Customer friend = friendship.getSender();
+                friends.add(friend);
                 String avatarPath = friend.getProfilePicturePath();
 
                 try {
@@ -310,7 +313,7 @@ public class CustomerController {
             }
         }
 
-        return ResponseEntity.ok(friendsWithAvatars);
+        return ResponseEntity.ok(friends);
     }
 
     @GetMapping("/getFriendById/{id}")
