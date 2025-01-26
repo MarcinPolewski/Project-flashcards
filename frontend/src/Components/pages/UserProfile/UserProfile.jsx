@@ -5,6 +5,7 @@ import defaultAvatar from "../../../assets/test/test-avatar.png";
 
 import Navbar from "../../Navbar/Navbar";
 import CustomerService from "../../../services/CustomerService";
+import NotificationService from "../../../services/NotificationService";
 import { useUser } from "../../../contexts/UserContext/UserContext";
 
 const UserProfile = () => {
@@ -13,6 +14,7 @@ const UserProfile = () => {
     const [friends, setFriends] = useState([]);
     const [bio, setBio] = useState("");
     const [isEditing, setIsEditing] = useState(false);
+    const [textMessages, setTextMessages] = useState({});
     const { userData, isLoading } = useUser();
 
     useEffect(() => {
@@ -52,6 +54,33 @@ const UserProfile = () => {
 
     const handleEditClick = () => {
         setIsEditing(true);
+    };
+
+    const handleTextMessageChange = (friendId, message) => {
+        setTextMessages((prev) => ({
+            ...prev,
+            [friendId]: message,
+        }));
+    };
+
+    const handleSendNotification = async (friendId) => {
+        const message = textMessages[friendId];
+        if (!message) {
+            alert("Message cannot be empty!");
+            return;
+        }
+
+        try {
+            await NotificationService.createNotification(friendId, message);
+            alert("Notification sent successfully!");
+            setTextMessages((prev) => ({
+                ...prev,
+                [friendId]: "",
+            }));
+        } catch (error) {
+            console.error("Error sending notification:", error);
+            alert("Failed to send notification.");
+        }
     };
 
     if (isLoading) {
@@ -96,7 +125,7 @@ const UserProfile = () => {
 
                         <div className="user-profile-section-friends">
                             <h2 className="user-profile-friends-title">{userData.username}'s friends</h2>
-                            {Array.isArray(friends) && friends.length > 0 ?
+                            {Array.isArray(friends) && friends.length > 0 ? (
                                 friends.map((friend) => (
                                     <div key={friend.id} className="user-profile-friend-container">
                                         <div className="user-profile-friend-info">
@@ -108,13 +137,27 @@ const UserProfile = () => {
                                             </div>
                                         </div>
                                         <div className="user-profile-friend-message">
-                                            <input type="text" placeholder="Send message..." />
-                                            <button className="user-profile-button" type="submit">Send</button>
+                                            <input
+                                                type="text"
+                                                placeholder="Send message..."
+                                                value={textMessages[friend.id] || ""}
+                                                onChange={(e) =>
+                                                    handleTextMessageChange(friend.id, e.target.value)
+                                                }
+                                                required
+                                            />
+                                            <button
+                                                className="user-profile-button"
+                                                onClick={() => handleSendNotification(friend.id)}
+                                            >
+                                                Send
+                                            </button>
                                         </div>
                                     </div>
-                                )) :
+                                ))
+                            ) : (
                                 <p>No friends to display</p>
-                            }
+                            )}
                         </div>
                     </div>
                 </div>

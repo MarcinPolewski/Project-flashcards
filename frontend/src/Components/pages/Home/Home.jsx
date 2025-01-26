@@ -112,6 +112,18 @@ const Home = () => {
         }
     }
 
+    const handleNotificationDelete = (id) => {
+        console.log("Deleting notification with id: ", id);
+        try {
+            const response = NotificationService.deleteNotification(id);
+            console.log("deleted notification: ", response);
+            setNotifications(notifications.filter((notif) => notif.id !== id));
+        }catch (error) {
+            console.error("Error while deleting notification offer: ", error);
+            alert("Error while deleting notification offer: ", error);
+        }
+    }
+
     useEffect(() => {
         const fetchDecks = async () => {
             try {
@@ -244,6 +256,9 @@ const Home = () => {
                         <div className="home-user-notifcation-text">
                             {notif.text}
                         </div>
+                        <button onClick={() => handleNotificationDelete(notif.id)} className="btn">
+                            Delete
+                        </button>
 
                     </div>
                 )) :
