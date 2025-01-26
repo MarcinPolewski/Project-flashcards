@@ -8,6 +8,7 @@ import com.PAP_team_21.flashcards.controllers.DTOMappers.DeckMapper;
 import com.PAP_team_21.flashcards.controllers.DTOMappers.FolderMapper;
 import com.PAP_team_21.flashcards.controllers.requests.FolderCreationRequest;
 import com.PAP_team_21.flashcards.controllers.requests.FolderUpdateRequest;
+import com.PAP_team_21.flashcards.controllers.requests.ShareFolderRequest;
 import com.PAP_team_21.flashcards.entities.JsonViewConfig;
 import com.PAP_team_21.flashcards.entities.customer.Customer;
 import com.PAP_team_21.flashcards.entities.customer.CustomerRepository;
@@ -171,6 +172,29 @@ public class FolderController {
         Folder rootFolder = customer.getRootFolder();
         return ResponseEntity.ok(rootFolder);
     }
+
+    @PostMapping("/shareFolder")
+    public ResponseEntity<?> shareFolder(Authentication authentication, ShareFolderRequest request)
+    {
+        FolderAccessServiceResponse response;
+        try {
+            response = resourceAccessService.getFolderAccessLevel(authentication, request.getFolderId());
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+
+        AccessLevel al = response.getAccessLevel();
+        Folder folder = response.getFolder();
+
+        if(al != null && (al.equals(AccessLevel.EDITOR) || al.equals(AccessLevel.OWNER)))
+        {
+            folder.share(response.getCustomer(), request.getAccessLevel());
+            return ResponseEntity.ok("shared successfully");
+        }
+        return ResponseEntity.badRequest().body("You do not have permission to view this folder");
+
+    }
+
 
     @GetMapping("/getAllDecks")
     @JsonView(JsonViewConfig.Public.class)

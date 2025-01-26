@@ -127,4 +127,13 @@ public class Folder {
         //return decks.stream().;
 
     }
+
+    public void share(Customer customer, AccessLevel accessLevel) {
+        FolderAccessLevel fal = new FolderAccessLevel(customer, accessLevel, this);
+        if (accessLevels == null) {
+            accessLevels = new ArrayList<>();
+        }
+        accessLevels.add(fal);
+
+    }
 }
