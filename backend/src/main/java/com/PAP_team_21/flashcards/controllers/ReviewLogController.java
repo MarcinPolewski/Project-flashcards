@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -54,6 +55,23 @@ public class ReviewLogController {
 
         return ResponseEntity.ok(reviewLog);
     }
+
+    @GetMapping("/getAllReviewLogs")
+    @JsonView(JsonViewConfig.Public.class)
+    public ResponseEntity<?> getAllReviewLogs(Authentication authentication) {
+        String email = authentication.getName();
+        Optional<Customer> customerOpt = customerRepository.findByEmail(email);
+        if(customerOpt.isEmpty())
+        {
+            return ResponseEntity.badRequest().body("No user with this id found");
+        }
+        Customer customer = customerOpt.get();
+
+        List<ReviewLog> reviewLogs = customer.getReviewLogs();
+
+        return ResponseEntity.ok(reviewLogs);
+    }
+
 
     @DeleteMapping("/delete")
     public ResponseEntity<?> deleteReviewLog(Authentication authentication,
