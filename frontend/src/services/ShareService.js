@@ -18,8 +18,10 @@ const ShareService = {
         return response.data;
     },
 
-    getFriendsList: async () => {
-        const response = await api.get('/friendsList');
+    shareFolder: async (addresseeEmail, folderId, accessLevel) => {
+        const response = await api.post('folder/shareFolder', {
+            addresseeEmail, folderId, accessLevel
+        });
         return response.data;
     }
 };

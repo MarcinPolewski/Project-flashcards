@@ -6,6 +6,12 @@ import ShareService from "../../../services/ShareService";
 import FolderService from "../../../services/FolderService";
 import filterRootFolder from "../../../utils/filterRootFolder";
 
+const AccessLevels = {
+    OWNER: 0,
+    EDITOR: 1,
+    VIEWER: 2,
+}
+
 const Share = () => {
     const [selectedExportDeck, setSelectedExportDeck] = useState("");
     const [selectedImportFolder, setSelectedImportFolder] = useState("");
@@ -13,7 +19,8 @@ const Share = () => {
     const [importFile, setImportFile] = useState(null);
     const [decksToChoose, setDecksToChoose] = useState([]);
     const [foldersToChoose, setFoldersToChoose] = useState([]);
-    const [selectedFriend, setSelectedFriend] = useState("");
+    const [selectedFriendEmail, setSelectedFriendEmail] = useState("");
+    const [selectedAccessLevel, setSelectedAccessLevel] = useState(null);
     const [friendsList, setFriendsList] = useState([]);
 
     const handlePdfExport = async () => {
@@ -83,15 +90,16 @@ const Share = () => {
     };
 
     const handleShare = async () => {
-        if (!selectedImportFolder || !selectedFriend) {
+        if (!selectedImportFolder || !selectedFriendEmail || !selectedAccessLevel) {
             alert("Please select a folder and a friend to share with.");
             return;
         }
-        alert(`Sharing folder: ${selectedImportFolder} with friend: ${selectedFriend}`);
+        alert(`Sharing folder: ${selectedImportFolder} with friend: ${selectedFriendEmail}`);
 
         try {
-            await ShareService.shareFolder(selectedImportFolder, selectedFriend);
+            const response = await ShareService.shareFolder(selectedFriendEmail, selectedImportFolder, selectedAccessLevel);
             alert("Folder shared successfully!");
+            console.log("Folder shared: ", response);
         } catch (error) {
             console.error("Error while sharing folder: ", error);
             alert("Error while sharing folder. Please try again.");
@@ -124,7 +132,7 @@ const Share = () => {
             try {
                 const fetchedFriends = await ShareService.getFriendsList();
                 setFriendsList(fetchedFriends || []);
-                setSelectedFriend(fetchedFriends[0]?.id);
+                setSelectedFriendEmail(fetchedFriends[0]?.email);
             } catch (error) {
                 console.log("Error while fetching friends list: ", error);
             }
@@ -222,19 +230,35 @@ const Share = () => {
                     </select>
                     <select
                         className="dropdown"
-                        value={selectedFriend}
-                        onChange={(e) => setSelectedFriend(e.target.value)}
+                        value={selectedFriendEmail}
+                        onChange={(e) => setSelectedFriendEmail(e.target.value)}
                     >
                         <option value="">Select a friend</option>
                         {Array.isArray(friendsList) ? (
                             friendsList.map((friend, index) => (
-                                <option key={index} value={friend.id}>
+                                <option key={index} value={friend.email}>
                                     {friend.name}
                                 </option>
                             ))
                         ) : (
                             <option value="">No friends available</option>
                         )}
+                    </select>
+                    <select
+                        className="dropdown"
+                        value={selectedAccessLevel}
+                        onChange={(e) => setSelectedAccessLevel(e.target.value)}
+                    >
+                        <option value="">Select access level</option>
+                        <option value={AccessLevels.OWNER}>
+                            Owner
+                        </option>
+                        <option value={AccessLevels.EDITOR}>
+                            Editor
+                        </option>
+                        <option value={AccessLevels.VIEWER}>
+                            Viewer
+                        </option>
                     </select>
                     <button className="btn" onClick={handleShare}>
                         Share

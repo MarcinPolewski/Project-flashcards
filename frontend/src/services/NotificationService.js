@@ -11,7 +11,7 @@ const NotificationService = {
     },
     getAllNotifications: async () => {
         if (isDevelopment) return mockData.customerGetNotifications;
-        const response = await api.get(`/customer/getNotifications/`, generateJwtHeader());
+        const response = await api.get('/customer/getNotifications');
         return response.data;
     },
     createNotification: async (userId, text, received, receivedDate) => {

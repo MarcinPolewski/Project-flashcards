@@ -8,12 +8,16 @@ const FriendshipService = {
         const response = await api.get(`/friendship/getFriendship/${id}`);
         return response.data;
     },
+    getReceivedFriendships: async () => {
+        const response = await api.get('/customer/getReceivedFriendships');
+        return response.data;
+    },
     sendFriendshipOfferByEmail: async (email) => {
-        const response = await api.post('/friendship/sendFriendshipOfferByEmail', { params: email });
+        const response = await api.post('/customer/sendFriendshipOfferByEmail/' + email);
         return response.data;
     },
     acceptFriendshipOfferById: async (id) => {
-        const response = await api.post('/friendship/acceptFriendshipOfferById', { params: id });
+        const response = await api.post('/customer/acceptFriendshipOfferById/' + id);
         return response.data;
     },
     createFriendship: async (senderId, receiverId) => {

@@ -5,8 +5,10 @@ import { useNavigate } from "react-router-dom";
 import Overlay from "../../Overlay/Overlay";
 import FolderService from "../../../services/FolderService";
 import DeckService from "../../../services/DeckService";
+import FriendshipService from "../../../services/FriendshipService";
 
 import filterRootFolder from "../../../utils/filterRootFolder";
+import validateEmail from "../../../utils/validateEmail";
 
 const PlusButton = () => {
     const navigate = useNavigate();
@@ -14,6 +16,7 @@ const PlusButton = () => {
     const [folders, setFolders] = useState([]);
     const { isOverlayOpen, toggleOverlay, closeOverlay, isPlusButtonPopupOpen, togglePlusButtonPopup, closePlusButtonPopup } = useOverlay();
     const [newFolderName, setNewFolderName] = useState("");
+    const [newFriendEmail, setNewFriendEmail] = useState("");
     const [deckName, setDeckName] = useState("");
     const [selectedFolderIdForFolders, setSelectedFolderIdForFolders] = useState(null);
     const [selectedFolderIdForDecks, setSelectedFolderIdForDecks] = useState(null);
@@ -76,6 +79,31 @@ const PlusButton = () => {
         }
     };
 
+    const handleSendFriendRequest = async () => {
+        if (!validateEmail(newFriendEmail)) {
+            alert("Please enter friend's email in correct form.");
+            return;
+        }
+
+        if (!newFriendEmail) {
+            alert("Please enter friend's email.");
+            return;
+        }
+
+        try {
+            console.log("Sending friend request to: ", newFriendEmail);
+            const response = await FriendshipService.sendFriendshipOfferByEmail(newFriendEmail);
+            console.log("Friend request sent:", response);
+            alert("Friend request sent!");
+        } catch (error) {
+            console.error("Error sending friend request:", error);
+            alert("Error sending friend request.");
+        } finally {
+            setFormType("");
+            closePlusButtonPopup();
+        }
+    }
+
     const openCreateForm = (type) => {
         setFormType(type);
         togglePlusButtonPopup();
@@ -100,6 +128,7 @@ const PlusButton = () => {
                     <li onClick={() => navigate("/create-flashcard")}>Create Flashcard</li>
                         <li onClick={() => openCreateForm('deck')}>Create Deck</li>
                         <li onClick={() => openCreateForm('folder')}>Create Folder</li>
+                        <li onClick={() => openCreateForm('friend')}>Add Friend</li>
                     </ul>
                 </div>
             )}
@@ -162,6 +191,19 @@ const PlusButton = () => {
                         required
                     />
                     <button type="button" onClick={handleCreateFolder}>Create</button>
+                </div> }
+                {formType === 'friend' &&
+                <div className="plus-button-create-folder">
+                    <h3>Add Friend</h3>
+                    <p>Enter friend's email:</p>
+                    <input
+                        type="text"
+                        placeholder="Friend's email..."
+                        value={newFriendEmail}
+                        onChange={(e) => setNewFriendEmail(e.target.value)}
+                        required
+                    />
+                    <button type="button" onClick={handleSendFriendRequest}>Add Friend</button>
                 </div> }
             </Overlay>
         </div>
