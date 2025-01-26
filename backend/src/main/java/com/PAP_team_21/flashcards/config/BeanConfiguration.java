@@ -15,6 +15,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+import java.util.Base64;
 import java.util.Properties;
 
 @Configuration
@@ -40,6 +43,15 @@ public class BeanConfiguration {
 
     @Value("${thread.max.pool.size}")
     private int maxThreadPoolSize;
+
+    @Value("${jwt.secret-key}")
+    private String secretKeyString;
+
+    @Bean
+    public SecretKey secretKey() {
+        byte[] decodedKey = Base64.getDecoder().decode(secretKeyString);
+        return new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES");
+    }
 
     @Bean
     public JavaMailSender javaMailSender() {

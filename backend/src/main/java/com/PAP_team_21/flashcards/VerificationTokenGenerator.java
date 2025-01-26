@@ -1,5 +1,6 @@
 package com.PAP_team_21.flashcards;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -14,8 +15,12 @@ public class VerificationTokenGenerator {
 
     private static final String ALGORITHM = "AES";
 
-    @Value("${jwt.secret-key}")
     private SecretKey secretKey;
+
+    @Autowired
+    public VerificationTokenGenerator(SecretKey secretKey) {
+        this.secretKey = secretKey;
+    }
 
 
 
