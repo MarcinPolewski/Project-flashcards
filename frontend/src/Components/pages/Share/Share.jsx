@@ -6,12 +6,22 @@ import ShareService from "../../../services/ShareService";
 import FolderService from "../../../services/FolderService";
 import filterRootFolder from "../../../utils/filterRootFolder";
 
+const AccessLevels = {
+    OWNER: 0,
+    EDITOR: 1,
+    VIEWER: 2,
+}
+
 const Share = () => {
     const [selectedExportDeck, setSelectedExportDeck] = useState("");
     const [selectedImportFolder, setSelectedImportFolder] = useState("");
+    const [selectedShareFolder, setSelectedShareFolder] = useState("");
     const [importFile, setImportFile] = useState(null);
     const [decksToChoose, setDecksToChoose] = useState([]);
     const [foldersToChoose, setFoldersToChoose] = useState([]);
+    const [selectedFriendEmail, setSelectedFriendEmail] = useState("");
+    const [selectedAccessLevel, setSelectedAccessLevel] = useState(null);
+    const [friendsList, setFriendsList] = useState([]);
 
     const handlePdfExport = async () => {
         if (!selectedExportDeck) {
@@ -79,6 +89,23 @@ const Share = () => {
         setImportFile(event.target.files[0]);
     };
 
+    const handleShare = async () => {
+        if (!selectedImportFolder || !selectedFriendEmail || !selectedAccessLevel) {
+            alert("Please select a folder and a friend to share with.");
+            return;
+        }
+        alert(`Sharing folder: ${selectedImportFolder} with friend: ${selectedFriendEmail}`);
+
+        try {
+            const response = await ShareService.shareFolder(selectedFriendEmail, selectedImportFolder, selectedAccessLevel);
+            alert("Folder shared successfully!");
+            console.log("Folder shared: ", response);
+        } catch (error) {
+            console.error("Error while sharing folder: ", error);
+            alert("Error while sharing folder. Please try again.");
+        }
+    };
+
     useEffect(() => {
         const fetchDecksToChoose = async () => {
             try {
@@ -92,8 +119,8 @@ const Share = () => {
 
         const fetchFoldersToChoose = async () => {
             try {
-                const fetchedDecks = await FolderService.getAllFolders();
-                const foldersWithoutRoot = filterRootFolder(fetchedDecks);
+                const fetchedFolders = await FolderService.getAllFolders();
+                const foldersWithoutRoot = filterRootFolder(fetchedFolders);
                 setFoldersToChoose(foldersWithoutRoot || []);
                 setSelectedImportFolder(foldersWithoutRoot[0]?.id);
             } catch (error) {
@@ -101,9 +128,21 @@ const Share = () => {
             }
         };
 
+        const fetchFriendsList = async () => {
+            try {
+                const fetchedFriends = await ShareService.getFriendsList();
+                setFriendsList(fetchedFriends || []);
+                setSelectedFriendEmail(fetchedFriends[0]?.email);
+            } catch (error) {
+                console.log("Error while fetching friends list: ", error);
+            }
+        };
+
         fetchDecksToChoose();
         fetchFoldersToChoose();
+        fetchFriendsList();
     }, []);
+
 
     return (
         <div className="main-importcontainer">
@@ -165,6 +204,64 @@ const Share = () => {
                     />
                     <button className="btn" onClick={handleImport}>
                         Import
+                    </button>
+                </div>
+            </div>
+
+            {/* Share Section */}
+            <div className="section">
+                <h3>Share Folder with Friends</h3>
+                <div className="field-container">
+                    <select
+                        className="dropdown"
+                        value={selectedShareFolder}
+                        onChange={(e) => setSelectedShareFolder(e.target.value)}
+                    >
+                        <option value="">Select a folder to share</option>
+                        {Array.isArray(foldersToChoose) ? (
+                            foldersToChoose.map((folder, index) => (
+                                <option key={index} value={folder.id}>
+                                    {folder.name}
+                                </option>
+                            ))
+                        ) : (
+                            <option value="">No folder available</option>
+                        )}
+                    </select>
+                    <select
+                        className="dropdown"
+                        value={selectedFriendEmail}
+                        onChange={(e) => setSelectedFriendEmail(e.target.value)}
+                    >
+                        <option value="">Select a friend</option>
+                        {Array.isArray(friendsList) ? (
+                            friendsList.map((friend, index) => (
+                                <option key={index} value={friend.email}>
+                                    {friend.name}
+                                </option>
+                            ))
+                        ) : (
+                            <option value="">No friends available</option>
+                        )}
+                    </select>
+                    <select
+                        className="dropdown"
+                        value={selectedAccessLevel}
+                        onChange={(e) => setSelectedAccessLevel(e.target.value)}
+                    >
+                        <option value="">Select access level</option>
+                        <option value={AccessLevels.OWNER}>
+                            Owner
+                        </option>
+                        <option value={AccessLevels.EDITOR}>
+                            Editor
+                        </option>
+                        <option value={AccessLevels.VIEWER}>
+                            Viewer
+                        </option>
+                    </select>
+                    <button className="btn" onClick={handleShare}>
+                        Share
                     </button>
                 </div>
             </div>

@@ -5,8 +5,19 @@ const isDevelopment = process.env.NODE_ENV === 'development';
 
 const FriendshipService = {
     getFriendship: async (id) => {
-        if (isDevelopment) return mockData.friendsGetFriends;
         const response = await api.get(`/friendship/getFriendship/${id}`);
+        return response.data;
+    },
+    getReceivedFriendships: async () => {
+        const response = await api.get('/customer/getReceivedFriendships');
+        return response.data;
+    },
+    sendFriendshipOfferByEmail: async (email) => {
+        const response = await api.post('/customer/sendFriendshipOfferByEmail/' + email);
+        return response.data;
+    },
+    acceptFriendshipOfferById: async (id) => {
+        const response = await api.post('/customer/acceptFriendshipOfferById/' + id);
         return response.data;
     },
     createFriendship: async (senderId, receiverId) => {

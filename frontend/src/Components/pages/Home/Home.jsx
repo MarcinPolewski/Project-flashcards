@@ -14,12 +14,14 @@ import NotificationService from "../../../services/NotificationService";
 import { useOverlay } from "../../../contexts/OverlayContext/OverlayContext";
 import Overlay from "../../Overlay/Overlay";
 import { EditFolder, DeleteFolder } from "../../EditFolder/EditFolder";
+import FriendshipService from "../../../services/FriendshipService";
 
 
 const Home = () => {
 
     const [latestDecks, setLatestDecks] = useState([]);
     const [notifications, setNotifications] = useState([]);
+    const [receivedFriendships, setReceivedFriendships] = useState([]);
     const [folders, setFolders] = useState([]);
 
     const [formType, setFormType] = useState(null);
@@ -85,6 +87,43 @@ const Home = () => {
         }
     };
 
+    const handleFriendshipAccept = (id) => {
+        console.log("Accepting friendship offer with id: ", id);
+        try {
+            const response = FriendshipService.acceptFriendshipOfferById(id);
+            console.log("Friendship accepted:", response);
+            setReceivedFriendships(receivedFriendships.filter((friendship) => friendship.id !== id));
+
+        } catch (error) {
+            console.error("Error while accepting friendship offer: ", error);
+            alert("Error while accepting friendship offer: ", error);
+        }
+    }
+
+    const handleFriendshipDecline = (id) => {
+        console.log("Declining friendship offer with id: ", id);
+        try {
+            const response = FriendshipService.deleteFriendship(id);
+            console.log("deleted friendship: ", response);
+            setReceivedFriendships(receivedFriendships.filter((friendship) => friendship.id !== id));
+        }catch (error) {
+            console.error("Error while declining friendship offer: ", error);
+            alert("Error while declining friendship offer: ", error);
+        }
+    }
+
+    const handleNotificationDelete = (id) => {
+        console.log("Deleting notification with id: ", id);
+        try {
+            const response = NotificationService.deleteNotification(id);
+            console.log("deleted notification: ", response);
+            setNotifications(notifications.filter((notif) => notif.id !== id));
+        }catch (error) {
+            console.error("Error while deleting notification offer: ", error);
+            alert("Error while deleting notification offer: ", error);
+        }
+    }
+
     useEffect(() => {
         const fetchDecks = async () => {
             try {
@@ -109,15 +148,29 @@ const Home = () => {
         const fetchNotifications = async () => {
             try {
                 const notificationsSet = await NotificationService.getAllNotifications();
+                console.log("Received notifications: ", notifications);
                 setNotifications(notificationsSet || []);
             } catch (error) {
                 console.error("Error while fetching notifications: ", error);
                 setNotifications(null);
             }
         }
+
+        const fetchReveivedFriendships = async () => {
+            try {
+                const friendships = await FriendshipService.getReceivedFriendships();
+                console.log("Received friendships: ", friendships);
+                setReceivedFriendships(friendships || []);
+            } catch (error) {
+                console.error("Error while fetching received friendships: ", error);
+                setReceivedFriendships(null);
+            }
+        }
+
         fetchDecks();
         fetchFolders();
         fetchNotifications();
+        fetchReveivedFriendships();
     }, [])
 
     return <div>
@@ -138,9 +191,9 @@ const Home = () => {
             </Overlay>
 
             <div className="latest-reviews-title">My Latest Reviews</div>
-            <div className="latest-reviews-decks">
                 {Array.isArray(latestDecks) && latestDecks.length > 0 ? (
                     latestDecks.map((deck) => (
+                    <div className="latest-reviews-decks">
                         <div key={deck.id} className="latest-review-deck">
                             <div className="deck-title">{deck.name}</div>
                             <CircularProgressbar
@@ -155,8 +208,11 @@ const Home = () => {
                                 Continue
                             </button>
                         </div>
+                    </div>
                     ))
                 ) : (
+
+                <div className="home-user-notifications-container">
                     <div className="home-user-notifcation">
                         <div className="home-user-notifcation-header">
                             <div className="home-user-notifcation-title">No last decks recorded</div>
@@ -165,8 +221,8 @@ const Home = () => {
                         </div>
 
                     </div>
+                </div>
                 )}
-            </div>
 
         </div>
 
@@ -175,6 +231,23 @@ const Home = () => {
             <div className="home-user-notifications-container">
 
                 <div className="home-notifications-title">Notifications</div>
+                {Array.isArray(receivedFriendships) && receivedFriendships.length > 0 && receivedFriendships.map((friendship) => (
+                    <div key={friendship.id} className="home-user-notifcation">
+                        <div className="home-user-notifcation-header">
+                            <div className="home-user-notifcation-title">New Friendship Offer</div>
+                        </div>
+                        <div className="home-user-notifcation-text">
+                            User with id {friendship.id} sent you a message
+                        </div>
+                        <button onClick={() => handleFriendshipAccept(friendship.id)} className="btn">
+                            Accept
+                        </button>
+                        <button onClick={() => handleFriendshipDecline(friendship.id)} className="btn">
+                            Decline
+                        </button>
+
+                    </div>
+                ))}
                 {Array.isArray(notifications) && notifications.length > 0 ? notifications.map((notif) => (
                     <div key={notif.id} className="home-user-notifcation">
                         <div className="home-user-notifcation-header">
@@ -183,6 +256,9 @@ const Home = () => {
                         <div className="home-user-notifcation-text">
                             {notif.text}
                         </div>
+                        <button onClick={() => handleNotificationDelete(notif.id)} className="btn">
+                            Delete
+                        </button>
 
                     </div>
                 )) :
