@@ -102,7 +102,7 @@ public class UserStatistics {
             if (daysLearningStreak > longestLearningStreak)
                 longestLearningStreak = daysLearningStreak;
         }
-        else {
+        else if (!lastReview.equals(today)) {
             totalDaysLearning++;
             daysLearningStreak = 0;
         }

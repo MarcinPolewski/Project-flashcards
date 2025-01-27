@@ -15,6 +15,7 @@ import com.nimbusds.jwt.util.DateUtils;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalUnit;
 
@@ -29,6 +30,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.Period;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -227,6 +229,19 @@ public class ReviewService {
     public void flashcardReviewed(Customer customer, Flashcard flashcard, UserAnswer userAnswer) {
 
 
+        List<LocalDate> loginDates = userStatisticsRepository.getGithubStyleChartData(customer.getId())
+                .stream()
+                .map(java.sql.Date::toLocalDate)
+                .collect(Collectors.toList());
+
+        Optional<LocalDate> newestDateOpt = loginDates.stream()
+                .max(Comparator.naturalOrder());
+        if (newestDateOpt.isPresent()) {
+            customer.getUserStatistics().updateStatistics(newestDateOpt.get());
+        }
+        else
+            customer.getUserStatistics().updateStatistics();
+        userStatisticsRepository.save(customer.getUserStatistics());
 
         ReviewLog rl = new ReviewLog(flashcard,
                 customer,
@@ -236,16 +251,6 @@ public class ReviewService {
             reviewLogRepository.save(rl);
         }
         Optional<FlashcardProgress> progress = flashcardProgressRepository.findByCustomerAndFlashcard(customer, flashcard);
-
-        Optional<java.sql.Date> lastReviewOpt = userStatisticsRepository.findCustomersLastReview(customer.getId());
-
-        if (lastReviewOpt.isPresent()) {
-            java.sql.Date sqlDate = lastReviewOpt.get();
-            customer.getUserStatistics().updateStatistics(sqlDate.toLocalDate());
-        }
-        else
-            customer.getUserStatistics().updateStatistics();
-        userStatisticsRepository.save(customer.getUserStatistics());
 
         if(progress.isEmpty())
         {
