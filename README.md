@@ -7,6 +7,9 @@
 ### Architektura
 Zgodnie z wymaganiami projektu wykorzystamy architekturę 3-warstwową, w której baza danych jest oddzielona od logiki biznesowej i interfejsu użytkownika.
 
+### Struktura bazy danych
+![database_schema](result/database_schema.jpg)
+
 ### Zespół
 - Julia Czosnek
 - Kacper Górski
@@ -52,9 +55,23 @@ Zgodnie z wymaganiami projektu wykorzystamy architekturę 3-warstwową, w które
 - Powiadomienia – wysyłane mailem
 - Udostępnianie fiszek – możliwość współdzielenia z innymi użytkownikami
 
+### Rezultat
+Ekran logowania:
+![login_screen](result/login_page.png)
+
+Ekran główny:
+![main_screen](result/main_screen.png)
+
+Ekran importów/eksportów:
+![import/export_screen](result/import_export_screen.png)
+
+Ekran statystyk:
+![statistics_screen](result/statistics_page.png)
+
 ### Dalsze Pomysły
 - Rankingi użytkowników
 
 ### Przydatne komendy
 - "docker compose down -v --rmi all" wyłącza kontenery, usuwa pamięć i obrazy
 - "docker compose up" uruchamia aplikacje
+
