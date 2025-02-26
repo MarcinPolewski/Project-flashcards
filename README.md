@@ -1,77 +1,76 @@
-# Temat projektu: Aplikacja webowa do nauki z wykorzystaniem fiszek
+# Project Topic: Web Application for Learning with Flashcards
 
-### Inspiracje
+### Inspirations
 - Anki
 - Quizlet
 
-### Architektura
-Zgodnie z wymaganiami projektu wykorzystamy architekturę 3-warstwową, w której baza danych jest oddzielona od logiki biznesowej i interfejsu użytkownika.
+### Architecture
+According to the project requirements, we will use a three-tier architecture where the database is separated from the business logic and the user interface.
 
-### Struktura bazy danych
+### Database Structure
 ![database_schema](result/database_schema.jpg)
 
-### Zespół
+### Team
 - Julia Czosnek
 - Kacper Górski
 - Marcin Polewski
 - Maciej Cieślik
 
-### Technologie
-- **Spring** – backend, obsługa baz danych
+### Technologies
+- **Spring** – backend, database management
 - **React** – frontend
-- **Node.js** – obsługa niektórych procesów, API
-- **Docker** – konteneryzacja aplikacji
-- **Git** – kontrola wersji i współpraca zespołowa
+- **Node.js** – handling certain processes, API
+- **Docker** – application containerization
+- **Git** – version control and team collaboration
 
-### Funkcjonalności Aplikacji
+### Application Features
 
-1. **Logowanie i Rejestracja**
-   - Logowanie za pomocą konta i hasła
-   - Rejestracja przez email
-   - Odzyskiwanie hasła
-   - Logowanie za pomocą OAuth
+1. **Login and Registration**
+   - Login with email and password
+   - Registration via email
+   - Password recovery
+   - OAuth login
 
-2. **Tworzenie Fiszek**
-   - Tworzenie folderów na fiszki
-   - Modyfikacja i usuwanie fiszek
-   - Obsługa trybów powtarzania materiału: Klasyczne fiszki
-   - Import i eksport fiszek
+2. **Flashcard Creation**
+   - Creating folders for flashcards
+   - Modifying and deleting flashcards
+   - Study modes: Classic flashcards
+   - Importing and exporting flashcards
 
-3. **Algorytm Powtarzania – Spaced Repetition**
-   - Algorytm zaplanowany jako serwis, który planuje pojawianie się fiszek zgodnie z metodą „spaced repetition”
+3. **Spaced Repetition Algorithm**
+   - Implemented as a service that schedules flashcard appearances based on the "spaced repetition" method
 
-4. **Statystyki**
-   - Śledzenie postępów użytkownika
-   - Statystyki użytkownika, takie jak:
-     - Ilość przejrzanych fiszek w ciągu dnia
-     - Ilość fiszek do przejrzenia
+4. **Statistics**
+   - Tracking user progress
+   - User statistics, such as:
+     - Number of flashcards reviewed per day
+     - Number of flashcards due for review
 
-5. **Zarządzanie Fiszkami**
-   - Zamiana przodu fiszki z tyłem
-   - Przechowywanie danych w bazie danych
+5. **Flashcard Management**
+   - Swapping the front and back of a flashcard
+   - Storing data in the database
 
-### Dodatkowe Funkcjonalności
+### Additional Features
 
-- Powiadomienia – wysyłane mailem
-- Udostępnianie fiszek – możliwość współdzielenia z innymi użytkownikami
+- Notifications – sent via email
+- Flashcard sharing – allows sharing with other users
 
-### Rezultat
-Ekran logowania:
+### Result
+Login screen:
 ![login_screen](result/login_page.png)
 
-Ekran główny:
+Main screen:
 ![main_screen](result/main_screen.png)
 
-Ekran importów/eksportów:
+Import/export screen:
 ![import/export_screen](result/import_export_screen.png)
 
-Ekran statystyk:
+Statistics screen:
 ![statistics_screen](result/statistics_page.png)
 
-### Dalsze Pomysły
-- Rankingi użytkowników
+### Future Ideas
+- User rankings
 
-### Przydatne komendy
-- "docker compose down -v --rmi all" wyłącza kontenery, usuwa pamięć i obrazy
-- "docker compose up" uruchamia aplikacje
-
+### Useful Commands
+- `docker compose down -v --rmi all` stops containers, removes memory and images
+- `docker compose up` starts the application
